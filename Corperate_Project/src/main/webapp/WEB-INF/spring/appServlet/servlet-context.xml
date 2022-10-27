@@ -21,8 +21,12 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<context:component-scan base-package="com.spring.ex" />
+	<context:component-scan base-package="com.spring.controller" />
 	
+	<!-- Handles HTTP GET 요청 for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<resources mapping="/resources/**" location="/resources/" />
 	
+	<!-- /assets/main.css 라는 요청이 들어오면 /resources/assets/main.css로 연결 시켜준다. -->
+	<resources mapping="/assets/**" location="/resources/assets/" />
 	
 </beans:beans>

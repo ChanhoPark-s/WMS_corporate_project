@@ -32,6 +32,19 @@
 		<level value="info" />
 	</logger>
 
+	<!-- 이하 3개의 logger는 테스트 코드 작성시 보이는 로그레벨을 수정하기 위함 -->
+	<logger name="jdbc.audit">
+		<level value="warn"/>
+	</logger>
+	
+	<logger name="jdbc.resultset">
+		<level value="warn"/>
+	</logger>
+	
+	<logger name="jdbc.connection">
+		<level value="warn"/>
+	</logger>
+
 	<!-- Root Logger -->
 	<root>
 		<priority value="info" />
