@@ -11,7 +11,7 @@
 	</appender>
 	
 	<!-- Application Loggers -->
-	<logger name="com.spring.ex">
+	<logger name="com.spring.*">
 		<level value="info" />
 	</logger>
 	
