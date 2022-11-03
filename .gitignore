@@ -4,6 +4,7 @@
 #etc
 pom.properties
 MANIFEST.MF
+sequence diagram data.drawio
 
 # Log file
 *.log
