@@ -1,6 +1,10 @@
 # Compiled class file
 *.class
 
+#etc
+pom.properties
+MANIFEST.MF
+
 # Log file
 *.log
 
