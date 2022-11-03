@@ -20,9 +20,9 @@
 		<property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:orcl"/> 
 		-->
 		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"/>
-		<property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@localhost:1521:orcl"/>
-		<property name="username" value="spring"/>
-		<property name="password" value="1234"/>
+		<property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@(description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1521)(host=adb.ap-chuncheon-1.oraclecloud.com))(connect_data=(service_name=ge7cc9d1108df0a_orcl_medium.adb.oraclecloud.com))(security=(ssl_server_dn_match=yes)))"/>
+		<property name="username" value="admin"/>
+		<property name="password" value="Havetobewinner123"/>
 	</bean>
 	
 	<!-- HikariCP configuration -->

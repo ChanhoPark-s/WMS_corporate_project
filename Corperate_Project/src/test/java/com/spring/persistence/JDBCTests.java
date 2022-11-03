@@ -22,9 +22,9 @@ public class JDBCTests {
 	@Test
 	public void testConnection() {
 		try(Connection con = DriverManager.getConnection(
-				"jdbc:oracle:thin:@localhost:1521:orcl",
-				"spring", 
-				"1234")){
+				"jdbc:oracle:thin:@(description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1521)(host=adb.ap-chuncheon-1.oraclecloud.com))(connect_data=(service_name=ge7cc9d1108df0a_orcl_medium.adb.oraclecloud.com))(security=(ssl_server_dn_match=yes)))",
+				"admin", 
+				"Havetobewinner123")){
 			log.info(con);
 		}catch(Exception e) {
 			fail(e.getMessage());

@@ -129,6 +129,13 @@
 			<version>${org.springframework-version}</version>
 			<scope>test</scope>
 		</dependency> 
+
+		<!-- Oracle ojdbc -->		
+		<dependency>
+		    <groupId>com.oracle.database.jdbc</groupId>
+		    <artifactId>ojdbc8</artifactId>
+		    <version>12.2.0.1</version>
+		</dependency>
 		
 		<!-- Connection Pool -->
 		<dependency>
