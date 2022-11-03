@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2022-11-03T08:26:31.896Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" etag="YHFuE5pwGbcRLbvmQEwB" version="20.5.1" type="github">
+<mxfile host="app.diagrams.net" modified="2022-11-03T08:30:43.746Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36" etag="mtrqr0K9zUc83pcUxE4x" version="20.5.1" type="github">
   <diagram id="5_RhCOcCfbxicBXYQ8nO" name="페이지-1">
     <mxGraphModel dx="2016" dy="1030" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2339" pageHeight="3300" math="0" shadow="0">
       <root>
@@ -129,7 +129,7 @@
           <mxGeometry x="515.5905917159763" y="1280.1595833333333" width="315.8284023668639" height="131.51041666666666" as="geometry" />
         </mxCell>
         <mxCell id="I3NriYUVfdR380MBN8Mq-162" value="● 미출하현황" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;fontSize=18;container=0;" parent="1" vertex="1">
-          <mxGeometry x="1980.0049112426034" y="2933.1266666666666" width="217.45562130177515" height="33.09854166666666" as="geometry" />
+          <mxGeometry x="1810.1849112426034" y="1664.1666666666665" width="217.45562130177515" height="33.09854166666666" as="geometry" />
         </mxCell>
         <mxCell id="w64U8oKM1ITEqs8KXAiG-13" value="● BOM(소요량)조회+정전개/역전개" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;fontSize=18;container=0;" parent="1" vertex="1">
           <mxGeometry x="515.5905917159763" y="1310.1860416666666" width="310.6508875739645" height="33.09854166666666" as="geometry" />
@@ -204,7 +204,7 @@
           <mxGeometry x="165.67953200645513" y="42.08487296747967" width="240" height="60" as="geometry" />
         </mxCell>
         <mxCell id="AHGagjkNis5RdBJJzDHv-28" value="" style="group" parent="1" vertex="1" connectable="0">
-          <mxGeometry x="1980.0049112426034" y="2870.0016666666666" width="176.03550295857985" height="115.72916666666674" as="geometry" />
+          <mxGeometry x="1810.1849112426034" y="1601.0416666666665" width="176.03550295857985" height="115.72916666666674" as="geometry" />
         </mxCell>
         <mxCell id="I3NriYUVfdR380MBN8Mq-160" value="영업관리현황" style="swimlane;fontSize=18;container=0;" parent="AHGagjkNis5RdBJJzDHv-28" vertex="1">
           <mxGeometry width="176.03550295857988" height="115.72916666666666" as="geometry" />
