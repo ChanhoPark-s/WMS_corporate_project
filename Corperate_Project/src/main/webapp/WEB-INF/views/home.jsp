@@ -21,6 +21,8 @@
 
 <body class="preloading">
 
+	<h1>${item.title}</h1>
+
   <!-- Wrapper -->
   <div id="wrapper" class="fixed-sidebar fixed-navbar">
     <!-- available options: fixed-sidebar, fixed-navbar, fixed-footer, mini-sidebar -->
