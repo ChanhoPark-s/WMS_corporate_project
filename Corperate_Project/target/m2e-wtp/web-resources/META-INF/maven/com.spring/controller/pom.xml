@@ -13,13 +13,15 @@
 		<org.springframework-version>5.0.7.RELEASE</org.springframework-version>
 		<org.aspectj-version>1.6.10</org.aspectj-version>
 		<org.slf4j-version>1.6.6</org.slf4j-version>
+		<project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>utf-8</project.reporting.outputEncoding>
 	</properties>
 	<dependencies>
 		<!-- Spring -->
 		<dependency>
 		    <groupId>org.springframework</groupId>
 		    <artifactId>spring-context</artifactId>
-		    <version>5.0.7.RELEASE</version>
+		    <version>${org.springframework-version}</version>
 		    <exclusions>
 				<!-- Exclude Commons Logging in favor of SLF4j -->
 				<exclusion>
@@ -33,13 +35,7 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
-		<!-- lombok -->
-		<dependency>
-		    <groupId>org.projectlombok</groupId>
-		    <artifactId>lombok</artifactId>
-		    <version>1.18.0</version>
-		    <scope>provided</scope>
-		</dependency>		
+		
 		<!-- AspectJ -->
 		<dependency>
 			<groupId>org.aspectj</groupId>
@@ -179,14 +175,6 @@
 		    <version>1.16</version>
 		</dependency>
 		
-		<!-- 컨트롤러에서 객체타입을 반환(json 결과반환)하기 위해 사용햐여하는 모듈 -->
-		<dependency>
-		    <groupId>com.fasterxml.jackson.core</groupId>
-		    <artifactId>jackson-databind</artifactId>
-		    <version>2.9.4</version>
-		</dependency>
-		
-		
 		<!-- 자동으로 java 객체를 json로, 혹은 json을 java 객체로 변환해주는 jackson 라이브러리 -->
 		<dependency>
 		    <groupId>com.fasterxml.jackson.core</groupId>
@@ -213,6 +201,7 @@
 		
 	</dependencies>
     <build>
+	<defaultGoal>install</defaultGoal>
         <plugins>
             <plugin>
                 <artifactId>maven-eclipse-plugin</artifactId>

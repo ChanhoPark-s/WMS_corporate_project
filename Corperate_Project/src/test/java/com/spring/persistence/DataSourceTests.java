@@ -14,24 +14,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import lombok.Setter;
-import lombok.extern.log4j.Log4j;
-
 @RunWith(SpringJUnit4ClassRunner.class) // 테스트시 필요한 클래스를 지정해줌. ApplicationContext를 만들고 관리하는 작업을 위해 해당 클래스를 이용하겠다는 의미
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml") // 스프링이 실행되면서 어떤 설정정보를 읽어 들여야 하는지를 명시
-@Log4j	// log 객체 생성
+
 public class DataSourceTests {
 
-	@Setter(onMethod_ = {@Autowired})
+	@Autowired
 	private DataSource dataSource;
 	
-	@Setter(onMethod_ = {@Autowired})
+	@Autowired
 	private SqlSessionFactory sqlSessionFactory;
 		
 	@Test /* com.zaxxer.hikari.HikariDataSource에 대한 객체 생성 테스트 */
 	public void testConnection() {
 		try(Connection con = dataSource.getConnection()){
-			log.info(con);
+			System.out.println(con);
 		} catch(Exception e) {
 			fail(e.getMessage());
 		}
@@ -42,8 +39,9 @@ public class DataSourceTests {
 		try(SqlSession session = sqlSessionFactory.openSession();
 				Connection con = session.getConnection(); // 위에서와 다르게 SqlSession 객체를 통해 컨넥션을 얻음 
 						){
-			log.info(session);
-			log.info(con);
+			System.out.println(session);
+			System.out.println(con);
+
 		} catch(Exception e) {
 			fail(e.getMessage());
 		}

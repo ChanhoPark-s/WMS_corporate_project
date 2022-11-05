@@ -14,16 +14,12 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import lombok.Setter;
-import lombok.extern.log4j.Log4j;
-
 /*컨트롤러를 테스트 하는 부분으로 MockMvcBuilder를 이용함*/
 
 @RunWith(SpringJUnit4ClassRunner.class) // 테스트시 필요한 클래스를 지정해줌. ApplicationContext를 만들고 관리하는 작업을 위해 해당 클래스를 이용하겠다는 의미
 @WebAppConfiguration	// Servlet의 ServletContext를 이용하기 위함
 @ContextConfiguration({"file:src/main/webapp/WEB-INF/spring/root-context.xml",
 						"file:src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml"}) // 스프링이 실행되면서 어떤 설정정보를 읽어 들여야 하는지를 명시
-@Log4j	// log 객체 생성
 public class BoardControllerTests {
 
 //	@Setter(onMethod_ = {@Autowired})
