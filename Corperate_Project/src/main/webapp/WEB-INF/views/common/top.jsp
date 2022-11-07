@@ -47,13 +47,18 @@
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
               </svg>
-              <span class="me-auto">Dashboard</span>
+              <span class="me-auto">기초등록</span>
             </a>
             <div class="ms-5 collapse" id="dashboard-collapse" data-bs-parent="#mainMenu">
               <ul class="navbar-nav">
-                <li class="nav-item"><a class="nav-link" href="index.html">Ecommerce</a></li>
-                <li class="nav-item"><a class="nav-link" href="dashboard-analytics.html">Analytics</a></li>
-                <li class="nav-item"><a class="nav-link" href="dashboard-crm.html">CRM</a></li>
+                <li class="nav-item"><a class="nav-link" href="index.html">사원정보</a></li>
+                <li class="nav-item"><a class="nav-link" href="dashboard-crm.html">부서정보</a></li>
+                <li class="nav-item"><a class="nav-link" href="dashboard-crm.html">직급정보</a></li>
+                <li class="nav-item"><a class="nav-link" href="dashboard-analytics.html">품목정보</a></li>
+                <li class="nav-item"><a class="nav-link" href="dashboard-crm.html">거래처정보</a></li>
+                <li class="nav-item"><a class="nav-link" href="dashboard-crm.html">로트정보</a></li>
+                <li class="nav-item"><a class="nav-link" href="dashboard-crm.html">창고정보</a></li>
+                
               </ul>
             </div>
           </li>
