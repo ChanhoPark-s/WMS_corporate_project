@@ -41,6 +41,6 @@ public class HomeController {
 		
 		logger.info("log 출력");
 		
-		return "home";
+		return "body";
 	}
 }
