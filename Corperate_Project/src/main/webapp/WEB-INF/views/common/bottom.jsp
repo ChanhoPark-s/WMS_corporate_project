@@ -31,9 +31,9 @@
   <!-- /Wrapper -->
 
   <!-- Required JS -->
-  <script src="assets/vendor/bootstrap/bootstrap.bundle.js"></script>
-  <script src="assets/vendor/simplebar/simplebar.js"></script>
-  <script src="assets/js/script.js"></script>
+  <script src="/resources/assets/vendor/bootstrap/bootstrap.bundle.js"></script>
+  <script src="/resources/assets/vendor/simplebar/simplebar.js"></script>
+  <script src="/resources/assets/js/script.js"></script>
 
 
 </body>
