@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 
 <!-- top.jsp -->
-<%@include file="./common/top.jsp" %>
+<%@include file="./top.jsp" %>
 
 <div class="card">
 	<div class="card-body">
@@ -21,6 +21,5 @@
 <!-- Modal 코드 넣을 위치 -->
 
 
-
 <!-- bottom.jsp -->
-<%@include file="./common/bottom.jsp" %>
+<%@include file="./bottom.jsp" %>

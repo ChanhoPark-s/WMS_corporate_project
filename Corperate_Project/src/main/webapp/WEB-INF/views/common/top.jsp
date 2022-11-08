@@ -506,8 +506,6 @@
       <!-- Main body -->
       <div id="main-body">
 
-        <div class="card">
-          <div class="card-body">
-          <!-- 여기부터 컨텐츠 창 시작지점 -->
+
           
         

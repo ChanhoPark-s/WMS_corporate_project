@@ -1,9 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
   
-          <!-- 여기부터 컨텐츠 창 종료지점 -->
-          </div>
-        </div>
       </div>
       <!-- /Main body -->
 
