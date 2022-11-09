@@ -7,21 +7,21 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" href="assets/img/favicon.ico" type="image/x-icon" />
+  <link rel="icon" href="resources/assets/img/favicon.ico" type="image/x-icon" />
   <title>WMS_Project</title>
 
   <!-- Required CSS -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap">
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="resources/assets/css/style.css">
 </head>
 
 <body>
   <div class="auth-container">
     <div class="card">
       <div class="card-body" style="margin-top: 150px;">
-        <img src="assets/img/logo.svg" alt="Mimity admin" width="32" height="32" class="mb-3" style="transform:rotate(180deg)">
+        <img src="resources/assets/img/logo.svg" alt="Mimity admin" width="32" height="32" class="mb-3" style="transform:rotate(180deg)">
         <h1 class="fw-black mb-2">WMS Project</h1>
         <p class="fw-light text-secondary mb-4"></p>
         <form class="needs-validation" novalidate>

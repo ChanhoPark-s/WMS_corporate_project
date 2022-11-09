@@ -24,7 +24,7 @@ public class DepartmentController {
 	public void home(Model model) {				
 		model.addAttribute("item", service.get(1L));
 		
-		logger.info("department.jsp 반환");
+		logger.info("/basicinfo/department/list.jsp 반환");
 		
 		//return "list"; //요청 url과 반환해줄 jsp 파일의 이름이 일치하면 해당 함수는 void 타입이어도 된다. views/basicinfo/department/list.jsp 가 반환됨
 	}

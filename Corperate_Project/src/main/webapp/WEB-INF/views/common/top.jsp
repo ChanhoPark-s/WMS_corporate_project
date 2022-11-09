@@ -17,7 +17,9 @@
   <link rel="stylesheet" href="/resources/assets/css/simplebar.css">
   <link rel="stylesheet" href="/resources/assets/css/style.css">
   <link rel="stylesheet" href="/resources/assets/css/sidebar-dark.css" id="sidebar-theme"> <!-- available themes: dark, light, cyan, green, indigo, red -->
-
+  
+  <!-- jQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 
 <body class="preloading">
@@ -61,13 +63,13 @@
             </a>
             <div class="ms-5 collapse" id="dashboard-collapse" data-bs-parent="#mainMenu">
               <ul class="navbar-nav">
-                <li class="nav-item"><a class="nav-link" href="index.html">사원정보</a></li>
+                <li class="nav-item"><a class="nav-link" href="/basicinfo/member/list">사원정보</a></li>
                 <li class="nav-item"><a class="nav-link" href="/basicinfo/department/list">부서정보</a></li>
-                <li class="nav-item"><a class="nav-link" href="dashboard-crm.html">직급정보</a></li>
-                <li class="nav-item"><a class="nav-link" href="dashboard-analytics.html">품목정보</a></li>
-                <li class="nav-item"><a class="nav-link" href="dashboard-crm.html">거래처정보</a></li>
-                <li class="nav-item"><a class="nav-link" href="dashboard-crm.html">로트정보</a></li>
-                <li class="nav-item"><a class="nav-link" href="dashboard-crm.html">창고정보</a></li>
+                <li class="nav-item"><a class="nav-link" href="/basicinfo/rank/list">직급정보</a></li>
+                <li class="nav-item"><a class="nav-link" href="/basicinfo/item/list">품목정보</a></li>
+                <li class="nav-item"><a class="nav-link" href="/basicinfo/client/list">거래처정보</a></li>
+                <li class="nav-item"><a class="nav-link" href="/basicinfo/lot/list">로트정보</a></li>
+                <li class="nav-item"><a class="nav-link" href="/basicinfo/warehouse/list">창고정보</a></li>
                 
               </ul>
             </div>

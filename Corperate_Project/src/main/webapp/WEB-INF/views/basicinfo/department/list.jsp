@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 
 <!-- top.jsp -->
-<%@include file="../../common/top.jsp" %>
+<%@include file="../../common/top.jsp"%>
 
 <div class="card">
 	<div class="card-body">
@@ -99,8 +99,8 @@
 						</td>
 						<td>
 							<div class="d-flex align-items-center gap-3">
-								<img src="/resource/assets/img/user/user1.svg" alt="" width="42"
-									height="42" class="rounded-circle" loading="lazy">
+								<img src="/resources/assets/img/user/user1.svg" alt=""
+									width="42" height="42" class="rounded-circle" loading="lazy">
 								<div class="d-flex flex-column">
 									<h6>Cody Fisher</h6>
 									<small class="text-secondary">cody.fisher@example.com</small>
@@ -142,8 +142,8 @@
 						</td>
 						<td>
 							<div class="d-flex align-items-center gap-3">
-								<img src="/resource/assets/img/user/user2.svg" alt="" width="42"
-									height="42" class="rounded-circle" loading="lazy">
+								<img src="/resources/assets/img/user/user2.svg" alt=""
+									width="42" height="42" class="rounded-circle" loading="lazy">
 								<div class="d-flex flex-column">
 									<h6>Esther Howard</h6>
 									<small class="text-secondary">esther.howard@example.com</small>
@@ -186,8 +186,8 @@
 						</td>
 						<td>
 							<div class="d-flex align-items-center gap-3">
-								<img src="/resource/assets/img/user/user3.svg" alt="" width="42"
-									height="42" class="rounded-circle" loading="lazy">
+								<img src="/resources/assets/img/user/user3.svg" alt=""
+									width="42" height="42" class="rounded-circle" loading="lazy">
 								<div class="d-flex flex-column">
 									<h6>Cameron Williamson</h6>
 									<small class="text-secondary">cameron.williamson@example.com</small>
@@ -229,8 +229,8 @@
 						</td>
 						<td>
 							<div class="d-flex align-items-center gap-3">
-								<img src="/resource/assets/img/user/user4.svg" alt="" width="42"
-									height="42" class="rounded-circle" loading="lazy">
+								<img src="/resources/assets/img/user/user4.svg" alt=""
+									width="42" height="42" class="rounded-circle" loading="lazy">
 								<div class="d-flex flex-column">
 									<h6>Bernard Lane</h6>
 									<small class="text-secondary">bernard.lane@example.com</small>
@@ -273,8 +273,8 @@
 						</td>
 						<td>
 							<div class="d-flex align-items-center gap-3">
-								<img src="/resource/assets/img/user/user5.svg" alt="" width="42"
-									height="42" class="rounded-circle" loading="lazy">
+								<img src="/resources/assets/img/user/user5.svg" alt=""
+									width="42" height="42" class="rounded-circle" loading="lazy">
 								<div class="d-flex flex-column">
 									<h6>Dan Wilson</h6>
 									<small class="text-secondary">dan.wilson@example.com</small>
@@ -357,79 +357,22 @@
 			<div class="modal-body">
 				<form class="needs-validation" novalidate id="taskForm">
 					<div class="mb-3">
-						<label for="userFullname" class="form-label">Full name</label> <input
-							type="text" name="userFullname" class="form-control"
-							id="userFullname" required autofocus>
+						<label for="userFullname" class="form-label">부서명</label> <input
+							type="text" name="userFullname" class="form-control" id="name"
+							required autofocus>
 						<div class="invalid-feedback">User full name is required.</div>
 					</div>
 					<div class="mb-3">
-						<label for="userEmail" class="form-label">Email</label> <input
+						<label for="userEmail" class="form-label">부서코드</label> <input
 							type="email" name="userEmail" class="form-control" id="userEmail"
 							required>
 						<div class="invalid-feedback">User email is required.</div>
 					</div>
-					<div class="mb-3 vstack gap-3">
-						<label for="userRole" class="form-label">Role</label>
-						<div class="form-check">
-							<input type="radio" class="form-check-input flex-shrink-0"
-								id="role1" name="radio" required> <label
-								class="form-check-label" for="role1">
-								<h6 class="mb-1">Administrator</h6>
-								<p class="mb-0 text-secondary small">Best for business
-									owners and company administrators</p>
-							</label>
-						</div>
-						<div class="form-check">
-							<input type="radio" class="form-check-input flex-shrink-0"
-								id="role2" name="radio" required> <label
-								class="form-check-label" for="role2">
-								<h6 class="mb-1">Developer</h6>
-								<p class="mb-0 text-secondary small">Best for developers or
-									people primarily using the API</p>
-							</label>
-						</div>
-						<div class="form-check">
-							<input type="radio" class="form-check-input flex-shrink-0"
-								id="role3" name="radio" required> <label
-								class="form-check-label" for="role3">
-								<h6 class="mb-1">Analyst</h6>
-								<p class="mb-0 text-secondary small">Best for people who
-									need full access to analytics data, but don't need to update
-									business settings</p>
-							</label>
-						</div>
-						<div class="form-check">
-							<input type="radio" class="form-check-input flex-shrink-0"
-								id="role4" name="radio" required> <label
-								class="form-check-label" for="role4">
-								<h6 class="mb-1">Support</h6>
-								<p class="mb-0 text-secondary small">Best for employees who
-									regularly refund payments and respond to disputes</p>
-							</label>
-						</div>
-						<div class="form-check">
-							<input type="radio" class="form-check-input flex-shrink-0"
-								id="role5" name="radio" required> <label
-								class="form-check-label" for="role5">
-								<h6 class="mb-1">Trial</h6>
-								<p class="mb-0 text-secondary small">Best for people who
-									need to preview content data, but don't need to make any
-									updates</p>
-							</label>
-							<div class="invalid-feedback">User role is required.</div>
-						</div>
-					</div>
-					<div class="mb-3">
-						<label for="userAvatar" class="form-label">Avatar</label> <input
-							class="form-control" type="file" id="userAvatar" required
-							style="max-width: 250px">
-						<div class="invalid-feedback">User avatar is required.</div>
-					</div>
 				</form>
 			</div>
 			<div class="modal-footer border-0">
-				<button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-				<button type="submit" form="taskForm" class="btn btn-primary px-5">Save</button>
+				<button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
+				<button type="submit" form="taskForm" class="btn btn-primary px-5">등록</button>
 			</div>
 		</div>
 	</div>
@@ -437,4 +380,10 @@
 
 
 <!-- bottom.jsp -->
-<%@include file="../../common/bottom.jsp" %>
+<%@include file="../../common/bottom.jsp"%>
+
+<script type="text/javascript">
+$(function(){
+	alert("/basicinfo/department/list.jsp");
+});
+</script>
