@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 
 <!-- top.jsp -->
-<%@include file="./common/top.jsp" %>
+<%@include file="../../common/top.jsp" %>
 
 <div class="card">
 	<div class="card-body">
@@ -99,7 +99,7 @@
 						</td>
 						<td>
 							<div class="d-flex align-items-center gap-3">
-								<img src="assets/img/user/user1.svg" alt="" width="42"
+								<img src="/resource/assets/img/user/user1.svg" alt="" width="42"
 									height="42" class="rounded-circle" loading="lazy">
 								<div class="d-flex flex-column">
 									<h6>Cody Fisher</h6>
@@ -142,7 +142,7 @@
 						</td>
 						<td>
 							<div class="d-flex align-items-center gap-3">
-								<img src="assets/img/user/user2.svg" alt="" width="42"
+								<img src="/resource/assets/img/user/user2.svg" alt="" width="42"
 									height="42" class="rounded-circle" loading="lazy">
 								<div class="d-flex flex-column">
 									<h6>Esther Howard</h6>
@@ -186,7 +186,7 @@
 						</td>
 						<td>
 							<div class="d-flex align-items-center gap-3">
-								<img src="assets/img/user/user3.svg" alt="" width="42"
+								<img src="/resource/assets/img/user/user3.svg" alt="" width="42"
 									height="42" class="rounded-circle" loading="lazy">
 								<div class="d-flex flex-column">
 									<h6>Cameron Williamson</h6>
@@ -229,7 +229,7 @@
 						</td>
 						<td>
 							<div class="d-flex align-items-center gap-3">
-								<img src="assets/img/user/user4.svg" alt="" width="42"
+								<img src="/resource/assets/img/user/user4.svg" alt="" width="42"
 									height="42" class="rounded-circle" loading="lazy">
 								<div class="d-flex flex-column">
 									<h6>Bernard Lane</h6>
@@ -273,7 +273,7 @@
 						</td>
 						<td>
 							<div class="d-flex align-items-center gap-3">
-								<img src="assets/img/user/user5.svg" alt="" width="42"
+								<img src="/resource/assets/img/user/user5.svg" alt="" width="42"
 									height="42" class="rounded-circle" loading="lazy">
 								<div class="d-flex flex-column">
 									<h6>Dan Wilson</h6>
@@ -437,4 +437,4 @@
 
 
 <!-- bottom.jsp -->
-<%@include file="./common/bottom.jsp" %>
+<%@include file="../../common/bottom.jsp" %>

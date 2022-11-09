@@ -7,16 +7,16 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- 창 최상단 아이콘+타이틀파트 -->
-  <link rel="icon" href="assets/img/favicon.ico"  type="image/x-icon" />
+  <link rel="icon" href="/resources/assets/img/favicon.ico"  type="image/x-icon" />
   <title>WMS_Project</title>
 
   <!-- Required CSS -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap">
-  <link rel="stylesheet" href="assets/css/simplebar.css">
-  <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="stylesheet" href="assets/css/sidebar-dark.css" id="sidebar-theme"> <!-- available themes: dark, light, cyan, green, indigo, red -->
+  <link rel="stylesheet" href="/resources/assets/css/simplebar.css">
+  <link rel="stylesheet" href="/resources/assets/css/style.css">
+  <link rel="stylesheet" href="/resources/assets/css/sidebar-dark.css" id="sidebar-theme"> <!-- available themes: dark, light, cyan, green, indigo, red -->
 
 </head>
 
@@ -42,6 +42,7 @@
       <div class="offcanvas-body px-2 py-3 h-100" data-simplebar>
         <ul class="navbar-nav mb-4" id="mainMenu">
           <li class="nav-label px-2 small mt-3"><small>MENU</small></li>
+          
           <li class="nav-item">
             <a class="nav-link px-2 d-flex align-items-center gap-3" href="chat.html">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -61,7 +62,7 @@
             <div class="ms-5 collapse" id="dashboard-collapse" data-bs-parent="#mainMenu">
               <ul class="navbar-nav">
                 <li class="nav-item"><a class="nav-link" href="index.html">사원정보</a></li>
-                <li class="nav-item"><a class="nav-link" href="dashboard-crm.html">부서정보</a></li>
+                <li class="nav-item"><a class="nav-link" href="/basicinfo/department/list">부서정보</a></li>
                 <li class="nav-item"><a class="nav-link" href="dashboard-crm.html">직급정보</a></li>
                 <li class="nav-item"><a class="nav-link" href="dashboard-analytics.html">품목정보</a></li>
                 <li class="nav-item"><a class="nav-link" href="dashboard-crm.html">거래처정보</a></li>
@@ -70,6 +71,22 @@
                 
               </ul>
             </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link px-2 d-flex align-items-center gap-3" href="calendar.html">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+              </svg>
+              <span>창고별 재고현황</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link px-2 d-flex align-items-center gap-3" href="calendar.html">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+              </svg>
+              <span>재고이동</span>
+            </a>
           </li>
           <li class="nav-item">
             <a class="nav-link px-2 d-flex align-items-center gap-3 dropdown-toggle" href="#order-contract-collapse" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="dashboard-collapse">
@@ -137,14 +154,7 @@
               </ul>
             </div>
           </li>
-          <li class="nav-item">
-            <a class="nav-link px-2 d-flex align-items-center gap-3" href="calendar.html">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-              </svg>
-              <span>창고별재고현황</span>
-            </a>
-          </li>
+          
           
           <li class="nav-item">
             <a class="nav-link px-2 d-flex align-items-center gap-3" href="email.html">
@@ -487,7 +497,7 @@
             <li class="nav-item vr mx-3"></li>
             <li class="nav-item dropdown">
               <a href="#" class="nav-link dropdown-toggle no-caret py-0 pe-0" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="assets/img/user/user1.svg" width="32" alt="User" class="rounded-circle" loading="lazy">
+                <img src="/resources/assets/img/user/user1.svg" width="32" alt="User" class="rounded-circle" loading="lazy">
               </a>
               <ul class="dropdown-menu dropdown-menu-end">
                 <li><a class="dropdown-item" href="javascript:void(0)">Profile</a></li>

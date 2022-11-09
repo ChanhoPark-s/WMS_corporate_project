@@ -6,7 +6,7 @@
 
 <div class="card">
 	<div class="card-body">
-	
+		<a href="basicinfo/department/list">department 리스트 이동</a>
 	</div>
 </div>
 
