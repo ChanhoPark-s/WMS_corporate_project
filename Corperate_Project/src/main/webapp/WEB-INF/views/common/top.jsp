@@ -64,7 +64,7 @@
                 <li class="nav-item"><a class="nav-link" href="index.html">사원정보</a></li>
                 <li class="nav-item"><a class="nav-link" href="/basicinfo/department/list">부서정보</a></li>
                 <li class="nav-item"><a class="nav-link" href="dashboard-crm.html">직급정보</a></li>
-                <li class="nav-item"><a class="nav-link" href="dashboard-analytics.html">품목정보</a></li>
+                <li class="nav-item"><a class="nav-link" href="">품목정보</a></li>
                 <li class="nav-item"><a class="nav-link" href="dashboard-crm.html">거래처정보</a></li>
                 <li class="nav-item"><a class="nav-link" href="dashboard-crm.html">로트정보</a></li>
                 <li class="nav-item"><a class="nav-link" href="dashboard-crm.html">창고정보</a></li>
