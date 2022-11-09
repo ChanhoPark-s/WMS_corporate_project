@@ -7,13 +7,8 @@
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
-	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
-	
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
-
-	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
-	<resources mapping="/resources/**" location="/resources/" />
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -21,12 +16,15 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<context:component-scan base-package="com.spring.controller" />
+	<context:component-scan base-package="com.basicinfo.controller" />
+	<context:component-scan base-package="com.home.controller" />
+	<context:component-scan base-package="com.signin.controller" />
+	
 	
 	<!-- Handles HTTP GET 요청 for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
 	
 	<!-- /assets/main.css 라는 요청이 들어오면 /resources/assets/main.css로 연결 시켜준다. -->
-	<resources mapping="/assets/**" location="/resources/assets/" />
+	<!-- <resources mapping="/assets/**" location="/resources/assets/" /> -->
 	
 </beans:beans>

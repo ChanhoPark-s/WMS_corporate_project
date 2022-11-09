@@ -19,7 +19,7 @@
 	</bean>
 	
 
-	<!-- 컨트롤러를 찾기위해 album 패키지 하위의 모든 파일을 훑어봐라, album.xxx, album.x.y.z 등등 다 포함 -->
+	<!-- 컨트롤러를 찾기위해 member 패키지 하위의 모든 파일을 훑어봐라, member.x, member.x.y, member.x.y.z 등등 다 포함 -->
 	<context:component-scan base-package="member"></context:component-scan>
 
 <!--context:componet : 주문할때 어떤 회원이 어떤 상품을 주문하는지 알아야해서 다른 패키지도 훑어본다고 써야함 -->

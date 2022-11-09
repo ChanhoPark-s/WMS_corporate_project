@@ -1,4 +1,4 @@
-package com.spring.controller;
+package com.home.controller;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -26,8 +26,8 @@ public class HomeController {
 	@Autowired
 	private BoardService service;
 	
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
+	@RequestMapping(value = "/home", method = RequestMethod.GET)
+	public void home(Locale locale, Model model) {
 		logger.info("Welcome home! The client locale is {}.", locale);
 		
 		
@@ -41,6 +41,5 @@ public class HomeController {
 		
 		logger.info("log 출력");
 		
-		return "body";
 	}
 }
