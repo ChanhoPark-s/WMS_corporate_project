@@ -22,9 +22,6 @@ import com.spring.service.BoardService;
 public class SigninController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(SigninController.class);
-
-	@Autowired
-	private BoardService service;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
@@ -36,8 +33,12 @@ public class SigninController {
 		
 		String formattedDate = dateFormat.format(date);
 		
+<<<<<<< HEAD
 		model.addAttribute("serverTime", formattedDate                                                                                                                                                                   );
 		model.addAttribute("item", service.get(1L));
+=======
+		model.addAttribute("serverTime", formattedDate );
+>>>>>>> branch 'main' of https://github.com/ChanhoPark-s/WMS_corporate_project.git
 		
 		logger.info("log 출력");
 		

@@ -17,12 +17,12 @@ public class MemberController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 
-	@Autowired
-	private BoardService service;
+	//@Autowired
+	//private BoardService service;
 
 	@GetMapping(value="/list")
 	public void home(Model model) {				
-		model.addAttribute("item", service.get(1L));
+		//model.addAttribute("item", service.get(1L));
 		
 		logger.info("/basicinfo/member/list.jsp 반환");
 		
