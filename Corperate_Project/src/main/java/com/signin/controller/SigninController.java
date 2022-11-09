@@ -1,4 +1,4 @@
-package com.spring.controller;
+package com.signin.controller;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -19,14 +19,14 @@ import com.spring.service.BoardService;
  */
 
 @Controller
-public class HomeController {
+public class SigninController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	private static final Logger logger = LoggerFactory.getLogger(SigninController.class);
 
 	@Autowired
 	private BoardService service;
 	
-	@RequestMapping(value = "/home", method = RequestMethod.GET)
+	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
 		logger.info("Welcome home! The client locale is {}.", locale);
 		
@@ -41,6 +41,6 @@ public class HomeController {
 		
 		logger.info("log 출력");
 		
-		return "home";
+		return "signin";
 	}
 }
