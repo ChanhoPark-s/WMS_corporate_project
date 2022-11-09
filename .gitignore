@@ -1,6 +1,7 @@
 # Compiled class file
 *.class
-*.classpath
+.classpath
+*.MF
 
 #etc
 pom.properties
