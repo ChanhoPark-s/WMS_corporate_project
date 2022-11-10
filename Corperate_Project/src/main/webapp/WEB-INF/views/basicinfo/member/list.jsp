@@ -149,7 +149,7 @@ pageEncoding="UTF-8"%>
                     <label for="userEmail" class="form-label">부서</label>
 					<select class="form-select" id="inputGroupSelect01" name="dep_no">
 	                  <option selected="">선택</option>
-						<c:forEach items="#{deptList }" var="dept">
+						<c:forEach items="${deptList }" var="dept">
 							<option value="${dept.no }">${dept.name }</option>
 						</c:forEach>
 	                </select>
