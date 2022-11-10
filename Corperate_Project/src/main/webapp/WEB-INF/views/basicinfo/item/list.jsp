@@ -84,10 +84,12 @@
 						<img src="/resources/assets/img/user/user1.svg" alt=""
 						width="42" height="42" loading="lazy">
 						</td>
-						<td>${item.image }</td>
+						<td align="center" colspan="2">&nbsp; <!-- 이미지 -->
+						<img src="<%=request.getContextPath()%>/resources/assets/itemimg/${item.image}" >
+						</td>
 						<td>${item.no} </td>
 						<td>${item.client_no}</td>
-						<td>${item.code}</td>
+						<td>${item.code}</td> 
 						<td>${item.name}</td>
 						<td>${item.in_price}</td>
 						<td>${item.out_price}</td>
@@ -165,7 +167,7 @@
 				<form class="needs-validation" novalidate id="taskForm">
 					<div>
                 <label for="formFile" class="form-label">이미지</label>
-                <input class="form-control" type="file" id="formFile">
+                <input class="form-control" type="file" id="formFile"  value="${item.image }">
               		</div>
 					<div class="mb-3">
 						<label for="userFullname" class="form-label">품목코드</label> <input

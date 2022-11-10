@@ -1,18 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-<!-- top.jsp -->
+<!-- top.jsp --> 
 <%@include file="../../common/top.jsp"%>
 
-<div class="card">
-	<div class="card-body">
+<div class="card"> 
+	<div class="card-body"> 
 		<div class="d-flex gap-1 mb-4 flex-wrap">
 			<div class="d-flex gap-1 me-auto flex-wrap">
 				<button id="insert_btn"
 					class="btn btn-primary d-inline-flex align-items-center gap-1"
 					data-bs-toggle="modal" data-bs-target="#addUserModal">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-						fill="currentColor" aria-hidden="true">
+	 					fill="currentColor" aria-hidden="true">
                     <path fill-rule="evenodd"
 							d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
 							clip-rule="evenodd" />
@@ -20,7 +20,7 @@
 					거래처 등록
 				</button>
 				<button class="btn btn-light d-inline-flex align-items-center gap-1" onclick="location.href='/basicinfo/client/list?select=1'">
-				<svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 150 150"><path d="m137 40-5-1H55c-3 1-5 4-5 7 0 4 3 8 7 8h68l-6 31c-1 4-4 6-7 6H55c-3 0-6-2-7-6L36 30c-2-7-8-12-15-12h-5a8 8 0 0 0 0 15h5l12 55c2 11 11 18 22 18h57c9 0 18-6 21-15l4-18 3-19 1-4 1-4c0-3-2-6-5-6Zm-99 81a11 11 0 1 0 23 0 11 11 0 0 0-23 0Zm68 0a11 11 0 1 0 22 0 11 11 0 0 0-22 0Zm0 0" style="stroke:none;fill-rule:nonzero;fill:#000;fill-opacity:1"/></svg>
+				<svg xmlns="http://www.w3.org/2000/svg" width="23p" height="23" viewBox="0 0 150 150"><path d="m137 40-5-1H55c-3 1-5 4-5 7 0 4 3 8 7 8h68l-6 31c-1 4-4 6-7 6H55c-3 0-6-2-7-6L36 30c-2-7-8-12-15-12h-5a8 8 0 0 0 0 15h5l12 55c2 11 11 18 22 18h57c9 0 18-6 21-15l4-18 3-19 1-4 1-4c0-3-2-6-5-6Zm-99 81a11 11 0 1 0 23 0 11 11 0 0 0-23 0Zm68 0a11 11 0 1 0 22 0 11 11 0 0 0-22 0Zm0 0" style="stroke:none;fill-rule:nonzero;fill:#000;fill-opacity:1"/></svg>
 					발주처
 				</button>
 				<button class="btn btn-light d-inline-flex align-items-center gap-1" onclick="location.href='/basicinfo/client/list?select=0'">

@@ -15,14 +15,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
-<<<<<<< HEAD
 import com.spring.domain.ItemVO;
 import com.spring.service.ItemService;
 
 
 
-=======
->>>>>>> branch 'main' of https://github.com/ChanhoPark-s/WMS_corporate_project.git
 @Controller
 @RequestMapping("/basicinfo/item/*")
 public class ItemController {
@@ -49,7 +46,7 @@ public class ItemController {
 	@PostMapping(value="/add")
 	public String insert(ItemVO vo) {
 		
-		String uploadPath = servletContext.getRealPath("/resources");
+		String uploadPath = servletContext.getRealPath("/resources/assets/itemimg");
 		System.out.println("uploadPath:"+uploadPath);
 		
 		MultipartFile multi = vo.getUpload(); //선택한것 multi 들어감

@@ -8,17 +8,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
 
->>>>>>> branch 'main' of https://github.com/ChanhoPark-s/WMS_corporate_project.git
 import com.spring.service.AreaService;
 import com.spring.service.CellService;
 import com.spring.service.RackService;
 import com.spring.service.WareHouseService;
->>>>>>> branch 'main' of https://github.com/ChanhoPark-s/WMS_corporate_project.git
 
 @Controller
 @RequestMapping("/basicinfo/warehouse/*")
