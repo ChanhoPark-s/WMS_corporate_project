@@ -40,10 +40,10 @@ public class ItemController {
 		System.out.println("image : " + image);
 		model.addAttribute("image", image);
 		logger.info("/basicinfo/item/list.jsp 반환");
-		model.addAttribute("voList",service.list());
+		model.addAttribute("voList",service.selectAll());
 		//return "list"; //요청 url과 반환해줄 jsp 파일의 이름이 일치하면 해당 함수는 void 타입이어도 된다. views/basicinfo/department/list.jsp 가 반환됨
 	}
-	@PostMapping(value="/add")
+	@PostMapping(value="/insert")
 	public String insert(ItemVO vo) {
 		
 		String uploadPath = servletContext.getRealPath("/resources/assets/itemimg");
@@ -54,7 +54,7 @@ public class ItemController {
 		System.out.println("multi.getOriginalFilename():"+multi.getOriginalFilename());
 		System.out.println("vo.getImage():"+vo.getImage());
 		
-		int cnt =service.add(vo); //DB테이블에 저장, 이미지를 sql에서 문자로만 확인됨
+		int cnt =service.insert(vo); //DB테이블에 저장, 이미지를 sql에서 문자로만 확인됨
 		System.out.println("insertController cnt:"+cnt);
 		
 		File file = new File(uploadPath+"/"+multi.getOriginalFilename());

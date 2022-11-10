@@ -15,12 +15,12 @@ public class ItemServiceImpl implements ItemService{
 	private ItemMapper mapper;
 	
 	@Override
-	public List<ItemVO> list() {
+	public List<ItemVO> selectAll() {
 		return mapper.selectAll();
 	}	
 	
 	@Override
-	public int add(ItemVO vo) {
+	public int insert(ItemVO vo){
 		return mapper.insert(vo);
 	}
 

@@ -6,11 +6,17 @@
 <mapper namespace="com.spring.mapper.ItemMapper">
 
 	<select id="selectAll" resultType="com.spring.domain.ItemVO">
-		select * from item order by no desc
+		select i.no, i.code, c.code as client_no, i.name, i.in_price, i.out_price, i.image
+		from item i
+		inner join client c
+		on i.client_no = c.no
 	</select>
 	<insert id="insert">
-		insert into item values(seq_item.nextval, #{code}, #{name})
+		insert into item
+		values (item_seq.nextval, #{no}, #{code}, #{client_no}, #{name}, #{in_price}, #{out_price}, #{image})
 	</insert>
-
+	<delete id="delete">
+		delete from item where no = #{no}
+	</delete>
 
 </mapper>

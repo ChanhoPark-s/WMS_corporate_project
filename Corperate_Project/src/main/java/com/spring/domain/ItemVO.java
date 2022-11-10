@@ -3,14 +3,15 @@ package com.spring.domain;
 import org.springframework.web.multipart.MultipartFile;
 
 public class ItemVO {
-	int no;
-	int client_no;
-	String code;
-	String name;
-	int in_price;
-	int out_price;
-	String image;
-	MultipartFile upload;	
+	
+	private int no;
+	private int client_no;
+	private String code;
+	private String name;
+	private int in_price;
+	private int out_price;
+	private String image;
+	private MultipartFile upload;	
 	
 	
 	public MultipartFile getUpload() {

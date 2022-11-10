@@ -84,8 +84,8 @@
 						<img src="/resources/assets/img/user/user1.svg" alt=""
 						width="42" height="42" loading="lazy">
 						</td>
-						<td align="center" colspan="2">&nbsp; <!-- 이미지 -->
-						<img src="<%=request.getContextPath()%>/resources/assets/itemimg/${item.image}" >
+						<td> <!-- 이미지 -->
+						<img src="<%=request.getContextPath()%>/resources/assets/itemimg/${item.image}" width="42" height="42" loading="lazy">
 						</td>
 						<td>${item.no} </td>
 						<td>${item.client_no}</td>
@@ -209,6 +209,41 @@
 		</div>
 	</div>
 </div>
+        <!-- 삭제 -->
+        <div class="modal fade" id="deleteUserModal" tabindex="-1">
+          <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+              <div class="modal-header border-0">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+		        <div class="col-md-7">
+		            <h3 class="fw-black">정말 삭제하시겠습니까?</h3>
+		            <div class="modal fade" id="exampleModalLg" tabindex="-1" aria-labelledby="exampleModalLgLabel" aria-hidden="true">
+		              <div class="modal-dialog modal-lg">
+		                <div class="modal-content">
+		                  <div class="modal-header">
+		                    <h5 class="modal-title h4" id="exampleModalLgLabel">Large modal</h5>
+		                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		                  </div>
+		                  <div class="modal-body">
+		                    ...
+		                  </div>
+		                </div>
+		              </div>
+		            </div>
+		          </div>
+          		</div>
+              <div class="modal-footer border-0">
+	              <button type="button" class="btn btn-light delete" data-bs-dismiss="modal">취소</button>
+	              <form method="get" action="" name="delete_from">
+	              	<button type="submit" class="btn btn-primary px-5">삭제</button>
+	              </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 삭제모달 끝 -->
 
 <!-- bottom.jsp -->
 <%@include file="../../common/bottom.jsp"%>
@@ -235,7 +270,7 @@ $(".updateItemBtn").on("click", function(e){
 });
 
 /* Modal에서 등록/수정 버튼이 눌렸을 때, Modal내의 form 태그에 action 속성값을 추가하고 submit 처리하는 코드 */
-var modalForm = $("#modalForm");
+var modalForm = $("#modalForm"); 
 
 $("#modaladdBtn").on("click", function(){
 	modalForm.attr("action", "/basicinfo/item/add").submit();

@@ -6,6 +6,7 @@ import com.spring.domain.ItemVO;
 
 public interface ItemService {
 	
-	public List<ItemVO> list();
-	public int add(ItemVO vo);
+	public List<ItemVO> selectAll();
+	public int insert(ItemVO vo);
+	
 }
