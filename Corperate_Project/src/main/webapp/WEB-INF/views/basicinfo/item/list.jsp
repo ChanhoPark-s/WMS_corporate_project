@@ -8,7 +8,7 @@
 	<div class="card-body">
 		<div class="d-flex gap-1 mb-4 flex-wrap">
 			<div class="d-flex gap-1 me-auto flex-wrap">
-				<button
+				<button id="addItemBtn"
 					class="btn btn-primary d-inline-flex align-items-center gap-1"
 					data-bs-toggle="modal" data-bs-target="#addUserModal">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
@@ -69,10 +69,11 @@
 						<th scope="col">품목명</th>
 						<th scope="col">입고단가</th>
 						<th scope="col">출고단가</th>
-						<th scope="col"></th>
+						<th scope="col">Actions</th>
 					</tr>
 				</thead>
 				<tbody>
+					<c:forEach var="item" items="${voList}">
 					<tr>
 						<td>
 							<div>
@@ -82,12 +83,14 @@
 						<td>
 						<img src="/resources/assets/img/user/user1.svg" alt=""
 						width="42" height="42" loading="lazy">
-						Cody Fisher</td>
-						<td>Administrator</td>
-						<td><span class="badge bg-light text-muted">Yesterday</span></td>
-						<td></td>
-						<td nowrap>10 Mar 2021</td>
-						<td></td>
+						</td>
+						<td>${item.image }</td>
+						<td>${item.no} </td>
+						<td>${item.client_no}</td>
+						<td>${item.code}</td>
+						<td>${item.name}</td>
+						<td>${item.in_price}</td>
+						<td>${item.out_price}</td>
 						<td>
 							<div class="btn-group btn-group-sm" role="group">
 								<button type="button" class="btn btn-light d-flex">
@@ -111,185 +114,8 @@
 							</div>
 						</td>
 					</tr>
-					<tr>
-						<td>
-							<div>
-								<input class="form-check-input" type="checkbox" value="">
-							</div>
-						</td>
-						<td>
-							<div class="d-flex align-items-center gap-3">
-								<img src="/resources/assets/img/user/user2.svg" alt=""
-									width="42" height="42" class="rounded-circle" loading="lazy">
-								<div class="d-flex flex-column">
-									<h6>Esther Howard</h6>
-									<small class="text-secondary">esther.howard@example.com</small>
-								</div>
-							</div>
-						</td>
-						<td>Analyst</td>
-						<td><span class="badge bg-light text-muted">20 mins
-								ago</span></td>
-						<td><span class="badge bg-success">Enabled</span></td>
-						<td nowrap>22 Aug 2021</td>
-						<td></td>
-						<td>
-							<div class="btn-group btn-group-sm" role="group">
-								<button type="button" class="btn btn-light d-flex">
-									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
-										fill="none" viewBox="0 0 24 24" stroke="currentColor"
-										aria-hidden="true">
-                            <path stroke-linecap="round"
-											stroke-linejoin="round" stroke-width="2"
-											d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                          </svg>
-								</button>
-								<button type="button" class="btn btn-light d-flex text-danger">
-									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
-										fill="none" viewBox="0 0 24 24" stroke="currentColor"
-										aria-hidden="true">
-                            <path stroke-linecap="round"
-											stroke-linejoin="round" stroke-width="2"
-											d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                          </svg>
-								</button>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<div>
-								<input class="form-check-input" type="checkbox" value="">
-							</div>
-						</td>
-						<td>
-							<div class="d-flex align-items-center gap-3">
-								<img src="/resources/assets/img/user/user3.svg" alt=""
-									width="42" height="42" class="rounded-circle" loading="lazy">
-								<div class="d-flex flex-column">
-									<h6>Cameron Williamson</h6>
-									<small class="text-secondary">cameron.williamson@example.com</small>
-								</div>
-							</div>
-						</td>
-						<td>Developer</td>
-						<td><span class="badge bg-light text-muted">3 days ago</span></td>
-						<td></td>
-						<td nowrap>05 May 2021</td>
-						<td></td>
-						<td>
-							<div class="btn-group btn-group-sm" role="group">
-								<button type="button" class="btn btn-light d-flex">
-									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
-										fill="none" viewBox="0 0 24 24" stroke="currentColor"
-										aria-hidden="true">
-                            <path stroke-linecap="round"
-											stroke-linejoin="round" stroke-width="2"
-											d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                          </svg>
-								</button>
-								<button type="button" class="btn btn-light d-flex text-danger">
-									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
-										fill="none" viewBox="0 0 24 24" stroke="currentColor"
-										aria-hidden="true">
-                            <path stroke-linecap="round"
-											stroke-linejoin="round" stroke-width="2"
-											d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                          </svg>
-								</button>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<div>
-								<input class="form-check-input" type="checkbox" value="">
-							</div>
-						</td>
-						<td>
-							<div class="d-flex align-items-center gap-3">
-								<img src="/resources/assets/img/user/user4.svg" alt=""
-									width="42" height="42" class="rounded-circle" loading="lazy">
-								<div class="d-flex flex-column">
-									<h6>Bernard Lane</h6>
-									<small class="text-secondary">bernard.lane@example.com</small>
-								</div>
-							</div>
-						</td>
-						<td>Support</td>
-						<td><span class="badge bg-light text-muted">5 hours
-								ago</span></td>
-						<td><span class="badge bg-success">Enabled</span></td>
-						<td nowrap>21 Feb 2021</td>
-						<td></td>
-						<td>
-							<div class="btn-group btn-group-sm" role="group">
-								<button type="button" class="btn btn-light d-flex">
-									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
-										fill="none" viewBox="0 0 24 24" stroke="currentColor"
-										aria-hidden="true">
-                            <path stroke-linecap="round"
-											stroke-linejoin="round" stroke-width="2"
-											d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                          </svg>
-								</button>
-								<button type="button" class="btn btn-light d-flex text-danger">
-									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
-										fill="none" viewBox="0 0 24 24" stroke="currentColor"
-										aria-hidden="true">
-                            <path stroke-linecap="round"
-											stroke-linejoin="round" stroke-width="2"
-											d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                          </svg>
-								</button>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<div>
-								<input class="form-check-input" type="checkbox" value="">
-							</div>
-						</td>
-						<td>
-							<div class="d-flex align-items-center gap-3">
-								<img src="/resources/assets/img/user/user5.svg" alt=""
-									width="42" height="42" class="rounded-circle" loading="lazy">
-								<div class="d-flex flex-column">
-									<h6>Dan Wilson</h6>
-									<small class="text-secondary">dan.wilson@example.com</small>
-								</div>
-							</div>
-						</td>
-						<td>Developer</td>
-						<td><span class="badge bg-light text-muted">3 days ago</span></td>
-						<td><span class="badge bg-success">Enabled</span></td>
-						<td nowrap>10 Jul 2021</td>
-						<td></td>
-						<td>
-							<div class="btn-group btn-group-sm" role="group">
-								<button type="button" class="btn btn-light d-flex">
-									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
-										fill="none" viewBox="0 0 24 24" stroke="currentColor"
-										aria-hidden="true">
-                            <path stroke-linecap="round"
-											stroke-linejoin="round" stroke-width="2"
-											d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                          </svg>
-								</button>
-								<button type="button" class="btn btn-light d-flex text-danger">
-									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
-										fill="none" viewBox="0 0 24 24" stroke="currentColor"
-										aria-hidden="true">
-                            <path stroke-linecap="round"
-											stroke-linejoin="round" stroke-width="2"
-											d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                          </svg>
-								</button>
-							</div>
-						</td>
-					</tr>
-				</tbody>
+				</c:forEach>
+			</tbody>
 			</table>
 		</div>
 		<nav aria-label="Page navigation borderless example">
@@ -331,21 +157,25 @@
 	<div class="modal-dialog modal-dialog-scrollable">
 		<div class="modal-content">
 			<div class="modal-header border-0">
-				<h5 class="modal-title">Add user</h5>
+				<h5 class="modal-title">품목등록</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
 				<form class="needs-validation" novalidate id="taskForm">
+					<div>
+                <label for="formFile" class="form-label">이미지</label>
+                <input class="form-control" type="file" id="formFile">
+              		</div>
 					<div class="mb-3">
 						<label for="userFullname" class="form-label">품목코드</label> <input
-							type="text" name="userFullname" class="form-control" id="name"
+							type="text" name="userFullname" class="form-control" id="code"
 							required autofocus>
 						<div class="invalid-feedback">User full name is required.</div>
 					</div>
 					<div class="mb-3">
 						<label for="userFullname" class="form-label">거래처코드</label> <input
-							type="text" name="userFullname" class="form-control" id="name"
+							type="text" name="userFullname" class="form-control" id="client_no"
 							required autofocus>
 						<div class="invalid-feedback">User full name is required.</div>
 					</div>
@@ -357,27 +187,22 @@
 					</div>
 					<div class="mb-3">
 						<label for="userFullname" class="form-label">입고단가</label> <input
-							type="text" name="userFullname" class="form-control" id="name"
+							type="text" name="userFullname" class="form-control" id="input_price"
 							required autofocus>
 						<div class="invalid-feedback">User full name is required.</div>
 					</div>
 					<div class="mb-3">
 						<label for="userFullname" class="form-label">출고단가</label> <input
-							type="text" name="userFullname" class="form-control" id="name"
+							type="text" name="userFullname" class="form-control" id="output_price"
 							required autofocus>
 						<div class="invalid-feedback">User full name is required.</div>
-					</div>
-					<div class="mb-3">
-						<label for="userEmail" class="form-label">부서코드</label> <input
-							type="email" name="userEmail" class="form-control" id="userEmail"
-							required>
-						<div class="invalid-feedback">User email is required.</div>
 					</div>
 				</form>
 			</div>
 			<div class="modal-footer border-0">
 				<button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
-				<button type="submit" form="taskForm" class="btn btn-primary px-5">등록</button>
+				<button type="submit" id="modaladdBtn" class="btn btn-primary px-5">등록</button>
+				<button type="submit" id="modalupdateBtn" class="btn btn-primary px-5">수정</button>
 			</div>
 		</div>
 	</div>
@@ -389,5 +214,31 @@
 <script type="text/javascript">
 $(function(){
 	alert("/basicinfo/item/list.jsp");
+});
+ // 품목 등록,수정
+$("#addItemBtn").on("click", function(e){
+	modal.find("#modal-title").text("품목등록");
+	modal.find("button[id = 'modaladdBtn']").hide();
+	modal.find("button[id != 'modaladdBtn']").show();
+	$("#modalForm").attr("action", "/basicinfo/item/new");
+	$(".modal").modal("show");
+});
+ 
+$(".updateItemBtn").on("click", function(e){
+	modal.find("#modal-title").text("품목수정");
+	modal.find("button[id = 'modalupdateBtn']").hide();	// Close 버튼을 제외한 나머지를 숨김
+	modal.find("button[id != 'modalupdateBtn']").show();
+	$(".modal").modal("show");
+});
+
+/* Modal에서 등록/수정 버튼이 눌렸을 때, Modal내의 form 태그에 action 속성값을 추가하고 submit 처리하는 코드 */
+var modalForm = $("#modalForm");
+
+$("#modaladdBtn").on("click", function(){
+	modalForm.attr("action", "/basicinfo/item/add").submit();
+});
+
+$("#modalupdateBtn").on("click", function(){
+	modalForm.attr("action", "/basicinfo/item/modify").submit();
 });
 </script>

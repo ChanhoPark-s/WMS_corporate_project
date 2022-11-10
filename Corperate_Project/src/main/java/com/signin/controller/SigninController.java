@@ -12,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.spring.service.BoardService;
 
 /**
  * Handles requests for the application home page.
@@ -33,12 +32,8 @@ public class SigninController {
 		
 		String formattedDate = dateFormat.format(date);
 		
-<<<<<<< HEAD
 		model.addAttribute("serverTime", formattedDate                                                                                                                                                                   );
-		model.addAttribute("item", service.get(1L));
-=======
 		model.addAttribute("serverTime", formattedDate );
->>>>>>> branch 'main' of https://github.com/ChanhoPark-s/WMS_corporate_project.git
 		
 		logger.info("log 출력");
 		
