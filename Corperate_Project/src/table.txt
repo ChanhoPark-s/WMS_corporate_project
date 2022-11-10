@@ -72,13 +72,23 @@ COMMENT ON COLUMN  member . dep_no  IS 'references department(no) on delete casc
 
 COMMENT ON COLUMN  member . rank_no  IS 'references rank(no) on delete cascade';
 
-DROP TABLE  department ;
 
+------------------------------------------------------------------------
+DROP TABLE  department ;
 CREATE TABLE  department  (
 	 no 	number		NOT NULL,
 	 code 	VARCHAR2(30)		NOT NULL,
 	 name 	VARCHAR2(30)		NOT NULL
 );
+
+DROP SEQUENCE seq_department;
+CREATE SEQUENCE seq_department
+	increment by 1
+	start with 1 
+	minvalue 1
+	maxvalue 10000000
+	nocache;
+------------------------------------------------------------------------
 
 DROP TABLE  rank ;
 

@@ -7,17 +7,16 @@
 <div class="card">
 	<div class="card-body">
 		<div class="d-flex gap-1 mb-4 flex-wrap">
+		
 			<div class="d-flex gap-1 me-auto flex-wrap">
-				<button
-					class="btn btn-primary d-inline-flex align-items-center gap-1"
-					data-bs-toggle="modal" data-bs-target="#addUserModal">
+				<button id="addDepartmentBtn" class="btn btn-primary d-inline-flex align-items-center gap-1">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
 						fill="currentColor" aria-hidden="true">
                     <path fill-rule="evenodd"
 							d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
 							clip-rule="evenodd" />
                   </svg>
-					Add user
+					부서추가
 				</button>
 				<button class="btn btn-light d-inline-flex align-items-center gap-1">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
@@ -69,6 +68,7 @@
 					</form>
 				</div>
 			</div>
+			
 			<form>
 				<input type="text" class="form-control" placeholder="Search user">
 			</form>
@@ -82,232 +82,57 @@
 								<input class="form-check-input" type="checkbox" value="">
 							</div>
 						</th>
-						<th scope="col">User</th>
-						<th scope="col">Role</th>
-						<th scope="col">Last login</th>
-						<th scope="col" nowrap>Two-step</th>
-						<th scope="col">Joined date</th>
+						<th scope="col">번호</th>
+						<th scope="col">부서코드</th>
+						<th scope="col">부서명</th>
 						<th scope="col">Actions</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td>
-							<div>
-								<input class="form-check-input" type="checkbox" value="">
-							</div>
-						</td>
-						<td>
-							<div class="d-flex align-items-center gap-3">
-								<img src="/resources/assets/img/user/user1.svg" alt=""
-									width="42" height="42" class="rounded-circle" loading="lazy">
-								<div class="d-flex flex-column">
-									<h6>Cody Fisher</h6>
-									<small class="text-secondary">cody.fisher@example.com</small>
+					<c:forEach var="vo" items="${voList}">
+						<tr>
+							<td>
+								<div>
+									<input class="form-check-input" type="checkbox" value="">
 								</div>
-							</div>
-						</td>
-						<td>Administrator</td>
-						<td><span class="badge bg-light text-muted">Yesterday</span></td>
-						<td></td>
-						<td nowrap>10 Mar 2021</td>
-						<td>
-							<div class="btn-group btn-group-sm" role="group">
-								<button type="button" class="btn btn-light d-flex">
-									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
-										fill="none" viewBox="0 0 24 24" stroke="currentColor"
-										aria-hidden="true">
-                            <path stroke-linecap="round"
-											stroke-linejoin="round" stroke-width="2"
-											d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                          </svg>
-								</button>
-								<button type="button" class="btn btn-light d-flex text-danger">
-									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
-										fill="none" viewBox="0 0 24 24" stroke="currentColor"
-										aria-hidden="true">
-                            <path stroke-linecap="round"
-											stroke-linejoin="round" stroke-width="2"
-											d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                          </svg>
-								</button>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<div>
-								<input class="form-check-input" type="checkbox" value="">
-							</div>
-						</td>
-						<td>
-							<div class="d-flex align-items-center gap-3">
-								<img src="/resources/assets/img/user/user2.svg" alt=""
-									width="42" height="42" class="rounded-circle" loading="lazy">
-								<div class="d-flex flex-column">
-									<h6>Esther Howard</h6>
-									<small class="text-secondary">esther.howard@example.com</small>
+							</td>
+							
+							<td>
+								${vo.no}
+							</td>
+							
+							<td>
+								${vo.code}
+							</td>
+							
+							<td>
+								${vo.name}
+							</td>
+							
+							<td>
+								<div class="btn-group btn-group-sm" role="group">
+									<button type="button" class="btn btn-light d-flex editDepartmentBtn" data-no="${vo.no}">
+										<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
+											fill="none" viewBox="0 0 24 24" stroke="currentColor"
+											aria-hidden="true">
+	                            <path stroke-linecap="round"
+												stroke-linejoin="round" stroke-width="2"
+												d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+	                          </svg>
+									</button>
+									<button type="button" class="btn btn-light d-flex text-danger">
+										<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
+											fill="none" viewBox="0 0 24 24" stroke="currentColor"
+											aria-hidden="true">
+	                            <path stroke-linecap="round"
+												stroke-linejoin="round" stroke-width="2"
+												d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+	                          </svg>
+									</button>
 								</div>
-							</div>
-						</td>
-						<td>Analyst</td>
-						<td><span class="badge bg-light text-muted">20 mins
-								ago</span></td>
-						<td><span class="badge bg-success">Enabled</span></td>
-						<td nowrap>22 Aug 2021</td>
-						<td>
-							<div class="btn-group btn-group-sm" role="group">
-								<button type="button" class="btn btn-light d-flex">
-									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
-										fill="none" viewBox="0 0 24 24" stroke="currentColor"
-										aria-hidden="true">
-                            <path stroke-linecap="round"
-											stroke-linejoin="round" stroke-width="2"
-											d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                          </svg>
-								</button>
-								<button type="button" class="btn btn-light d-flex text-danger">
-									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
-										fill="none" viewBox="0 0 24 24" stroke="currentColor"
-										aria-hidden="true">
-                            <path stroke-linecap="round"
-											stroke-linejoin="round" stroke-width="2"
-											d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                          </svg>
-								</button>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<div>
-								<input class="form-check-input" type="checkbox" value="">
-							</div>
-						</td>
-						<td>
-							<div class="d-flex align-items-center gap-3">
-								<img src="/resources/assets/img/user/user3.svg" alt=""
-									width="42" height="42" class="rounded-circle" loading="lazy">
-								<div class="d-flex flex-column">
-									<h6>Cameron Williamson</h6>
-									<small class="text-secondary">cameron.williamson@example.com</small>
-								</div>
-							</div>
-						</td>
-						<td>Developer</td>
-						<td><span class="badge bg-light text-muted">3 days ago</span></td>
-						<td></td>
-						<td nowrap>05 May 2021</td>
-						<td>
-							<div class="btn-group btn-group-sm" role="group">
-								<button type="button" class="btn btn-light d-flex">
-									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
-										fill="none" viewBox="0 0 24 24" stroke="currentColor"
-										aria-hidden="true">
-                            <path stroke-linecap="round"
-											stroke-linejoin="round" stroke-width="2"
-											d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                          </svg>
-								</button>
-								<button type="button" class="btn btn-light d-flex text-danger">
-									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
-										fill="none" viewBox="0 0 24 24" stroke="currentColor"
-										aria-hidden="true">
-                            <path stroke-linecap="round"
-											stroke-linejoin="round" stroke-width="2"
-											d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                          </svg>
-								</button>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<div>
-								<input class="form-check-input" type="checkbox" value="">
-							</div>
-						</td>
-						<td>
-							<div class="d-flex align-items-center gap-3">
-								<img src="/resources/assets/img/user/user4.svg" alt=""
-									width="42" height="42" class="rounded-circle" loading="lazy">
-								<div class="d-flex flex-column">
-									<h6>Bernard Lane</h6>
-									<small class="text-secondary">bernard.lane@example.com</small>
-								</div>
-							</div>
-						</td>
-						<td>Support</td>
-						<td><span class="badge bg-light text-muted">5 hours
-								ago</span></td>
-						<td><span class="badge bg-success">Enabled</span></td>
-						<td nowrap>21 Feb 2021</td>
-						<td>
-							<div class="btn-group btn-group-sm" role="group">
-								<button type="button" class="btn btn-light d-flex">
-									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
-										fill="none" viewBox="0 0 24 24" stroke="currentColor"
-										aria-hidden="true">
-                            <path stroke-linecap="round"
-											stroke-linejoin="round" stroke-width="2"
-											d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                          </svg>
-								</button>
-								<button type="button" class="btn btn-light d-flex text-danger">
-									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
-										fill="none" viewBox="0 0 24 24" stroke="currentColor"
-										aria-hidden="true">
-                            <path stroke-linecap="round"
-											stroke-linejoin="round" stroke-width="2"
-											d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                          </svg>
-								</button>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<div>
-								<input class="form-check-input" type="checkbox" value="">
-							</div>
-						</td>
-						<td>
-							<div class="d-flex align-items-center gap-3">
-								<img src="/resources/assets/img/user/user5.svg" alt=""
-									width="42" height="42" class="rounded-circle" loading="lazy">
-								<div class="d-flex flex-column">
-									<h6>Dan Wilson</h6>
-									<small class="text-secondary">dan.wilson@example.com</small>
-								</div>
-							</div>
-						</td>
-						<td>Developer</td>
-						<td><span class="badge bg-light text-muted">3 days ago</span></td>
-						<td><span class="badge bg-success">Enabled</span></td>
-						<td nowrap>10 Jul 2021</td>
-						<td>
-							<div class="btn-group btn-group-sm" role="group">
-								<button type="button" class="btn btn-light d-flex">
-									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
-										fill="none" viewBox="0 0 24 24" stroke="currentColor"
-										aria-hidden="true">
-                            <path stroke-linecap="round"
-											stroke-linejoin="round" stroke-width="2"
-											d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                          </svg>
-								</button>
-								<button type="button" class="btn btn-light d-flex text-danger">
-									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
-										fill="none" viewBox="0 0 24 24" stroke="currentColor"
-										aria-hidden="true">
-                            <path stroke-linecap="round"
-											stroke-linejoin="round" stroke-width="2"
-											d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                          </svg>
-								</button>
-							</div>
-						</td>
-					</tr>
+							</td>
+						</tr>
+					</c:forEach>
 				</tbody>
 			</table>
 		</div>
@@ -344,40 +169,45 @@
 	</div>
 </div>
 
-<!-- Modal 코드 넣을 위치 -->
-<!-- Add user modal -->
+<!-- 부서등록/수정 Modal 코드-->
+<!-- <form action="/basicinfo/department/new" method="post"> -->
 <div class="modal fade" id="addUserModal" tabindex="-1">
 	<div class="modal-dialog modal-dialog-scrollable">
 		<div class="modal-content">
 			<div class="modal-header border-0">
-				<h5 class="modal-title">Add user</h5>
+				<h5 id="modal-title">부서등록</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				<form class="needs-validation" novalidate id="taskForm">
+				<!-- form start -->
+				<form class="needs-validation" novalidate id="modalForm" action="" method="post">
 					<div class="mb-3">
-						<label for="userFullname" class="form-label">부서명</label> <input
-							type="text" name="userFullname" class="form-control" id="name"
-							required autofocus>
+						<label for="userFullname" class="form-label">부서번호</label> 
+						<input type="text" name="no" id="no" class="form-control" required autofocus readonly>
 						<div class="invalid-feedback">User full name is required.</div>
 					</div>
 					<div class="mb-3">
-						<label for="userEmail" class="form-label">부서코드</label> <input
-							type="email" name="userEmail" class="form-control" id="userEmail"
-							required>
+						<label for="userFullname" class="form-label">부서명</label> 
+						<input type="text" name="code" id="code" class="form-control" required autofocus>
+						<div class="invalid-feedback">User full name is required.</div>
+					</div>
+					<div class="mb-3">
+						<label for="userEmail" class="form-label">부서코드</label> 
+						<input type="text" name="name" id="name" class="form-control" required>
 						<div class="invalid-feedback">User email is required.</div>
 					</div>
 				</form>
+				<!-- form end -->
 			</div>
 			<div class="modal-footer border-0">
 				<button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
-				<button type="submit" form="taskForm" class="btn btn-primary px-5">등록</button>
+				<button type="button" id="modalRegisterBtn"class="btn btn-primary px-5">등록</button>
+				<button type="button" id="modalUpdateBtn"class="btn btn-primary px-5">수정</button>
 			</div>
 		</div>
 	</div>
 </div>
-
 
 <!-- bottom.jsp -->
 <%@include file="../../common/bottom.jsp"%>
@@ -385,5 +215,88 @@
 <script type="text/javascript">
 $(function(){
 	alert("/basicinfo/department/list.jsp");
+		
+	/* Modal이 등록 혹은 수정 상황에 맞게 만들어져 보여지도록 하는 코드 */
+	var modal = $(".modal");
+	
+	$("#addDepartmentBtn").on("click", function(e){
+		modal.find("#modal-title").text("부서등록");
+		//modal.find("button[id = 'modalUpdateBtn']").hide();		// Close 버튼을 제외한 나머지를 숨김
+		modal.find("button[id != 'modalUpdateBtn']").show();
+		$("#no").closest("div").hide();							// 사용자에게 입력받을 부분이 아니므로 숨김
+		$(".modal").modal("show");
+	});
+	
+	$(".editDepartmentBtn").on("click", function(e){
+		modal.find("#modal-title").text("부서수정");
+		modal.find("button[id = 'modalRegisterBtn']").hide();	// Close 버튼을 제외한 나머지를 숨김
+		modal.find("button[id != 'modalRegisterBtn']").show();
+		$("#no").closest("div").show();							// 사용자에게 입력받을 부분이 아니므로 숨김
+		
+		
+		$("#no").val($(this).data("no"));           
+		$("#code").val("bbb");
+		$("#name").val("ccc");
+		
+		
+		$(".modal").modal("show");
+	});
+	
+	/* Modal에서 등록/수정 버튼이 눌렸을 때, Modal내의 form 태그에 action 속성값을 추가하고 submit 처리하는 코드 */
+	var modalForm = $("#modalForm");
+	
+	$("#modalRegisterBtn").on("click", function(){
+		modalForm.attr("action", "/basicinfo/department/add").submit();
+	});
+	
+	$("#modalUpdateBtn").on("click", function(){
+		modalForm.attr("action", "/basicinfo/department/modify").submit();
+	});
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	var modalInputCode = modal.find("input[name='code']");
+	var modalInputName = modal.find("input[name='name']");
+	
+	
+	/* 새로운 부서 등록 */
+	var modalRegisterBtn = $("#modalRegisterBtn");
+	
+	modalRegisterBtn.on("click", function(e){
+		
+	//Modal 내의 input 태그 값들을 읽어와 객체 생성
+	var obj = {
+		reply : modalInputCode.val(),
+		replyer : modalInputName.val(),
+	};
+	
+		
+		/* replyService.add(reply, function(result){
+			alert(result);
+			
+			modal.find("input").val("");
+			modal.modal("hide");
+			
+			//showList(1); // 댓글목록 갱신
+			showList(-1);
+		}); */
+		
+	});
 });
 </script>
