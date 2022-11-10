@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.spring.domain.BoardVO;
 import com.spring.domain.SellVO;
 import com.spring.mapper.SellMapper;
 

@@ -12,10 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-<<<<<<< HEAD
 import org.springframework.web.bind.annotation.RequestParam;
-=======
->>>>>>> branch 'main' of https://github.com/ChanhoPark-s/WMS_corporate_project.git
 
 @Controller
 @RequestMapping("/basicinfo/member/*")

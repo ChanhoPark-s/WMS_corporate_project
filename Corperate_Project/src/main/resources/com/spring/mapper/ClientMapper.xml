@@ -7,8 +7,6 @@
 
 	<select id="GetAll" resultType="com.spring.domain.ClientVO" parameterType="string">
 		select * from client
-		<if test="value =='null'">
-		</if>
 		<if test="value ==1">
 		where category = 1
 		</if>
