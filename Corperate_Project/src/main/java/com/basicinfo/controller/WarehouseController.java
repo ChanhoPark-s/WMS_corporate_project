@@ -8,6 +8,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+<<<<<<< HEAD
+=======
+import com.spring.service.AreaService;
+import com.spring.service.CellService;
+import com.spring.service.RackService;
+import com.spring.service.WareHouseService;
+>>>>>>> branch 'main' of https://github.com/ChanhoPark-s/WMS_corporate_project.git
 
 
 @Controller
@@ -16,12 +23,21 @@ public class WarehouseController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(WarehouseController.class);
 
-	//@Autowired
-	//private BoardService service;
+	@Autowired
+	private WareHouseService warehouseservice;
+	@Autowired
+	private AreaService areaservice;
+	@Autowired
+	private RackService rackservice;
+	@Autowired
+	private CellService cellservice;
 
 	@GetMapping(value="/list")
 	public void home(Model model) {				
-		//model.addAttribute("item", service.get(1L));
+		model.addAttribute("warehouseLists",warehouseservice.list());
+		model.addAttribute("areaLists",areaservice.list());
+		model.addAttribute("rackLists",rackservice.list());
+		model.addAttribute("cellLists",cellservice.list());
 		
 		logger.info("/basicinfo/warehouse/list.jsp 반환");
 		
