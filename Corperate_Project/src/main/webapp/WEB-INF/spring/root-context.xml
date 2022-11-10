@@ -38,7 +38,7 @@
 	<!-- 서비스 관련 클래스들을 스캔하여 빈으로 관리해주세요 -->
 	<context:component-scan base-package="com.spring.service"/>
 	
-	<!-- Mapper 관련 인터페이스를 스캔하여 적절한 객체를 생성해 빈으로 관리해주세요 -->
+	<!-- 스프링 컨테이너에게 Mapper 관련 인터페이스를 스캔하여 적절한 객체를 생성해 빈으로 관리해주세요 요청하는 부분 -->
 	<mybatis-spring:scan base-package="com.spring.mapper"/>
 	
 </beans>
