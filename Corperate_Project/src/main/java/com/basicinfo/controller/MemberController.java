@@ -14,21 +14,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.spring.service.BoardService;
-
 @Controller
 @RequestMapping("/basicinfo/member/*")
 public class MemberController {
 
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 
-	@Autowired
-	private BoardService service;
+	//@Autowired
+	//private BoardService service;
 
-	@GetMapping(value = "/list")
-	public String home(Model model,HttpServletResponse response)throws IOException {
-		model.addAttribute("item", service.get(1L));
-
+	@GetMapping(value="/list")
+	public String home(Model model) {				
+		
 		logger.info("/basicinfo/member/list.jsp 반환");
 		
 		return "/basicinfo/member/list"; // 요청 url과 반환해줄 jsp 파일의 이름이 일치하면 해당 함수는 void 타입이어도 된다.

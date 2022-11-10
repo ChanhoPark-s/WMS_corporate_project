@@ -8,8 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.spring.service.BoardService;
-
 
 @Controller
 @RequestMapping("/basicinfo/rank/*")
@@ -17,12 +15,12 @@ public class RankController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(RankController.class);
 
-	@Autowired
-	private BoardService service;
+	//@Autowired
+	//private BoardService service;
 
 	@GetMapping(value="/list")
 	public void home(Model model) {				
-		model.addAttribute("item", service.get(1L));
+		//model.addAttribute("item", service.get(1L));
 		
 		logger.info("/basicinfo/rank/list.jsp 반환");
 		

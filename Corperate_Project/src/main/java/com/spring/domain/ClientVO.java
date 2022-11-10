@@ -4,7 +4,7 @@ public class ClientVO {
 	
 	private int no;
 	private String code;
-	private int category;
+	private String category;
 	private String name;
 	private String owner;
 	private String tel;
@@ -16,6 +16,16 @@ public class ClientVO {
 	private String address2;
 	private String email;
 	
+	
+	//-------------------
+	private String select;
+	
+	public String getSelect() {
+		return select;
+	}
+	public void setSelect(String select) {
+		this.select = select;
+	}
 	public int getNo() {
 		return no;
 	}
@@ -28,10 +38,10 @@ public class ClientVO {
 	public void setCode(String code) {
 		this.code = code;
 	}
-	public int getCategory() {
+	public String getCategory() {
 		return category;
 	}
-	public void setCategory(int category) {
+	public void setCategory(String category) {
 		this.category = category;
 	}
 	public String getName() {
