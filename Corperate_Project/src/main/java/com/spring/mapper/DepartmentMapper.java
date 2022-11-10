@@ -9,4 +9,5 @@ public interface DepartmentMapper {
 	public List<DepartmentVO> selectAll(); 		// 부서추가
 	public int insert(DepartmentVO vo); 		// 부서추가
 	public int update(DepartmentVO vo); 		// 부서수정
+	public void delete(int no);					// 부서삭제
 }

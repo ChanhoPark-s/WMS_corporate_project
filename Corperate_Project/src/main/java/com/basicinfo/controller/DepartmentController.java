@@ -1,11 +1,14 @@
 package com.basicinfo.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -23,15 +26,29 @@ public class DepartmentController {
 
 	@GetMapping(value="/list")
 	public void list(Model model) {
-		System.out.println("/basicinfo/department/list.jsp 반환");
 		model.addAttribute("voList", service.list());
-		//return "list"; //요청 url과 반환해줄 jsp 파일의 이름이 일치하면 해당 함수는 void 타입이어도 된다. views/basicinfo/department/list.jsp 가 반환됨
 	}
 	
-	@PostMapping(value="/add")
+	@PostMapping(value="/insert")
 	public String insert(DepartmentVO vo) {	
 		service.add(vo);
 		return "redirect:/basicinfo/department/list";
 	}
-
+	
+	@PostMapping(value="/update")
+	public String update(DepartmentVO vo) {				
+		service.modify(vo);
+		return "redirect:/basicinfo/department/list";
+	}
+	
+	@GetMapping(value="/delete/{no}")
+	public String delete(DepartmentVO vo, @PathVariable(value="no") int no) {				
+		service.delete(no);
+		return "redirect:/basicinfo/department/list";
+	}
+	
+	// 전체 부서코드 리턴용도의 메서드
+	public List<DepartmentVO> getDeptList() {
+		return service.getDeptList();
+	}
 }

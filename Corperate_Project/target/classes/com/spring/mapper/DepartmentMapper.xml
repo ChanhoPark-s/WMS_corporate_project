@@ -19,4 +19,7 @@
 		update department set code=#{code}, name=#{name} where no=#{no}
 	</update>
 
+	<delete id="delete">
+		delete from department where no = #{no}
+	</delete>
 </mapper>
