@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.spring.mapper.ClientMapper">
+
+	<select id="GetAll" resultType="com.spring.domain.ClientVO" parameterType="string">
+		select * from client
+		<if test="value ==1">
+		where category = 1
+		</if>
+		<if test="value ==0">
+		where category = 0
+		</if>
+	</select>
+
+	<insert id="insert">
+		insert into client values(client_seq.nextval,#{code},#{category},#{name},#{owner},#{tel},#{fax},#{bank},#{account},#{zipcode},#{address1},#{address2},#{email})
+	</insert>
+</mapper>

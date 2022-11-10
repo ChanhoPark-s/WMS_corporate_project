@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
+  
 <!-- top.jsp -->
 <%@include file="../../common/top.jsp"%>
 
@@ -215,7 +215,8 @@
 <script type="text/javascript">
 $(function(){
 	alert("/basicinfo/department/list.jsp");
-		
+	document.getElementById('member').click();
+	
 	/* Modal이 등록 혹은 수정 상황에 맞게 만들어져 보여지도록 하는 코드 */
 	var modal = $(".modal");
 	
@@ -253,6 +254,7 @@ $(function(){
 		modalForm.attr("action", "/basicinfo/department/modify").submit();
 	});
 	
+<<<<<<< HEAD
 	
 	
 
@@ -271,6 +273,8 @@ $(function(){
 	
 	
 	
+=======
+>>>>>>> branch 'main' of https://github.com/ChanhoPark-s/WMS_corporate_project.git
 	var modalInputCode = modal.find("input[name='code']");
 	var modalInputName = modal.find("input[name='name']");
 	

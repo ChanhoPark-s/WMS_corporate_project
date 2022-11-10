@@ -1,30 +1,53 @@
 package com.basicinfo.controller;
 
+import java.util.ArrayList;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+<<<<<<< HEAD
+=======
+import com.spring.domain.ClientVO;
+import com.spring.service.ClientService;
+>>>>>>> branch 'main' of https://github.com/ChanhoPark-s/WMS_corporate_project.git
 
 
 @Controller
 @RequestMapping("/basicinfo/client/*")
 public class ClientController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(ClientController.class);
 
-	//@Autowired
-	//private DepartmentService service;
-
+	@Autowired
+	private ClientService service;
+	
+ 
 	@GetMapping(value="/list")
-	public void home(Model model) {				
-		//model.addAttribute("item", service.get(1L));
+	public void clientlist(@RequestParam(required = false,value="select")String select,Model model) {				
 		
-		logger.info("/basicinfo/client/list.jsp 반환");
+		System.out.println("select:"+select);
+		ArrayList<ClientVO> list = service.GetAll(select); 
+		model.addAttribute("list",list);
+		System.out.println("가져온 레코드 수:"+list.size()); 
+	}
+	 
+	@PostMapping(value="/add")
+	public String Add(ClientVO Vo) {
+		 
+		if(Vo.getCategory().equals("수주"))
+			Vo.setCategory("0");
+		else
+			Vo.setCategory("1");
 		
-		//return "list"; //요청 url과 반환해줄 jsp 파일의 이름이 일치하면 해당 함수는 void 타입이어도 된다. views/basicinfo/department/list.jsp 가 반환됨
+		int result = service.Insert(Vo);
+		System.out.println("삽입한 결과 :"+result);
+		
+		return "/basicinfo/client/list";
 	}
 }

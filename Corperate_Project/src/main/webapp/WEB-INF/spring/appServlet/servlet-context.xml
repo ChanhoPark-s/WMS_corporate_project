@@ -16,11 +16,7 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<context:component-scan base-package="com.basicinfo.controller" />
-	<context:component-scan base-package="com.home.controller" />
-	<context:component-scan base-package="com.signin.controller" />
-	<context:component-scan base-package="com.sell.controller" />
-	
+	<context:component-scan base-package="com" />
 	
 	<!-- Handles HTTP GET 요청 for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />

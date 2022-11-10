@@ -214,6 +214,7 @@
 <script type="text/javascript">
 $(function(){
 	alert("/basicinfo/item/list.jsp");
+	document.getElementById('member').click();
 });
  // 품목 등록,수정
 $("#addItemBtn").on("click", function(e){

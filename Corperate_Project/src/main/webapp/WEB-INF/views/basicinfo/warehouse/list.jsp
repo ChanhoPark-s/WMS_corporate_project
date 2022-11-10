@@ -815,6 +815,11 @@
 
 <script type="text/javascript">
 $(function(){
+<<<<<<< HEAD
+	alert("/basicinfo/warehouse/list.jsp");
+	document.getElementById('member').click();
+=======
 	console.log("/basicinfo/warehouse/list.jsp");
+>>>>>>> branch 'main' of https://github.com/ChanhoPark-s/WMS_corporate_project.git
 });
 </script>
