@@ -12,10 +12,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+<<<<<<< HEAD
 import com.spring.domain.ClientVO;
 import com.spring.service.ClientService;
 
 
+=======
+>>>>>>> branch 'main' of https://github.com/ChanhoPark-s/WMS_corporate_project.git
 @Controller
 @RequestMapping("/basicinfo/client/*")
 public class ClientController {

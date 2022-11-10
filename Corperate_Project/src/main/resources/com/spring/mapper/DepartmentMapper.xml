@@ -3,6 +3,8 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
+  
+<!-- 연결될 인터페이스를 지정 -->
 <mapper namespace="com.spring.mapper.DepartmentMapper">
 
 	<select id="selectAll" resultType="com.spring.domain.DepartmentVO">

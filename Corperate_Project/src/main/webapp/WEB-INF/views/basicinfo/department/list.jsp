@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
+ 
 <!-- top.jsp -->
 <%@include file="../../common/top.jsp"%>
 
@@ -111,7 +111,7 @@
 							
 							<td>
 								<div class="btn-group btn-group-sm" role="group">
-									<button type="button" class="btn btn-light d-flex editDepartmentBtn">
+									<button type="button" class="btn btn-light d-flex editDepartmentBtn" data-no="${vo.no}">
 										<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
 											fill="none" viewBox="0 0 24 24" stroke="currentColor"
 											aria-hidden="true">
@@ -183,6 +183,11 @@
 				<!-- form start -->
 				<form class="needs-validation" novalidate id="modalForm" action="" method="post">
 					<div class="mb-3">
+						<label for="userFullname" class="form-label">부서번호</label> 
+						<input type="text" name="no" id="no" class="form-control" required autofocus readonly>
+						<div class="invalid-feedback">User full name is required.</div>
+					</div>
+					<div class="mb-3">
 						<label for="userFullname" class="form-label">부서명</label> 
 						<input type="text" name="code" id="code" class="form-control" required autofocus>
 						<div class="invalid-feedback">User full name is required.</div>
@@ -204,24 +209,22 @@
 	</div>
 </div>
 
-
-
 <!-- bottom.jsp -->
 <%@include file="../../common/bottom.jsp"%>
 
 <script type="text/javascript">
 $(function(){
 	alert("/basicinfo/department/list.jsp");
-<<<<<<< HEAD
 	document.getElementById('member').click();
-=======
 	
 	/* Modal이 등록 혹은 수정 상황에 맞게 만들어져 보여지도록 하는 코드 */
+	var modal = $(".modal");
+	
 	$("#addDepartmentBtn").on("click", function(e){
 		modal.find("#modal-title").text("부서등록");
-		modal.find("button[id = 'modalUpdateBtn']").hide();	// Close 버튼을 제외한 나머지를 숨김
+		//modal.find("button[id = 'modalUpdateBtn']").hide();		// Close 버튼을 제외한 나머지를 숨김
 		modal.find("button[id != 'modalUpdateBtn']").show();
-		$("#modalForm").attr("action", "/basicinfo/department/new");
+		$("#no").closest("div").hide();							// 사용자에게 입력받을 부분이 아니므로 숨김
 		$(".modal").modal("show");
 	});
 	
@@ -229,6 +232,14 @@ $(function(){
 		modal.find("#modal-title").text("부서수정");
 		modal.find("button[id = 'modalRegisterBtn']").hide();	// Close 버튼을 제외한 나머지를 숨김
 		modal.find("button[id != 'modalRegisterBtn']").show();
+		$("#no").closest("div").show();							// 사용자에게 입력받을 부분이 아니므로 숨김
+		
+		
+		$("#no").val($(this).data("no"));           
+		$("#code").val("bbb");
+		$("#name").val("ccc");
+		
+		
 		$(".modal").modal("show");
 	});
 	
@@ -243,11 +254,6 @@ $(function(){
 		modalForm.attr("action", "/basicinfo/department/modify").submit();
 	});
 	
-	
-	
-	
-	
-	var modal = $(".modal");
 	var modalInputCode = modal.find("input[name='code']");
 	var modalInputName = modal.find("input[name='name']");
 	
@@ -275,6 +281,5 @@ $(function(){
 		}); */
 		
 	});
->>>>>>> branch 'main' of https://github.com/ChanhoPark-s/WMS_corporate_project.git
 });
 </script>

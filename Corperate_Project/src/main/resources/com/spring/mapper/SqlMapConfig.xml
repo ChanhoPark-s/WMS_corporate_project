@@ -13,6 +13,7 @@
 	 	<mapper resource="mapper/BoardMapper.xml"/>
 	 	<mapper resource="mapper/ClientMapper.xml"/>
 	 	<mapper resource="mapper/DepartmentMapper.xml"/>
+	 	<mapper resource="mapper/SellMapper.xml"/>
 	</mappers>
 </configuration>
 

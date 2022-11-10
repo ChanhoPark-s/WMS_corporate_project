@@ -14,7 +14,7 @@
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/member" />
 		<property name="suffix" value=".jsp" />
-		
+ 	
 	<!-- 화일 업로드 -->
 	</bean>
 	
