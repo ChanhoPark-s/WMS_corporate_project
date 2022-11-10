@@ -33,10 +33,5 @@ public class DepartmentController {
 		service.add(vo);
 		return "redirect:/basicinfo/department/list";
 	}
-	
-	@PostMapping(value="/modify")
-	public String update(DepartmentVO vo) {				
-		service.modify(vo);
-		return "redirect:/basicinfo/department/list";
-	}
+
 }
