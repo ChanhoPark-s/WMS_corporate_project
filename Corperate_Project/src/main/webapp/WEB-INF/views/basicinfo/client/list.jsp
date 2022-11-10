@@ -17,7 +17,7 @@
 							d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
 							clip-rule="evenodd" />
                   </svg>
-					Add user
+					거래처 등록
 				</button>
 				<button class="btn btn-light d-inline-flex align-items-center gap-1">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
@@ -28,49 +28,23 @@
                   </svg>
 					Export
 				</button>
-				<div class="dropdown">
-					<button
-						class="btn btn-light d-inline-flex align-items-center gap-1 dropdown-toggle no-caret"
-						type="button" data-bs-toggle="dropdown"
-						data-bs-auto-close="outside" aria-expanded="false">
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-							fill="currentColor" aria-hidden="true">
-                      <path fill-rule="evenodd"
-								d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z"
-								clip-rule="evenodd" />
-                    </svg>
-						Filter
-					</button>
-					<form class="dropdown-menu p-3" style="min-width: 250px">
-						<h6 class="dropdown-header p-0">Filter options</h6>
-						<hr>
-						<div class="vstack gap-3">
-							<div>
-								<label class="form-label">Role:</label> <select
-									class="dselect form-select" data-dselect-clearable="true">
-									<option value="">Choose role</option>
-									<option value="administrator">Administrator</option>
-									<option value="analyst">Analyst</option>
-									<option value="developer">Developer</option>
-									<option value="support">Support</option>
-									<option value="trial">Trial</option>
-								</select>
-							</div>
-							<div>
-								<label class="form-label">Two Step Verification:</label> <select
-									class="dselect form-select" data-dselect-clearable="true">
-									<option value="">Select option</option>
-									<option value="enabled">Enabled</option>
-									<option value="disabled">Disabled</option>
-								</select>
-							</div>
-							<button class="btn btn-primary" type="button">Apply</button>
-						</div>
-					</form>
-				</div>
 			</div>
+			<select id="inputState" class="form-select" style="width: 200px;">
+                  <option selected="">검색 선택</option>
+                  <option>거래처코드</option>
+                  <option>분류</option>
+                  <option>거래처명</option>
+                  <option>대표자명</option>
+                  <option>전화번호</option>
+                  <option>팩스번호</option>
+                  <option>은행명</option>
+                  <option>은행계좌</option>
+                  <option>우편번호</option>
+                  <option>주소</option>
+                  <option>이메일</option>
+              </select>
 			<form>
-				<input type="text" class="form-control" placeholder="Search user">
+				<input type="text" class="form-control" placeholder="입력">
 			</form>
 		</div>
 		<div class="table-responsive my-1">
@@ -82,12 +56,12 @@
 								<input class="form-check-input" type="checkbox" value="">
 							</div>
 						</th>
-						<th scope="col">User</th>
-						<th scope="col">Role</th>
-						<th scope="col">Last login</th>
-						<th scope="col" nowrap>Two-step</th>
-						<th scope="col">Joined date</th>
-						<th scope="col">Actions</th>
+						<th scope="col">분류</th>
+						<th scope="col">거래처명</th>
+						<th scope="col">대표자명</th>
+						<th scope="col">전화번호</th>
+						<th scope="col">주소</th>
+						<th scope="col">수정&nbsp; / &nbsp; 삭제</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -99,8 +73,6 @@
 						</td>
 						<td>
 							<div class="d-flex align-items-center gap-3">
-								<img src="/resources/assets/img/user/user1.svg" alt=""
-									width="42" height="42" class="rounded-circle" loading="lazy">
 								<div class="d-flex flex-column">
 									<h6>Cody Fisher</h6>
 									<small class="text-secondary">cody.fisher@example.com</small>
@@ -350,29 +322,78 @@
 	<div class="modal-dialog modal-dialog-scrollable">
 		<div class="modal-content">
 			<div class="modal-header border-0">
-				<h5 class="modal-title">Add user</h5>
+				<h5 class="modal-title">거래처 등록</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				<form class="needs-validation" novalidate id="taskForm">
-					<div class="mb-3">
-						<label for="userFullname" class="form-label">부서명</label> <input
-							type="text" name="userFullname" class="form-control" id="name"
-							required autofocus>
-						<div class="invalid-feedback">User full name is required.</div>
-					</div>
-					<div class="mb-3">
-						<label for="userEmail" class="form-label">부서코드</label> <input
-							type="email" name="userEmail" class="form-control" id="userEmail"
-							required>
-						<div class="invalid-feedback">User email is required.</div>
-					</div>
-				</form>
+				<form class="row g-3" name="f" method="post" action="/basicinfo/client/add">
+              <div class="col-sm-5" style="width:250px;">
+                <label for="code" class="form-label">거래처 코드</label>
+                <input type="text" class="form-control" id="code" placeholder="거래처 코드">
+              </div>
+              <div class="col-sm-4" style="width: 227px;">
+                <label for="category" class="form-label">분류</label>
+                <select id="category" class="form-select">
+                  <option selected>선택</option>
+                  <option value="수주">수주</option>
+                  <option value="발주">발주</option>
+                </select>
+              </div>
+            
+              <div class="col-sm-5" style="width: 250px;">
+                <label for="name" class="form-label">거래처명</label>
+                <input type="text" class="form-control" id="name" placeholder="거래처명">
+              </div>
+              <div class="col-sm-4" style="width: 227px;">
+                <label for="owner" class="form-label">대표자명</label>
+                <input type="text" class="form-control" id="owner" placeholder="대표자명">
+              </div>
+              <div class="col-12">
+                <label for="tel" class="form-label">전화번호</label>
+                <input type="text" class="form-control" id="tel" placeholder="010-1234-5678">
+              </div>
+              <div class="col-12">
+                <label for="fax" class="form-label">팩스번호</label>
+                <input type="text" class="form-control" id="fax" placeholder="02-123-5678">
+              </div>
+              <div class="col-sm-4">
+                <label for="bank" class="form-label">은행명</label>
+                <select id="bank" class="form-select">
+                  <option selected>선택</option>
+                  <option>KEB</option>
+                  <option>SC제일</option>
+                  <option>국민</option>
+                  <option>신한</option>
+                  <option>외한</option>
+                  <option>우리</option>
+                  <option>한국시티</option>
+                </select>
+              </div>
+               <div class="col-sm-5" style="width:318px;">
+                <label for="account" class="form-label">계좌번호</label>
+                <input type="text" class="form-control" id="account" placeholder="302-1209-3456">
+              </div>
+              <div class="col-12">
+              	<label for="address1" class="form-label">주소</label>
+                <input type="text" class="form-control" id="address1" placeholder="주소" readonly>
+                <input type="hidden" class="form-control" id="zipcode" placeholder="주소">
+              </div>
+              <div  class="col-12">
+              	<label for="address2" class="form-label">상세주소</label>
+                <input type="hidden" class="form-control" id="inputZip">
+                <input type="text" class="form-control" id="address2" placeholder="상세주소">
+              </div>
+                <input class="btn btn-outline-primary" type="button" value="우편번호 찾기" onclick="execDaumPostcode()">
+				<div class="col-12">
+	                <label for="email" class="form-label">이메일</label>
+	                <input type="text" class="form-control" id="email" placeholder="이메일">
+	              </div>
+            </form>
 			</div>
 			<div class="modal-footer border-0">
 				<button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
-				<button type="submit" form="taskForm" class="btn btn-primary px-5">등록</button>
+				<button type="button" form="taskForm" class="btn btn-primary px-5" onclick="check()">등록</button>
 			</div>
 		</div>
 	</div>
@@ -382,8 +403,39 @@
 <!-- bottom.jsp -->
 <%@include file="../../common/bottom.jsp"%>
 
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js?autoload=false"></script>
 <script type="text/javascript">
 $(function(){
 	alert("/basicinfo/client/list.jsp");
+	document.getElementById('member').click();
 });
+
+
+/** 우편번호 찾기 */
+	function execDaumPostcode() {
+	    daum.postcode.load(function(){
+	        new daum.Postcode({
+	            oncomplete: function(data) {
+	            	var temp = "";
+					
+	            	temp += data.sido;
+					temp += " " + data.sigungu;
+					if(data.bname1 != ""){
+						temp += " " + data.bname1;
+					}
+					temp += " " + data.bname;
+					
+					$('#address1').val(temp);
+					$('#zipcode').val(data.zonecode);
+					
+	            }
+	        }).open();
+	    });
+	}
+	
+	/* 유효성검사 */
+	function check(){
+		f.submit();
+	}
+	
 </script>

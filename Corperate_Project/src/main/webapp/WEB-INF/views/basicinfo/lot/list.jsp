@@ -385,5 +385,6 @@
 <script type="text/javascript">
 $(function(){
 	alert("/basicinfo/lot/list.jsp");
+	document.getElementById('member').click();
 });
 </script>

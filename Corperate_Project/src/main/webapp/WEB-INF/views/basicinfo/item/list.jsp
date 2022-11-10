@@ -385,5 +385,6 @@
 <script type="text/javascript">
 $(function(){
 	alert("/basicinfo/item/list.jsp");
+	document.getElementById('member').click();
 });
 </script>
