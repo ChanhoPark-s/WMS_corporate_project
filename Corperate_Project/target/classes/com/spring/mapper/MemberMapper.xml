@@ -6,12 +6,12 @@
 <mapper namespace="com.spring.mapper.MemberMapper">
 
 	<insert id="insert">
-		insert into member
-		values (seq_member.nextval, #{id}, #{pw}, #{name}, #{dep_no}, #{rank_no}, #{email}, #{fileName})
+		insert into member (no, id, pw, name, dep_no, rank_no, email, image, reg_date)
+		values (seq_member.nextval, #{id}, #{pw}, #{name}, #{dep_no}, #{rank_no}, #{email}, #{fileName}, sysdate)
 	</insert>
 	
 	<select id="list" resultType="com.spring.domain.MemberVO">
-		select m.no, m.id, m.pw, m.name, d.name as dep_name, r.name as rank_name, m.email, m.image as fileName
+		select m.no, m.id, m.pw, m.name, d.name as dep_name, r.name as rank_name, m.email, m.image as fileName, to_char(to_date(reg_date), 'yyyy.MM.dd') as reg_date
 		from member m
 		inner join department d
 		on m.dep_no = d.no
@@ -20,7 +20,9 @@
 	</select>
 
 	<select id="get" resultType="com.spring.domain.MemberVO">
-		select no, id, pw, name, dep_no, rank_no, email, image as fileName from member where no = #{no}
+		select no, id, pw, name, dep_no, rank_no, email, image as fileName, to_char(to_date(reg_date), 'yyyy.MM.dd') as reg_date 
+		from member 
+		where no = #{no}
 	</select>
 	
 	<update id="update">

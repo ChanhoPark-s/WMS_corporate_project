@@ -30,21 +30,7 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public void insert(MemberVO member) throws Exception {
 		
-		String realPath = servletContext.getRealPath("/resources/assets/files/member");
-		
-		File file = new File(realPath);
-		if(!file.exists()) {
-			file.mkdirs();
-		}
-		
-		MultipartFile mf = member.getImage();
-		if(!mf.isEmpty()) {
-			String ofn = mf.getOriginalFilename();
-			File uf = new File(realPath, ofn);
-			mf.transferTo(uf);
-			member.setFileName(mf.getOriginalFilename());
-		}
-		
+		updateProfile(member);
 		mapper.insert(member);
 	}
 
@@ -55,22 +41,29 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public void update(MemberVO member) throws Exception {
-		
-		String realPath = servletContext.getRealPath("/resources/assets/files/member");
-		
-		MultipartFile mf = member.getImage();
-		if(!mf.isEmpty()) {
-			String ofn = mf.getOriginalFilename();
-			File uf = new File(realPath, ofn);
-			mf.transferTo(uf);
-			member.setFileName(mf.getOriginalFilename());
-		}
-		
+
+		updateProfile(member);
 		mapper.update(member);
 	}
 
 	@Override
 	public void delete(int no) {
 		mapper.delete(no);
+	}
+	
+	public void updateProfile(MemberVO member) throws Exception {
+		
+		String realPath = servletContext.getRealPath("/resources/assets/img/user");
+	
+		MultipartFile mf = member.getImage();
+		if(!mf.isEmpty()) {
+			String ofn = mf.getOriginalFilename();
+			File uf = new File(realPath, ofn);
+			mf.transferTo(uf);
+			member.setFileName(mf.getOriginalFilename());
+		}else {
+			member.setFileName("avatar.png");
+		}
+		
 	}
 }

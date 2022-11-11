@@ -30,7 +30,7 @@ pageEncoding="UTF-8"%>
                     <th scope="col">부서</th>
                     <th scope="col">직급</th>
                     <th scope="col">최초등록일</th>
-                    <th scope="col">수정/삭제</th>
+                    <th scope="col">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -43,7 +43,7 @@ pageEncoding="UTF-8"%>
                     </td>
                     <td>
                       <div class="d-flex align-items-center gap-3">
-                        <img width="70px" height="100px" src="${pageContext.request.contextPath }/assets/files/member/${member.fileName }" >
+                        <img width="100px" height="100px" src="${pageContext.request.contextPath }/resources/assets/img/user/${member.fileName }" >
                       </div>
                     </td>
                     <td>
@@ -63,26 +63,41 @@ pageEncoding="UTF-8"%>
                     </td>
                     <td>
                       <div class="d-flex align-items-center gap-3">
-                        ${member.dep_name }
+                      	<span class="badge bg-light text-muted">${member.dep_name }</span>
                       </div>
                     </td>
                     <td>
                       <div class="d-flex align-items-center gap-3">
-                        ${member.rank_name }
+                        <span class="badge bg-dark">${member.rank_name }</span>
                       </div>
                     </td>
                     <td>
                       <div class="d-flex align-items-center gap-3">
-                        등록일
+                        ${member.reg_date }
                       </div>
                     </td>
-                    <td>
-                      <div class="d-flex align-items-center gap-3">
-                        <span class="update" data-bs-toggle="modal" data-bs-target="#addUserModal" data-no="${member.no }">수정</span>
-                        /
-                        <span class="delete" data-bs-toggle="modal" data-bs-target="#deleteUserModal" data-no="${member.no }">삭제</span>
-                      </div>
-                    </td>
+					<td>
+						<div class="btn-group btn-group-sm" role="group">
+							<button type="button" class="btn btn-light d-flex editDepartmentBtn update" data-bs-toggle="modal" data-bs-target="#addUserModal" data-no="${member.no }">
+								<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
+									fill="none" viewBox="0 0 24 24" stroke="currentColor"
+									aria-hidden="true">
+                           <path stroke-linecap="round"
+										stroke-linejoin="round" stroke-width="2"
+										d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                         </svg>
+							</button>
+							<button type="button" class="btn btn-light d-flex text-danger delete" data-bs-toggle="modal" data-bs-target="#deleteUserModal" data-no="${member.no }">
+								<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
+									fill="none" viewBox="0 0 24 24" stroke="currentColor"
+									aria-hidden="true">
+                           <path stroke-linecap="round"
+										stroke-linejoin="round" stroke-width="2"
+										d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                         </svg>
+							</button>
+						</div>
+					</td>
                   </tr>
                 </c:forEach>
                   
@@ -165,8 +180,7 @@ pageEncoding="UTF-8"%>
                   </div>
                   <div class="mb-3">
                     <label for="userAvatar" class="form-label">프로필사진</label>
-                    <input class="form-control" type="file" name="image" id="userAvatar" required style="max-width:250px">
-                    <div class="invalid-feedback">User avatar is required.</div>
+                    <input class="form-control" type="file" name="image" id="userAvatar" style="max-width:250px">
                   </div>
                 </form>
               </div>
@@ -244,7 +258,10 @@ pageEncoding="UTF-8"%>
     		elem.addEventListener('click', async (event) => {
         		title.innerHTML = '사원수정';
         		
-        		const no = event.target.dataset.no;
+        		let target = event.target;
+				target = target.nodeName == 'BUTTON' ? target : target.nodeName == 'svg' ? target.parentElement : target.parentElement.parentElement;
+				
+        		const no = target.dataset.no;
         		const member = await getMemberInfo(no);
         		
         		taskForm.name.value = member.name;
@@ -282,7 +299,10 @@ pageEncoding="UTF-8"%>
     	del.forEach((elem)=> {
     		elem.addEventListener('click', event => {
     			
-    			const no = event.target.dataset.no;		
+    			let target = event.target;
+				target = target.nodeName == 'BUTTON' ? target : target.nodeName == 'svg' ? target.parentElement : target.parentElement.parentElement;
+    			
+    			const no = target.dataset.no;		
         		delete_from.action = 'delete/' + no;
     		});
     	});
