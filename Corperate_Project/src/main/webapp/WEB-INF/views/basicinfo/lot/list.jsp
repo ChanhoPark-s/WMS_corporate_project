@@ -383,8 +383,8 @@
 <%@include file="../../common/bottom.jsp"%>
 
 <script type="text/javascript">
-$(function(){
-	alert("/basicinfo/lot/list.jsp");
-	document.getElementById('member').click();
-});
+	$(function(){
+		/* 왼쪽 카테고리창이 해당화면에 맞게 펼쳐지게 하는 코드 */
+		document.getElementById('basicinfo').click();
+	});
 </script>

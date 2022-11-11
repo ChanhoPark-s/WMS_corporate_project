@@ -215,6 +215,11 @@ pageEncoding="UTF-8"%>
         <!-- 삭제모달 끝 -->
   <script>
     // Enable dropdown-select on all '.dselect'
+
+    $(function(){
+		/* 왼쪽 카테고리창이 해당화면에 맞게 펼쳐지게 하는 코드 */
+		document.getElementById('basicinfo').click();
+	});
     
     (function() {
    		

@@ -236,15 +236,17 @@
 
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js?autoload=false"></script>
 <script type="text/javascript">
-$(function(){
-	document.getElementById('member').click();
-	
-	
-	
-	$('#insert_btn').on("click",function(){
-		modal.find("#modal-title").text("부록");
-	})
-});
+
+	$(function(){
+		/* 왼쪽 카테고리창이 해당화면에 맞게 펼쳐지게 하는 코드 */
+		document.getElementById('basicinfo').click();
+	});
+
+	$(function(){
+		$('#insert_btn').on("click",function(){
+			modal.find("#modal-title").text("부록");
+		})
+	});
 
 
 /** 우편번호 찾기 */
