@@ -815,11 +815,9 @@
 
 <script type="text/javascript">
 $(function(){
-<<<<<<< HEAD
 	alert("/basicinfo/warehouse/list.jsp");
+	/* 기초정보관리 탭이 눌려진 상태로 하기위해 */
 	document.getElementById('member').click();
-=======
 	console.log("/basicinfo/warehouse/list.jsp");
->>>>>>> branch 'main' of https://github.com/ChanhoPark-s/WMS_corporate_project.git
 });
 </script>

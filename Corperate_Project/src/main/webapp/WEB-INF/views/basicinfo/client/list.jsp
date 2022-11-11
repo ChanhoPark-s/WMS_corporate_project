@@ -1,5 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<style>
+ #searchIcon{
+ 	position: inherit;
+ }
+</style>
+
+
 
 <!-- top.jsp -->
 <%@include file="../../common/top.jsp"%>
@@ -10,7 +17,7 @@
 			<div class="d-flex gap-1 me-auto flex-wrap">
 				<button id="insert_btn"
 					class="btn btn-primary d-inline-flex align-items-center gap-1"
-					data-bs-toggle="modal" data-bs-target="#addUserModal">
+					data-bs-toggle="modal" data-bs-target="#ClientModal">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
 						fill="currentColor" aria-hidden="true">
                     <path fill-rule="evenodd"
@@ -28,8 +35,9 @@
 					수주처
 				</button>
 			</div>
-			<select id="inputState" class="form-select" style="width: 200px;">
-                  <option selected="">검색 선택</option>
+			<form name="search" action="/basicinfo/client/list">
+			<select id="inputState" name="search" class="form-select" style="width: 200px;">
+                  <option selected>검색 선택</option>
                   <option>거래처코드</option>
                   <option>분류</option>
                   <option>거래처명</option>
@@ -42,9 +50,9 @@
                   <option>주소</option>
                   <option>이메일</option>
               </select>
-			<form>
-				<input type="text" class="form-control" placeholder="입력">
-			</form>
+				<input type="text" class="form-control" placeholder="입력" style="width: 200px; height: 38px;">
+				<i class="fa-solid fa-magnifying-glass" id="searchIcon"></i>
+				</form>
 		</div>
 		<div class="table-responsive my-1">
 			<table class="table align-middle">
@@ -63,8 +71,9 @@
 						<th scope="col">수정&nbsp; / &nbsp; 삭제</th>
 					</tr>
 				</thead>
-				<tbody>
-					<c:forEach var="item" items="${list}">
+				<tbody id="table_insert">
+					<!-- 여기에 넣어야함 테이블 -->
+					<c:forEach var="item" items="${list }">
 					<tr>
 						<td>
 							<div>
@@ -74,11 +83,11 @@
 						<td>
 							<div class="d-flex align-items-center gap-3">
 								<div class="d-flex flex-column">
-									<c:if test="${item.category==0 }">
-									<h6>수주</h6>
+									<c:if test="${item.category=='수주처' }">
+									<h6>수주처</h6>
 									</c:if>
-									<c:if test="${item.category==1 }">
-									<h6>발주</h6>
+									<c:if test="${item.category=='발주처' }">
+									<h6>발주처</h6>
 									</c:if>
 								</div>
 							</div>
@@ -91,7 +100,7 @@
 						<td><span class="badge bg-light text-muted">${item.address1}</span></td>
 						<td>
 							<div class="btn-group btn-group-sm" role="group">
-								<button type="button" class="btn btn-light d-flex">
+								<button type="button" class="btn btn-light d-flex" data-bs-toggle="modal" data-bs-target="#ClientModal" onclick="updateClient('${item.no}')" id="updateClient">
 									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
 										fill="none" viewBox="0 0 24 24" stroke="currentColor"
 										aria-hidden="true">
@@ -100,7 +109,7 @@
 											d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                           </svg>
 								</button>
-								<button type="button" class="btn btn-light d-flex text-danger">
+								<button type="button" class="btn btn-light d-flex text-danger" onclick="deleteClient('${item.no}')" id="deleteClient">
 									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
 										fill="none" viewBox="0 0 24 24" stroke="currentColor"
 										aria-hidden="true">
@@ -151,26 +160,27 @@
 
 <!-- Modal 코드 넣을 위치 -->
 <!-- Add user modal -->
-<div class="modal fade" id="addUserModal" tabindex="-1" >
+<div class="modal fade" id="ClientModal" tabindex="-1" >
 	<div class="modal-dialog modal-dialog-scrollable" >
 		<div class="modal-content" >
 			<div class="modal-header border-0" >
-				<h5 id="modal-title">부서등록</h5>
+				<h5 id="modal-title"></h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				<form class="row g-3" name="f" method="post">
+				<form class="row g-3" id="modalForm" action="" method="post">
               <div class="col-sm-5" style="width:250px;">
                 <label for="code" class="form-label">거래처 코드</label>
+                <input type="hidden" name="no" id="no" >
                 <input type="text" class="form-control" name="code" id="code" placeholder="거래처 코드">
               </div>
               <div class="col-sm-4" style="width: 227px;">
                 <label for="category" class="form-label">분류</label>
                 <select id="category" name="category" class="form-select">
                   <option selected value="">선택</option>
-                  <option value="수주">수주</option>
-                  <option value="발주">발주</option>
+                  <option value="수주처">수주처</option>
+                  <option value="발주처">발주처</option>
                 </select>
               </div>
             
@@ -194,13 +204,13 @@
                 <label for="bank" class="form-label">은행명</label>
                 <select id="bank" name="bank" class="form-select">
                   <option selected>선택</option>
-                  <option>KEB</option>
-                  <option>SC제일</option>
-                  <option>국민</option>
-                  <option>신한</option>
-                  <option>외한</option>
-                  <option>우리</option>
-                  <option>한국시티</option>
+                  <option value="KEB">KEB</option>
+                  <option value="SC제일">SC제일</option>
+                  <option value="국민">국민</option>
+                  <option value="신한">신한</option>
+                  <option value="외환">외한</option>
+                  <option value="우리">우리</option>
+                  <option value="한국시티">한국시티</option>
                 </select>
               </div>
                <div class="col-sm-5" style="width:318px;">
@@ -225,7 +235,7 @@
 			</div>
 			<div class="modal-footer border-0">
 				<button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
-				<button type="button" form="taskForm" class="btn btn-primary px-5" onclick="check()">등록</button>
+				<button type="button" form="taskForm" class="btn btn-primary px-5" id="okaybtn"></button>
 			</div>
 		</div>
 	</div>
@@ -233,18 +243,105 @@
 
 <!-- bottom.jsp -->
 <%@include file="../../common/bottom.jsp"%>
-
+<!-- 오른쪽 상단 아이콘 관련 -->
+<script src="https://kit.fontawesome.com/75769dc150.js" crossorigin="anonymous"></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js?autoload=false"></script>
 <script type="text/javascript">
-$(function(){
+	var modal = $(".modal");
+
+	
+	$(function(){
+	/* 메뉴바가 클릭되게 하기 위해 */
 	document.getElementById('member').click();
 	
 	
-	
+	/* 거래처 등록 눌렀을 때  */
 	$('#insert_btn').on("click",function(){
-		modal.find("#modal-title").text("부록");
-	})
+		
+		modal.find("#modal-title").text("거래처 등록");
+		modal.find('#okaybtn').text("등록");
+		
+		var modalForm = $("#modalForm");
+		$('#okaybtn').click(function(){
+			modalForm.attr("action", "/basicinfo/client/add").submit();
+		})
+		
+		/* 싹 지우고 시작 */
+		clearModal();
+		
+		})
 });
+	
+	
+	/* 수정버튼을 눌렀을때 */
+	function updateClient(item_no){
+		
+		modal.find("#modal-title").text("거래처 수정");
+		modal.find('#okaybtn').text("수정");
+		
+		
+		/* 수정으로 가게 만들기 위해 */
+		var modalForm = $("#modalForm");
+		$('#okaybtn').click(function(){
+			modalForm.attr("action", "/basicinfo/client/update").submit();
+		})
+		
+		$.ajax({// 다른 jsp 가서 중복체크할것
+			url : "/basicinfo/client/select ", // 일로가서 중복체크
+			type : "post",
+			data : {  // 보낼 데이터
+				item_no : item_no // 값을 담을 변수 내맘 userid= choi 가지고 jsp로 넘어감.
+			},
+			datatype : 'json',
+				success : function(data){ // 사용가능 불가능 한 걸 data로 받는다. data:응답정보 url 갔다온 답
+				const parse = JSON.parse(data);
+				
+				document.getElementById('no').value=parse.no;
+				document.getElementById('code').value=parse.code;
+					if(parse.category==0)
+						parse.category="수주처";
+					else
+						parse.category="발주처";
+					const el = document.getElementById('category');  //select box
+					const len = el.options.length; //select box의 option 갯수
+					el.options[0].selected = true;
+					//select box의 option 갯수만큼 for문 돌림
+					for (var i=0; i<len; i++){  
+					//select box의 option value가 입력 받은 value의 값과 일치할 경우 selected
+					if(el.options[i].value == parse.category)
+					   el.options[i].selected = true;
+				}
+				document.getElementById('name').value=parse.name;
+				document.getElementById('owner').value=parse.owner;
+				document.getElementById('tel').value=parse.tel;
+				document.getElementById('fax').value=parse.fax;
+				
+				/* select 박스 선택되게  */
+				const bank = document.getElementById('bank'); 
+				const leng = bank.options.length;
+				
+				for(var j=0;j<leng;j++){
+					if(bank.options[j].value == parse.bank)
+						bank.options[j].selected = true;
+				}
+				document.getElementById('account').value=parse.account;
+				document.getElementById('zipcode').value=parse.zipcode;
+				document.getElementById('address1').value=parse.address1;
+				document.getElementById('address2').value=parse.address2;
+				document.getElementById('email').value=parse.email;
+				}//success 
+		});//ajax
+	}
+	
+	
+	/* 삭제 버튼 눌렀을 때  */
+	function deleteClient(item_no){
+		
+		if(confirm("삭제하시겠습니까?")){
+			location.href="/basicinfo/client/delete?item_no="+item_no;
+		}
+		
+	}
 
 
 /** 우편번호 찾기 */
@@ -269,9 +366,26 @@ $(function(){
 	    });
 	}
 	
-	/* 유효성검사 */
-	function check(){
-		f.submit();
+	
+	/* 싹 다 지워지게 */
+	function clearModal(){
+		document.getElementById('code').value="";
+		document.getElementById('category').options[0].selected = true;  //select box
+		document.getElementById('name').value="";
+		document.getElementById('owner').value="";
+		document.getElementById('tel').value="";
+		document.getElementById('fax').value="";
+	
+		/* select 박스 선택되게 */
+		document.getElementById('bank').options[0].selected = true; 
+	
+		document.getElementById('account').value="";
+		document.getElementById('zipcode').value="";
+		document.getElementById('address1').value="";
+		document.getElementById('address2').value="";
+		document.getElementById('email').value=""; 
 	}
+	
+	/* 유효성검사 */
 	
 </script>

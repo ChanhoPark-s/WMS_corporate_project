@@ -385,6 +385,7 @@
 <script type="text/javascript">
 $(function(){
 	alert("/basicinfo/item/list.jsp");
+	/* 기초정보관리 탭이 눌려진 상태로 하기위해 */
 	document.getElementById('member').click();
 });
 </script>

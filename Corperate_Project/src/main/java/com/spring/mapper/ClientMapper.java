@@ -1,6 +1,7 @@
 package com.spring.mapper;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import com.spring.domain.ClientVO;
 
@@ -9,4 +10,8 @@ public interface ClientMapper {
 	
 	public int insert(ClientVO vo);
 	public ArrayList<ClientVO> GetAll(String select);
+	public ClientVO selectOne(String item_no);
+	public int deleteOne(String item_no);
+	public int update(ClientVO VO);
+	public int getAllCount(Map map);
 }
