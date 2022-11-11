@@ -26,7 +26,7 @@
 		<property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:orcl"/> 
 		-->
 		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
-		<property name="jdbcUrl" value="jdbc:oracle:thin:@database-1.c9izofqmnvfq.ap-northeast-2.rds.amazonaws.com:1521:orcl"/>
+		<property name="jdbcUrl" value="jdbc:oracle:thin:@0.tcp.jp.ngrok.io:14008:orcl"/>
 		<property name="username" value="admin"/>
 		<property name="password" value="Havetobewinner123"/>
 	</bean>
