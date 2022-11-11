@@ -329,4 +329,4 @@ pageEncoding="UTF-8"%>
   </script>
   
 <!-- bottom.jsp -->
-<%@include file="/WEB-INF/views/common/bottom.jsp" %>
+<%@include file="../../common/bottom.jsp"%>

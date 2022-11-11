@@ -14,7 +14,7 @@
   <!-- 창 최상단 아이콘+타이틀파트 -->
   <link rel="icon" href="/resources/assets/img/favicon.ico"  type="image/x-icon" />
   <title>WMS_Project</title>
-
+  
   <!-- Required CSS -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
