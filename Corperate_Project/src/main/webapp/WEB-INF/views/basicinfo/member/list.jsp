@@ -146,13 +146,13 @@ pageEncoding="UTF-8"%>
                     <div class="invalid-feedback">User full name is required.</div>
                   </div>
                   <div class="mb-3">
-                    <label for="userEmail" class="form-label">아이디</label>
-                    <input type="text" name="id" class="form-control" id="userEmail" required>
+                    <label for="userid" class="form-label">아이디</label>
+                    <input type="text" name="id" class="form-control" id="userid" required>
                     <div class="invalid-feedback">User id is required.</div>
                   </div>
                   <div class="mb-3">
-                    <label for="userEmail" class="form-label">비밀번호</label>
-                    <input type="password" name="pw" class="form-control" id="userEmail" required>
+                    <label for="userpw" class="form-label">비밀번호</label>
+                    <input type="password" name="pw" class="form-control" id="userpw" required>
                     <div class="invalid-feedback">User password is required.</div>
                   </div>
                   <div class="mb-3">
@@ -161,22 +161,24 @@ pageEncoding="UTF-8"%>
                     <div class="invalid-feedback">User email is required.</div>
                   </div>
                   <div class="mb-3">
-                    <label for="userEmail" class="form-label">부서</label>
-					<select class="form-select" id="inputGroupSelect01" name="dep_no">
-	                  <option selected="">선택</option>
+                    <label for="inputGroupSelect01" class="form-label">부서</label>
+					<select class="form-select" id="inputGroupSelect01" name="dep_no" required>
+	                  <option selected disabled value="">선택</option>
 						<c:forEach items="${deptList }" var="dept">
 							<option value="${dept.no }">${dept.name }</option>
 						</c:forEach>
 	                </select>
+	                <div class="invalid-feedback">Please select a dep.</div>
                   </div>
                   <div class="mb-3">
-                    <label for="userEmail" class="form-label">직급</label>
-					<select class="form-select" id="inputGroupSelect01" name="rank_no">
-	                  <option selected="">선택</option>
+                    <label for="inputGroupSelect02" class="form-label">직급</label>
+					<select class="form-select" id="inputGroupSelect02" name="rank_no" required>
+	                  <option selected disabled value="">선택</option>
 						<c:forEach items="${rankList }" var="rank">
 	                  		<option value="${rank.no }">${rank.name }</option>
 						</c:forEach>
 	                </select>
+	                <div class="invalid-feedback">Please select a rank</div>
                   </div>
                   <div class="mb-3">
                     <label for="userAvatar" class="form-label">프로필사진</label>

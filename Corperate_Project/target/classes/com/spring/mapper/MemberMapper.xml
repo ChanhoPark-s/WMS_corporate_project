@@ -17,6 +17,7 @@
 		on m.dep_no = d.no
 		inner join rank r
 		on m.rank_no = r.no
+		order by 1 desc
 	</select>
 
 	<select id="get" resultType="com.spring.domain.MemberVO">
