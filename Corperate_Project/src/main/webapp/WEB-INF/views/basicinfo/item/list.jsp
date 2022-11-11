@@ -8,8 +8,7 @@
 	<div class="card-body">
 		<div class="d-flex gap-1 mb-4 flex-wrap">
 			<div class="d-flex gap-1 me-auto flex-wrap">
-				<button id="addItemBtn"
-					class="btn btn-primary d-inline-flex align-items-center gap-1"
+				<button id="addItemBtn" class="btn btn-primary d-inline-flex align-items-center gap-1 add"
 					data-bs-toggle="modal" data-bs-target="#addUserModal">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
 						fill="currentColor" aria-hidden="true">
@@ -58,11 +57,7 @@
 			<table class="table align-middle">
 				<thead>
 					<tr>
-						<th scope="col">
-							<div>
-								<input class="form-check-input" type="checkbox" value="">
-							</div>
-						</th>
+						<th scope="col">번호</th>
 						<th scope="col">이미지</th>
 						<th scope="col">품목코드</th>
 						<th scope="col">거래처번호</th>
@@ -73,22 +68,15 @@
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach var="item" items="${voList}">
+					<c:forEach var="item" items="${lists}">
 					<tr>
-						<td>
-							<div>
-								<input class="form-check-input" type="checkbox" value="">
-							</div>
-						</td>
-						<td>
-						<img src="/resources/assets/img/user/user1.svg" alt=""
-						width="42" height="42" loading="lazy">
-						</td>
+						
+					
+						<td>${item.no} </td>
 						<td> <!-- 이미지 -->
 						<img src="<%=request.getContextPath()%>/resources/assets/itemimg/${item.image}" width="42" height="42" loading="lazy">
 						</td>
-						<td>${item.no} </td>
-						<td>${item.client_no}</td>
+						<td>${item.client_code}</td>
 						<td>${item.code}</td> 
 						<td>${item.name}</td>
 						<td>${item.in_price}</td>
@@ -164,38 +152,41 @@
 					aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				<form class="needs-validation" novalidate id="taskForm">
+				<form class="needs-validation" novalidate id="taskForm" enctype="multipart/form-data" method="post" action="insert">
 					<div>
                 <label for="formFile" class="form-label">이미지</label>
-                <input class="form-control" type="file" id="formFile"  value="${item.image }">
+                <input class="form-control" type="file" id="formFile" name="upload" value="${item.image }">
               		</div>
 					<div class="mb-3">
 						<label for="userFullname" class="form-label">품목코드</label> <input
-							type="text" name="userFullname" class="form-control" id="code"
+							type="text" name="code" class="form-control" name="code" id="code"
 							required autofocus>
 						<div class="invalid-feedback">User full name is required.</div>
 					</div>
 					<div class="mb-3">
-						<label for="userFullname" class="form-label">거래처코드</label> <input
-							type="text" name="userFullname" class="form-control" id="client_no"
-							required autofocus>
-						<div class="invalid-feedback">User full name is required.</div>
+						<label for="userFullname" class="form-label">거래처코드</label> 
+						<select class="form-select" id="inputGroupSelect01" name="client_no">
+	                  	<option selected="">선택</option>
+						<c:forEach items="${clientList }" var="client">
+							<option value="${client.no }">${client.code }</option>
+						</c:forEach>
+	                </select>
 					</div>
 					<div class="mb-3">
 						<label for="userFullname" class="form-label">품목명</label> <input
-							type="text" name="userFullname" class="form-control" id="name"
+							type="text" name="name" class="form-control" id="name"
 							required autofocus>
 						<div class="invalid-feedback">User full name is required.</div>
 					</div>
 					<div class="mb-3">
 						<label for="userFullname" class="form-label">입고단가</label> <input
-							type="text" name="userFullname" class="form-control" id="input_price"
+							type="text" class="form-control" name="in_price" id="in_price"
 							required autofocus>
 						<div class="invalid-feedback">User full name is required.</div>
 					</div>
 					<div class="mb-3">
 						<label for="userFullname" class="form-label">출고단가</label> <input
-							type="text" name="userFullname" class="form-control" id="output_price"
+							type="text" class="form-control" name="out_price" id="out_price"
 							required autofocus>
 						<div class="invalid-feedback">User full name is required.</div>
 					</div>
@@ -203,7 +194,7 @@
 			</div>
 			<div class="modal-footer border-0">
 				<button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
-				<button type="submit" id="modaladdBtn" class="btn btn-primary px-5">등록</button>
+				<button type="submit" form="taskForm" id="modaladdBtn" class="btn btn-primary px-5">등록</button>
 				<button type="submit" id="modalupdateBtn" class="btn btn-primary px-5">수정</button>
 			</div>
 		</div>
@@ -250,23 +241,22 @@
 
 <script type="text/javascript">
 $(function(){
-	alert("/basicinfo/item/list.jsp");
-	document.getElementById('member').click();
-});
- // 품목 등록,수정
-$("#addItemBtn").on("click", function(e){
-	modal.find("#modal-title").text("품목등록");
-	modal.find("button[id = 'modaladdBtn']").hide();
-	modal.find("button[id != 'modaladdBtn']").show();
-	$("#modalForm").attr("action", "/basicinfo/item/new");
-	$(".modal").modal("show");
-});
- 
-$(".updateItemBtn").on("click", function(e){
-	modal.find("#modal-title").text("품목수정");
-	modal.find("button[id = 'modalupdateBtn']").hide();	// Close 버튼을 제외한 나머지를 숨김
-	modal.find("button[id != 'modalupdateBtn']").show();
-	$(".modal").modal("show");
+ // 품목 등록
+	document.querySelector('.insert').addEventListener('click', event => {
+		title.innerHTML = '등록하기';
+		
+		const form_control = document.querySelectorAll('.form-control');
+		Array.from(form_control, elem => {
+			elem.value = '';
+		});
+		
+		const form_select = document.querySelectorAll('.form-select');
+		Array.from(form_select, elem => {
+			elem.options[0].selected = true;  
+		});
+		
+		taskForm.action = 'insert';
+	});
 });
 
 /* Modal에서 등록/수정 버튼이 눌렸을 때, Modal내의 form 태그에 action 속성값을 추가하고 submit 처리하는 코드 */

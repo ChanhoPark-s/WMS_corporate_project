@@ -7,6 +7,6 @@ import com.spring.domain.ItemVO;
 public interface ItemService {
 	
 	public List<ItemVO> selectAll();
-	public int insert(ItemVO vo);
+	public void insert(ItemVO vo) throws Exception;
 	
 }

@@ -11,9 +11,16 @@ public class ItemVO {
 	private int in_price;
 	private int out_price;
 	private String image;
-	private MultipartFile upload;	
+	private MultipartFile upload;
+	private String client_code;
 	
 	
+	public String getClient_code() {
+		return client_code;
+	}
+	public void setClient_code(String client_code) {
+		this.client_code = client_code;
+	}
 	public MultipartFile getUpload() {
 		return upload;
 	}
