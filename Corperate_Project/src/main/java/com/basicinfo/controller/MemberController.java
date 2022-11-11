@@ -37,6 +37,14 @@ public class MemberController {
 	@Autowired
 	private RankService rankService;
 
+	
+	/**
+	 * 모든 사원의 리스트를 가져옵니다.
+	 *
+	 * @param model 데이터 이동을 위한 메서드
+	 * @return void list.jsp로 이동
+	 * @exception
+	 */
 	@GetMapping(value="/list")
 	public void list(Model model) {	
 		
