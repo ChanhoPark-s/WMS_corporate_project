@@ -59,11 +59,12 @@ public class MemberController {
 		return "redirect:list";
 	}
 	
-	@PostMapping(value="/update")
-	public String update(Model model, MemberVO member) throws Exception {
+	@PostMapping(value="/update/{no}")
+	public String update(Model model, MemberVO member, @PathVariable(value="no") int no) throws Exception {
 		
+		member.setNo(no);
 		service.update(member);
-		return "redirect:list";
+		return "redirect:/basicinfo/member/list";
 	}
 	
 	@GetMapping(value="/delete/{no}")

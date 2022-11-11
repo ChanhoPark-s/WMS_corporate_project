@@ -187,8 +187,8 @@ pageEncoding="UTF-8"%>
                 </form>
               </div>
               <div class="modal-footer border-0">
-                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" form="taskForm" class="btn btn-primary px-5">Save</button>
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
+                <button type="submit" form="taskForm" class="btn btn-primary px-5">저장</button>
               </div>
             </div>
           </div>
@@ -279,13 +279,7 @@ pageEncoding="UTF-8"%>
         			if(option.value == member.rank_no) option.selected = true;
         		});
         		
-        		const input = document.createElement('input');
-        		input.type = 'hidden';
-        		input.name = 'no';
-        		input.value = no;
-        		taskForm.append(input);
-        		
-        		taskForm.action = 'update';
+        		taskForm.action = 'update/' + no;
         	});
     	})
     	
