@@ -815,9 +815,7 @@
 
 <script type="text/javascript">
 $(function(){
-	alert("/basicinfo/warehouse/list.jsp");
-	/* 기초정보관리 탭이 눌려진 상태로 하기위해 */
-	document.getElementById('member').click();
-	console.log("/basicinfo/warehouse/list.jsp");
-});
+		/* 왼쪽 카테고리창이 해당화면에 맞게 펼쳐지게 하는 코드 */
+		document.getElementById('basicinfo').click();
+	});
 </script>

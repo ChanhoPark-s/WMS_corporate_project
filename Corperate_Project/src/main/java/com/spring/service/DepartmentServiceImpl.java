@@ -29,4 +29,13 @@ public class DepartmentServiceImpl implements DepartmentService{
 		return mapper.update(vo);
 	}
 
+	@Override
+	public void delete(int no) {
+		mapper.delete(no);
+	}
+
+	@Override
+	public List<DepartmentVO> getDeptList() {
+		return mapper.selectAll();
+	}
 }

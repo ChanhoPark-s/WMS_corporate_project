@@ -64,7 +64,7 @@
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
               </svg>
-              <span class="me-auto" id="member">기초정보관리</span>
+              <span class="me-auto" id="basicinfo">기초정보관리</span>
             </a>
             <div class="ms-5 collapse" id="dashboard-collapse" data-bs-parent="#mainMenu">
               <ul class="navbar-nav">
@@ -99,11 +99,11 @@
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
-              <span class="me-auto">수주계약관리</span>
+              <span class="me-auto" id="ordersheet">수주계약관리</span>
             </a>
             <div class="ms-5 collapse" id="order-contract-collapse" data-bs-parent="#mainMenu">
               <ul class="navbar-nav">
-                <li class="nav-item"><a class="nav-link" href="index.html">수주정보</a></li>
+                <li class="nav-item"><a class="nav-link" href="/ordersheet/list">수주정보</a></li>
                 <li class="nav-item"><a class="nav-link" href="index.html">수주별 처리현황</a></li>
               </ul>
             </div>
@@ -117,7 +117,7 @@
             </a>
             <div class="ms-5 collapse" id="request-order-collapse" data-bs-parent="#mainMenu">
               <ul class="navbar-nav">
-                <li class="nav-item"><a class="nav-link" href="index.html">발주지시정보</a></li>
+                <li class="nav-item"><a class="nav-link" href="list.ps">발주지시정보</a></li>
               </ul>
             </div>
           </li>

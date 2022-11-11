@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-  
+
 <!-- top.jsp -->
 <%@include file="../../common/top.jsp"%>
 
@@ -9,7 +9,7 @@
 		<div class="d-flex gap-1 mb-4 flex-wrap">
 		
 			<div class="d-flex gap-1 me-auto flex-wrap">
-				<button id="addDepartmentBtn" class="btn btn-primary d-inline-flex align-items-center gap-1">
+				<button id="addDepartmentBtn" class="btn btn-primary d-inline-flex align-items-center gap-1 insert" data-bs-toggle="modal" data-bs-target="#addDeptModal">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
 						fill="currentColor" aria-hidden="true">
                     <path fill-rule="evenodd"
@@ -90,28 +90,18 @@
 				</thead>
 				<tbody>
 					<c:forEach var="vo" items="${voList}">
-						<tr>
+						<tr class="dept-${vo.no }">
 							<td>
 								<div>
 									<input class="form-check-input" type="checkbox" value="">
 								</div>
 							</td>
-							
-							<td>
-								${vo.no}
-							</td>
-							
-							<td>
-								${vo.code}
-							</td>
-							
-							<td>
-								${vo.name}
-							</td>
-							
+							<td>${vo.no}	
+							<td>${vo.code}</td>
+							<td>${vo.name}</td>
 							<td>
 								<div class="btn-group btn-group-sm" role="group">
-									<button type="button" class="btn btn-light d-flex editDepartmentBtn" data-no="${vo.no}">
+									<button type="button" class="btn btn-light d-flex editDepartmentBtn update" data-bs-toggle="modal" data-bs-target="#addDeptModal" data-no=${vo.no }>
 										<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
 											fill="none" viewBox="0 0 24 24" stroke="currentColor"
 											aria-hidden="true">
@@ -120,7 +110,7 @@
 												d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
 	                          </svg>
 									</button>
-									<button type="button" class="btn btn-light d-flex text-danger">
+									<button type="button" class="btn btn-light d-flex text-danger delete" data-bs-toggle="modal" data-bs-target="#deleteDeptModal" data-no=${vo.no }>
 										<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
 											fill="none" viewBox="0 0 24 24" stroke="currentColor"
 											aria-hidden="true">
@@ -171,11 +161,11 @@
 
 <!-- 부서등록/수정 Modal 코드-->
 <!-- <form action="/basicinfo/department/new" method="post"> -->
-<div class="modal fade" id="addUserModal" tabindex="-1">
+<div class="modal fade" id="addDeptModal" tabindex="-1">
 	<div class="modal-dialog modal-dialog-scrollable">
 		<div class="modal-content">
 			<div class="modal-header border-0">
-				<h5 id="modal-title">부서등록</h5>
+				<h5 class="modal-title">부서등록</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
@@ -183,17 +173,12 @@
 				<!-- form start -->
 				<form class="needs-validation" novalidate id="modalForm" action="" method="post">
 					<div class="mb-3">
-						<label for="userFullname" class="form-label">부서번호</label> 
-						<input type="text" name="no" id="no" class="form-control" required autofocus readonly>
-						<div class="invalid-feedback">User full name is required.</div>
-					</div>
-					<div class="mb-3">
-						<label for="userFullname" class="form-label">부서명</label> 
+						<label for="userFullname" class="form-label">부서코드</label> 
 						<input type="text" name="code" id="code" class="form-control" required autofocus>
 						<div class="invalid-feedback">User full name is required.</div>
 					</div>
 					<div class="mb-3">
-						<label for="userEmail" class="form-label">부서코드</label> 
+						<label for="userEmail" class="form-label">부서명</label> 
 						<input type="text" name="name" id="name" class="form-control" required>
 						<div class="invalid-feedback">User email is required.</div>
 					</div>
@@ -202,84 +187,114 @@
 			</div>
 			<div class="modal-footer border-0">
 				<button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
-				<button type="button" id="modalRegisterBtn"class="btn btn-primary px-5">등록</button>
-				<button type="button" id="modalUpdateBtn"class="btn btn-primary px-5">수정</button>
+				<button type="submit" form="modalForm" class="btn btn-primary px-5">저장</button>
 			</div>
 		</div>
 	</div>
 </div>
-
+        <!-- 삭제모달 -->
+        <div class="modal fade" id="deleteDeptModal" tabindex="-1">
+          <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+              <div class="modal-header border-0">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+		        <div class="col-md-7">
+		            <h3 class="fw-black">정말 삭제하시겠습니까?</h3>
+		            <div class="modal fade" id="exampleModalLg" tabindex="-1" aria-labelledby="exampleModalLgLabel" aria-hidden="true">
+		              <div class="modal-dialog modal-lg">
+		                <div class="modal-content">
+		                  <div class="modal-header">
+		                    <h5 class="modal-title h4" id="exampleModalLgLabel">Large modal</h5>
+		                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		                  </div>
+		                  <div class="modal-body">
+		                    ...
+		                  </div>
+		                </div>
+		              </div>
+		            </div>
+		          </div>
+          		</div>
+              <div class="modal-footer border-0">
+	              <button type="button" class="btn btn-light delete" data-bs-dismiss="modal">취소</button>
+	              <form name="delete_dept">
+	              	<button type="submit" class="btn btn-primary px-5">삭제</button>
+	              </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 삭제모달 끝 -->
 <!-- bottom.jsp -->
 <%@include file="../../common/bottom.jsp"%>
 
 <script type="text/javascript">
-$(function(){
-	alert("/basicinfo/department/list.jsp");
-	document.getElementById('member').click();
-	
-	/* Modal이 등록 혹은 수정 상황에 맞게 만들어져 보여지도록 하는 코드 */
-	var modal = $(".modal");
-	
-	$("#addDepartmentBtn").on("click", function(e){
-		modal.find("#modal-title").text("부서등록");
-		//modal.find("button[id = 'modalUpdateBtn']").hide();		// Close 버튼을 제외한 나머지를 숨김
-		modal.find("button[id != 'modalUpdateBtn']").show();
-		$("#no").closest("div").hide();							// 사용자에게 입력받을 부분이 아니므로 숨김
-		$(".modal").modal("show");
+
+	$(function(){
+		/* 왼쪽 카테고리창이 해당화면에 맞게 펼쳐지게 하는 코드 */
+		document.getElementById('basicinfo').click();
 	});
-	
-	$(".editDepartmentBtn").on("click", function(e){
-		modal.find("#modal-title").text("부서수정");
-		modal.find("button[id = 'modalRegisterBtn']").hide();	// Close 버튼을 제외한 나머지를 숨김
-		modal.find("button[id != 'modalRegisterBtn']").show();
-		$("#no").closest("div").show();							// 사용자에게 입력받을 부분이 아니므로 숨김
+
+
+
+	(function() {
 		
+		const title = document.querySelector('.modal-title');
+		const body = document.querySelector('body');
 		
-		$("#no").val($(this).data("no"));           
-		$("#code").val("bbb");
-		$("#name").val("ccc");
-		
-		
-		$(".modal").modal("show");
-	});
-	
-	/* Modal에서 등록/수정 버튼이 눌렸을 때, Modal내의 form 태그에 action 속성값을 추가하고 submit 처리하는 코드 */
-	var modalForm = $("#modalForm");
-	
-	$("#modalRegisterBtn").on("click", function(){
-		modalForm.attr("action", "/basicinfo/department/add").submit();
-	});
-	
-	$("#modalUpdateBtn").on("click", function(){
-		modalForm.attr("action", "/basicinfo/department/modify").submit();
-	});
-	
-	var modalInputCode = modal.find("input[name='code']");
-	var modalInputName = modal.find("input[name='name']");
-	
-	
-	/* 새로운 부서 등록 */
-	var modalRegisterBtn = $("#modalRegisterBtn");
-	
-	modalRegisterBtn.on("click", function(e){
-		
-	//Modal 내의 input 태그 값들을 읽어와 객체 생성
-	var obj = {
-		reply : modalInputCode.val(),
-		replyer : modalInputName.val(),
-	};
-	
-		
-		/* replyService.add(reply, function(result){
-			alert(result);
+		// 부서 등록
+		document.querySelector('.insert').addEventListener('click', event => {
+			title.innerHTML = '부서등록';
 			
-			modal.find("input").val("");
-			modal.modal("hide");
+			const form_control = document.querySelectorAll('.form-control');
+			Array.from(form_control, elem => {
+				elem.value = '';
+			});
 			
-			//showList(1); // 댓글목록 갱신
-			showList(-1);
-		}); */
+			modalForm.action = 'insert';
+		});
 		
-	});
-});
+		// 부서 수정
+		document.querySelectorAll('.update').forEach(elem => {
+			elem.addEventListener('click', event => {
+				title.innerHTML = '부서수정';
+				
+				let target = event.target;
+				target = target.nodeName == 'BUTTON' ? target : target.nodeName == 'svg' ? target.parentElement : target.parentElement.parentElement;
+				const no = target.dataset.no;
+				
+				const rankInfo = Array.from(document.querySelector('.dept-' + no).children);
+				const [code, name] = rankInfo.slice(2, 4);
+				
+				modalForm.code.value = code.innerHTML;
+				modalForm.name.value = name.innerHTML;
+				
+				if(!modalForm.no) {
+					const input = document.createElement('input');
+					input.type = 'hidden';
+					input.name = 'no';
+					modalForm.append(input);
+				}
+				modalForm.no.value = no;
+				
+				modalForm.action = 'update';
+			});
+		})
+		
+		// 부서 삭제
+		document.querySelectorAll('.delete').forEach(elem => {
+			elem.addEventListener('click', (event) => {
+				
+					let target = event.target;
+					target = target.nodeName == 'BUTTON' ? target : target.nodeName == 'svg' ? target.parentElement : target.parentElement.parentElement;
+					const dataset = target.dataset;
+					const no = dataset.no;
+					
+					delete_dept.action = 'delete/' + no;
+			});
+		});
+		
+	})();
 </script>

@@ -252,7 +252,7 @@
 	
 	$(function(){
 	/* 메뉴바가 클릭되게 하기 위해 */
-	document.getElementById('member').click();
+	document.getElementById('basicinfo').click();
 	
 	
 	/* 거래처 등록 눌렀을 때  */

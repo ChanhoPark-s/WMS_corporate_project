@@ -1,12 +1,20 @@
 package com.basicinfo.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.spring.domain.RankVO;
+import com.spring.service.RankService;
+
 
 @Controller
 @RequestMapping("/basicinfo/rank/*")
@@ -14,15 +22,38 @@ public class RankController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(RankController.class);
 
-	//@Autowired
-	//private BoardService service;
+	@Autowired
+	private RankService service;
 
 	@GetMapping(value="/list")
-	public void home(Model model) {				
-		//model.addAttribute("item", service.get(1L));
+	public void list(Model model) {				
 		
-		logger.info("/basicinfo/rank/list.jsp 반환");
+		List<RankVO> ranks = service.list();
+		model.addAttribute("ranks", ranks);
+	}
+	
+	@PostMapping(value="insert")
+	public String insert(Model model, RankVO rank) {
 		
-		//return "list"; //요청 url과 반환해줄 jsp 파일의 이름이 일치하면 해당 함수는 void 타입이어도 된다. views/basicinfo/department/list.jsp 가 반환됨
+		service.insert(rank);
+		return "redirect:list";
+	}
+	
+	@PostMapping(value="update")
+	public String update(Model model, RankVO rank) {
+		
+		service.update(rank);
+		return "redirect:list";
+	}
+	
+	@GetMapping(value="delete/{no}")
+	public String delete(Model model, RankVO rank, @PathVariable(value="no") int no) {
+		
+		service.delete(no);
+		return "redirect:/basicinfo/rank/list";
+	}
+	
+	public List<RankVO> getRankList(Model model) {				
+		return service.list();
 	}
 }
