@@ -43,12 +43,14 @@ public class ClientController {
 			@RequestParam(required = false,value="pageNumber")String pageNumber,
 			Model model,HttpServletRequest request) {				
 		
+		System.out.println("내가확인 : whatCloumn:"+whatColumn);
+		System.out.println("내가확인 : keyword:"+keyword);
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("whatColumn", whatColumn);
 		map.put("keyword", "%"+keyword+"%");
 		
 		int totalCount = service.getTotalCount(map);
-		System.out.println("totalCount : "+totalCount);
+		System.out.println("내가확인 : totalCount : "+totalCount);
 		
 		String url = request.getContextPath()+"/list";
 

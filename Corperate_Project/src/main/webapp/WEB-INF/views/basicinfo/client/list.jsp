@@ -36,22 +36,22 @@
 				</button>
 			</div>
 			<form name="search" action="/basicinfo/client/list">
-			<select id="inputState" name="search" class="form-select" style="width: 200px;">
+			<select id="inputState" name="whatColumn" class="form-select" style="width: 200px;" >
                   <option selected>검색 선택</option>
-                  <option>거래처코드</option>
-                  <option>분류</option>
-                  <option>거래처명</option>
-                  <option>대표자명</option>
-                  <option>전화번호</option>
-                  <option>팩스번호</option>
-                  <option>은행명</option>
-                  <option>은행계좌</option>
-                  <option>우편번호</option>
-                  <option>주소</option>
-                  <option>이메일</option>
+                  <option value="거래처코드">거래처코드</option>
+                  <option value="분류">분류</option>
+                  <option value="거래처명">거래처명</option>
+                  <option value="대표자명">대표자명</option>
+                  <option value="전화번호">전화번호</option>
+                  <option value="팩스번호">팩스번호</option>
+                  <option value="은행명">은행명</option>
+                  <option value="은행계좌">은행계좌</option>
+                  <option value="우편번호">우편번호</option>
+                  <option value="주소">주소</option>
+                  <option value="이메일">이메일</option>
               </select>
-				<input type="text" class="form-control" placeholder="입력" style="width: 200px; height: 38px;">
-				<i class="fa-solid fa-magnifying-glass" id="searchIcon"></i>
+				<input type="text" name="keyword" class="form-control" placeholder="입력" style="width: 200px; height: 38px;">
+				<i class="fa-solid fa-magnifying-glass" id="searchIcon" onclick="searchForm()"></i>
 				</form>
 		</div>
 		<div class="table-responsive my-1">
@@ -387,5 +387,11 @@
 	}
 	
 	/* 유효성검사 */
+	
+	
+	/* 검색 */
+	function searchForm(){
+		search.submit();
+	}
 	
 </script>
