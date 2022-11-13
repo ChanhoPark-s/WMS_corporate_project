@@ -38,17 +38,18 @@
 			<form name="search" action="/basicinfo/client/list">
 			<select id="inputState" name="whatColumn" class="form-select" style="width: 200px;" >
                   <option selected>검색 선택</option>
-                  <option value="거래처코드">거래처코드</option>
-                  <option value="분류">분류</option>
-                  <option value="거래처명">거래처명</option>
-                  <option value="대표자명">대표자명</option>
-                  <option value="전화번호">전화번호</option>
-                  <option value="팩스번호">팩스번호</option>
-                  <option value="은행명">은행명</option>
-                  <option value="은행계좌">은행계좌</option>
-                  <option value="우편번호">우편번호</option>
-                  <option value="주소">주소</option>
-                  <option value="이메일">이메일</option>
+                  <option value="code">거래처코드</option>
+                  <option value="category">분류</option>
+                  <option value="name">거래처명</option>
+                  <option value="owner">대표자명</option>
+                  <option value="tel">전화번호</option>
+                  <option value="fax">팩스번호</option>
+                  <option value="bank">은행명</option>
+                  <option value="account">은행계좌</option>
+                  <option value="zipcode">우편번호</option>
+                  <option value="address1">주소</option>
+                  <option value="address2">상세주소</option>
+                  <option value="email">이메일</option>
               </select>
 				<input type="text" name="keyword" class="form-control" placeholder="입력" style="width: 200px; height: 38px;">
 				<i class="fa-solid fa-magnifying-glass" id="searchIcon" onclick="searchForm()"></i>
@@ -125,6 +126,7 @@
 				</tbody>
 			</table>
 		</div>
+		${pageInfo.pagingHtml}
 		<nav aria-label="Page navigation borderless example">
 			<ul class="pagination pagination-borderless justify-content-end">
 				<li class="page-item disabled"><a

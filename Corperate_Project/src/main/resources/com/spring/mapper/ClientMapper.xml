@@ -6,14 +6,7 @@
 <mapper namespace="com.spring.mapper.ClientMapper">
   
 	<select id="GetAll" resultType="com.spring.domain.ClientVO" parameterType="string">
-		select * from client
-		<if test="value == 1">
-		where category = #{value}
-		</if>
-		<if test="value == 0">
-		where category = #{value} 
-		</if>
-		order by no desc
+		select * from client order by no desc LIMIT #{
 	</select>
 
 	<insert id="insert">
@@ -33,19 +26,19 @@
 		delete client where no = #{value}
 	</delete>
 	
-	<select id="getAllCount" resultType="int">
+	<select id="getTotalCount" resultType="int">
 		select count(*) from client 
-		<if test="whatCloumn=='code'">where code= #{keyword}</if>
-		<if test="whatCloumn=='category'">where category= #{keyword}</if>
-		<if test="whatCloumn=='name'">where name= #{keyword}</if>
-		<if test="whatCloumn=='owner'">where owner= #{keyword}</if>
-		<if test="whatCloumn=='tel'">where tel= #{keyword}</if>
-		<if test="whatCloumn=='fax'">where fax= #{keyword}</if>
-		<if test="whatCloumn=='bank'">where bank= #{keyword}</if>
-		<if test="whatCloumn=='account'">where account= #{keyword}</if>
-		<if test="whatCloumn=='zipcode'">where zipcode= #{keyword}</if>
-		<if test="whatCloumn=='address1'">where address1= #{keyword}</if>
-		<if test="whatCloumn=='address2'">where address2= #{keyword}</if>
-		<if test="whatCloumn=='email'">where email= #{keyword}</if>
+		<if test="whatColumn=='code'">where code like #{keyword}</if>
+		<if test="whatColumn=='category'">where category like #{keyword}</if>
+		<if test="whatColumn=='name'">where name like #{keyword}</if>
+		<if test="whatColumn=='owner'">where owner like #{keyword}</if>
+		<if test="whatColumn=='tel'">where tel like #{keyword}</if>
+		<if test="whatColumn=='fax'">where fax like #{keyword}</if>
+		<if test="whatColumn=='bank'">where bank like #{keyword}</if>
+		<if test="whatColumn=='account'">where account like #{keyword}</if>
+		<if test="whatColumn=='zipcode'">where zipcode like #{keyword}</if>
+		<if test="whatColumn=='address1'">where address1 like #{keyword}</if>
+		<if test="whatColumn=='address2'">where address2 like #{keyword}</if>
+		<if test="whatColumn=='email'">where email like #{keyword}</if>
 	</select>
 </mapper>
