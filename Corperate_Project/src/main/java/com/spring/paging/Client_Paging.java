@@ -6,7 +6,6 @@ public class Client_Paging {
 	private int totalPage = 0 ; //전체 페이지 수
 	private int pageNumber = 0 ; //보여줄 페이지 넘버(표현 가능한 페이지는 1부터 totalPage까지이다.)
 	private int pageSize = 0 ; //한 페이지에 보여줄 건수
-	//private String _pageSize; //현재 페이지의 시작 행
 	private int beginRow = 0 ; //현재 페이지의 시작 행
 	private int endRow = 0 ; //현재 페이지의 끝 행
 	private int pageCount = 3 ; // 한 화면에 보여줄 페이지 링크 수 (페이지 갯수)
@@ -194,7 +193,7 @@ public class Client_Paging {
 		this.pageNumber = Integer.parseInt( _pageNumber ) ; 
 
 		if( _pageSize == null || _pageSize.equals("null") || _pageSize.equals("") ){
-			_pageSize = "2" ; // 한 페이지에 보여줄 레코드 갯수
+			_pageSize = "10" ; // 한 페이지에 보여줄 레코드 갯수
 		}		
 		this.pageSize = Integer.parseInt( _pageSize ) ;
 		
@@ -204,6 +203,10 @@ public class Client_Paging {
 
 		this.totalPage = (int)Math.ceil((double)this.totalCount / this.pageSize) ;
 		// 5/2 double 돼서 2.5 ceil(올림) = 3 
+		
+		if( this.pageNumber > this.totalPage ){
+			this.pageNumber = this.totalPage ;
+		}
 		
 		this.beginRow = ( this.pageNumber - 1 )  * this.pageSize ;
 
@@ -229,17 +232,15 @@ public class Client_Paging {
 		String result = "" ;
 		String added_param = "&whatColumn=" + whatColumn + "&keyword=" + keyword ; 
 		
-		
-		
 		if (this.beginPage != 1) { // 앞쪽, pageSize:한 화면에 보이는 레코드 수
 			result += "&nbsp;<a href='" + url  
 					+ "?pageNumber=" + ( 1 ) + "&pageSize=" + this.pageSize 
-					+ added_param + "'>맨 처음</a>&nbsp;" ;
+					+ added_param + "'><i class='fa-solid fa-angles-left'></i></a>&nbsp;" ;
 			result += "&nbsp;<a href='" + url 
 					+ "?pageNumber=" + (this.beginPage - 1 ) + "&pageSize=" + this.pageSize 
-					+ added_param + "'>이전</a>&nbsp;" ;
+					+ added_param + "'><i class='fa-solid fa-chevron-left'></i></a>&nbsp;" ;
 		}
-		
+
 		//가운데
 		for (int i = this.beginPage; i <= this.endPage ; i++) {
 			if ( i == this.pageNumber ) {
@@ -257,21 +258,14 @@ public class Client_Paging {
 			
 			result += "&nbsp;<a href='" + url  
 					+ "?pageNumber=" + (this.endPage + 1 ) + "&pageSize=" + this.pageSize 
-					+ added_param + "'>다음</a>&nbsp;" ;
+					+ added_param + "'><i class='fa-solid fa-chevron-right'></i></a>&nbsp;" ;
 			
 			result += "&nbsp;<a href='" + url  
 					+ "?pageNumber=" + (this.totalPage ) + "&pageSize=" + this.pageSize 
-					+ added_param + "'>맨 끝</a>&nbsp;" ;
+					+ added_param + "'><i class='fa-solid fa-angles-right'></i></a>&nbsp;" ;
 		}		
 		
 		return result ;
 	}	
 	
 }
-
-
-//----------------------------------------------------------------------------------------
-//----------------------------------------------------------------------------------------
-//----------------------------------------------------------------------------------------
-
-

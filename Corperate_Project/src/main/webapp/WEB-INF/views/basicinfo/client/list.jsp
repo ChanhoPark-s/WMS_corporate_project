@@ -1,9 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+			
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
 <style>
- #searchIcon{
- 	position: inherit;
- }
+.btn_search{
+  cursor : pointer;
+  position : absolute;
+  right : 7px;
+  top : 50%;
+  transform : translatey(-50%);
+}
+#search{
+  position : relative;
+}
 </style>
 
 
@@ -35,25 +46,37 @@
 					수주처
 				</button>
 			</div>
-			<form name="search" action="/basicinfo/client/list">
-			<select id="inputState" name="whatColumn" class="form-select" style="width: 200px;" id="whatColumn" >
-                  <option selected>검색 선택</option>
-                  <option value="code">거래처코드</option>
-                  <option value="category">분류</option>
-                  <option value="name">거래처명</option>
-                  <option value="owner">대표자명</option>
-                  <option value="tel">전화번호</option>
-                  <option value="fax">팩스번호</option>
-                  <option value="bank">은행명</option>
-                  <option value="account">은행계좌</option>
-                  <option value="zipcode">우편번호</option>
-                  <option value="address1">주소</option>
-                  <option value="address2">상세주소</option>
-                  <option value="email">이메일</option>
-              </select>
-				<input type="text" name="keyword" id="keyword" class="form-control" placeholder="입력" style="width: 200px; height: 38px;">
-				<i class="fa-solid fa-magnifying-glass" id="searchIcon" onclick="searchForm()"></i>
+			
+			
+			
+			<div class="search">
+			<form name="search" action="/basicinfo/client/list" id="search">
+			<table>
+			<tr>
+				<td>
+					<select id="inputState" name="whatColumn" class="form-select" style="width: 200px;" id="whatColumn" >
+	                  <%
+	                  String[] search = {"code","category","name","owner","tel","fax","bank","account","zipcode","address1","address2","email"};
+	                  String[] cate = {"거래처코드","분류","거래처명","대표자명","전화번호","팩스번호","은행명","은행계좌","우편번호","주소","상세주소","이메일"};
+	                  %>
+	                  <c:set value="<%=search %>" var="s"></c:set>
+	                  <c:set value="<%=cate %>" var="c"></c:set>
+	                  <option>검색 선택</option>
+	                  <c:forEach begin="0" end="11" var="i">
+	                  <option value="${s[i] }"<c:if test="${searchvo.whatColumn== s[i] }">selected</c:if>>${c[i] }</option>
+	                  </c:forEach>
+	              </select>
+				</td>
+				<td>
+					<input type="text"  name="keyword" id="keyword" class="form-control" value=<c:if test="${searchvo.keyword=='null' }">""</c:if><c:if test="${searchvo.keyword!=null }">"${searchvo.keyword }"</c:if> placeholder="입력" style="width: 200px; height: 38px;">
+				</td>
+				<td>
+					<i class="fa-solid fa-magnifying-glass btn_search" id="searchIcon" onclick="searchForm()"></i>
+				</td>
+			</tr>	
+			</table>
 				</form>
+			</div>
 		</div>
 		<div class="table-responsive my-1">
 			<table class="table align-middle">
@@ -75,8 +98,8 @@
 				<tbody id="table_insert">
 					<!-- 여기에 넣어야함 테이블 -->
 					<c:if test="${fn:length(list)==0 }">
-					<tr>
-						<td colspan="7" align="center">검색된 결과가 없습니다</td>
+					<tr height="400px">
+						<td colspan="7" align="center"><br><br><i class="fa-regular fa-circle-xmark fa-4x"></i><br><br>검색된 결과가 없습니다</td>
 					</tr>
 					</c:if>
 					<c:forEach var="item" items="${list }">
@@ -131,37 +154,9 @@
 				</tbody>
 			</table>
 		</div>
-		${pageInfo.pagingHtml}
-		<nav aria-label="Page navigation borderless example">
-			<ul class="pagination pagination-borderless justify-content-end">
-				<li class="page-item disabled"><a
-					class="page-link d-flex align-items-center px-2" href="#"
-					tabindex="-1" aria-disabled="true" aria-label="Previous"> <svg
-							width="20" height="20" xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd"
-								d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-								clip-rule="evenodd"></path>
-                    </svg>
-				</a></li>
-				<li class="page-item active" aria-current="page"><a
-					class="page-link" href="javascript:void(0)">1</a></li>
-				<li class="page-item"><a class="page-link"
-					href="javascript:void(0)">2</a></li>
-				<li class="page-item"><a class="page-link"
-					href="javascript:void(0)">3</a></li>
-				<li class="page-item"><a
-					class="page-link d-flex align-items-center px-2"
-					href="javascript:void(0)" aria-label="Next"> <svg width="20"
-							height="20" xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd"
-								d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-								clip-rule="evenodd"></path>
-                    </svg>
-				</a></li>
-			</ul>
-		</nav>
+		<div align="center">
+			${pageInfo.pagingHtml}
+		</div>
 	</div>
 </div>
 
@@ -177,6 +172,11 @@
 			</div>
 			<div class="modal-body">
 				<form class="row g-3" id="modalForm" action="" method="post">
+				
+				<!-- 수정했을때도 가게 만들기위해 -->
+				<input type="hidden" name="keyword" id="keyword2">
+				<input type="hidden" name="whatColumn" id="whatColumn">
+             
               <div class="col-sm-5" style="width:250px;">
                 <label for="code" class="form-label">거래처 코드</label>
                 <input type="hidden" name="no" id="no" >
@@ -238,6 +238,8 @@
 	                <label for="email" class="form-label">이메일</label>
 	                <input type="text" class="form-control" id="email" name="email" placeholder="이메일">
 	              </div>
+	          <!-- 수정 했을 때 넘기기 위해 -->
+	          <input type="hidden" name="pageNumber" id="pageNumber" value="${pageInfo.pageNumber }">
             </form>
 			</div>
 			<div class="modal-footer border-0">
@@ -277,7 +279,7 @@
 		clearModal();
 		
 		})
-});
+	})
 	
 	
 	/* 수정버튼을 눌렀을때 */
@@ -286,6 +288,10 @@
 		modal.find("#modal-title").text("거래처 수정");
 		modal.find('#okaybtn').text("수정");
 		
+		/* 수정할때도 검색어 가게 만들기위해 */
+		var whatColumn = $('select option:selected').val();
+		$('input[name="whatColumn"]').val(whatColumn);
+		$('#keyword2').val($('#keyword'));
 		
 		/* 수정으로 가게 만들기 위해 */
 		var modalForm = $("#modalForm");
@@ -343,11 +349,12 @@
 	
 	/* 삭제 버튼 눌렀을 때  */
 	function deleteClient(item_no){
-		var whatColumn = $('select option:selected').val()
+		var whatColumn = $('select option:selected').val();
 		var keyword = $('#keyword').val();
+		var pageNumber = $('#pageNumber').val();
 
 		if(confirm("삭제하시겠습니까?")){
-			location.href="/basicinfo/client/delete?item_no="+item_no+"&whatColumn="+whatColumn+"&keyword="+keyword;
+			location.href="/basicinfo/client/delete?item_no="+item_no+"&whatColumn="+whatColumn+"&keyword="+keyword+"&pageNumber="+pageNumber;
 		}
 		
 	}

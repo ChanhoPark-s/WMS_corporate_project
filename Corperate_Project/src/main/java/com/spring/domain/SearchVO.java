@@ -6,7 +6,6 @@ public class SearchVO {
 	private String pageNumber;
 	private String item_no;
 	
-	
 	public String getPageNumber() {
 		return pageNumber;
 	}

@@ -50,8 +50,6 @@ public class ClientServiceImpl implements ClientService{
 
 	@Override
 	public int getTotalCount(SearchVO searchvo) {
-		 
 		return mapper.getTotalCount(searchvo);
-	} 
-
+	}
 }
