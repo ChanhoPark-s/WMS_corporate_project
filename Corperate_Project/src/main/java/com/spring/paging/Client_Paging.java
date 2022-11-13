@@ -6,6 +6,7 @@ public class Client_Paging {
 	private int totalPage = 0 ; //전체 페이지 수
 	private int pageNumber = 0 ; //보여줄 페이지 넘버(표현 가능한 페이지는 1부터 totalPage까지이다.)
 	private int pageSize = 0 ; //한 페이지에 보여줄 건수
+	//private String _pageSize; //현재 페이지의 시작 행
 	private int beginRow = 0 ; //현재 페이지의 시작 행
 	private int endRow = 0 ; //현재 페이지의 끝 행
 	private int pageCount = 3 ; // 한 화면에 보여줄 페이지 링크 수 (페이지 갯수)
@@ -181,8 +182,11 @@ public class Client_Paging {
 			String url, 
 			String whatColumn, 
 			String keyword,
-			String whologin) {		
+			int beginRow) {		
 
+		System.out.println("Client_Paging에서의 whatColumn:"+whatColumn);
+		System.out.println("Client_Paging에서의 키워드:"+keyword);
+		
 		if(  _pageNumber == null || _pageNumber.equals("null") || _pageNumber.equals("")  ){
 			System.out.println("_pageNumber:"+_pageNumber); // null
 			_pageNumber = "1" ;
@@ -194,37 +198,25 @@ public class Client_Paging {
 		}		
 		this.pageSize = Integer.parseInt( _pageSize ) ;
 		
-		this.limit = pageSize ; // 한 페이지에 보여줄 레코드 갯수
+		//this.limit = pageSize ; // 한 페이지에 보여줄 레코드 갯수
 
 		this.totalCount = totalCount ; 
 
 		this.totalPage = (int)Math.ceil((double)this.totalCount / this.pageSize) ;
 		// 5/2 double 돼서 2.5 ceil(올림) = 3 
 		
-		this.beginRow = ( this.pageNumber - 1 )  * this.pageSize  + 1 ;
-		this.endRow =  this.pageNumber * this.pageSize ;
-		if( this.pageNumber > this.totalPage ){ // 택한 page가 총 페이지보다 크면 마지막 페이지로 가라
-			this.pageNumber = this.totalPage ;
-		}
-		
-		this.offset = ( pageNumber - 1 ) * pageSize ; //몇개를 건너뛰나? 3페이지 눌렀을때 앞에 몇개를 건너뛸 레코드 갯수
-		if( this.endRow > this.totalCount ){
-			this.endRow = this.totalCount  ;
-		}
+		this.beginRow = ( this.pageNumber - 1 )  * this.pageSize ;
 
 		this.beginPage = ( this.pageNumber - 1 ) / this.pageCount * this.pageCount + 1  ;
 		this.endPage = this.beginPage + this.pageCount - 1 ;
-		System.out.println("pageNumber:"+pageNumber+"/totalPage:"+totalPage);	
 		
 		if( this.endPage > this.totalPage ){
 			this.endPage = this.totalPage ;
 		}
 		
-		System.out.println("pageNumber2:"+pageNumber+"/totalPage2:"+totalPage);	
 		this.url = url ; //  /ex/list.ab
 		this.whatColumn = whatColumn ;
 		this.keyword = keyword ;
-		System.out.println("whatColumn:"+whatColumn+"/keyword:"+keyword);
 		
 		this.pagingHtml = getPagingHtml(url) ;// 이변수안에 밑에 페이지 숫자랑 다음 이전 같은걸  문자열로 만들어서 넘겨줌
 	
@@ -232,9 +224,12 @@ public class Client_Paging {
 	
 	private String getPagingHtml( String url ){ //페이징 문자열을 만든다.
 		System.out.println("getPagingHtml url:"+url); 
-		
+		System.out.println("getPagingHtml에서의 whatColumn:"+whatColumn);
+		System.out.println("getPagingHtml에서의 키워드:"+keyword);
 		String result = "" ;
 		String added_param = "&whatColumn=" + whatColumn + "&keyword=" + keyword ; 
+		
+		
 		
 		if (this.beginPage != 1) { // 앞쪽, pageSize:한 화면에 보이는 레코드 수
 			result += "&nbsp;<a href='" + url  
@@ -254,12 +249,10 @@ public class Client_Paging {
 				result += "&nbsp;<a href='" + url   
 						+ "?pageNumber=" + i + "&pageSize=" + this.pageSize 
 						+ added_param + "'>" + i + "</a>&nbsp;" ;
-				
+			 	
 			}
 		}
-		System.out.println("result:"+result);  
-		System.out.println();
-		
+		System.out.println("토탈페이지:"+this.totalPage);
 		if ( this.endPage != this.totalPage) { // 뒤쪽
 			
 			result += "&nbsp;<a href='" + url  
@@ -270,10 +263,15 @@ public class Client_Paging {
 					+ "?pageNumber=" + (this.totalPage ) + "&pageSize=" + this.pageSize 
 					+ added_param + "'>맨 끝</a>&nbsp;" ;
 		}		
-		System.out.println("result2:"+result);
 		
 		return result ;
 	}	
 	
 }
+
+
+//----------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------
+
 

@@ -1,6 +1,5 @@
 package com.basicinfo.controller;
 
-import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -34,28 +33,20 @@ public class ClientController {
 	
 	// getAll
 	@GetMapping(value="/list", produces = "application/text;charset=utf8")
-	public void clientlist(@RequestParam(required = false,value="select")String select,
+	public String clientlist(@RequestParam(required = false,value="select")String select,
 			@RequestParam(required = false,value="pageNumber")String pageNumber,
 			SearchVO searchvo,
 			Model model,HttpServletRequest request) {				
 		
-		searchvo.setKeyword("%"+searchvo.getKeyword()+"%");
-		
-		  
-		// Client getAllCount
 		int totalCount = service.getTotalCount(searchvo);
-		System.out.println("내가확인 : totalCount : "+totalCount);
 		
-		String url = request.getContextPath()+"/list";
-
-		Client_Paging pageInfo = new Client_Paging(pageNumber,"2",totalCount,url,searchvo.getWhatColumn(),searchvo.getKeyword(),null);
-		
-		ArrayList<ClientVO> list = service.GetAll(pageInfo);
+		Client_Paging pageInfo = new Client_Paging(pageNumber,"10",totalCount,"/basicinfo/client/list",searchvo.getWhatColumn(),searchvo.getKeyword(),0);
 		
 		model.addAttribute("pageInfo",pageInfo);
 		model.addAttribute("totalCount",totalCount);
+		model.addAttribute("list",service.GetAll(pageInfo));
 		
-		model.addAttribute("list",list);
+		return redirect+"?whatColumn="+searchvo.getWhatColumn()+"&keyword="+searchvo.getKeyword();
 	}
 	 
 	// insert
@@ -85,11 +76,12 @@ public class ClientController {
 	
 	//delete one
 	@GetMapping("/delete")
-	public String delete(@RequestParam("item_no")String item_no) {
+	public String delete(@RequestParam("item_no")String item_no,
+			SearchVO searchvo) {
 		
 		service.deleteOne(item_no);
 		
-		return redirect;
+		return redirect+"?whatColumn="+searchvo.getWhatColumn()+"&keyword="+searchvo.getKeyword();
 	}
 	
 }

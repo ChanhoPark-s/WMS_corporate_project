@@ -36,7 +36,7 @@
 				</button>
 			</div>
 			<form name="search" action="/basicinfo/client/list">
-			<select id="inputState" name="whatColumn" class="form-select" style="width: 200px;" >
+			<select id="inputState" name="whatColumn" class="form-select" style="width: 200px;" id="whatColumn" >
                   <option selected>검색 선택</option>
                   <option value="code">거래처코드</option>
                   <option value="category">분류</option>
@@ -51,7 +51,7 @@
                   <option value="address2">상세주소</option>
                   <option value="email">이메일</option>
               </select>
-				<input type="text" name="keyword" class="form-control" placeholder="입력" style="width: 200px; height: 38px;">
+				<input type="text" name="keyword" id="keyword" class="form-control" placeholder="입력" style="width: 200px; height: 38px;">
 				<i class="fa-solid fa-magnifying-glass" id="searchIcon" onclick="searchForm()"></i>
 				</form>
 		</div>
@@ -74,6 +74,11 @@
 				</thead>
 				<tbody id="table_insert">
 					<!-- 여기에 넣어야함 테이블 -->
+					<c:if test="${fn:length(list)==0 }">
+					<tr>
+						<td colspan="7" align="center">검색된 결과가 없습니다</td>
+					</tr>
+					</c:if>
 					<c:forEach var="item" items="${list }">
 					<tr>
 						<td>
@@ -338,9 +343,11 @@
 	
 	/* 삭제 버튼 눌렀을 때  */
 	function deleteClient(item_no){
-		
+		var whatColumn = $('select option:selected').val()
+		var keyword = $('#keyword').val();
+
 		if(confirm("삭제하시겠습니까?")){
-			location.href="/basicinfo/client/delete?item_no="+item_no;
+			location.href="/basicinfo/client/delete?item_no="+item_no+"&whatColumn="+whatColumn+"&keyword="+keyword;
 		}
 		
 	}
