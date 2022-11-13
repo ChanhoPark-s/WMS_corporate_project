@@ -5,7 +5,14 @@ public class SearchVO {
 	private String keyword;
 	private String pageNumber;
 	private String item_no;
+	private String category;
 	
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
+	}
 	public String getPageNumber() {
 		return pageNumber;
 	}

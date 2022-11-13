@@ -18,11 +18,15 @@ public class Client_Paging {
 	
 	private String whatColumn = "" ; //검색 모드(작성자, 글제목, 전체 검색은 all) 등등
 	private String keyword = "" ; //검색할 단어 
-
-	public int getTotalCount() {
-		return totalCount;
+	
+	// 검색하기위해 쓰는데 왜 여기 써야하는지 모르겠음;;
+	private String category;
+	public String getCategory() {
+		return category;
 	}
-
+	public void setCategory(String category) {
+		this.category = category;
+	}
 
 	public void setTotalCount(int totalCount) {
 		this.totalCount = totalCount;

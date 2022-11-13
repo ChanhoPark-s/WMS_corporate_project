@@ -25,8 +25,8 @@
 <div class="card">
 	<div class="card-body">
 		<div class="d-flex gap-1 mb-4 flex-wrap">
-			<div class="d-flex gap-1 me-auto flex-wrap">
-				<button id="insert_btn"
+			<div class="d-flex gap-1 me-auto flex-wrap" style="height: 20px;">
+				<button id="insert_btn" onclick="insert_btn()"
 					class="btn btn-primary d-inline-flex align-items-center gap-1"
 					data-bs-toggle="modal" data-bs-target="#ClientModal">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
@@ -37,11 +37,11 @@
                   </svg>
 					거래처 등록
 				</button>
-				<button class="btn btn-light d-inline-flex align-items-center gap-1" onclick="location.href='/basicinfo/client/list?select=1'">
+				<button class="btn btn-light d-inline-flex align-items-center gap-1" onclick="location.href='/basicinfo/client/list?category=발주처'">
 				<svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 150 150"><path d="m137 40-5-1H55c-3 1-5 4-5 7 0 4 3 8 7 8h68l-6 31c-1 4-4 6-7 6H55c-3 0-6-2-7-6L36 30c-2-7-8-12-15-12h-5a8 8 0 0 0 0 15h5l12 55c2 11 11 18 22 18h57c9 0 18-6 21-15l4-18 3-19 1-4 1-4c0-3-2-6-5-6Zm-99 81a11 11 0 1 0 23 0 11 11 0 0 0-23 0Zm68 0a11 11 0 1 0 22 0 11 11 0 0 0-22 0Zm0 0" style="stroke:none;fill-rule:nonzero;fill:#000;fill-opacity:1"/></svg>
 					발주처
 				</button>
-				<button class="btn btn-light d-inline-flex align-items-center gap-1" onclick="location.href='/basicinfo/client/list?select=0'">
+				<button class="btn btn-light d-inline-flex align-items-center gap-1" onclick="location.href='/basicinfo/client/list?category=수주처'">
 				<svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 384 384"><path d="m91 102-11 11a8 8 0 1 0 11 11l11-11a8 8 0 0 0-11-11ZM52 141l-7 7a8 8 0 1 0 11 11l7-7a8 8 0 0 0-11-11Zm0 0" style="stroke:none;fill-rule:nonzero;fill:#000;fill-opacity:1"/><path d="m382 138-90-90c-3-3-8-3-11 0l-37 37a8 8 0 0 0 0 11l3 3-10 11c-4 4-9 6-16 7h-62c-4 0-8 1-11 4l-5-5 3-3a8 8 0 0 0 0-11l-43-43c-3-3-8-3-11 0L2 149a8 8 0 0 0 0 11l43 43a8 8 0 0 0 11 0l3-3 11 11c4 4 7 9 9 14v1c3 7 7 13 12 18l87 87a23 23 0 0 0 38-7 23 23 0 0 0 30-12 23 23 0 0 0 31-31l6-5h1c8-9 8-23 0-32l-1-1 15-14c4-5 10-12 13-20l1-1 8-13 12-12 2 3a8 8 0 0 0 11 0l37-37c3-3 3-8 0-11ZM53 184l-2 2-32-32 79-79 32 32-3 3Zm220 81h-1c-2 3-7 3-10 0a278015 278015 0 0 0-48-47 8 8 0 0 0-8 13l56 57c2 3 2 7 0 9-3 3-8 3-11 0l-60-60a8 8 0 0 0-11 0 8 8 0 0 0 0 11l51 51a7 7 0 0 1-6 11l-5-2-56-56a8 8 0 0 0-11 11l48 48c1 3 1 7-1 9-3 3-8 3-11 0l-87-87c-4-4-7-8-8-13l-1-1c-3-7-7-13-12-18l-11-12 62-62 8 7v3c0 16 13 29 29 29h15l89 89c2 3 2 7 0 10Zm36-81c-5 5-9 11-12 18v1c-2 4-6 11-10 15l-15 14-41-41c14 0 22-4 23-4l-7-14s-12 5-33 1l-22-21c-1-2-3-2-5-2h-18c-7 0-14-7-14-14 0-3 2-4 4-4l63-1h1c10-1 18-5 24-11l11-11 63 62Zm31-15-3-2-73-74-3-3 25-25 79 79Zm0 0" style="stroke:none;fill-rule:nonzero;fill:#000;fill-opacity:1"/></svg>
 					수주처
 				</button>
@@ -62,13 +62,13 @@
 	                  <c:set value="<%=search %>" var="s"></c:set>
 	                  <c:set value="<%=cate %>" var="c"></c:set>
 	                  <option>검색 선택</option>
-	                  <c:forEach begin="0" end="11" var="i">
-	                  <option value="${s[i] }"<c:if test="${searchvo.whatColumn== s[i] }">selected</c:if>>${c[i] }</option>
-	                  </c:forEach>
+	                  	<c:forEach begin="0" end="11" var="i">
+	                  		<option value="${s[i] }"<c:if test="${searchvo.whatColumn== s[i] }">selected</c:if>>${c[i] }</option>
+	                  	</c:forEach>
 	              </select>
 				</td>
 				<td>
-					<input type="text"  name="keyword" id="keyword" class="form-control" value=<c:if test="${searchvo.keyword=='null' }">""</c:if><c:if test="${searchvo.keyword!=null }">"${searchvo.keyword }"</c:if> placeholder="입력" style="width: 200px; height: 38px;">
+					<input type="text"  name="keyword" id="keyword" class="form-control" value=<c:if test="${searchvo.keyword=='null' }"></c:if><c:if test="${searchvo.keyword!='null' }">"${searchvo.keyword }"</c:if>  placeholder="입력" style="width: 200px; height: 38px;">
 				</td>
 				<td>
 					<i class="fa-solid fa-magnifying-glass btn_search" id="searchIcon" onclick="searchForm()"></i>
@@ -257,15 +257,16 @@
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js?autoload=false"></script>
 <script type="text/javascript">
 	var modal = $(".modal");
-
 	
 	$(function(){
 	/* 메뉴바가 클릭되게 하기 위해 */
 	document.getElementById('basicinfo').click();
 	
+	})
 	
 	/* 거래처 등록 눌렀을 때  */
-	$('#insert_btn').on("click",function(){
+	function insert_btn(){
+		clearModal();
 		
 		modal.find("#modal-title").text("거래처 등록");
 		modal.find('#okaybtn').text("등록");
@@ -276,11 +277,8 @@
 		})
 		
 		/* 싹 지우고 시작 */
-		clearModal();
 		
-		})
-	})
-	
+	}
 	
 	/* 수정버튼을 눌렀을때 */
 	function updateClient(item_no){
@@ -291,7 +289,7 @@
 		/* 수정할때도 검색어 가게 만들기위해 */
 		var whatColumn = $('select option:selected').val();
 		$('input[name="whatColumn"]').val(whatColumn);
-		$('#keyword2').val($('#keyword'));
+		$('#keyword2').val($('#keyword').val());
 		
 		/* 수정으로 가게 만들기 위해 */
 		var modalForm = $("#modalForm");
