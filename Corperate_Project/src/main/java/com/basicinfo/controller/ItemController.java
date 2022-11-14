@@ -1,7 +1,5 @@
 package com.basicinfo.controller;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -12,12 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
 import com.spring.domain.ClientVO;
@@ -44,11 +40,11 @@ public class ItemController {
 	
 	//조회
 	@GetMapping(value="/list")
-	public void itemlist(Model model, @RequestParam(required = false,value="select")String select) {	
+	public void itemlist(Model model) {	
 		List<ItemVO> lists = service.selectAll();
 		model.addAttribute("lists", lists);
 		
-		List<ClientVO> clientList = clientService.GetAll(select);
+		List<ClientVO> clientList = clientService.GetAllClient();
 		model.addAttribute("clientList", clientList);
 		
 	}
@@ -78,9 +74,9 @@ public class ItemController {
 	
 	//수정
 	@PostMapping(value="/update")
-	public String update(Model model,ItemVO vo, @RequestParam("no") String no) throws Exception {
+	public String update(Model model,ItemVO vo, @RequestParam("no") int no) throws Exception {
 		
-		vo.setNo(Integer.parseInt(no));
+		vo.setNo(no);
 		service.update(vo);
 		return "redirect:/basicinfo/item/list";
 	}

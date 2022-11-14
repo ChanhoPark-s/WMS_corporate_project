@@ -10,6 +10,7 @@
 		from item i
 		inner join client c
 		on i.client_no=c.no
+		order by 1
 	</select>
 	<insert id="insert">
 		insert into item

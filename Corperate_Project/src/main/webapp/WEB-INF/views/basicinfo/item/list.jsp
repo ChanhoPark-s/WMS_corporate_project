@@ -152,6 +152,7 @@
 			<div class="modal-body">
 				<form class="needs-validation" id="modalForm" enctype="multipart/form-data" method="post" >
 					<div>
+					<input type="hidden" name="no" id="no">
                 <label for="upload" class="form-label">이미지</label>
                 <input class="form-control" type="file" id="upload" name="upload" value="${item.image }">
               		</div>
@@ -198,6 +199,11 @@
 <%@include file="../../common/bottom.jsp"%>
 
 <script type="text/javascript">
+$(function(){
+	/* 왼쪽 카테고리창이 해당화면에 맞게 펼쳐지게 하는 코드 */
+    document.getElementById('basicinfo').click();
+})
+
 $('#insertBtn').on("click",function(){
 	alert("아....");
 	$(".modal").find("#modal-title").text("등록하기");
@@ -220,10 +226,8 @@ function deleteItem(no){
 
 //수정
 function update(no){
-	alert(no);
 	$(".modal").find("#modal-title").text("수정하기");
 	$(".modal").find('#modaladdBtn').text("수정");
-	alert("제발");
 	
 	var taskForm = $("#modalForm");
 	$('#modaladdBtn').click(function(){
@@ -231,21 +235,28 @@ function update(no){
 	})
 	$.ajax({
 			url : "/basicinfo/item/get",
+			type : 'post',
 			data : {  
 				no : no 
 			},
-			type : 'post',
+			datatype : 'json',
 			success : function(data){
 				const parse = JSON.parse(data);
 				
-				document.getElementById('image').value=parse.image;
+				alert(parse.no)
+				alert(parse.upload);
+				alert(parse.code);
+				alert(parse.name);
+				alert(parse.in_price);
+				alert(parse.out_price);
+				/*document.getElementById('no').value=parse.no;
+				 document.getElementById('upload').value=parse.upload;
 				document.getElementById('code').value=parse.code;
-				document.getElementById('client_no').value=parse.client_no;
 				document.getElementById('name').value=parse.name;
 				document.getElementById('in_price').value=parse.in_price;
-				document.getElementById('out_price').value=parse.out_price;
+				document.getElementById('out_price').value=parse.out_price; */
 			}
 		});
 	
-};
+}
 </script>

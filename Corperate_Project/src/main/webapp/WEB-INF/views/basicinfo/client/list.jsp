@@ -1,9 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+			
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
 <style>
- #searchIcon{
- 	position: inherit;
- }
+.btn_search{
+  cursor : pointer;
+  position : absolute;
+  right : 7px;
+  top : 50%;
+  transform : translatey(-50%);
+}
+#search{
+  position : relative;
+}
 </style>
 
 
@@ -14,8 +25,8 @@
 <div class="card"> 
 	<div class="card-body"> 
 		<div class="d-flex gap-1 mb-4 flex-wrap">
-			<div class="d-flex gap-1 me-auto flex-wrap">
-				<button id="insert_btn"
+			<div class="d-flex gap-1 me-auto flex-wrap" style="height: 20px;">
+				<button id="insert_btn" onclick="insert_btn()"
 					class="btn btn-primary d-inline-flex align-items-center gap-1"
 					data-bs-toggle="modal" data-bs-target="#ClientModal">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
@@ -28,31 +39,46 @@
 				</button>
 				<button class="btn btn-light d-inline-flex align-items-center gap-1" onclick="location.href='/basicinfo/client/list?select=1'">
 				<svg xmlns="http://www.w3.org/2000/svg" width="23p" height="23" viewBox="0 0 150 150"><path d="m137 40-5-1H55c-3 1-5 4-5 7 0 4 3 8 7 8h68l-6 31c-1 4-4 6-7 6H55c-3 0-6-2-7-6L36 30c-2-7-8-12-15-12h-5a8 8 0 0 0 0 15h5l12 55c2 11 11 18 22 18h57c9 0 18-6 21-15l4-18 3-19 1-4 1-4c0-3-2-6-5-6Zm-99 81a11 11 0 1 0 23 0 11 11 0 0 0-23 0Zm68 0a11 11 0 1 0 22 0 11 11 0 0 0-22 0Zm0 0" style="stroke:none;fill-rule:nonzero;fill:#000;fill-opacity:1"/></svg>
+				<button class="btn btn-light d-inline-flex align-items-center gap-1" onclick="location.href='/basicinfo/client/list?category=발주처'">
+				<svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 150 150"><path d="m137 40-5-1H55c-3 1-5 4-5 7 0 4 3 8 7 8h68l-6 31c-1 4-4 6-7 6H55c-3 0-6-2-7-6L36 30c-2-7-8-12-15-12h-5a8 8 0 0 0 0 15h5l12 55c2 11 11 18 22 18h57c9 0 18-6 21-15l4-18 3-19 1-4 1-4c0-3-2-6-5-6Zm-99 81a11 11 0 1 0 23 0 11 11 0 0 0-23 0Zm68 0a11 11 0 1 0 22 0 11 11 0 0 0-22 0Zm0 0" style="stroke:none;fill-rule:nonzero;fill:#000;fill-opacity:1"/></svg>
 					발주처
 				</button>
-				<button class="btn btn-light d-inline-flex align-items-center gap-1" onclick="location.href='/basicinfo/client/list?select=0'">
+				<button class="btn btn-light d-inline-flex align-items-center gap-1" onclick="location.href='/basicinfo/client/list?category=수주처'">
 				<svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 384 384"><path d="m91 102-11 11a8 8 0 1 0 11 11l11-11a8 8 0 0 0-11-11ZM52 141l-7 7a8 8 0 1 0 11 11l7-7a8 8 0 0 0-11-11Zm0 0" style="stroke:none;fill-rule:nonzero;fill:#000;fill-opacity:1"/><path d="m382 138-90-90c-3-3-8-3-11 0l-37 37a8 8 0 0 0 0 11l3 3-10 11c-4 4-9 6-16 7h-62c-4 0-8 1-11 4l-5-5 3-3a8 8 0 0 0 0-11l-43-43c-3-3-8-3-11 0L2 149a8 8 0 0 0 0 11l43 43a8 8 0 0 0 11 0l3-3 11 11c4 4 7 9 9 14v1c3 7 7 13 12 18l87 87a23 23 0 0 0 38-7 23 23 0 0 0 30-12 23 23 0 0 0 31-31l6-5h1c8-9 8-23 0-32l-1-1 15-14c4-5 10-12 13-20l1-1 8-13 12-12 2 3a8 8 0 0 0 11 0l37-37c3-3 3-8 0-11ZM53 184l-2 2-32-32 79-79 32 32-3 3Zm220 81h-1c-2 3-7 3-10 0a278015 278015 0 0 0-48-47 8 8 0 0 0-8 13l56 57c2 3 2 7 0 9-3 3-8 3-11 0l-60-60a8 8 0 0 0-11 0 8 8 0 0 0 0 11l51 51a7 7 0 0 1-6 11l-5-2-56-56a8 8 0 0 0-11 11l48 48c1 3 1 7-1 9-3 3-8 3-11 0l-87-87c-4-4-7-8-8-13l-1-1c-3-7-7-13-12-18l-11-12 62-62 8 7v3c0 16 13 29 29 29h15l89 89c2 3 2 7 0 10Zm36-81c-5 5-9 11-12 18v1c-2 4-6 11-10 15l-15 14-41-41c14 0 22-4 23-4l-7-14s-12 5-33 1l-22-21c-1-2-3-2-5-2h-18c-7 0-14-7-14-14 0-3 2-4 4-4l63-1h1c10-1 18-5 24-11l11-11 63 62Zm31-15-3-2-73-74-3-3 25-25 79 79Zm0 0" style="stroke:none;fill-rule:nonzero;fill:#000;fill-opacity:1"/></svg>
 					수주처
 				</button>
 			</div>
-			<form name="search" action="/basicinfo/client/list">
-			<select id="inputState" name="search" class="form-select" style="width: 200px;">
-                  <option selected>검색 선택</option>
-                  <option>거래처코드</option>
-                  <option>분류</option>
-                  <option>거래처명</option>
-                  <option>대표자명</option>
-                  <option>전화번호</option>
-                  <option>팩스번호</option>
-                  <option>은행명</option>
-                  <option>은행계좌</option>
-                  <option>우편번호</option>
-                  <option>주소</option>
-                  <option>이메일</option>
-              </select>
-				<input type="text" class="form-control" placeholder="입력" style="width: 200px; height: 38px;">
-				<i class="fa-solid fa-magnifying-glass" id="searchIcon"></i>
+			
+			
+			
+			<div class="search">
+			<form name="search" action="/basicinfo/client/list" id="search">
+			<table>
+			<tr>
+				<td>
+					<select id="inputState" name="whatColumn" class="form-select" style="width: 200px;" id="whatColumn" >
+	                  <%
+	                  String[] search = {"code","category","name","owner","tel","fax","bank","account","zipcode","address1","address2","email"};
+	                  String[] cate = {"거래처코드","분류","거래처명","대표자명","전화번호","팩스번호","은행명","은행계좌","우편번호","주소","상세주소","이메일"};
+	                  %>
+	                  <c:set value="<%=search %>" var="s"></c:set>
+	                  <c:set value="<%=cate %>" var="c"></c:set>
+	                  <option>검색 선택</option>
+	                  	<c:forEach begin="0" end="11" var="i">
+	                  		<option value="${s[i] }"<c:if test="${searchvo.whatColumn== s[i] }">selected</c:if>>${c[i] }</option>
+	                  	</c:forEach>
+	              </select>
+				</td>
+				<td>
+					<input type="text"  name="keyword" id="keyword" class="form-control" value=<c:if test="${searchvo.keyword=='null' }"></c:if><c:if test="${searchvo.keyword!='null' }">"${searchvo.keyword }"</c:if>  placeholder="입력" style="width: 200px; height: 38px;">
+				</td>
+				<td>
+					<i class="fa-solid fa-magnifying-glass btn_search" id="searchIcon" onclick="searchForm()"></i>
+				</td>
+			</tr>	
+			</table>
 				</form>
+			</div>
 		</div>
 		<div class="table-responsive my-1">
 			<table class="table align-middle">
@@ -73,6 +99,11 @@
 				</thead>
 				<tbody id="table_insert">
 					<!-- 여기에 넣어야함 테이블 -->
+					<c:if test="${fn:length(list)==0 }">
+					<tr height="400px">
+						<td colspan="7" align="center"><br><br><i class="fa-regular fa-circle-xmark fa-4x"></i><br><br>검색된 결과가 없습니다</td>
+					</tr>
+					</c:if>
 					<c:forEach var="item" items="${list }">
 					<tr>
 						<td>
@@ -125,36 +156,9 @@
 				</tbody>
 			</table>
 		</div>
-		<nav aria-label="Page navigation borderless example">
-			<ul class="pagination pagination-borderless justify-content-end">
-				<li class="page-item disabled"><a
-					class="page-link d-flex align-items-center px-2" href="#"
-					tabindex="-1" aria-disabled="true" aria-label="Previous"> <svg
-							width="20" height="20" xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd"
-								d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-								clip-rule="evenodd"></path>
-                    </svg>
-				</a></li>
-				<li class="page-item active" aria-current="page"><a
-					class="page-link" href="javascript:void(0)">1</a></li>
-				<li class="page-item"><a class="page-link"
-					href="javascript:void(0)">2</a></li>
-				<li class="page-item"><a class="page-link"
-					href="javascript:void(0)">3</a></li>
-				<li class="page-item"><a
-					class="page-link d-flex align-items-center px-2"
-					href="javascript:void(0)" aria-label="Next"> <svg width="20"
-							height="20" xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd"
-								d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-								clip-rule="evenodd"></path>
-                    </svg>
-				</a></li>
-			</ul>
-		</nav>
+		<div align="center">
+			${pageInfo.pagingHtml}
+		</div>
 	</div>
 </div>
 
@@ -170,6 +174,11 @@
 			</div>
 			<div class="modal-body">
 				<form class="row g-3" id="modalForm" action="" method="post">
+				
+				<!-- 수정했을때도 가게 만들기위해 -->
+				<input type="hidden" name="keyword" id="keyword2">
+				<input type="hidden" name="whatColumn" id="whatColumn">
+             
               <div class="col-sm-5" style="width:250px;">
                 <label for="code" class="form-label">거래처 코드</label>
                 <input type="hidden" name="no" id="no" >
@@ -231,6 +240,8 @@
 	                <label for="email" class="form-label">이메일</label>
 	                <input type="text" class="form-control" id="email" name="email" placeholder="이메일">
 	              </div>
+	          <!-- 수정 했을 때 넘기기 위해 -->
+	          <input type="hidden" name="pageNumber" id="pageNumber" value="${pageInfo.pageNumber }">
             </form>
 			</div>
 			<div class="modal-footer border-0">
@@ -248,15 +259,16 @@
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js?autoload=false"></script>
 <script type="text/javascript">
 	var modal = $(".modal");
-
 	
 	$(function(){
 	/* 메뉴바가 클릭되게 하기 위해 */
 	document.getElementById('basicinfo').click();
 	
+	})
 	
 	/* 거래처 등록 눌렀을 때  */
-	$('#insert_btn').on("click",function(){
+	function insert_btn(){
+		clearModal();
 		
 		modal.find("#modal-title").text("거래처 등록");
 		modal.find('#okaybtn').text("등록");
@@ -267,11 +279,8 @@
 		})
 		
 		/* 싹 지우고 시작 */
-		clearModal();
 		
-		})
-});
-	
+	}
 	
 	/* 수정버튼을 눌렀을때 */
 	function updateClient(item_no){
@@ -279,6 +288,10 @@
 		modal.find("#modal-title").text("거래처 수정");
 		modal.find('#okaybtn').text("수정");
 		
+		/* 수정할때도 검색어 가게 만들기위해 */
+		var whatColumn = $('select option:selected').val();
+		$('input[name="whatColumn"]').val(whatColumn);
+		$('#keyword2').val($('#keyword').val());
 		
 		/* 수정으로 가게 만들기 위해 */
 		var modalForm = $("#modalForm");
@@ -336,9 +349,12 @@
 	
 	/* 삭제 버튼 눌렀을 때  */
 	function deleteClient(item_no){
-		
+		var whatColumn = $('select option:selected').val();
+		var keyword = $('#keyword').val();
+		var pageNumber = $('#pageNumber').val();
+
 		if(confirm("삭제하시겠습니까?")){
-			location.href="/basicinfo/client/delete?item_no="+item_no;
+			location.href="/basicinfo/client/delete?item_no="+item_no+"&whatColumn="+whatColumn+"&keyword="+keyword+"&pageNumber="+pageNumber;
 		}
 		
 	}
@@ -387,5 +403,11 @@
 	}
 	
 	/* 유효성검사 */
+	
+	
+	/* 검색 */
+	function searchForm(){
+		search.submit();
+	}
 	
 </script>

@@ -232,130 +232,69 @@
 
 <script type="text/javascript">
 
-	$(function(){
-		/* 왼쪽 카테고리창이 해당화면에 맞게 펼쳐지게 하는 코드 */
-		document.getElementById('basicinfo').click();
-	});
+   $(function(){
+      /* 왼쪽 카테고리창이 해당화면에 맞게 펼쳐지게 하는 코드 */
+      document.getElementById('basicinfo').click();
+   });
 
 
 
-	(function() {
-		
-		const title = document.querySelector('.modal-title');
-		const body = document.querySelector('body');
-		
-<<<<<<< HEAD
-		$("#no").val($(this).data("no"));           
-		$("#code").val("bbb");
-		$("#name").val("ccc");
-		
-		
-		$(".modal").modal("show");
-	});
-	
-	/* Modal에서 등록/수정 버튼이 눌렸을 때, Modal내의 form 태그에 action 속성값을 추가하고 submit 처리하는 코드 */
-	var modalForm = $("#modalForm");
-	
-	$("#modalRegisterBtn").on("click", function(){
-		modalForm.attr("action", "/basicinfo/department/add").submit();
-	});
-	
-	$("#modalUpdateBtn").on("click", function(){
-		modalForm.attr("action", "/basicinfo/department/modify").submit();
-	});
-	
-<<<<<<< HEAD
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-=======
->>>>>>> branch 'main' of https://github.com/ChanhoPark-s/WMS_corporate_project.git
-	var modalInputCode = modal.find("input[name='code']");
-	var modalInputName = modal.find("input[name='name']");
-	
-	
-	/* 새로운 부서 등록 */
-	var modalRegisterBtn = $("#modalRegisterBtn");
-	
-	modalRegisterBtn.on("click", function(e){
-		
-	//Modal 내의 input 태그 값들을 읽어와 객체 생성
-	var obj = {
-		reply : modalInputCode.val(),
-		replyer : modalInputName.val(),
-	};
-	
-		
-		/* replyService.add(reply, function(result){
-			alert(result);
-=======
-		// 부서 등록
-		document.querySelector('.insert').addEventListener('click', event => {
-			title.innerHTML = '부서등록';
->>>>>>> branch 'main' of https://github.com/ChanhoPark-s/WMS_corporate_project.git
-			
-			const form_control = document.querySelectorAll('.form-control');
-			Array.from(form_control, elem => {
-				elem.value = '';
-			});
-			
-			modalForm.action = 'insert';
-		});
-		
-		// 부서 수정
-		document.querySelectorAll('.update').forEach(elem => {
-			elem.addEventListener('click', event => {
-				title.innerHTML = '부서수정';
-				
-				let target = event.target;
-				target = target.nodeName == 'BUTTON' ? target : target.nodeName == 'svg' ? target.parentElement : target.parentElement.parentElement;
-				const no = target.dataset.no;
-				
-				const rankInfo = Array.from(document.querySelector('.dept-' + no).children);
-				const [code, name] = rankInfo.slice(2, 4);
-				
-				modalForm.code.value = code.innerHTML;
-				modalForm.name.value = name.innerHTML;
-				
-				if(!modalForm.no) {
-					const input = document.createElement('input');
-					input.type = 'hidden';
-					input.name = 'no';
-					modalForm.append(input);
-				}
-				modalForm.no.value = no;
-				
-				modalForm.action = 'update';
-			});
-		})
-		
-		// 부서 삭제
-		document.querySelectorAll('.delete').forEach(elem => {
-			elem.addEventListener('click', (event) => {
-				
-					let target = event.target;
-					target = target.nodeName == 'BUTTON' ? target : target.nodeName == 'svg' ? target.parentElement : target.parentElement.parentElement;
-					const dataset = target.dataset;
-					const no = dataset.no;
-					
-					delete_dept.action = 'delete/' + no;
-			});
-		});
-		
-	})();
+   (function() {
+      
+      const title = document.querySelector('.modal-title');
+      const body = document.querySelector('body');
+      
+      // 부서 등록
+      document.querySelector('.insert').addEventListener('click', event => {
+         title.innerHTML = '부서등록';
+         
+         const form_control = document.querySelectorAll('.form-control');
+         Array.from(form_control, elem => {
+            elem.value = '';
+         });
+         
+         modalForm.action = 'insert';
+      });
+      
+      // 부서 수정
+      document.querySelectorAll('.update').forEach(elem => {
+         elem.addEventListener('click', event => {
+            title.innerHTML = '부서수정';
+            
+            let target = event.target;
+            target = target.nodeName == 'BUTTON' ? target : target.nodeName == 'svg' ? target.parentElement : target.parentElement.parentElement;
+            const no = target.dataset.no;
+            
+            const rankInfo = Array.from(document.querySelector('.dept-' + no).children);
+            const [code, name] = rankInfo.slice(2, 4);
+            
+            modalForm.code.value = code.innerHTML;
+            modalForm.name.value = name.innerHTML;
+            
+            if(!modalForm.no) {
+               const input = document.createElement('input');
+               input.type = 'hidden';
+               input.name = 'no';
+               modalForm.append(input);
+            }
+            modalForm.no.value = no;
+            
+            modalForm.action = 'update';
+         });
+      })
+      
+      // 부서 삭제
+      document.querySelectorAll('.delete').forEach(elem => {
+         elem.addEventListener('click', (event) => {
+            
+               let target = event.target;
+               target = target.nodeName == 'BUTTON' ? target : target.nodeName == 'svg' ? target.parentElement : target.parentElement.parentElement;
+               const dataset = target.dataset;
+               const no = dataset.no;
+               
+               delete_dept.action = 'delete/' + no;
+         });
+      });
+      
+   })();
 </script>
