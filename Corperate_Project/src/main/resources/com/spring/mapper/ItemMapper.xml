@@ -22,7 +22,7 @@
 	</delete>
 	
 	<select id="selectOne" resultType="com.spring.domain.ItemVO">
-		select * from item where no=#{no}
+		select * from item where no=#{value}
 	</select>
 	
 	<update id="update">

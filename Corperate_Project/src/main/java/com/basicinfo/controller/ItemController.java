@@ -69,6 +69,9 @@ public class ItemController {
 	@ResponseBody
 	@PostMapping(value="/get", produces = "application/json; charset=utf8")
 	public String get(@RequestParam("no") int no) {
+		System.out.println("no:???"+no);
+		String gson  = new Gson().toJson(service.selectOne(no));
+		System.out.println("gson:"+gson);
 		return  new Gson().toJson(service.selectOne(no));
 	} 
 	

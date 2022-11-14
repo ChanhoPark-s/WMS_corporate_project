@@ -74,8 +74,8 @@
 						<td> <!-- 이미지 -->
 						<img src="<%=request.getContextPath()%>/resources/assets/itemimg/${item.image}" width="42" height="42" loading="lazy">
 						</td>
-						<td>${item.client_code}</td>
 						<td>${item.code}</td> 
+						<td>${item.client_code}</td>
 						<td>${item.name}</td>
 						<td>${item.in_price}</td>
 						<td>${item.out_price}</td>
@@ -152,8 +152,8 @@
 			<div class="modal-body">
 				<form class="needs-validation" id="modalForm" action="" enctype="multipart/form-data" method="post" >
 					<div>
-                <label for="upload" class="form-label">이미지</label>
-                <input class="form-control" type="file" id="upload" name="upload" value="${item.image }">
+                <label for="image" class="form-label">이미지</label>
+                <input class="form-control" type="file" id="upload" name="upload">
               		</div>
 					<div class="mb-3">
 						<label for="code" class="form-label">품목코드</label> <input
@@ -231,26 +231,18 @@ function update(no){
 		taskForm.attr("action", "/basicinfo/item/update").submit();
 	})
 	$.ajax({
-			url : "/basicinfo/item/get",
+			url : "/basicinfo/item/get ",
 			type : "post",
 			data : {  
 				no : no 
 			},
-			datatype : 'json',
+			dataType:'json',
 			success : function(data){
-				const parse = JSON.parse(data);
-				
-				alert(parse.upload);
-				alert(parse.code);
-				alert(parse.name);
-				alert(parse.in_price);
-				alert(parse.out_price);
-				
-				document.getElementById('upload').value=parse.upload;
-				document.getElementById('code').value=parse.code;
-				document.getElementById('name').value=parse.name;
-				document.getElementById('in_price').value=parse.in_price;
-				document.getElementById('out_price').value=parse.out_price;
+			 	
+				document.getElementById('code').value=data.code;
+				document.getElementById('name').value=data.name;
+				document.getElementById('in_price').value=data.in_price;
+				document.getElementById('out_price').value=data.out_price;
 			}
 		});
 	
