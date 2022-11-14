@@ -52,7 +52,6 @@ public class ClientController {
 		model.addAttribute("totalCount",totalCount);
 		model.addAttribute("list",service.GetAll(pageInfo));
 		model.addAttribute("searchvo",searchvo);
-		
 	}
 	 
 	// insert
@@ -61,7 +60,6 @@ public class ClientController {
 		service.Insert(Vo);
 		return redirect;
 	}
-	
 	
 	//select_one
 	@ResponseBody
