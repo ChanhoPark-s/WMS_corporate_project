@@ -30,7 +30,7 @@
           </div>
         </div>
 		<div class="table-responsive">
-           <table class="table"></table>
+           <form name="myForm"><table class="table"></table></form>
          </div>
 	</div>
 </div>
@@ -42,7 +42,7 @@
           <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
               <div class="modal-header border-0">
-                <h5 class="modal-title">물품추가</h5>
+                <h5 class="modal-title">물품검색</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
@@ -79,29 +79,11 @@
           <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
               <div class="modal-header border-0">
-                <h5 class="modal-title">물품추가</h5>
+                <h5 class="modal-title">창고검색</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                <form class="needs-validation" novalidate id="taskForm" enctype="multipart/form-data" method="post" action="">
-                  <div class="mb-3">
-                    <label for="userFullname" class="form-label">검색</label>
-                    <input type="text" name="name" class="form-control" id="userFullname" required autofocus>
-                    <div class="invalid-feedback">User full name is required.</div>
-                  </div>
-                </form>
-                <div class="table-responsive">
-	              <table class="table item-table">
-	                <thead class="table-dark">
-	                  <tr>
-	                    <th scope="col">품목번호</th>
-	                    <th scope="col">품목코드</th>
-	                    <th scope="col">품목이름</th>
-	                  </tr>
-	                </thead>
-	                <tbody></tbody>
-	              </table>
-	            </div>
+              	
               </div>
               <div class="modal-footer border-0">
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
@@ -142,6 +124,10 @@
 			this.itemInput(this);
 		}
 		
+		Plugin.prototype.itemDelete = function (t) {
+			console.log(t);
+		}
+		
 		Plguin.prototype.itemInput = function () {
 			const body = document.querySelector('.' + this.table + ' tbody');
 			const tr = makeElement('tr');
@@ -157,13 +143,21 @@
 				if(column == '품목') addItemEventListener(input);
 				if(column == '창고') addInvenEventListener(input);
 			});
-			let td = makeElement('td');
-			td.innerHTML =  '<button type="button" class="btn btn-light d-flex text-danger delete">'
+			let delRow = makeElement('td');
+			delRow.innerHTML =  '<button class="btn btn-light d-flex text-danger delete" onclick=item.itemDelete(this) >'
 							+ '<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">'
 					        + '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>'
 							+ '</button>';
-			tr.append(td);
+			tr.append(delRow);
 			body.append(tr);
+		}
+		
+		Plguin.prototype.itemDelete = function(t) {
+			t.closest('tr').remove();
+		}
+		
+		Plguin.prototype.length = function() {
+			return this.columns.length;
 		}
 		
 		function makeTheadTbody() {
@@ -207,15 +201,7 @@
 			return json;
 		};
 		
-		// 품목 fetch
-		async function getItem(no) {
-			const data = await fetch('http://localhost:8080/warehouse/init/get/' + no, {method: 'get'});
-			const json = await data.json();
-			return json;
-		};
-		
 		function addItemEventListener(elem) {
-			
 			elem.addEventListener('click', async (event) => {
 				
 				const 	target = event.target,
@@ -243,7 +229,8 @@
 					
 					body.append(tr);
 					tr.addEventListener('click', event => {
-						console.log(no);
+						elem.value = name;
+						elem.setAttribute('data-code', code);
 					});
 				});
 			})
@@ -258,10 +245,15 @@
 	
 	const item = new Item('table', [
 		{column: '품목', name: 'item_name', class:'form-control insert', 'data-bs-toggle':"modal", 'data-bs-target':"#addUserModal", autocomplete:"off"},
-		{column: '수량', name: 'item_code', class:'form-control'},
-		{column: '창고', name: 'item_code', class:'form-control'},
-		{column: '구역', name: 'item_code', class:'form-control'},
-		{column: '렉', name: 'item_code', class:'form-control'},
-		{column: '셀', name: 'item_code', class:'form-control'},
+		{column: '수량', name: 'qty', class:'form-control' },
+		{column: '창고', name: 'ware_code', class:'form-control', 'data-bs-toggle':"modal", 'data-bs-target':"#searchInvenModal"},
+		{column: '구역', name: 'area_code', class:'form-control'},
+		{column: '렉', name: 'rack_code', class:'form-control'},
+		{column: '셀', name: 'cell_code', class:'form-control'},
 	]);
+	
+	function saveData() {
+		const formData = new FormData(myForm);
+		
+	}
 </script>
