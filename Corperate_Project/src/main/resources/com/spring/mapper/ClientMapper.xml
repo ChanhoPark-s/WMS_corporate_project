@@ -58,4 +58,31 @@
 		<if test="category=='발주처'">where category = '발주처'</if>
 		<if test="category=='수주처'">where category = '수주처'</if>
 	</select>
+	
+	
+	<select id="getListWithPaging" resultType="com.spring.domain.ClientVO">
+		<![CDATA[
+		select no, code, category, name, owner, tel, fax, bank, account, zipcode, address1, address2, email
+		from(
+		    select rownum rn, no, code, category, name, owner, tel, fax, bank, account, zipcode, address1, address2, email
+		    from client
+		    where rownum <= #{cri.pageNum} * #{cri.amount}
+		]]>    
+		    <if test="cri.whatColumn=='name'"> and name like '%' ||  #{cri.keyword} || '%'</if>
+		    <if test="cri.whatColumn=='bank'"> and bank like '%' ||  #{cri.keyword} || '%'</if>
+		    
+		<![CDATA[    
+			order by name
+		)where rn > (#{cri.pageNum} - 1) * #{cri.amount}
+		]]>
+	</select>
+	
+	<select id="getCountAll" resultType="int">
+		select count(*)
+		from client
+		where no > 0
+		<if test="cri.whatColumn=='name'"> and name like '%' ||  #{cri.keyword} || '%'</if>
+		<if test="cri.whatColumn=='bank'"> and bank like '%' ||  #{cri.keyword} || '%'</if>
+	</select>
+	
 </mapper>
