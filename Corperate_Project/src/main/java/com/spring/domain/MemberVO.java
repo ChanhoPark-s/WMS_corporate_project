@@ -15,6 +15,7 @@ public class MemberVO {
 	private String email;
 	private MultipartFile image;
 	private String fileName;
+	private String reg_date;
 	
 	public int getNo() {
 		return no;
@@ -81,5 +82,11 @@ public class MemberVO {
 	}
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
+	}
+	public String getReg_date() {
+		return reg_date;
+	}
+	public void setReg_date(String reg_date) {
+		this.reg_date = reg_date;
 	}
 }

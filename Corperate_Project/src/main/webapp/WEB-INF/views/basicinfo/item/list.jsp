@@ -8,15 +8,15 @@
 	<div class="card-body">
 		<div class="d-flex gap-1 mb-4 flex-wrap">
 			<div class="d-flex gap-1 me-auto flex-wrap">
-				<button id="addItemBtn" class="btn btn-primary d-inline-flex align-items-center gap-1 add"
-					data-bs-toggle="modal" data-bs-target="#addUserModal">
+				<button id="insertBtn" class="btn btn-primary d-inline-flex align-items-center gap-1 add"
+					data-bs-toggle="modal" data-bs-target="#itemModal">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
 						fill="currentColor" aria-hidden="true">
                     <path fill-rule="evenodd"
 							d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
 							clip-rule="evenodd" />
                   </svg>
-					등록하기
+                  등록하기
 				</button>
 				<div class="dropdown">
 					<button
@@ -60,7 +60,7 @@
 						<th scope="col">번호</th>
 						<th scope="col">이미지</th>
 						<th scope="col">품목코드</th>
-						<th scope="col">거래처번호</th>
+						<th scope="col">거래처코드</th>
 						<th scope="col">품목명</th>
 						<th scope="col">입고단가</th>
 						<th scope="col">출고단가</th>
@@ -70,8 +70,6 @@
 				<tbody>
 					<c:forEach var="item" items="${lists}">
 					<tr>
-						
-					
 						<td>${item.no} </td>
 						<td> <!-- 이미지 -->
 						<img src="<%=request.getContextPath()%>/resources/assets/itemimg/${item.image}" width="42" height="42" loading="lazy">
@@ -83,7 +81,7 @@
 						<td>${item.out_price}</td>
 						<td>
 							<div class="btn-group btn-group-sm" role="group">
-								<button type="button" class="btn btn-light d-flex">
+								<button type="button" class="btn btn-light d-flex" data-bs-toggle="modal" data-bs-target="#itemModal" onclick="update('${item.no}')" id="updateItem">
 									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
 										fill="none" viewBox="0 0 24 24" stroke="currentColor"
 										aria-hidden="true">
@@ -92,7 +90,7 @@
 											d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                           </svg>
 								</button>
-								<button type="button" class="btn btn-light d-flex text-danger">
+								<button type="button" class="btn btn-light d-flex text-danger" onclick="deleteItem('${item.no}')">
 									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
 										fill="none" viewBox="0 0 24 24" stroke="currentColor"
 										aria-hidden="true">
@@ -106,7 +104,7 @@
 					</tr>
 				</c:forEach>
 			</tbody>
-			</table>
+			</table> 
 		</div>
 		<nav aria-label="Page navigation borderless example">
 			<ul class="pagination pagination-borderless justify-content-end">
@@ -143,130 +141,111 @@
 
 <!-- Modal 코드 넣을 위치 -->
 <!-- Add user modal -->
-<div class="modal fade" id="addUserModal" tabindex="-1">
+<div class="modal fade" id="itemModal" tabindex="-1">
 	<div class="modal-dialog modal-dialog-scrollable">
 		<div class="modal-content">
 			<div class="modal-header border-0">
-				<h5 class="modal-title">품목등록</h5>
+				<h5 id="modal-title"></h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				<form class="needs-validation" novalidate id="taskForm" enctype="multipart/form-data" method="post" action="insert">
+				<form class="needs-validation" id="modalForm" enctype="multipart/form-data" method="post" >
 					<div>
-                <label for="formFile" class="form-label">이미지</label>
-                <input class="form-control" type="file" id="formFile" name="upload" value="${item.image }">
+                <label for="upload" class="form-label">이미지</label>
+                <input class="form-control" type="file" id="upload" name="upload" value="${item.image }">
               		</div>
 					<div class="mb-3">
-						<label for="userFullname" class="form-label">품목코드</label> <input
-							type="text" name="code" class="form-control" name="code" id="code"
+						<label for="code" class="form-label">품목코드</label> <input
+							type="text" class="form-control" name="code" id="code"
 							required autofocus>
-						<div class="invalid-feedback">User full name is required.</div>
 					</div>
 					<div class="mb-3">
-						<label for="userFullname" class="form-label">거래처코드</label> 
-						<select class="form-select" id="inputGroupSelect01" name="client_no">
-	                  	<option selected="">선택</option>
+						<label for="client_no" class="form-label">거래처코드</label> 
+						<select class="form-select" id="client_no" name="client_no">
+	                  	<option selected>선택</option>
 						<c:forEach items="${clientList }" var="client">
 							<option value="${client.no }">${client.code }</option>
 						</c:forEach>
 	                </select>
 					</div>
 					<div class="mb-3">
-						<label for="userFullname" class="form-label">품목명</label> <input
+						<label for="name" class="form-label">품목명</label> <input
 							type="text" name="name" class="form-control" id="name"
 							required autofocus>
-						<div class="invalid-feedback">User full name is required.</div>
 					</div>
 					<div class="mb-3">
-						<label for="userFullname" class="form-label">입고단가</label> <input
+						<label for="in_price" class="form-label">입고단가</label> <input
 							type="text" class="form-control" name="in_price" id="in_price"
 							required autofocus>
-						<div class="invalid-feedback">User full name is required.</div>
 					</div>
 					<div class="mb-3">
-						<label for="userFullname" class="form-label">출고단가</label> <input
+						<label for="out_price" class="form-label">출고단가</label> <input
 							type="text" class="form-control" name="out_price" id="out_price"
 							required autofocus>
-						<div class="invalid-feedback">User full name is required.</div>
 					</div>
 				</form>
 			</div>
 			<div class="modal-footer border-0">
 				<button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
-				<button type="submit" form="taskForm" id="modaladdBtn" class="btn btn-primary px-5">등록</button>
-				<button type="submit" id="modalupdateBtn" class="btn btn-primary px-5">수정</button>
+				<button type="button" form="taskForm" id="modaladdBtn" class="btn btn-primary px-5"></button>
 			</div>
 		</div>
 	</div>
 </div>
-        <!-- 삭제 -->
-        <div class="modal fade" id="deleteUserModal" tabindex="-1">
-          <div class="modal-dialog modal-dialog-scrollable">
-            <div class="modal-content">
-              <div class="modal-header border-0">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-		        <div class="col-md-7">
-		            <h3 class="fw-black">정말 삭제하시겠습니까?</h3>
-		            <div class="modal fade" id="exampleModalLg" tabindex="-1" aria-labelledby="exampleModalLgLabel" aria-hidden="true">
-		              <div class="modal-dialog modal-lg">
-		                <div class="modal-content">
-		                  <div class="modal-header">
-		                    <h5 class="modal-title h4" id="exampleModalLgLabel">Large modal</h5>
-		                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-		                  </div>
-		                  <div class="modal-body">
-		                    ...
-		                  </div>
-		                </div>
-		              </div>
-		            </div>
-		          </div>
-          		</div>
-              <div class="modal-footer border-0">
-	              <button type="button" class="btn btn-light delete" data-bs-dismiss="modal">취소</button>
-	              <form method="get" action="" name="delete_from">
-	              	<button type="submit" class="btn btn-primary px-5">삭제</button>
-	              </form>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- 삭제모달 끝 -->
-
+     
 <!-- bottom.jsp -->
 <%@include file="../../common/bottom.jsp"%>
 
 <script type="text/javascript">
-$(function(){
- // 품목 등록
-	document.querySelector('.insert').addEventListener('click', event => {
-		title.innerHTML = '등록하기';
-		
-		const form_control = document.querySelectorAll('.form-control');
-		Array.from(form_control, elem => {
-			elem.value = '';
-		});
-		
-		const form_select = document.querySelectorAll('.form-select');
-		Array.from(form_select, elem => {
-			elem.options[0].selected = true;  
-		});
-		
-		taskForm.action = 'insert';
+$('#insertBtn').on("click",function(){
+	alert("아....");
+	$(".modal").find("#modal-title").text("등록하기");
+	$(".modal").find('#modaladdBtn').text("등록");
+	
+	var taskForm = $("#modalForm");
+	$('#modaladdBtn').click(function(){
+		taskForm.attr("action", "/basicinfo/item/insert").submit();
 	});
+	
 });
 
-/* Modal에서 등록/수정 버튼이 눌렸을 때, Modal내의 form 태그에 action 속성값을 추가하고 submit 처리하는 코드 */
-var modalForm = $("#modalForm"); 
+//삭제
+function deleteItem(no){
+	if(confirm("삭제하시겠습니까?")){
+		location.href="/basicinfo/item/delete?no="+no;
+		alert(1);
+	}
+};
 
-$("#modaladdBtn").on("click", function(){
-	modalForm.attr("action", "/basicinfo/item/add").submit();
-});
-
-$("#modalupdateBtn").on("click", function(){
-	modalForm.attr("action", "/basicinfo/item/modify").submit();
-});
+//수정
+function update(no){
+	alert(no);
+	$(".modal").find("#modal-title").text("수정하기");
+	$(".modal").find('#modaladdBtn').text("수정");
+	alert("제발");
+	
+	var taskForm = $("#modalForm");
+	$('#modaladdBtn').click(function(){
+		taskForm.attr("action", "/basicinfo/item/update").submit();
+	})
+	$.ajax({
+			url : "/basicinfo/item/get",
+			data : {  
+				no : no 
+			},
+			type : 'post',
+			success : function(data){
+				const parse = JSON.parse(data);
+				
+				document.getElementById('image').value=parse.image;
+				document.getElementById('code').value=parse.code;
+				document.getElementById('client_no').value=parse.client_no;
+				document.getElementById('name').value=parse.name;
+				document.getElementById('in_price').value=parse.in_price;
+				document.getElementById('out_price').value=parse.out_price;
+			}
+		});
+	
+};
 </script>

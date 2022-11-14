@@ -232,6 +232,13 @@
 
 <script type="text/javascript">
 
+	$(function(){
+		/* 왼쪽 카테고리창이 해당화면에 맞게 펼쳐지게 하는 코드 */
+		document.getElementById('basicinfo').click();
+	});
+
+
+
 	(function() {
 		
 		const title = document.querySelector('.modal-title');

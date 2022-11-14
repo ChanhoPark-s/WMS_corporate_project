@@ -13,8 +13,14 @@ public class ItemVO {
 	private String image;
 	private MultipartFile upload;
 	private String client_code;
+	private String get;
 	
-	
+	public String getGet() {
+		return get;
+	}
+	public void setGet(String get) {
+		this.get = get;
+	}
 	public String getClient_code() {
 		return client_code;
 	}

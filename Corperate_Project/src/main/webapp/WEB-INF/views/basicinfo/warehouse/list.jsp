@@ -815,11 +815,7 @@
 
 <script type="text/javascript">
 $(function(){
-<<<<<<< HEAD
-	alert("/basicinfo/warehouse/list.jsp");
-	document.getElementById('member').click();
-=======
-	console.log("/basicinfo/warehouse/list.jsp");
->>>>>>> branch 'main' of https://github.com/ChanhoPark-s/WMS_corporate_project.git
-});
+		/* 왼쪽 카테고리창이 해당화면에 맞게 펼쳐지게 하는 코드 */
+		document.getElementById('basicinfo').click();
+	});
 </script>

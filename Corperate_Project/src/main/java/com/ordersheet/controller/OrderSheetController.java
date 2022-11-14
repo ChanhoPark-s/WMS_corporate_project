@@ -11,7 +11,7 @@ import com.spring.domain.DepartmentVO;
 import com.spring.service.DepartmentService;
 
 @Controller
-@RequestMapping("/ordersheet/masdsadd/*")
+@RequestMapping("/ordersheet/*")
 public class OrderSheetController {
 	
 
@@ -20,9 +20,7 @@ public class OrderSheetController {
 
 	@GetMapping(value="/list")
 	public void list(Model model) {
-		System.out.println("/basicinfo/department/list.jsp 반환");
-		model.addAttribute("voList", service.list());
-		//return "list"; //요청 url과 반환해줄 jsp 파일의 이름이 일치하면 해당 함수는 void 타입이어도 된다. views/basicinfo/department/list.jsp 가 반환됨
+		//model.addAttribute("voList", service.list());
 	}
 	
 	@PostMapping(value="/add")

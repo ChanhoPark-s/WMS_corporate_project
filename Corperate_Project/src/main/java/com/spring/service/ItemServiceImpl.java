@@ -52,4 +52,41 @@ public class ItemServiceImpl implements ItemService{
 		System.out.println(vo.getName());
 		mapper.insert(vo);
 	}
+
+	@Override
+	public void delete(int no) {
+		
+		mapper.delete(no);
+	}
+	
+	@Override
+	public ItemVO selectOne(int no) {
+		return mapper.selectOne(no);
+	}
+
+	@Override
+	public void update(ItemVO vo) throws Exception {
+		
+		String uploadPath = servletContext.getRealPath("/resources/assets/itemimg");
+		System.out.println(uploadPath);
+		File file = new File(uploadPath);
+		if(!file.exists()) {
+			file.mkdirs();
+		}
+		
+		System.out.println(1);
+		MultipartFile multi = vo.getUpload();
+		if(!multi.isEmpty()) {
+			String ofn = multi.getOriginalFilename();
+			System.out.println(multi.getOriginalFilename());
+			File uf = new File(uploadPath, ofn);
+			multi.transferTo(uf);
+			vo.setImage(multi.getOriginalFilename());
+		}
+		System.out.println("살려줘");
+		mapper.update(vo);
+	}
+
+	
+
 }

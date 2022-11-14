@@ -73,6 +73,24 @@
 		<url-pattern>*.mb</url-pattern>
 	</servlet-mapping>
 	
+	<!-- purchase_sheet -->
+	<servlet>
+		<servlet-name>purchase_sheet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet
+		</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring/appServlet/purchase_sheet-servlet.xml
+			</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>purchase_sheet</servlet-name>
+		<url-pattern>*.ps</url-pattern>
+	</servlet-mapping>
+	
 	<!-- 여기서 url-pattern 에 입력할 때 basicinfo/department/* 방식을 시도하였었는데 이런건 인식이 안되는듯 하다. -->
 
 </web-app>
