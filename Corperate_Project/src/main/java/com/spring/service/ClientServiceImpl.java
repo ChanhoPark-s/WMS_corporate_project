@@ -2,13 +2,14 @@ package com.spring.service;
 
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.spring.domain.ClientVO;
+import com.spring.domain.SearchVO;
 import com.spring.mapper.ClientMapper;
+import com.spring.paging.Client_Paging;
 
 @Service
 public class ClientServiceImpl implements ClientService{
@@ -24,8 +25,8 @@ public class ClientServiceImpl implements ClientService{
 
 
 	@Override
-	public ArrayList<ClientVO> GetAll(String select) {
-		return mapper.GetAll(select);
+	public ArrayList<ClientVO> GetAll(Client_Paging pageInfo) {
+		return mapper.GetAll(pageInfo);
 	}
 
 
@@ -48,9 +49,7 @@ public class ClientServiceImpl implements ClientService{
 
 
 	@Override
-	public int getTotalCount(Map map) {
-		
-		return mapper.getAllCount(map);
-	} 
-
+	public int getTotalCount(SearchVO searchvo) {
+		return mapper.getTotalCount(searchvo);
+	}
 }

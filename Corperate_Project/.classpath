@@ -26,11 +26,14 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11">
 		<attributes>
-			<attribute name="module" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+<<<<<<< HEAD
 	<classpathentry kind="lib" path="C:/ORACLE/product/12.2.0/dbhome_1/jdbc/lib/ojdbc8-21.7.0.0.jar">
+=======
+	<classpathentry kind="lib" path="C:/Users/차노/.m2/repository/com/oracle/ojdbc6/12.1.0.1/ojdbc6-12.1.0.1.jar">
+>>>>>>> refs/remotes/origin/chanho
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
