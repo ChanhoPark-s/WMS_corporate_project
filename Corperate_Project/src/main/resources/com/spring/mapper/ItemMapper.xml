@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.spring.mapper.ItemMapper">
+
+	<select id="selectAll" resultType="com.spring.domain.ItemVO">
+		select i.no no, i.code code, c.code as client_code, i.name, i.in_price, i.out_price, i.image
+		from item i
+		inner join client c
+		on i.client_no=c.no
+		order by 1
+	</select>
+	<insert id="insert">
+		insert into item
+		values (item_seq.nextval,#{client_no},#{code}, #{name}, #{in_price}, #{out_price}, #{image})
+	</insert>
+	
+	<delete id="delete">
+		delete item where no = #{no}
+	</delete>
+	
+	<select id="selectOne" resultType="com.spring.domain.ItemVO">
+		select * from item where no=#{no}
+	</select>
+	
+	<update id="update">
+		update item set client_no=#{client_no}, code=#{code}, name=#{name}, in_price=#{in_price}, out_pirce=#{out_price}, image=#{image}
+		where no=#{no}
+	</update>
+	
+</mapper>

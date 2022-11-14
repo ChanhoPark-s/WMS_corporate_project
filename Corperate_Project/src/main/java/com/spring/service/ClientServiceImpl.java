@@ -2,6 +2,7 @@ package com.spring.service;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,5 +52,11 @@ public class ClientServiceImpl implements ClientService{
 	@Override
 	public int getTotalCount(SearchVO searchvo) {
 		return mapper.getTotalCount(searchvo);
+	}
+
+
+	@Override
+	public List<ClientVO> GetAllClient() {
+		return mapper.getAllClient();
 	}
 }

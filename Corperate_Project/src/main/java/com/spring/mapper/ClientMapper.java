@@ -1,6 +1,7 @@
 package com.spring.mapper;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.spring.domain.ClientVO;
 import com.spring.domain.SearchVO;
@@ -15,5 +16,6 @@ public interface ClientMapper {
 	public int deleteOne(String item_no);
 	public int update(ClientVO VO);
 	public int getTotalCount(SearchVO searchvo);
+	public List<ClientVO> getAllClient();
 	
 }

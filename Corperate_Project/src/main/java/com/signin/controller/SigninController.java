@@ -30,6 +30,7 @@ public class SigninController {
 		
 		String formattedDate = dateFormat.format(date);
 		
+		model.addAttribute("serverTime", formattedDate                                                                                                                                                                   );
 		model.addAttribute("serverTime", formattedDate );
 		
 		logger.info("log 출력");
