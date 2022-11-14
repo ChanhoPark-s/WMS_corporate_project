@@ -150,9 +150,8 @@
 					aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				<form class="needs-validation" id="modalForm" enctype="multipart/form-data" method="post" >
+				<form class="needs-validation" id="modalForm" action="" enctype="multipart/form-data" method="post" >
 					<div>
-					<input type="hidden" name="no" id="no">
                 <label for="upload" class="form-label">이미지</label>
                 <input class="form-control" type="file" id="upload" name="upload" value="${item.image }">
               		</div>
@@ -165,7 +164,7 @@
 						<label for="client_no" class="form-label">거래처코드</label> 
 						<select class="form-select" id="client_no" name="client_no">
 	                  	<option selected>선택</option>
-						<c:forEach items="${clientList }" var="client">
+						<c:forEach items="${clientList}" var="client">
 							<option value="${client.no }">${client.code }</option>
 						</c:forEach>
 	                </select>
@@ -205,7 +204,6 @@ $(function(){
 })
 
 $('#insertBtn').on("click",function(){
-	alert("아....");
 	$(".modal").find("#modal-title").text("등록하기");
 	$(".modal").find('#modaladdBtn').text("등록");
 	
@@ -220,7 +218,6 @@ $('#insertBtn').on("click",function(){
 function deleteItem(no){
 	if(confirm("삭제하시겠습니까?")){
 		location.href="/basicinfo/item/delete?no="+no;
-		alert(1);
 	}
 };
 
@@ -235,7 +232,7 @@ function update(no){
 	})
 	$.ajax({
 			url : "/basicinfo/item/get",
-			type : 'post',
+			type : "post",
 			data : {  
 				no : no 
 			},
@@ -243,18 +240,17 @@ function update(no){
 			success : function(data){
 				const parse = JSON.parse(data);
 				
-				alert(parse.no)
 				alert(parse.upload);
 				alert(parse.code);
 				alert(parse.name);
 				alert(parse.in_price);
 				alert(parse.out_price);
-				/*document.getElementById('no').value=parse.no;
-				 document.getElementById('upload').value=parse.upload;
+				
+				document.getElementById('upload').value=parse.upload;
 				document.getElementById('code').value=parse.code;
 				document.getElementById('name').value=parse.name;
 				document.getElementById('in_price').value=parse.in_price;
-				document.getElementById('out_price').value=parse.out_price; */
+				document.getElementById('out_price').value=parse.out_price;
 			}
 		});
 	
