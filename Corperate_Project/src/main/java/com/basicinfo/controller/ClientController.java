@@ -1,13 +1,9 @@
 package com.basicinfo.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,9 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 import com.spring.domain.ClientVO;
+import com.spring.domain.SearchVO;
+import com.spring.paging.Client_Paging;
 import com.spring.service.ClientService;
-
-import paging.Client_Paging;
 
 
 @Controller
@@ -35,34 +31,30 @@ public class ClientController {
 	private final String redirect = "redirect:/basicinfo/client/list";
 	
 	
+	
 	// getAll
 	@GetMapping(value="/list", produces = "application/text;charset=utf8")
 	public void clientlist(@RequestParam(required = false,value="select")String select,
-			@RequestParam(required = false,value="whatColumn")String whatColumn,
-			@RequestParam(required = false,value="keyword")String keyword,
 			@RequestParam(required = false,value="pageNumber")String pageNumber,
+			SearchVO searchvo,
 			Model model,HttpServletRequest request) {				
 		
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("whatColumn", whatColumn);
-		map.put("keyword", "%"+keyword+"%");
+		searchvo.setKeyword("%"+searchvo.getKeyword()+"%");
 		
-		int totalCount = service.getTotalCount(map);
-		System.out.println("totalCount : "+totalCount);
+		  
+		// Client getAllCount
+		int totalCount = service.getTotalCount(searchvo);
+		System.out.println("내가확인 : totalCount : "+totalCount);
 		
 		String url = request.getContextPath()+"/list";
 
-		Client_Paging pageInfo = new Client_Paging(pageNumber,"8",totalCount,url,whatColumn,keyword,null);
+		Client_Paging pageInfo = new Client_Paging(pageNumber,"2",totalCount,url,searchvo.getWhatColumn(),searchvo.getKeyword(),null);
 		
+		ArrayList<ClientVO> list = service.GetAll(pageInfo);
 		
-		//lists = service.getAlbumList(pageInfo,map);
-		
-		//model.addAttribute("lists",lists);
 		model.addAttribute("pageInfo",pageInfo);
 		model.addAttribute("totalCount",totalCount);
 		
-		
-		ArrayList<ClientVO> list = service.GetAll(select);
 		model.addAttribute("list",list);
 	}
 	 

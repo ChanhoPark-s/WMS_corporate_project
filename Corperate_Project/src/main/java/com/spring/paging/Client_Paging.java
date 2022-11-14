@@ -1,4 +1,4 @@
-package paging;
+package com.spring.paging;
 
 public class Client_Paging {
 	//페이징 관련 변수	

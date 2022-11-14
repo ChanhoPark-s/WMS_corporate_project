@@ -36,22 +36,23 @@
 				</button>
 			</div>
 			<form name="search" action="/basicinfo/client/list">
-			<select id="inputState" name="search" class="form-select" style="width: 200px;">
+			<select id="inputState" name="whatColumn" class="form-select" style="width: 200px;" >
                   <option selected>검색 선택</option>
-                  <option>거래처코드</option>
-                  <option>분류</option>
-                  <option>거래처명</option>
-                  <option>대표자명</option>
-                  <option>전화번호</option>
-                  <option>팩스번호</option>
-                  <option>은행명</option>
-                  <option>은행계좌</option>
-                  <option>우편번호</option>
-                  <option>주소</option>
-                  <option>이메일</option>
+                  <option value="code">거래처코드</option>
+                  <option value="category">분류</option>
+                  <option value="name">거래처명</option>
+                  <option value="owner">대표자명</option>
+                  <option value="tel">전화번호</option>
+                  <option value="fax">팩스번호</option>
+                  <option value="bank">은행명</option>
+                  <option value="account">은행계좌</option>
+                  <option value="zipcode">우편번호</option>
+                  <option value="address1">주소</option>
+                  <option value="address2">상세주소</option>
+                  <option value="email">이메일</option>
               </select>
-				<input type="text" class="form-control" placeholder="입력" style="width: 200px; height: 38px;">
-				<i class="fa-solid fa-magnifying-glass" id="searchIcon"></i>
+				<input type="text" name="keyword" class="form-control" placeholder="입력" style="width: 200px; height: 38px;">
+				<i class="fa-solid fa-magnifying-glass" id="searchIcon" onclick="searchForm()"></i>
 				</form>
 		</div>
 		<div class="table-responsive my-1">
@@ -125,6 +126,7 @@
 				</tbody>
 			</table>
 		</div>
+		${pageInfo.pagingHtml}
 		<nav aria-label="Page navigation borderless example">
 			<ul class="pagination pagination-borderless justify-content-end">
 				<li class="page-item disabled"><a
@@ -387,5 +389,11 @@
 	}
 	
 	/* 유효성검사 */
+	
+	
+	/* 검색 */
+	function searchForm(){
+		search.submit();
+	}
 	
 </script>
