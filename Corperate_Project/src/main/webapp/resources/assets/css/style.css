@@ -11663,7 +11663,7 @@ body.preloading::before {
   bottom: 0;
   left: 0;
   z-index: 1081;
-  background-image: url("/assets/img/preloader.svg");
+  background-image: url("/resources/assets/img/preloader.svg");
   background-repeat: no-repeat;
   background-position: top center;
 }

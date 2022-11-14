@@ -14,5 +14,7 @@ public interface ClientService {
 	public int deleteOne(String item_no);
 	public int update(ClientVO vO);
 	public int getTotalCount(SearchVO searchvo);
+	public int codeCheck(String code);
+	public int selectDelete(String[] parameterValues);
 	
 }

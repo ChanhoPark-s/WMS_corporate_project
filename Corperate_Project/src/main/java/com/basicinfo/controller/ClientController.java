@@ -1,9 +1,12 @@
 package com.basicinfo.controller;
 
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -43,7 +46,6 @@ public class ClientController {
 		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
 		if(flashMap!=null)
 			searchvo =(SearchVO)flashMap.get("searchvo");
-		System.out.println("category:는?"+searchvo.getCategory());
 		int totalCount = service.getTotalCount(searchvo);
 		
 		Client_Paging pageInfo = new Client_Paging(searchvo.getPageNumber(),"10",totalCount,"/basicinfo/client/list",searchvo.getWhatColumn(),searchvo.getKeyword(),0);
@@ -62,14 +64,6 @@ public class ClientController {
 		return redirect;
 	}
 	
-	
-	//select_one
-	@ResponseBody
-	@PostMapping(value="/select",produces = "application/text;charset=utf8")
-	public String select(@RequestParam("item_no")String item_no) {
-		return new Gson().toJson(service.selectOne(item_no));
-	}
-	
 	//update
 	@PostMapping("/update")
 	public String update(ClientVO VO,SearchVO searchvo,RedirectAttributes rttr) {
@@ -86,4 +80,28 @@ public class ClientController {
 		return redirect;
 	}
 	
+	//select_one
+	@ResponseBody
+	@PostMapping(value="/select",produces = "application/text;charset=utf8")
+	public String select(@RequestParam("item_no")String item_no) {
+		return new Gson().toJson(service.selectOne(item_no));
+	}
+	
+	
+	// check code
+	@ResponseBody
+	@PostMapping("/check")
+	public String check(@RequestParam("code")String code) {
+		return String.valueOf(service.codeCheck(code));
+	}
+	
+	
+	@PostMapping("/selectDelete")
+	public String selectDelete(HttpServletRequest request,HttpServletResponse response) throws IOException {
+		
+		//
+		service.selectDelete(request.getParameterValues("rowcheck"));
+		
+		return redirect;
+	}
 }

@@ -52,4 +52,17 @@ public class ClientServiceImpl implements ClientService{
 	public int getTotalCount(SearchVO searchvo) {
 		return mapper.getTotalCount(searchvo);
 	}
+
+
+	@Override
+	public int codeCheck(String code) {
+		return mapper.checkCode(code);
+	}
+
+
+	@Override
+	public int selectDelete(String[] parameterValues) {
+		return mapper.selectDelete(parameterValues);
+		
+	}
 }

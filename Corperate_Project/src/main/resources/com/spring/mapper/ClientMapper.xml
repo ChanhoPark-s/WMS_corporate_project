@@ -19,8 +19,6 @@
 		<if test="whatColumn=='address1'">where address1 like '%' ||  #{keyword} || '%'</if>
 		<if test="whatColumn=='address2'">where address2 like '%' ||  #{keyword} || '%'</if>
 		<if test="whatColumn=='email'">where email like '%' ||  #{keyword} || '%'</if>
-		<if test="category=='발주처'">where category = '발주처'</if>
-		<if test="category=='수주처'">where category = '수주처'</if>
 		ORDER BY no desc OFFSET #{beginRow} ROWS FETCH NEXT #{pageSize} ROWS ONLY
 	</select>
 
@@ -55,7 +53,17 @@
 		<if test="whatColumn=='address1'">where address1 like '%' ||  #{keyword} || '%'</if>
 		<if test="whatColumn=='address2'">where address2 like '%' ||  #{keyword} || '%'</if>
 		<if test="whatColumn=='email'">where email like '%' ||  #{keyword} || '%'</if>
-		<if test="category=='발주처'">where category = '발주처'</if>
-		<if test="category=='수주처'">where category = '수주처'</if>
 	</select>
+	
+	
+	<select id="checkCode" resultType="int">
+		select count(*) from client where code=#{code}
+	</select>
+	
+	<delete id="selectDelete">
+		delete client where no in 
+		<foreach collection="array" item="arr" open='(' close=")" separator=",">
+		#{arr}
+		</foreach>
+	</delete>
 </mapper>
