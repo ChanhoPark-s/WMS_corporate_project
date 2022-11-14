@@ -13,5 +13,15 @@
 	where rack_no = #{no}
 	order by no
 </select>
-
+<delete id="deleteCellByNo">
+	delete cell
+	where no = #{cell_no}
+</delete>
+<insert id="insert">
+	insert into cell values(seq_cell.nextval,#{racklocation},#{cellcode},#{cellname})
+</insert>
+<!-- <select id="selectOneCellByNo" resultType="com.spring.domain.WareHouseAllAreaVO">
+	select * from cell
+	where no = #{no}
+</select> -->
 </mapper>

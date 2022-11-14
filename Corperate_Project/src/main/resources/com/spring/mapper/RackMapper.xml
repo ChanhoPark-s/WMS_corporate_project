@@ -13,4 +13,11 @@
 	where area_no = #{no}
 	order by no
 </select>
+<delete id="deleteRackByNo">
+	delete rack
+	where no = #{rack_no}
+</delete>
+<insert id="insert">
+	insert into rack values(seq_rack.nextval,#{arealocation},#{rackcode},#{rackname})
+</insert>
 </mapper>

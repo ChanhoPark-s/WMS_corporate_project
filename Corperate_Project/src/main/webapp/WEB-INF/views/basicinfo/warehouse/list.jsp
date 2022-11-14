@@ -15,17 +15,33 @@
 <div class="col-md-6">
             <h3 class="fw-black">창고정보 관리</h3>
             <p>창고, 구역, 랙, 셀 목록</p>
+            
+         <ul class="nav flex-column">
+          <li class="nav-item">
+           <a href="#default-collapse" class="nav-link px-0 dropdown-toggle d-flex align-items-center gap-3" data-bs-toggle="collapse" role="button" aria-expanded="true" aria-controls="default-collapse"
+            	id="mydefault" data-value="0" onclick="clickFunction(this.id)">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+              </svg>
+              창고목록
+           </a>
+           
+           <!-- 창고 -->
+           <div class="ms-5 collapse show" id="default-collapse">
+           <!-- 상단부터 창고목록위해 추가된것으로 삭제시 좌측테이블 초기상태ㅋ -->
             <ul class="nav flex-column">
               <c:forEach items="${warehouseLists }" var="warehouseLists" varStatus="warehousestatus">
               <li class="nav-item">
-                <a href="#warehouse-collapse${warehouseLists.no }" class="nav-link px-0 dropdown-toggle d-flex align-items-center gap-3" data-bs-toggle="collapse" role="button" aria-expanded="true" aria-controls="warehouse-collapse${warehouseLists.no }"
+                <a href="#warehouse-collapse${warehouseLists.no }" class="nav-link px-0 dropdown-toggle d-flex align-items-center gap-3" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="warehouse-collapse${warehouseLists.no }"
                 	id="mywarehouseno${warehouseLists.no }" data-value="${warehouseLists.no }" onclick="clickFunction(this.id)">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
                   </svg>
                   ${warehouseLists.name }
                 </a>
-                <div class="ms-5 collapse show" id="warehouse-collapse${warehouseLists.no }">
+                
+                <!-- 구역 -->
+                <div class="ms-5 collapse" id="warehouse-collapse${warehouseLists.no }">
                   <ul class="nav flex-column">
                   
                   <c:forEach items="${areaLists }" var="areaLists" varStatus="areastatus">
@@ -92,6 +108,11 @@
               </c:forEach> <!-- warehouse -->
               
             </ul>
+            <!-- 상단 창고담는 폴더 추가할때 하단추가함 -->
+            </div>
+            </li>
+           </ul>
+            <!-- 상단 창고담는 폴더 추가할때 상단추가함 -->
           </div>
 <!-- 좌측영역에넣을테이블 -->
               </div>
@@ -107,8 +128,8 @@
 		<!-- 우측테이블상단의 버튼/검색 -->
 		<div class="d-flex gap-1 mb-4 flex-wrap">
 			<div class="d-flex gap-1 me-auto flex-wrap">
-				<button class="btn btn-primary d-inline-flex align-items-center gap-1"
-					data-bs-toggle="modal" data-bs-target="#addUserModal" onclick="">
+				<button class="btn btn-primary d-inline-flex align-items-center gap-1"  onclick="warehouseinsert()"
+					data-bs-toggle="modal" data-bs-target="#MyModal">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
 						fill="currentColor" aria-hidden="true">
                     <path fill-rule="evenodd"
@@ -117,8 +138,8 @@
                   </svg>
 					창고 등록
 				</button>
-				<button class="btn btn-primary d-inline-flex align-items-center gap-1"
-					data-bs-toggle="modal" data-bs-target="#addUserModal">
+				<button class="btn btn-primary d-inline-flex align-items-center gap-1"  onclick="areainsert()"
+					data-bs-toggle="modal" data-bs-target="#MyModal">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
 						fill="currentColor" aria-hidden="true">
                     <path fill-rule="evenodd"
@@ -127,8 +148,8 @@
                   </svg>
 					구역 등록
 				</button>
-				<button class="btn btn-primary d-inline-flex align-items-center gap-1"
-					data-bs-toggle="modal" data-bs-target="#addUserModal">
+				<button class="btn btn-primary d-inline-flex align-items-center gap-1"  onclick="rackinsert()"
+					data-bs-toggle="modal" data-bs-target="#MyModal">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
 						fill="currentColor" aria-hidden="true">
                     <path fill-rule="evenodd"
@@ -137,8 +158,8 @@
                   </svg>
 					랙 등록
 				</button>
-				<button class="btn btn-primary d-inline-flex align-items-center gap-1"
-					data-bs-toggle="modal" data-bs-target="#addUserModal">
+				<button class="btn btn-primary d-inline-flex align-items-center gap-1"  onclick="cellinsert()"
+					data-bs-toggle="modal" data-bs-target="#MyModal">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
 						fill="currentColor" aria-hidden="true">
                     <path fill-rule="evenodd"
@@ -265,89 +286,96 @@
 
 <!-- Modal 코드 넣을 위치 -->
 <!-- Add user modal -->
-<div class="modal fade" id="addUserModal" tabindex="-1">
+<div class="modal fade" id="MyModal" tabindex="-1">
 	<div class="modal-dialog modal-dialog-scrollable">
 		<div class="modal-content">
 			<div class="modal-header border-0">
-				<h5 class="modal-title">창고 등록</h5>
+				<h5 class="modal-title" id="modaltitle">창고 등록</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
 				<form class="needs-validation" novalidate id="taskForm">
+				<input type="hidden" name="no" id="no">
+				<input type="hidden" name="no" id="no">
 					<div class="mb-3" id="warehouselocationtitle">
-						<label for="userFullname" class="form-label">상위창고위치</label> <input
-							type="text" name="userFullname" class="form-control" id="warehouselocation"
+						<label for="warehouselocation" class="form-label">상위창고위치</label>
+						<select>
+							<option></option>
+							<option></option>
+							<option></option>
+						</select>
+						<input type="text" name="warehouselocation" class="form-control" id="warehouselocation"
 							required autofocus>
 						<div class="invalid-feedback">User full name is required.</div>
 					</div>
 					<div class="mb-3" id="arealocationtitle">
-						<label for="userEmail" class="form-label">상위구역위치</label> <input
-							type="email" name="userEmail" class="form-control" id="arealocation"
+						<label for="arealocation" class="form-label">상위구역위치</label> <input
+							type="text" name="arealocation" class="form-control" id="arealocation"
 							required >
 						<div class="invalid-feedback">User email is required.</div>
 					</div>
 					<div class="mb-3" id="racklocationtitle">
-						<label for="userEmail" class="form-label">상위랙위치</label> <input
-							type="email" name="userEmail" class="form-control" id="racklocation"
+						<label for="racklocation" class="form-label">상위랙위치</label> <input
+							type="text" name="racklocation" class="form-control" id="racklocation"
 							required >
 						<div class="invalid-feedback">User email is required.</div>
 					</div>
 					
 					
 					<div class="mb-3" id="warehousecodetitle">
-						<label for="userFullname" class="form-label" >창고코드</label> <input
-							type="text" name="userFullname" class="form-control" id="warehousecode"
+						<label for="warehousecode" class="form-label" >창고코드</label> <input
+							type="text" name="warehousecode" class="form-control" id="warehousecode"
 							required autofocus>
 						<div class="invalid-feedback">User full name is required.</div>
 					</div>
 					<div class="mb-3" id="warehousenametitle">
-						<label for="userEmail" class="form-label">창고명</label> <input
-							type="email" name="userEmail" class="form-control" id="warehousename"
+						<label for="warehousename" class="form-label">창고명</label> <input
+							type="text" name="warehousename" class="form-control" id="warehousename"
 							required >
 						<div class="invalid-feedback">User email is required.</div>
 					</div>
 					<div class="mb-3" id="areacodetitle">
-						<label for="userEmail" class="form-label">구역코드</label> <input
-							type="email" name="userEmail" class="form-control" id="areacode"
+						<label for="areacode" class="form-label">구역코드</label> <input
+							type="text" name="areacode" class="form-control" id="areacode"
 							required >
 						<div class="invalid-feedback">User email is required.</div>
 					</div>
 					<div class="mb-3" id="areanametitle">
-						<label for="userEmail" class="form-label">구역명</label> <input
-							type="email" name="userEmail" class="form-control" id="areaname"
+						<label for="areaname" class="form-label">구역명</label> <input
+							type="text" name="areaname" class="form-control" id="areaname"
 							required >
 						<div class="invalid-feedback">User email is required.</div>
 					</div>
 					<div class="mb-3" id="rackcodetitle">
-						<label for="userEmail" class="form-label">랙코드</label> <input
-							type="email" name="userEmail" class="form-control" id="rackcode"
+						<label for="rackcode" class="form-label">랙코드</label> <input
+							type="text" name="rackcode" class="form-control" id="rackcode"
 							required >
 						<div class="invalid-feedback">User email is required.</div>
 					</div>
 					<div class="mb-3" id="racknametitle">
-						<label for="userEmail" class="form-label">랙명</label> <input
-							type="email" name="userEmail" class="form-control" id="rackname"
+						<label for="rackname" class="form-label">랙명</label> <input
+							type="text" name="rackname" class="form-control" id="rackname"
 							required >
 						<div class="invalid-feedback">User email is required.</div>
 					</div>
 					<div class="mb-3" id="cellcodetitle">
-						<label for="userEmail" class="form-label">셀코드</label> <input
-							type="email" name="userEmail" class="form-control" id="cellcode"
+						<label for="cellcode" class="form-label">셀코드</label> <input
+							type="text" name="cellcode" class="form-control" id="cellcode"
 							required >
 						<div class="invalid-feedback">User email is required.</div>
 					</div>
 					<div class="mb-3" id="cellnametitle">
-						<label for="userEmail" class="form-label">셀명</label> <input
-							type="email" name="userEmail" class="form-control" id="cellname"
+						<label for="cellname" class="form-label">셀명</label> <input
+							type="text" name="cellname" class="form-control" id="cellname"
 							required >
 						<div class="invalid-feedback">User email is required.</div>
 					</div>
 				</form>
 			</div>
 			<div class="modal-footer border-0">
+				<button type="submit" form="taskForm" class="btn btn-primary px-5" id="submit_btn">등록</button>
 				<button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
-				<button type="submit" form="taskForm" class="btn btn-primary px-5">등록</button>
 			</div>
 		</div>
 	</div>
@@ -382,6 +410,11 @@
 // 	document.getElementById("warehouse-collapse1").classList.add("show");
 // });
 $(function(){
+});
+
+$(function(){
+	/* 왼쪽 카테고리창이 해당화면에 맞게 펼쳐지게 하는 코드 */
+	document.getElementById('basicinfo').click();
 	console.log("/basicinfo/warehouse/list.jsp");
 });
 
@@ -409,6 +442,7 @@ function clickFunction(clicked_id){
 		}),
 		success : function(data){
 			var mydata = JSON.parse(data);
+			console.log(mydata);
 // 			var rowcount = Object.keys(mydata).length;
 // 			alert(JSON.stringify(data));
 // 			var mydata1 = JSON.stringify(data);
@@ -469,20 +503,66 @@ function clickFunction(clicked_id){
 };//clickFunction
 function deletefunction(no,id){
 	alert(no+' del '+id);
+	var deletecheck;
+	console.log('삭제클릭한아이디'+id);
+	console.log('삭제클릭한아이디의번호'+no);
+	if(id.indexOf('ware')>0){
+		deletecheck = confirm('삭제할곳은 구역');
+		if(deletecheck){
+			location.href="/basicinfo/warehouse/delete?area_no="+no;
+		}
+	}
+	if(id.indexOf('area')>0){
+		deletecheck = confirm('삭제할곳은 랙');
+		if(deletecheck){
+			location.href="/basicinfo/warehouse/delete?rack_no="+no;
+		}
+	}		
+	if(id.indexOf('rack')>0){
+		deletecheck = confirm('삭제할곳은 셀');
+		if(deletecheck){
+			location.href="/basicinfo/warehouse/delete?cell_no="+no;
+		}
+	}		
+	if(id.indexOf('default')>0){
+		deletecheck = confirm('삭제할곳은 창고');
+		if(deletecheck){
+			location.href="/basicinfo/warehouse/delete?ware_no="+no;
+		}
+	}		
 }
+
 
 //보여지는 목록에서 수정버튼 클릭시
 function updatefunction(no,id){
 	alert(no+' upd '+id);
 	console.log(id);
 	console.log(id.indexOf('ware'));
-	if(id.indexOf('ware')>0){
+	
+	$('#submit_btn').html('수정');
+	if(id.indexOf('default')>0){
 		//창고수정
+		$('#modaltitle').html('창고수정');
+		$('#warehouselocationtitle').hide();
+		$('#arealocationtitle').hide();
+		$('#racklocationtitle').hide();
+		$('#warehousecodetitle').show();
+		$('#warehousenametitle').show();
+		$('#areacodetitle').hide();
+		$('#areanametitle').hide();
+		$('#rackcodetitle').hide();
+		$('#racknametitle').hide();
+		$('#cellcodetitle').hide();
+		$('#cellnametitle').hide();
+		$('#MyModal').modal('show');
+	}
+	if(id.indexOf('ware')>0){
+		//구역수정
+		$('#modaltitle').html('구역수정');
 		$('#warehouselocationtitle').show();
 		$('#arealocationtitle').hide();
 		$('#racklocationtitle').hide();
 		$('#warehousecodetitle').hide();
-		$('#warehousenametitle').hide();
 		$('#warehousenametitle').hide();
 		$('#areacodetitle').show();
 		$('#areanametitle').show();
@@ -490,10 +570,11 @@ function updatefunction(no,id){
 		$('#racknametitle').hide();
 		$('#cellcodetitle').hide();
 		$('#cellnametitle').hide();
-		$('#addUserModal').modal('show');
+		$('#MyModal').modal('show');
 	}
 	if(id.indexOf('area')>0){
-		//구역수정
+		//랙수정
+		$('#modaltitle').html('랙수정');
 		$('#warehouselocationtitle').show();
 		$('#arealocationtitle').show();
 		$('#racklocationtitle').hide();
@@ -505,10 +586,11 @@ function updatefunction(no,id){
 		$('#racknametitle').show();
 		$('#cellcodetitle').hide();
 		$('#cellnametitle').hide();
-		$('#addUserModal').modal('show');
+		$('#MyModal').modal('show');
 	}
 	if(id.indexOf('rack')>0){
-		//랙수정
+		//셀수정
+		$('#modaltitle').html('셀수정');
 		$('#warehouselocationtitle').show();
 		$('#arealocationtitle').show();
 		$('#racklocationtitle').show();
@@ -520,11 +602,116 @@ function updatefunction(no,id){
 		$('#racknametitle').hide();
 		$('#cellcodetitle').show();
 		$('#cellnametitle').show();
-		$('#addUserModal').modal('show');
+		$('#MyModal').modal('show');
+		
 	}
+	
+	//수정 누르면 수정하기 작동
+	$('#submit_btn').click(function(){
+		document.getElementById('taskForm').setAttribute('method','post');
+		document.getElementById('taskForm').setAttribute('action','/basicinfo/warehouse/update').submit();
+	});
+
+//수정할때 입력했던 데이터 가져오기위해 하단코드작성중
+	$.ajax({
+		url : "/basicinfo/warehouse/selectByNo",
+		type : "post",
+		data : ({
+			"id" : id,
+			"no" : no
+		}),
+		success : function(data){
+			var mydata = JSON.parse(data);
+			console.log(mydata);
+// 			var rowcount = Object.keys(mydata).length;
+// 			alert(JSON.stringify(data));
+// 			var mydata1 = JSON.stringify(data);
+// 			alert(data);
+// 			alert(rowcount);
+		
+		},
+		error: function (request, status, error) {
+	        console.log("code: " + request.status);
+	        console.log("message: " + request.responseText);
+	        console.log("error: " + error);
+	    }
+
+	});//ajax
+	//입력했던 데이터 가져오기위해 상단코드작성중
 	
 }
 
+//창고등록모달
+function warehouseinsert(){
+	$('#submit_btn').html('등록');
+	$('#modaltitle').html('창고등록');
+	$('#warehouselocationtitle').hide();
+	$('#arealocationtitle').hide();
+	$('#racklocationtitle').hide();
+	$('#warehousecodetitle').show();
+	$('#warehousenametitle').show();
+	$('#areacodetitle').hide();
+	$('#areanametitle').hide();
+	$('#rackcodetitle').hide();
+	$('#racknametitle').hide();
+	$('#cellcodetitle').hide();
+	$('#cellnametitle').hide();
+	document.getElementById('taskForm').setAttribute('action','/basicinfo/warehouse/insert');
+}
+
+//구역등록모달
+function areainsert(){
+	$('#submit_btn').html('등록');
+	$('#modaltitle').html('구역등록');
+	$('#warehouselocationtitle').show();
+	$('#arealocationtitle').hide();
+	$('#racklocationtitle').hide();
+	$('#warehousecodetitle').hide();
+	$('#warehousenametitle').hide();
+	$('#areacodetitle').show();
+	$('#areanametitle').show();
+	$('#rackcodetitle').hide();
+	$('#racknametitle').hide();
+	$('#cellcodetitle').hide();
+	$('#cellnametitle').hide();
+	document.getElementById('taskForm').setAttribute('action','/basicinfo/warehouse/insert');
+}
+
+//랙등록모달
+function rackinsert(){
+	$('#submit_btn').html('등록');
+	$('#modaltitle').html('랙등록');
+	$('#warehouselocationtitle').show();
+	$('#arealocationtitle').show();
+	$('#racklocationtitle').hide();
+	$('#warehousecodetitle').hide();
+	$('#warehousenametitle').hide();
+	$('#areacodetitle').hide();
+	$('#areanametitle').hide();
+	$('#rackcodetitle').show();
+	$('#racknametitle').show();
+	$('#cellcodetitle').hide();
+	$('#cellnametitle').hide();
+	document.getElementById('taskForm').setAttribute('action','/basicinfo/warehouse/insert');
+}
+
+//셀등록모달
+function cellinsert(){
+	$('#submit_btn').html('등록');
+	$('#modaltitle').html('셀등록');
+	$('#warehouselocationtitle').show();
+	$('#arealocationtitle').show();
+	$('#racklocationtitle').show();
+	$('#warehousecodetitle').hide();
+	$('#warehousenametitle').hide();
+	$('#areacodetitle').hide();
+	$('#areanametitle').hide();
+	$('#rackcodetitle').hide();
+	$('#racknametitle').hide();
+	$('#cellcodetitle').show();
+	$('#cellnametitle').show();
+	document.getElementById('taskForm').setAttribute('action','/basicinfo/warehouse/insert');
+}
 //	'<c:forEach items="${lists }" var="lists">'
 //	'</c:forEach>'
 /* $(document).ready(function(){

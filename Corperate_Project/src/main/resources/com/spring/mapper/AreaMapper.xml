@@ -13,5 +13,11 @@
 	where ware_no = #{no}
 	order by no
 </select>
-
+<delete id="deleteAreaByNo">
+	delete area
+	where no = #{area_no}
+</delete>
+<insert id="insert">
+	insert into area values(seq_area.nextval,#{warehouselocation},#{areacode},#{areaname})
+</insert>
 </mapper>
