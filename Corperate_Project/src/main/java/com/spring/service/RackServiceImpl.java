@@ -37,4 +37,9 @@ public class RackServiceImpl implements RackService{
 		return 0;
 	}
 
+	@Override
+	public List<RackVO> getListByAreaNo(int no) {
+		return mapper.getListByAreaNo(no);
+	}
+
 }

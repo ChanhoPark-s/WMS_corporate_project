@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.spring.service.AreaService;
 import com.spring.service.CellService;
@@ -22,22 +22,13 @@ public class WarehouseController {
 
 	@Autowired
 	private WareHouseService warehouseservice;
-	@Autowired
-	private AreaService areaservice;
-	@Autowired
-	private RackService rackservice;
-	@Autowired
-	private CellService cellservice;
 
-	@GetMapping(value="/list")
+	@GetMapping(value="/warehouselist")
 	public void home(Model model) {				
 		model.addAttribute("warehouseLists",warehouseservice.list());
-		model.addAttribute("areaLists",areaservice.list());
-		model.addAttribute("rackLists",rackservice.list());
-		model.addAttribute("cellLists",cellservice.list());
 		
-		logger.info("/basicinfo/warehouse/list.jsp 반환");
+		logger.info("/basicinfo/warehouse/warehouselist.jsp 반환");
 		
-		//return "list"; //요청 url과 반환해줄 jsp 파일의 이름이 일치하면 해당 함수는 void 타입이어도 된다. views/basicinfo/department/list.jsp 가 반환됨
+//		return "warehouselist"; //요청 url과 반환해줄 jsp 파일의 이름이 일치하면 해당 함수는 void 타입이어도 된다. views/basicinfo/department/list.jsp 가 반환됨
 	}
 }

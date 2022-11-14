@@ -10,4 +10,5 @@ public interface CellService {
 	public int insert(int no);
 	public int modify(int no);
 	public int delete(int no);
+	public List<CellVO> getListByRackNo(int no);
 }

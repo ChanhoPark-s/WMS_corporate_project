@@ -37,4 +37,9 @@ public class AreaServiceImpl implements AreaService{
 		return 0;
 	}
 
+	@Override
+	public List<AreaVO> getListByWareNo(int no) {
+		return mapper.getListByWareNo(no);
+	}
+
 }

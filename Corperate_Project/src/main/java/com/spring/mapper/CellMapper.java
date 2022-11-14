@@ -9,4 +9,5 @@ public interface CellMapper {
 	public int insert(int no); 					//셀추가
 	public int update(int no); 					//셀수정
 	public int delete(int no); 					//셀삭제
+	public List<CellVO> getListByRackNo(int no);//셀일련번호에따른 랙일련번호가져오기
 }

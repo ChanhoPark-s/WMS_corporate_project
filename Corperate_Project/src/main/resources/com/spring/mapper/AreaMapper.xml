@@ -6,8 +6,12 @@
 <mapper namespace="com.spring.mapper.AreaMapper">
 <select id="selectAll" resultType="com.spring.domain.AreaVO">
 	select * from area
+	order by no
 </select>
-<!-- <insert id="insertWareHouse">
-	insert into warehouse values()
-</insert> -->
+<select id="getListByWareNo" resultType="com.spring.domain.AreaVO">
+	select * from area
+	where ware_no = #{no}
+	order by no
+</select>
+
 </mapper>

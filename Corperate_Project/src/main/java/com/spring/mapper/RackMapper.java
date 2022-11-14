@@ -9,4 +9,5 @@ public interface RackMapper {
 	public int insert(int no); 					//랙추가
 	public int update(int no); 					//랙수정
 	public int delete(int no); 					//랙삭제
+	public List<RackVO> getListByAreaNo(int no);//랙일련번호에따른 구역일련번호가져오기
 }

@@ -6,8 +6,12 @@
 <mapper namespace="com.spring.mapper.CellMapper">
 <select id="selectAll" resultType="com.spring.domain.CellVO">
 	select * from cell
+	order by no
 </select>
-<!-- <insert id="insertWareHouse">
-	insert into warehouse values()
-</insert> -->
+<select id="getListByRackNo" resultType="com.spring.domain.CellVO">
+	select * from cell
+	where rack_no = #{no}
+	order by no
+</select>
+
 </mapper>

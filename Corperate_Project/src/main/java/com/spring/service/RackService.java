@@ -10,4 +10,5 @@ public interface RackService {
 	public int insert(int no);
 	public int modify(int no);
 	public int delete(int no);
+	public List<RackVO> getListByAreaNo(int no);
 }

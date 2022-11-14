@@ -10,4 +10,5 @@ public interface AreaService {
 	public int insert(int no);
 	public int modify(int no);
 	public int delete(int no);
+	public List<AreaVO> getListByWareNo(int no);
 }

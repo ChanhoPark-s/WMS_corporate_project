@@ -37,4 +37,9 @@ public class CellServiceImpl implements CellService{
 		return 0;
 	}
 
+	@Override
+	public List<CellVO> getListByRackNo(int no) {
+		return mapper.getListByRackNo(no);
+	}
+
 }

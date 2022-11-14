@@ -6,6 +6,7 @@
 <mapper namespace="com.spring.mapper.WareHouseMapper">
 <select id="selectAll" resultType="com.spring.domain.WareHouseVO">
 	select * from warehouse
+	order by no
 </select>
 <!-- <insert id="insertWareHouse">
 	insert into warehouse values()
