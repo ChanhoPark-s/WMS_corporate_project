@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -34,6 +35,14 @@ public class InitWareHouseController {
 		ArrayList<ItemVO> lists = new ArrayList<>();
 		lists.add(vo);
 		return new Gson().toJson(lists);
+	}
+	
+	@ResponseBody
+	@PostMapping(value="/get/{no}", produces = "application/json; charset=utf8")
+	public String get2(Model model, @PathVariable(value="no") int no) {
+		
+		ItemVO vo = new ItemVO(7, 28, "asd", "테스트", 10000, 10000, "스크린샷_20221026_034152.png");
+		return new Gson().toJson(vo);
 	}
 }
 
