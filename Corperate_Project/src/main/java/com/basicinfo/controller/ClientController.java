@@ -29,7 +29,7 @@ import com.spring.service.ClientService;
 @RequestMapping("/basicinfo/client/*")
 public class ClientController {
 	
-
+	
 	@Autowired
 	private ClientService service;
 	

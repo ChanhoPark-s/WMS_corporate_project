@@ -8,4 +8,5 @@ public class LotVO {
 	private String code; // Lot코드
 	private int item_no; //상품번호
 	
+	private String name; // 아이템명
 }

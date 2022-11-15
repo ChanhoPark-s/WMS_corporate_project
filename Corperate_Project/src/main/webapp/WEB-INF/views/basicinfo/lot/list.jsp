@@ -8,7 +8,7 @@
 .btn_search{
   cursor : pointer;
   position : absolute;
-  right : 7px;
+  right : 65px;
   top : 50%;
   transform : translatey(-50%);
 }
@@ -26,7 +26,7 @@
 	<div class="card-body">
 		<div class="d-flex gap-1 mb-4 flex-wrap">
 			<div class="search" >
-			<form name="search" action="/basicinfo/client/list" id="search">
+			<form name="search" action="/basicinfo/lot/list" id="search">
 			<table>
 			<tr>
 				<td>
@@ -49,6 +49,7 @@
 				<td>
 					<i class="fa-solid fa-magnifying-glass btn_search" id="searchIcon" onclick="searchForm()"></i>
 				</td>
+				<td><button class="btn btn-light d-inline-flex align-items-center gap-1" onclick="selectDelete()"><i class="fa-regular fa-trash-can fa-1.5x" style="height: 20px;"></i></button></td>
 			</tr>	
 			</table>
 				</form>
@@ -83,17 +84,11 @@
 								<input class="form-check-input" type="checkbox" name="rowcheck" value="${item.no }">
 							</div>
 						</td>
-						<td>
-						</td>
 						<td>${item.code }</td>
-						<td>
-								<h6>${item.owner }</h6>
-						</td>
-						<td>${item.tel }</td>
-						<td><span class="badge bg-light text-muted">${item.item_no}</span></td>
+						<td>${item.no }</td>
 						<td>
 							<div class="btn-group btn-group-sm" role="group">
-								<button type="button" class="btn btn-light d-flex text-danger" onclick="deleteClient('${item.no}')" id="deleteClient">
+								<button type="button" class="btn btn-light d-flex text-danger" onclick="deleteClient('${item.no}')" >
 									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
 										fill="none" viewBox="0 0 24 24" stroke="currentColor"
 										aria-hidden="true">
@@ -219,11 +214,6 @@
 	
 	})
 	
-
-	
-
-	
-	
 	/* 삭제 버튼 눌렀을 때  */
 	function deleteClient(item_no){
 		var whatColumn = $('select option:selected').val();
@@ -231,19 +221,21 @@
 		var pageNumber = $('#pageNumber').val();
 
 		if(confirm("삭제하시겠습니까?")){
-			location.href="/basicinfo/client/delete?item_no="+item_no+"&whatColumn="+whatColumn+"&keyword="+keyword+"&pageNumber="+pageNumber;
+			location.href="/basicinfo/lot/delete?item_no="+item_no+"&whatColumn="+whatColumn+"&keyword="+keyword+"&pageNumber="+pageNumber;
 		}
 		
 	}
 	
 	/* 검색 */
-	
+	function searchForm(){
+		search.submit();
+	}
 	
 	
 	/* 체크박스 */
 	function allSelect(){
-		var ac = document.getElementsByName("allselect");
-		var rc = document.getElementsByName("rowcheck");
+		var ac = document.f.allselect;
+		var rc = document.f.rowcheck;
 
 	if (ac.checked) {
 			for (var i = 0; i < rc.length; i++) {
@@ -261,7 +253,7 @@
 	function selectDelete(){
 
 		x=false;
-		var rc = document.getElementsByName("rowcheck");
+		var rc = document.f.rowcheck;
 		
 		for(var i=0;i<rc.length;i++){
 			if(rc[i].checked==true){

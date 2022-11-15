@@ -6,7 +6,7 @@
 <mapper namespace="com.spring.mapper.ClientMapper">
   
 	<select id="getAllClient" resultType="com.spring.domain.ClientVO">
-		select * from client
+		select * from client order by no desc
 	</select>  
   
 	<select id="GetAll" resultType="com.spring.domain.ClientVO">
@@ -27,7 +27,7 @@
 	</select>
 
 	<insert id="insert">
-		insert into client values(client_seq.nextval,#{code},#{category},#{name},#{owner},#{tel},#{fax},#{bank},#{account},#{zipcode},#{address1},#{address2},#{email})
+		insert into client values(client_seq.nextval,#{code},#{category},#{name},#{owner},#{tel},#{fax},#{bank},#{account},#{zipcode},#{address1},#{address2},#{email},#{business})
 	</insert>
 	
 	<select id="selectOne" resultType="com.spring.domain.ClientVO" parameterType="string">
@@ -35,7 +35,7 @@
 	</select>
 	
 	<update id="update">
-		update client set code = #{code},category = #{category}, name = #{name}, owner= #{owner}, tel = #{tel}, fax = #{fax}, bank = #{bank} , account = #{account}, zipcode = #{zipcode}, address1 = #{address1}, address2 = #{address2}, email = #{email} 
+		update client set code = #{code},category = #{category}, name = #{name}, owner= #{owner}, tel = #{tel}, fax = #{fax}, bank = #{bank} , account = #{account}, zipcode = #{zipcode}, address1 = #{address1}, address2 = #{address2}, email = #{email},Business = #{business}
 		where no = #{no}
 	</update>
 	

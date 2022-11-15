@@ -57,13 +57,13 @@
 				<td>
 					<select id="whatColumn" name="whatColumn" class="form-select" style="width: 200px;">
 	                  <%
-	                  String[] search = {"code","category","name","owner","tel","fax","bank","account","zipcode","address1","address2","email"};
-	                  String[] cate = {"거래처코드","분류","거래처명","대표자명","전화번호","팩스번호","은행명","은행계좌","우편번호","주소","상세주소","이메일"};
+	                  String[] search = {"code","category","name","owner","tel","fax","bank","account","zipcode","address1","address2","email","business"};
+	                  String[] cate = {"거래처코드","분류","거래처명","대표자명","전화번호","팩스번호","은행명","은행계좌","우편번호","주소","상세주소","이메일","사업자번호"};
 	                  %>
 	                  <c:set value="<%=search %>" var="s"></c:set>
 	                  <c:set value="<%=cate %>" var="c"></c:set>
 	                  <option>검색 선택</option>
-	                  	<c:forEach begin="0" end="11" var="i">
+	                  	<c:forEach begin="0" end="12" var="i">
 	                  		<option value="${s[i] }"<c:if test="${searchvo.whatColumn== s[i] }">selected</c:if>>${c[i] }</option>
 	                  	</c:forEach>
 	              </select>
@@ -192,7 +192,7 @@
               <div class="col-sm-4" style="width: 227px;">
                 <label for="category" class="form-label">분류</label>
                 <select id="category" name="category" class="form-select">
-                  <option selected value="">선택</option>
+                  <option value="">선택</option>
                   <option value="수주처">수주처</option>
                   <option value="발주처">발주처</option>
                 </select>
@@ -217,7 +217,7 @@
               <div class="col-sm-4">
                 <label for="bank" class="form-label">은행명</label>
                 <select id="bank" name="bank" class="form-select">
-                  <option selected value="">선택</option>
+                  <option value="">선택</option>
                   <option value="KEB">KEB</option>
                   <option value="SC제일">SC제일</option>
                   <option value="국민">국민</option>
@@ -244,6 +244,10 @@
 				<div class="col-12">
 	                <label for="email" class="form-label">이메일</label>
 	                <input type="email" class="form-control" id="email" name="email" placeholder="이메일">
+	              </div>
+				<div class="col-12">
+	                <label for="business" class="form-label">사업자등록번호</label>
+	                <input type="text" class="form-control" id="business" name="business" placeholder="109-01-21023">
 	              </div>
 	          <!-- 수정 했을 때 넘기기 위해 -->
 	          <input type="hidden" name="pageNumber" id="pageNumber" value="${pageInfo.pageNumber }">
@@ -278,8 +282,8 @@
 		deletereadonly();
 		
 		modal.find("#modal-title").text("거래처 등록");
+		modal.find('#okaybtn').show();
 		modal.find('#okaybtn').text("등록");
-		
 		modalForm.attr("action", "/basicinfo/client/add");
 		
 		/* 싹 지우고 시작 */
@@ -305,6 +309,7 @@
 			datatype : 'json',
 				success : function(data){ // 사용가능 불가능 한 걸 data로 받는다. data:응답정보 url 갔다온 답
 				const pd = JSON.parse(data);
+			
 				document.getElementById('code').value=pd.code;
 					var el = document.getElementById('category');  //select box
 					el.options[0].selected = true;
@@ -323,7 +328,7 @@
 				/* select 박스 선택되게 */ 
 				var bank = document.getElementById('bank'); 
 				var leng = bank.options.length;
-				
+				bank.options[0].selected = true;
 				for(var j=0;j<leng;j++){
 					if(bank.options[j].value == pd.bank)
 						bank.options[j].selected = true;
@@ -333,6 +338,7 @@
 				document.getElementById('address1').value=pd.address1;
 				document.getElementById('address2').value=pd.address2;
 				document.getElementById('email').value=pd.email;
+				document.getElementById('business').value=pd.business;
 				}//success 
 		});//ajax 
 	}
@@ -343,8 +349,8 @@
 		deletereadonly();
 		
 		modal.find("#modal-title").text("거래처 수정");
+		modal.find('#okaybtn').show();
 		modal.find('#okaybtn').text("수정");
-		
 		/* 수정할때도 검색어 가게 만들기위해 */
 		var whatColumn = $('select option:selected').val();
 		$('input[name="whatColumn"]').val(whatColumn);
@@ -362,35 +368,35 @@
 			datatype : 'json',
 				success : function(data){ // 사용가능 불가능 한 걸 data로 받는다. data:응답정보 url 갔다온 답
 				const pu = JSON.parse(data);
-				document.getElementById('no').value=pu.no;
-				document.getElementById('code').value=pu.code;
 					var el = document.getElementById('category');  //select box
 					var len = el.options.length; //select box의 option 갯수
 					el.options[0].selected = true;
 					//select box의 option 갯수만큼 for문 돌림
 					for (var i=0; i<len; i++){  
 					//select box의 option value가 입력 받은 value의 값과 일치할 경우 selected
-					if(el.options[i].value == pu.category)
-					   el.options[i].selected = true;
-				}
+						if(el.options[i].value == pu.category)
+						   el.options[i].selected = true;
+					}
+					/* select 박스 선택되게 */ 
+					var bank = document.getElementById('bank'); 
+					var leng = bank.options.length;
+					bank.options[0].selected = true;
+					for(var j=0;j<leng;j++){
+						if(bank.options[j].value == pu.bank)
+							bank.options[j].selected = true;
+					}
+				document.getElementById('no').value=pu.no;
+				document.getElementById('code').value=pu.code;
 				document.getElementById('name').value=pu.name;
 				document.getElementById('owner').value=pu.owner;
 				document.getElementById('tel').value=pu.tel;
 				document.getElementById('fax').value=pu.fax;
-				
-				/* select 박스 선택되게 */ 
-				var bank = document.getElementById('bank'); 
-				var leng = bank.options.length;
-				
-				for(var j=0;j<leng;j++){
-					if(bank.options[j].value == pu.bank)
-						bank.options[j].selected = true;
-				}
 				document.getElementById('account').value=pu.account;
 				document.getElementById('zipcode').value=pu.zipcode;
 				document.getElementById('address1').value=pu.address1;
 				document.getElementById('address2').value=pu.address2;
 				document.getElementById('email').value=pu.email;
+				document.getElementById('business').value=pu.business;
 				}//success 
 		});//ajax
 	}
@@ -457,6 +463,7 @@
 		document.getElementById('address1').value="";
 		document.getElementById('address2').value="";
 		document.getElementById('email').value=""; 
+		document.getElementById('business').value=""; 
 	}
 	
 	/* 유효성검사 */
@@ -489,6 +496,7 @@
 		$('#address1').keyup(function(){$('#address1').attr("class","form-control is-valid")})
 		$('#address2').keyup(function(){$('#address2').attr("class","form-control is-valid")})
 		$('#email').keyup(function(){$('#email').attr("class","form-control is-valid")})
+		$('#business').keyup(function(){$('#business').attr("class","form-control is-valid")})
 			
 		$('#okaybtn').click(function(){
 			
@@ -539,6 +547,10 @@
 			else if($('#email').val()==''){
 				$('#email').attr("class","form-control is-invalid")
 				$('#email').focus()
+			}
+			else if($('#business').val()==''){
+				$('#business').attr("class","form-control is-invalid")
+				$('#business').focus()
 			}
 			else{
 				modalForm.submit();
@@ -599,6 +611,7 @@
 		$("#zipcode" ).prop('readonly', true);
 		$("#address2" ).prop('readonly', true);
 		$("#email" ).prop('readonly', true);
+		$("#business" ).prop('readonly', true);
 		$('#search_zipcode').hide();
 	}
 	function deletereadonly(){
@@ -613,6 +626,7 @@
 		$("#zipcode" ).prop('readonly', false);
 		$("#address2" ).prop('readonly', false);
 		$("#email" ).prop('readonly', false);
+		$("#business" ).prop('readonly', false);
 		$('#search_zipcode').show();
 	}
 	

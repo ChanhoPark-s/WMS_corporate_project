@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.spring.mapper.LotMapper">
+<select id="GetAll" resultType="com.spring.domain.LotVO">
+	SELECT * FROM lot 
+		<if test="whatColumn=='code'">where code like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='item_no'">where name like '%' ||  #{keyword} || '%'</if>
+		ORDER BY no desc OFFSET #{beginRow} ROWS FETCH NEXT #{pageSize} ROWS ONLY
+</select>
+
+<select id="getTotalCount" resultType="int">
+		select count(*) from lot 
+		<if test="whatColumn=='code'">where code like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='item_no'">where item_no like '%' ||  #{keyword} || '%'</if>
+</select>
+
+<delete id="deleteOne">
+	delete lot where no = #{value}
+</delete>
+</mapper>
