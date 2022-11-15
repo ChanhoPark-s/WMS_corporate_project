@@ -79,7 +79,7 @@ public class InitWareHouseController {
 	@GetMapping(value="/geta/{no}", produces = "application/json; charset=utf8")
 	public String geta(Model model, @PathVariable(value="no") int no) {
 		System.out.println();
-		List<AreaVO> aLists = areaservice.list();
+		List<AreaVO> aLists = areaservice.getListByWareNo(no);
 		
 		return new Gson().toJson(aLists);
 	}

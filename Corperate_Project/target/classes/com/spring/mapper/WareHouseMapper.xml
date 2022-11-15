@@ -6,8 +6,13 @@
 <mapper namespace="com.spring.mapper.WareHouseMapper">
 <select id="selectAll" resultType="com.spring.domain.WareHouseVO">
 	select * from warehouse
+	order by no
 </select>
-<!-- <insert id="insertWareHouse">
-	insert into warehouse values()
-</insert> -->
+<delete id="deleteWareHouseByNo">
+	delete warehouse
+	where no = #{ware_no}
+</delete>
+<insert id="insert">
+	insert into warehouse values(seq_warehouse.nextval,#{warehousecode},#{warehousename})
+</insert>
 </mapper>

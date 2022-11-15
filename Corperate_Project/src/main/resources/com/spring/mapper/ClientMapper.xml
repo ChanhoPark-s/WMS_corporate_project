@@ -5,6 +5,10 @@
   
 <mapper namespace="com.spring.mapper.ClientMapper">
   
+	<select id="getAllClient" resultType="com.spring.domain.ClientVO">
+		select * from client
+	</select>  
+  
 	<select id="GetAll" resultType="com.spring.domain.ClientVO">
 		SELECT * FROM client 
 		<if test="whatColumn=='code'">where code like '%' ||  #{keyword} || '%'</if>

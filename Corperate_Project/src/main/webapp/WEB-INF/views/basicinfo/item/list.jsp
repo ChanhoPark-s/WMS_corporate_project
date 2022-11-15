@@ -8,25 +8,15 @@
 	<div class="card-body">
 		<div class="d-flex gap-1 mb-4 flex-wrap">
 			<div class="d-flex gap-1 me-auto flex-wrap">
-				<button
-					class="btn btn-primary d-inline-flex align-items-center gap-1"
-					data-bs-toggle="modal" data-bs-target="#addUserModal">
+				<button id="insertBtn" class="btn btn-primary d-inline-flex align-items-center gap-1 add"
+					data-bs-toggle="modal" data-bs-target="#itemModal">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
 						fill="currentColor" aria-hidden="true">
                     <path fill-rule="evenodd"
 							d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
 							clip-rule="evenodd" />
                   </svg>
-					Add user
-				</button>
-				<button class="btn btn-light d-inline-flex align-items-center gap-1">
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-						fill="currentColor" aria-hidden="true">
-                    <path fill-rule="evenodd"
-							d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z"
-							clip-rule="evenodd" />
-                  </svg>
-					Export
+                  등록하기
 				</button>
 				<div class="dropdown">
 					<button
@@ -45,75 +35,53 @@
 						<h6 class="dropdown-header p-0">Filter options</h6>
 						<hr>
 						<div class="vstack gap-3">
-							<div>
+							<div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
 								<label class="form-label">Role:</label> <select
 									class="dselect form-select" data-dselect-clearable="true">
-									<option value="">Choose role</option>
-									<option value="administrator">Administrator</option>
-									<option value="analyst">Analyst</option>
-									<option value="developer">Developer</option>
-									<option value="support">Support</option>
-									<option value="trial">Trial</option>
+									<option value="">선택하세요</option>
+									<option value="administrator">품목코드</option>
+									<option value="analyst">거래처코드</option>
+									<option value="analyst">품목명</option>
 								</select>
 							</div>
-							<div>
-								<label class="form-label">Two Step Verification:</label> <select
-									class="dselect form-select" data-dselect-clearable="true">
-									<option value="">Select option</option>
-									<option value="enabled">Enabled</option>
-									<option value="disabled">Disabled</option>
-								</select>
-							</div>
-							<button class="btn btn-primary" type="button">Apply</button>
+							<button class="btn btn-primary" type="button">적용</button>
 						</div>
 					</form>
 				</div>
 			</div>
 			<form>
-				<input type="text" class="form-control" placeholder="Search user">
+				<input type="text" class="form-control" placeholder="입력 후 Enter">
 			</form>
 		</div>
 		<div class="table-responsive my-1">
 			<table class="table align-middle">
 				<thead>
 					<tr>
-						<th scope="col">
-							<div>
-								<input class="form-check-input" type="checkbox" value="">
-							</div>
-						</th>
-						<th scope="col">User</th>
-						<th scope="col">Role</th>
-						<th scope="col">Last login</th>
-						<th scope="col" nowrap>Two-step</th>
-						<th scope="col">Joined date</th>
+						<th scope="col">번호</th>
+						<th scope="col">이미지</th>
+						<th scope="col">품목코드</th>
+						<th scope="col">거래처코드</th>
+						<th scope="col">품목명</th>
+						<th scope="col">입고단가</th>
+						<th scope="col">출고단가</th>
 						<th scope="col">Actions</th>
 					</tr>
 				</thead>
 				<tbody>
+					<c:forEach var="item" items="${lists}">
 					<tr>
-						<td>
-							<div>
-								<input class="form-check-input" type="checkbox" value="">
-							</div>
+						<td>${item.no} </td>
+						<td> <!-- 이미지 -->
+						<img src="<%=request.getContextPath()%>/resources/assets/itemimg/${item.image}" width="42" height="42" loading="lazy">
 						</td>
-						<td>
-							<div class="d-flex align-items-center gap-3">
-								<img src="/resources/assets/img/user/user1.svg" alt=""
-									width="42" height="42" class="rounded-circle" loading="lazy">
-								<div class="d-flex flex-column">
-									<h6>Cody Fisher</h6>
-									<small class="text-secondary">cody.fisher@example.com</small>
-								</div>
-							</div>
-						</td>
-						<td>Administrator</td>
-						<td><span class="badge bg-light text-muted">Yesterday</span></td>
-						<td></td>
-						<td nowrap>10 Mar 2021</td>
+						<td>${item.code}</td> 
+						<td>${item.client_code}</td>
+						<td>${item.name}</td>
+						<td>${item.in_price}</td>
+						<td>${item.out_price}</td>
 						<td>
 							<div class="btn-group btn-group-sm" role="group">
-								<button type="button" class="btn btn-light d-flex">
+								<button type="button" class="btn btn-light d-flex" data-bs-toggle="modal" data-bs-target="#itemModal" onclick="update('${item.no}')" id="updateItem">
 									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
 										fill="none" viewBox="0 0 24 24" stroke="currentColor"
 										aria-hidden="true">
@@ -122,7 +90,7 @@
 											d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                           </svg>
 								</button>
-								<button type="button" class="btn btn-light d-flex text-danger">
+								<button type="button" class="btn btn-light d-flex text-danger" onclick="deleteItem('${item.no}')">
 									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
 										fill="none" viewBox="0 0 24 24" stroke="currentColor"
 										aria-hidden="true">
@@ -134,182 +102,9 @@
 							</div>
 						</td>
 					</tr>
-					<tr>
-						<td>
-							<div>
-								<input class="form-check-input" type="checkbox" value="">
-							</div>
-						</td>
-						<td>
-							<div class="d-flex align-items-center gap-3">
-								<img src="/resources/assets/img/user/user2.svg" alt=""
-									width="42" height="42" class="rounded-circle" loading="lazy">
-								<div class="d-flex flex-column">
-									<h6>Esther Howard</h6>
-									<small class="text-secondary">esther.howard@example.com</small>
-								</div>
-							</div>
-						</td>
-						<td>Analyst</td>
-						<td><span class="badge bg-light text-muted">20 mins
-								ago</span></td>
-						<td><span class="badge bg-success">Enabled</span></td>
-						<td nowrap>22 Aug 2021</td>
-						<td>
-							<div class="btn-group btn-group-sm" role="group">
-								<button type="button" class="btn btn-light d-flex">
-									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
-										fill="none" viewBox="0 0 24 24" stroke="currentColor"
-										aria-hidden="true">
-                            <path stroke-linecap="round"
-											stroke-linejoin="round" stroke-width="2"
-											d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                          </svg>
-								</button>
-								<button type="button" class="btn btn-light d-flex text-danger">
-									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
-										fill="none" viewBox="0 0 24 24" stroke="currentColor"
-										aria-hidden="true">
-                            <path stroke-linecap="round"
-											stroke-linejoin="round" stroke-width="2"
-											d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                          </svg>
-								</button>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<div>
-								<input class="form-check-input" type="checkbox" value="">
-							</div>
-						</td>
-						<td>
-							<div class="d-flex align-items-center gap-3">
-								<img src="/resources/assets/img/user/user3.svg" alt=""
-									width="42" height="42" class="rounded-circle" loading="lazy">
-								<div class="d-flex flex-column">
-									<h6>Cameron Williamson</h6>
-									<small class="text-secondary">cameron.williamson@example.com</small>
-								</div>
-							</div>
-						</td>
-						<td>Developer</td>
-						<td><span class="badge bg-light text-muted">3 days ago</span></td>
-						<td></td>
-						<td nowrap>05 May 2021</td>
-						<td>
-							<div class="btn-group btn-group-sm" role="group">
-								<button type="button" class="btn btn-light d-flex">
-									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
-										fill="none" viewBox="0 0 24 24" stroke="currentColor"
-										aria-hidden="true">
-                            <path stroke-linecap="round"
-											stroke-linejoin="round" stroke-width="2"
-											d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                          </svg>
-								</button>
-								<button type="button" class="btn btn-light d-flex text-danger">
-									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
-										fill="none" viewBox="0 0 24 24" stroke="currentColor"
-										aria-hidden="true">
-                            <path stroke-linecap="round"
-											stroke-linejoin="round" stroke-width="2"
-											d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                          </svg>
-								</button>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<div>
-								<input class="form-check-input" type="checkbox" value="">
-							</div>
-						</td>
-						<td>
-							<div class="d-flex align-items-center gap-3">
-								<img src="/resources/assets/img/user/user4.svg" alt=""
-									width="42" height="42" class="rounded-circle" loading="lazy">
-								<div class="d-flex flex-column">
-									<h6>Bernard Lane</h6>
-									<small class="text-secondary">bernard.lane@example.com</small>
-								</div>
-							</div>
-						</td>
-						<td>Support</td>
-						<td><span class="badge bg-light text-muted">5 hours
-								ago</span></td>
-						<td><span class="badge bg-success">Enabled</span></td>
-						<td nowrap>21 Feb 2021</td>
-						<td>
-							<div class="btn-group btn-group-sm" role="group">
-								<button type="button" class="btn btn-light d-flex">
-									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
-										fill="none" viewBox="0 0 24 24" stroke="currentColor"
-										aria-hidden="true">
-                            <path stroke-linecap="round"
-											stroke-linejoin="round" stroke-width="2"
-											d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                          </svg>
-								</button>
-								<button type="button" class="btn btn-light d-flex text-danger">
-									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
-										fill="none" viewBox="0 0 24 24" stroke="currentColor"
-										aria-hidden="true">
-                            <path stroke-linecap="round"
-											stroke-linejoin="round" stroke-width="2"
-											d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                          </svg>
-								</button>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<div>
-								<input class="form-check-input" type="checkbox" value="">
-							</div>
-						</td>
-						<td>
-							<div class="d-flex align-items-center gap-3">
-								<img src="/resources/assets/img/user/user5.svg" alt=""
-									width="42" height="42" class="rounded-circle" loading="lazy">
-								<div class="d-flex flex-column">
-									<h6>Dan Wilson</h6>
-									<small class="text-secondary">dan.wilson@example.com</small>
-								</div>
-							</div>
-						</td>
-						<td>Developer</td>
-						<td><span class="badge bg-light text-muted">3 days ago</span></td>
-						<td><span class="badge bg-success">Enabled</span></td>
-						<td nowrap>10 Jul 2021</td>
-						<td>
-							<div class="btn-group btn-group-sm" role="group">
-								<button type="button" class="btn btn-light d-flex">
-									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
-										fill="none" viewBox="0 0 24 24" stroke="currentColor"
-										aria-hidden="true">
-                            <path stroke-linecap="round"
-											stroke-linejoin="round" stroke-width="2"
-											d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                          </svg>
-								</button>
-								<button type="button" class="btn btn-light d-flex text-danger">
-									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
-										fill="none" viewBox="0 0 24 24" stroke="currentColor"
-										aria-hidden="true">
-                            <path stroke-linecap="round"
-											stroke-linejoin="round" stroke-width="2"
-											d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                          </svg>
-								</button>
-							</div>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+				</c:forEach>
+			</tbody>
+			</table> 
 		</div>
 		<nav aria-label="Page navigation borderless example">
 			<ul class="pagination pagination-borderless justify-content-end">
@@ -346,45 +141,110 @@
 
 <!-- Modal 코드 넣을 위치 -->
 <!-- Add user modal -->
-<div class="modal fade" id="addUserModal" tabindex="-1">
+<div class="modal fade" id="itemModal" tabindex="-1">
 	<div class="modal-dialog modal-dialog-scrollable">
 		<div class="modal-content">
 			<div class="modal-header border-0">
-				<h5 class="modal-title">Add user</h5>
+				<h5 id="modal-title"></h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				<form class="needs-validation" novalidate id="taskForm">
+				<form class="needs-validation" id="modalForm" action="" enctype="multipart/form-data" method="post" >
+					<div>
+                <label for="image" class="form-label">이미지</label>
+                <input class="form-control" type="file" id="upload" name="upload">
+              		</div>
 					<div class="mb-3">
-						<label for="userFullname" class="form-label">부서명</label> <input
-							type="text" name="userFullname" class="form-control" id="name"
+						<label for="code" class="form-label">품목코드</label> <input
+							type="text" class="form-control" name="code" id="code"
 							required autofocus>
-						<div class="invalid-feedback">User full name is required.</div>
 					</div>
 					<div class="mb-3">
-						<label for="userEmail" class="form-label">부서코드</label> <input
-							type="email" name="userEmail" class="form-control" id="userEmail"
-							required>
-						<div class="invalid-feedback">User email is required.</div>
+						<label for="client_no" class="form-label">거래처코드</label> 
+						<select class="form-select" id="client_no" name="client_no">
+	                  	<option selected>선택</option>
+						<c:forEach items="${clientList}" var="client">
+							<option value="${client.no }">${client.code }</option>
+						</c:forEach>
+	                </select>
+					</div>
+					<div class="mb-3">
+						<label for="name" class="form-label">품목명</label> <input
+							type="text" name="name" class="form-control" id="name"
+							required autofocus>
+					</div>
+					<div class="mb-3">
+						<label for="in_price" class="form-label">입고단가</label> <input
+							type="text" class="form-control" name="in_price" id="in_price"
+							required autofocus>
+					</div>
+					<div class="mb-3">
+						<label for="out_price" class="form-label">출고단가</label> <input
+							type="text" class="form-control" name="out_price" id="out_price"
+							required autofocus>
 					</div>
 				</form>
 			</div>
 			<div class="modal-footer border-0">
 				<button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
-				<button type="submit" form="taskForm" class="btn btn-primary px-5">등록</button>
+				<button type="button" form="taskForm" id="modaladdBtn" class="btn btn-primary px-5"></button>
 			</div>
 		</div>
 	</div>
 </div>
-
-
+     
 <!-- bottom.jsp -->
 <%@include file="../../common/bottom.jsp"%>
 
 <script type="text/javascript">
 $(function(){
-		/* 왼쪽 카테고리창이 해당화면에 맞게 펼쳐지게 하는 코드 */
-		document.getElementById('basicinfo').click();
+	/* 왼쪽 카테고리창이 해당화면에 맞게 펼쳐지게 하는 코드 */
+    document.getElementById('basicinfo').click();
+})
+
+$('#insertBtn').on("click",function(){
+	$(".modal").find("#modal-title").text("등록하기");
+	$(".modal").find('#modaladdBtn').text("등록");
+	
+	var taskForm = $("#modalForm");
+	$('#modaladdBtn').click(function(){
+		taskForm.attr("action", "/basicinfo/item/insert").submit();
 	});
+	
+});
+
+//삭제
+function deleteItem(no){
+	if(confirm("삭제하시겠습니까?")){
+		location.href="/basicinfo/item/delete?no="+no;
+	}
+};
+
+//수정
+function update(no){
+	$(".modal").find("#modal-title").text("수정하기");
+	$(".modal").find('#modaladdBtn').text("수정");
+	
+	var taskForm = $("#modalForm");
+	$('#modaladdBtn').click(function(){
+		taskForm.attr("action", "/basicinfo/item/update").submit();
+	})
+	$.ajax({
+			url : "/basicinfo/item/get ",
+			type : "post",
+			data : {  
+				no : no 
+			},
+			dataType:'json',
+			success : function(data){
+			 	
+				document.getElementById('code').value=data.code;
+				document.getElementById('name').value=data.name;
+				document.getElementById('in_price').value=data.in_price;
+				document.getElementById('out_price').value=data.out_price;
+			}
+		});
+	
+}
 </script>
