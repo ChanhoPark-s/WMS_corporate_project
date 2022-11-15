@@ -52,4 +52,9 @@ public class RackServiceImpl implements RackService{
 		return mapper.selectOneRackByNo(checkno);
 	}
 
+	@Override
+	public int updateRackByNo(WareHouseAllAreaVO vo) {
+		return mapper.updateRackByNo(vo);
+	}
+
 }

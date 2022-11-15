@@ -52,5 +52,10 @@ public class AreaServiceImpl implements AreaService{
 		return mapper.selectOneAreaByNo(no);
 	}
 
+	@Override
+	public int updateAreaByNo(WareHouseAllAreaVO vo) {
+		return mapper.updateAreaByNo(vo);
+	}
+
 
 }

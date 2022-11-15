@@ -47,4 +47,9 @@ public class WareHouseServiceImpl implements WareHouseService{
 		return mapper.selectOneWareHouseByNo(no);
 	}
 
+	@Override
+	public int updateWareHouseByNo(WareHouseAllAreaVO vo) {
+		return mapper.updateWareHouseByNo(vo);
+	}
+
 }

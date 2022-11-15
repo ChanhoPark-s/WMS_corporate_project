@@ -29,4 +29,8 @@ select * from
     where warehouse.no = area.ware_no)
 where no=#{no}
 </select>
+<update id="updateAreaByNo">
+	update area set code=#{areacode}, name=#{areaname}
+	where no=#{sendno}
+</update>
 </mapper>

@@ -52,4 +52,9 @@ public class CellServiceImpl implements CellService{
 		return mapper.selectOneCellByNo(no);
 	}
 
+	@Override
+	public int updateCellByNo(WareHouseAllAreaVO vo) {
+		return mapper.updateCellByNo(vo);
+	}
+
 }

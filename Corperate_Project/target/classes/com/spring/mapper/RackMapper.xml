@@ -31,4 +31,8 @@ select * from
         and area.no = rack.area_no)
 where no=#{no}
 </select>
+<update id="updateRackByNo">
+	update rack set code = #{rackcode}, name = #{rackname}
+	where no = #{sendno}
+</update>
 </mapper>

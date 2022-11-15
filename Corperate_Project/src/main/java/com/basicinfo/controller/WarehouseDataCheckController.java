@@ -37,11 +37,6 @@ public class WarehouseDataCheckController {
 	@GetMapping(value="/get-data", produces = "application/text; charset=utf8")
 	public String check(Model model, @RequestParam(value="id",required = false) String id,
 			@RequestParam(value="no",required = false) String no) {
-		
-//		model.addAttribute("warehouseLists",warehouseservice.list());
-//		model.addAttribute("areaLists",areaservice.list());
-//		model.addAttribute("rackLists",rackservice.list());
-//		model.addAttribute("cellLists",cellservice.list());
 
 		System.out.println("id:"+id);
 		System.out.println("no:"+no);
@@ -59,12 +54,5 @@ public class WarehouseDataCheckController {
 				List<WareHouseVO> lists = warehouseservice.list();				
 				return new Gson().toJson(lists);
 			}
-
-		
-//		List<CellVO> lists = cellservice.getListByRackNo(checkno);
-//		for(CellVO i: lists) {
-//			System.out.println(i.getNo()+" "+i.getCode()+" "+i.getName());
-//		}
-//		return new Gson().toJson(lists);
 	}
 }

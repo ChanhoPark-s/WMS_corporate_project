@@ -16,7 +16,12 @@
 	insert into warehouse values(seq_warehouse.nextval,#{warehousecode},#{warehousename})
 </insert>
 <select id="selectOneWareHouseByNo" resultType="com.spring.domain.WareHouseAllAreaVO">
-	select * from warehouse
+	select name warehousename, code warehousecode
+	from warehouse
 	where no=#{no}
 </select>
+<update id="updateWareHouseByNo">
+	update warehouse set code = #{warehousecode}, name = #{warehousename}
+	where no = #{sendno}
+</update>
 </mapper>

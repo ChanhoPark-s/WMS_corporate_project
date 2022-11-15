@@ -28,7 +28,7 @@
            
            <!-- 창고 -->
            <div class="ms-5 collapse show" id="default-collapse">
-           <!-- 상단부터 창고목록위해 추가된것으로 삭제시 좌측테이블 초기상태ㅋ -->
+           <!-- 상단부터 창고목록위해 추가된것으로 삭제시 좌측테이블 초기상태 -->
             <ul class="nav flex-column">
               <c:forEach items="${warehouseLists }" var="warehouseLists" varStatus="warehousestatus">
               <li class="nav-item">
@@ -193,7 +193,7 @@
 					</tr>
 				</thead>
 				<tbody id="tddata">
-					<c:forEach items="${lists }" var="lists">
+					<c:forEach items="${lists }" var="lists" varStatus="status">
 					<tr>
 						<td>
 							<div>
@@ -201,13 +201,13 @@
 							</div>
 						</td>
 						<td>
-							${lists.no }
+							${status.count}
 						</td>
 						<td>${lists.code }</td>
 						<td>${lists.name }</td>
 						<td>
 							<div class="btn-group btn-group-sm" role="group">
-								<button type="button" class="btn btn-light d-flex" id="updatewarehouse" >
+								<button type="button" class="btn btn-light d-flex" id="updatewarehouse" onclick="updatefunction(${lists.no},'${param.id }')">
 									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
 										fill="none" viewBox="0 0 24 24" stroke="currentColor"
 										aria-hidden="true">
@@ -216,7 +216,7 @@
 											d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                           </svg>
 								</button>
-								<button type="button" class="btn btn-light d-flex text-danger">
+								<button type="button" class="btn btn-light d-flex text-danger" onclick="deletefunction(${lists.no},'${param.id }')">
 									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
 										fill="none" viewBox="0 0 24 24" stroke="currentColor"
 										aria-hidden="true">
@@ -295,9 +295,10 @@
 					aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				<form class="needs-validation" novalidate id="taskForm">
+				<form class="needs-validation" novalidate id="taskForm" action="" method="post">
 				<input type="hidden" name="sendno" id="sendno">
 				<input type="hidden" name="sendid" id="sendid">
+				<input type="hidden" name="showid" id="showid">
 				
 					<div class="mb-3" id="warehouselocationtitle">
 						<label for="warehouselocation" class="form-label">상위창고위치</label>
@@ -311,7 +312,7 @@
 					</div>
 					<div class="mb-3" id="arealocationtitle">
 						<label for="arealocation" class="form-label">상위구역위치</label>
-						<select class="dselect form-select" name="arealocation" id="arealocation" required>
+						<select class="dselect form-select" name="arealocation" id="arealocation" required onchange="change2()">
 							<option value="">구역위치를 선택하세요</option>
 				            <c:forEach items="${areaLists}" var="areaLists">
 				              <option value="${areaLists.no}">${areaLists.name}</option>
@@ -417,27 +418,63 @@
 // 	document.getElementById('warehouse-collapse1').classList.remove('collapsed');
 // 	document.getElementById("warehouse-collapse1").classList.add("show");
 // });
-$(function(){
-});
-
+var id;
+var no;
+var showid;
 $(function(){
 	/* 왼쪽 카테고리창이 해당화면에 맞게 펼쳐지게 하는 코드 */
 	document.getElementById('basicinfo').click();
 	console.log("/basicinfo/warehouse/list.jsp");
+	
+	
+	/* 왼쪽 창고-셀창이 등록/수정/삭제이후 보던 목차가펼쳐지게 하는 코드 */
+	var myshowid = "${param.showid}";
+	//등록/수정/삭제후 컨트롤러를 거친showid를 다시 입력
+// 	document.elementgetById('showid').value="${param.showid}";
+	
+// 	console.log(myshowid);
+// 	$('#area-collapse1').closest('div').addClass('show');
+// 	$('#warehouse-collapse1').closest('div').addClass('show');
+//	$('#'+myshowid).addClass('show');
+//	console.log('dd'+$('#'+myshowid).closest('div').prop('id'));
+
+	var selected = document.querySelector('#' + myshowid); // 최하위시작시 rack(셀보여줌)
+	selected.classList.add('show');
+	
+	var parent1 = selected.parentElement.closest('div'); // area(랙보여줌)
+	parent1.classList.add('show');
+	
+	var parent2 = parent1.parentElement.closest('div'); // ware(구역보여줌)
+	parent2.classList.add('show');
+	
+	var parent3 = parent2.parentElement.closest('div'); // default(창고보여줌)
+	parent3.classList.add('show');
+	
+	//보던 데이터를 불러와서 볼때 해당 수정/삭제 가능하게 id,no재입력해준다
+	id = "${param.id}";
+	no =  "${param.no}";
+	showid =  "${param.showid}";
+	console.log("화면에서의id"+id);
+	console.log("화면에서의no"+no);
+	console.log("화면에서의showid"+showid);
+// 	$('#'+myshowid).closest('div').addClass('show');
+// 	$('#warehouse-collapse1').addClass('show');
 });
 
-var id;
-var no;
-var showid;
+
+
 function clickFunction(clicked_id){
 // 	id = clicked_id;
-// 	showid = document.getElementById(clicked_id).getAttribute('href').substring(1)
 // 	no = document.getElementById(clicked_id).getAttribute('data-value');
 // 	alert(id+"+"+"+"+showid+"+"+no);
 // 	location.href="/basicinfo/warehouse/list?id="+id+"&showid="+showid+"&no="+no;
 	id = clicked_id;
+	showid = document.getElementById(clicked_id).getAttribute('href').substring(1); //등록수정삭제시 창고-셀 사이드바 보던 화면으로 가기 위한 변수
 	no = document.getElementById(clicked_id).getAttribute('data-value');
-// 	alert(id);
+	alert(showid);
+	alert(id);
+	
+	document.getElementById('showid').value = showid;
 
 	$.ajax({
 		url : "/basicinfo/warehouse/get-data",
@@ -495,7 +532,7 @@ function clickFunction(clicked_id){
 // 				rowcount = rowcount-1;
 				});
 			$("#tddata").append(tabledata);
-				/*ajax로 each 돌려서 우측 테이블td생성*/
+				/*ajax로 each 돌려서 우측 테이블td생성 끝*/
 				
 		},
 		error: function (request, status, error) {
@@ -506,49 +543,58 @@ function clickFunction(clicked_id){
 
 	});//ajax
 	
-	
 
 };//clickFunction
+
+$(function(){
+	console.log("클릭함수지난화면에서의id"+id);
+	console.log("클릭함수지난화면에서의no"+no);
+	console.log("클릭함수지난화면에서의showid"+showid);
+	});
+
+
+
 function deletefunction(no,id){
 	alert(no+' del '+id);
 	var deletecheck;
 	console.log('삭제클릭한아이디'+id);
 	console.log('삭제클릭한아이디의번호'+no);
 	if(id.indexOf('ware')>0){
-		deletecheck = confirm('삭제할곳은 구역');
+		deletecheck = confirm('해당 구역을 정말로 삭제하시겠습니까?');
 		if(deletecheck){
-			location.href="/basicinfo/warehouse/delete?area_no="+no;
+			location.href="/basicinfo/warehouse/delete?area_no="+no+"&showid="+showid;
 		}
 	}
 	if(id.indexOf('area')>0){
-		deletecheck = confirm('삭제할곳은 랙');
+		deletecheck = confirm('해당 랙을 정말로 삭제하시겠습니까?');
 		if(deletecheck){
-			location.href="/basicinfo/warehouse/delete?rack_no="+no;
+			location.href="/basicinfo/warehouse/delete?rack_no="+no+"&showid="+showid;
 		}
 	}		
 	if(id.indexOf('rack')>0){
-		deletecheck = confirm('삭제할곳은 셀');
+		deletecheck = confirm('해당 셀을 정말로 삭제하시겠습니까?');
 		if(deletecheck){
-			location.href="/basicinfo/warehouse/delete?cell_no="+no;
+			location.href="/basicinfo/warehouse/delete?cell_no="+no+"&showid="+showid;
 		}
 	}		
 	if(id.indexOf('default')>0){
-		deletecheck = confirm('삭제할곳은 창고');
+		deletecheck = confirm('해당 창고를 정말로 삭제하시겠습니까?');
 		if(deletecheck){
-			location.href="/basicinfo/warehouse/delete?ware_no="+no;
+			location.href="/basicinfo/warehouse/delete?ware_no="+no+"&showid="+showid;
 		}
 	}		
 }
 
-
 //보여지는 목록에서 수정버튼 클릭시
 function updatefunction(no,id){
 	alert(no+' upd '+id);
-	console.log(id);
+	console.log("수정버튼클릭시id"+id);
+	console.log("수정버튼클릭시no"+no);
 	
 	$('#submit_btn').html('수정');
-	$('#sendid').val(no);
-	$('#sendno').val(id);
+	$('#sendid').val(id);
+	$('#sendno').val(no);
+	$('#taskForm').attr("action", "/basicinfo/warehouse/update");
 	
 	if(id.indexOf('default')>0){
 		//창고수정
@@ -614,25 +660,19 @@ function updatefunction(no,id){
 		$('#cellnametitle').show();
 		$('#MyModal').modal('show');
 	}
-	
-	//수정 누르면 수정하기 작동
-	$('#submit_btn').click(function(){
-		document.getElementById('taskForm').setAttribute('method','post');
-		document.getElementById('taskForm').setAttribute('action','/basicinfo/warehouse/update').submit();
-	});
 
-//수정할때 입력했던 데이터 가져오기위해 하단코드작성중
-var warehouselocation;
-var arealocation;
-var racklocation;
-var warehousecode;
-var warehousename;
-var areacode;
-var areaname;
-var rackcode;
-var rackname;
-var cellcode;
-var cellname;
+	//수정할때 입력했던 데이터 가져오기위해 하단코드작성중
+	var warehouselocation;
+	var arealocation;
+	var racklocation;
+	var warehousecode;
+	var warehousename;
+	var areacode;
+	var areaname;
+	var rackcode;
+	var rackname;
+	var cellcode;
+	var cellname;
 
 	$.ajax({
 		url : "/basicinfo/warehouse/selectByNo",
@@ -642,7 +682,6 @@ var cellname;
 			"no" : no
 		}),
 		success : function(data){
-			console.log('test'+data.areacode);
 			var mydata = JSON.parse(data);
 			console.log(mydata);
 			
@@ -682,7 +721,6 @@ var cellname;
 	document.getElementById('warehouselocation').disabled = true;
 	document.getElementById('arealocation').disabled = true;
 	document.getElementById('racklocation').disabled = true;
-	
 }//창고-셀 수정하기
 
 //창고등록모달
@@ -726,6 +764,8 @@ function areainsert(){
 //랙등록모달
 function rackinsert(){
 	resetmodal();
+	$('#arealocation *').remove();
+	$('#arealocation').append('<option value="">구역위치를 선택하세요</option>');
 	$('#submit_btn').html('등록');
 	$('#modaltitle').html('랙등록');
 	$('#warehouselocationtitle').show();
@@ -739,46 +779,16 @@ function rackinsert(){
 	$('#racknametitle').show();
 	$('#cellcodetitle').hide();
 	$('#cellnametitle').hide();
-	
-	
-	
 	document.getElementById('taskForm').setAttribute('action','/basicinfo/warehouse/insert');
 }
-
-function change1(){
-	//상위창고위치에 따라 상위 구역위치가 달라짐으로
-	$.ajax({
-		url : "/basicinfo/warehouse/OptionsByLocationNo",
-		type : "post",
-		data : ({
-// 			"warehouselocation" : document.getElementById('warehouselocation'),
-			"no" : taskForm.warehouselocation.selectedIndex
-		}),
-		success : function(data){
-			var mydata = JSON.parse(data);
-			console.log(mydata);
-			
-// 			$('#arealocation').remove();
-// 			$.each(mydata,function(i){
-// 				option = "<option value='"+mydata.no+"'>"+mydata.name+"</option>";
-// 				$('#arealocation').append(option);
-				
-// 			}
-		},
-		error: function (request, status, error) {
-	        console.log("code: " + request.status);
-	        console.log("message: " + request.responseText);
-	        console.log("error: " + error);
-	    }
-
-	});//ajax
-}
-
-
 
 //셀등록모달
 function cellinsert(){
 	resetmodal();
+	$('#arealocation *').remove();
+	$('#arealocation').append('<option value="">구역위치를 선택하세요</option>');
+	$('#racklocation *').remove();
+	$('#racklocation').append('<option value="">랙위치를 선택하세요</option>');
 	$('#submit_btn').html('등록');
 	$('#modaltitle').html('셀등록');
 	$('#warehouselocationtitle').show();
@@ -794,6 +804,68 @@ function cellinsert(){
 	$('#cellnametitle').show();
 	document.getElementById('taskForm').setAttribute('action','/basicinfo/warehouse/insert');
 }
+
+//상위창고위치 셀렉트 선택에 따른 상위구역위치 옵션 설정
+function change1(){
+	$.ajax({
+		url : "/basicinfo/warehouse/OptionsByLocationNo",
+		type : "post",
+		data : ({
+			"no" : taskForm.warehouselocation.selectedIndex
+		}),
+		success : function(data){
+			var mydata = JSON.parse(data);
+			console.log(mydata);
+			
+			$('#arealocation *').remove();
+			$('#arealocation').append('<option value="">구역위치를 선택하세요</option>');
+			$('#racklocation *').remove();
+			$('#racklocation').append('<option value="">랙위치를 선택하세요</option>');
+			if(mydata !=null){
+				$.each(mydata,function(i){
+					option = '<option value="'+mydata[i].no+'">'+mydata[i].name+'</option>';
+					$('#arealocation').append(option);
+				});//each
+			}//if
+		},
+		error: function (request, status, error) {
+	        console.log("code: " + request.status);
+	        console.log("message: " + request.responseText);
+	        console.log("error: " + error);
+	    }
+	});//ajax
+}
+
+//상위구역위치 셀렉트 선택에 따른 상위랙위치 옵션 설정
+function change2(){
+	$.ajax({
+		url : "/basicinfo/warehouse/OptionsByAreaLocationNo",
+		type : "post",
+		data : ({
+			"no" : taskForm.arealocation.selectedIndex
+		}),
+		success : function(data){
+			var mydata = JSON.parse(data);
+			console.log(mydata);
+			
+			$('#racklocation *').remove();
+			$('#racklocation').append('<option value="">랙위치를 선택하세요</option>');
+			if(mydata !=null){
+				$.each(mydata,function(i){
+					option = '<option value="'+mydata[i].no+'">'+mydata[i].name+'</option>';
+					$('#racklocation').append(option);
+				});//each
+			}//if
+		},
+		error: function (request, status, error) {
+	        console.log("code: " + request.status);
+	        console.log("message: " + request.responseText);
+	        console.log("error: " + error);
+	    }
+	});//ajax
+}
+
+
 
 //모달리셋
 function resetmodal(){

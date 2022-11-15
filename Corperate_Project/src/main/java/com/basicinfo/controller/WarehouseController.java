@@ -15,10 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 import com.spring.domain.AreaVO;
-import com.spring.domain.CellVO;
 import com.spring.domain.RackVO;
 import com.spring.domain.WareHouseAllAreaVO;
-import com.spring.domain.WareHouseVO;
 import com.spring.service.AreaService;
 import com.spring.service.CellService;
 import com.spring.service.RackService;
@@ -48,17 +46,34 @@ public class WarehouseController {
 		model.addAttribute("areaLists",areaservice.list());
 		model.addAttribute("rackLists",rackservice.list());
 		model.addAttribute("cellLists",cellservice.list());
-		if(no != null) {
-			int checkno = Integer.parseInt(no);
-			if(id.contains("warehouse")) {
-				model.addAttribute("lists",areaservice.getListByWareNo(checkno));
-			} else if(id.contains("area")) {
-				model.addAttribute("lists",rackservice.getListByAreaNo(checkno));
-			} else if(id.contains("rack")) {
-				model.addAttribute("lists",cellservice.getListByRackNo(checkno));
-			}
-		} else {
+		model.addAttribute("showid",showid);
+		model.addAttribute("id",id);
+		model.addAttribute("no",no);
+		System.out.println("list에서본 id"+id);
+		System.out.println("list에서본 no"+no);
+		
+		
+		if(showid==null || showid=="") {//최초에 창고리스트 보여준다
 			model.addAttribute("lists",warehouseservice.list());
+		}else {//등록/수정/삭제후 보고있던(선택했던) 데이터를 불러온다
+			System.out.println("showid 리스트에서본"+showid);
+			int delete_no = showid.indexOf("collapse");
+			System.out.println("list에서본 collapse의 0부터n번째위치 숫자"+delete_no);
+			
+			String showid_no = showid.substring(delete_no+8);
+			System.out.println("list에서본 collapse뒤의"+showid_no);
+			int checkno = Integer.parseInt(showid_no);
+			System.out.println(checkno);
+			
+			if(showid.contains("rack")) {//rack-collapse1왔을시 셀이가진 rack_no넘버이기에 셀에서찾는다
+				model.addAttribute("lists",cellservice.getListByRackNo(checkno));
+			} else if(showid.contains("area")) {
+				model.addAttribute("lists",rackservice.getListByAreaNo(checkno));
+			} else if(showid.contains("ware")) {
+				model.addAttribute("lists",areaservice.getListByWareNo(checkno));
+			}  else if(showid.contains("default")) {
+				model.addAttribute("lists",warehouseservice.list());
+			}
 		}
 		
 		logger.info("/basicinfo/warehouse/list.jsp 반환");
@@ -72,7 +87,10 @@ public class WarehouseController {
 	public String delete(Model model,@RequestParam(value="ware_no",required = false) String ware_no,
 			@RequestParam(value="area_no",required = false) String area_no,
 			@RequestParam(value="rack_no",required = false) String rack_no,
-			@RequestParam(value="cell_no",required = false) String cell_no) {
+			@RequestParam(value="cell_no",required = false) String cell_no,
+			@RequestParam(value="showid",required = false) String showid) {
+		System.out.println("showid 삭제에서본"+showid);
+		
 		if(ware_no != null) {
 			System.out.println("창고일련번호:"+ware_no);
 			warehouseservice.deleteWareHouseByNo(ware_no);
@@ -90,14 +108,17 @@ public class WarehouseController {
 			cellservice.deleteCellByNo(cell_no);
 		}
 
-		return "redirect:/basicinfo/warehouse/list";
+		return "redirect:/basicinfo/warehouse/list?showid="+showid;
 	}
 	
 	
 	//창고구역삽입
-	@GetMapping(value="/insert")
-	public String insert(WareHouseAllAreaVO vo) {
+	@PostMapping(value="/insert")
+	public String insert(Model model,WareHouseAllAreaVO vo,
+			@RequestParam(value="showid",required = false) String showid) {
+		model.addAttribute("showid",showid);
 		
+		System.out.println("showid 삽입에서본"+showid);
 		//창고삽입위치
 		if(vo.getWarehouselocation() == "") {
 			System.out.println("입력한창고이름:"+vo.getWarehousename());
@@ -120,6 +141,7 @@ public class WarehouseController {
 		}
 		
 		return "redirect:/basicinfo/warehouse/list";
+//		return "redirect:/basicinfo/warehouse/list?showid="+showid;
 	}
 	
 	//수정하기위해 데이터 불러오기
@@ -131,15 +153,6 @@ public class WarehouseController {
 		System.out.println("수정하기위해id가져옴:"+id);
 		System.out.println("수정하기위해no가져옴:"+no);
 		int checkno = Integer.parseInt(no);
-		if(id.contains("warehouse")) {
-			System.out.println("warehouse가 있다");
-		} else if(id.contains("area")) {
-			System.out.println("area가있다");
-		} else if(id.contains("rack")) {
-			System.out.println("rack가있다");
-		} else {
-			System.out.println("default가있ㅏ");
-		}
 		
 		if(id.contains("warehouse")) {
 			WareHouseAllAreaVO getvo = areaservice.selectOneAreaByNo(checkno);
@@ -151,28 +164,35 @@ public class WarehouseController {
 			WareHouseAllAreaVO getvo = cellservice.selectOneCellByNo(checkno);
 			return new Gson().toJson(getvo);
 		} else {
-			WareHouseAllAreaVO getvo = warehouseservice.selectOneWareHouseByNo(checkno);				
+			WareHouseAllAreaVO getvo = warehouseservice.selectOneWareHouseByNo(checkno);
 			return new Gson().toJson(getvo);
 		}
 	}
 	
 	//수정하기
 	@PostMapping(value="/update")
-	public String update(Model model,@RequestParam(value="id",required = false) String id,
-			@RequestParam(value="no",required = false) String no) {	
+	public String update(Model model,WareHouseAllAreaVO vo,@RequestParam(value="sendid",required = false) String id,
+			@RequestParam(value="sendno",required = false) String no,
+			@RequestParam(value="showid",required = false) String showid) {	
+		System.out.println("보낸아디"+id);
+		System.out.println("수정하기위해가져온아이디"+vo.getSendid());
+		System.out.println("수정하기위해가져온번호"+vo.getSendno());
+		System.out.println("showid 수정에서본"+showid);
+		//등록수정삭제 이후페이지에서 데이타불러오고 기존 사이드바 보기위한변수
+		model.addAttribute("showid",showid);
+		model.addAttribute("id",id);
+		model.addAttribute("no",no);
 		
-		//내가가진 상위구역의 코드에 따라 수정 셀렉트박스 처리하고 하자
-//		int checkno = Integer.parseInt(no);
-//		if(id.contains("warehouse")) {
-//			areaservice.updateByNo(checkno);
-//		}
-//		else if(id.contains("area")) {
-//			rackservice.updateByNo(checkno);
-//		} else if(id.contains("rack")) {
-//			cellservice.updateByNo(checkno);
-//		} else {
-//			warehouseservice.updateByNo(checkno);		
-//		}
+		//실제로 수정
+		if(id.contains("warehouse")) {
+			areaservice.updateAreaByNo(vo);
+		} else if(id.contains("area")) {
+			rackservice.updateRackByNo(vo);
+		} else if(id.contains("rack")) {
+			cellservice.updateCellByNo(vo);
+		} else {
+			warehouseservice.updateWareHouseByNo(vo);		
+		}
 		
 		return "redirect:/basicinfo/warehouse/list";
 	}
@@ -180,13 +200,20 @@ public class WarehouseController {
 	//구역이 가진 창고일련번호에따른 구역가져오기
 	@ResponseBody
 	@PostMapping(value="/OptionsByLocationNo", produces = "application/text; charset=utf8")
-	public String selectAreaByWareHouseLocation(@RequestParam(value="warehouselocation",required = false) String warehouselocation,
-			@RequestParam(value="no",required = false) String no) {
-		System.out.println("구역데이터1");
+	public String selectAreaByWareHouseLocation(@RequestParam(value="no",required = false) String no) {
 		
 		int checkno = Integer.parseInt(no);
 		List<AreaVO> lists = areaservice.getListByWareNo(checkno);
-		System.out.println("구역데이터2");
+		return new Gson().toJson(lists);
+	}
+	
+	//랙이 가진 구역일련번호에따른 랙가져오기
+	@ResponseBody
+	@PostMapping(value="/OptionsByAreaLocationNo", produces = "application/text; charset=utf8")
+	public String selectRackByAreaLocation(@RequestParam(value="no",required = false) String no) {
+		
+		int checkno = Integer.parseInt(no);
+		List<RackVO> lists = rackservice.getListByAreaNo(checkno);
 		return new Gson().toJson(lists);
 	}
 }

@@ -14,4 +14,5 @@ public interface RackService {
 	public List<RackVO> getListByAreaNo(int no);
 	public int deleteRackByNo(String rack_no);
 	public WareHouseAllAreaVO selectOneRackByNo(int checkno);
+	public int updateRackByNo(WareHouseAllAreaVO vo);
 }
