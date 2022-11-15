@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.spring.domain.AreaVO;
+import com.spring.domain.WareHouseAllAreaVO;
 import com.spring.mapper.AreaMapper;
 
 @Service
@@ -20,12 +21,6 @@ public class AreaServiceImpl implements AreaService{
 	}
 
 	@Override
-	public int insert(int no) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public int modify(int no) {
 		// TODO Auto-generated method stub
 		return 0;
@@ -36,5 +31,21 @@ public class AreaServiceImpl implements AreaService{
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	@Override
+	public List<AreaVO> getListByWareNo(int no) {
+		return mapper.getListByWareNo(no);
+	}
+
+	@Override
+	public int deleteAreaByNo(String area_no) {
+		return mapper.deleteAreaByNo(area_no);
+	}
+	
+	@Override
+	public int insert(WareHouseAllAreaVO vo) {
+		return mapper.insert(vo);
+	}
+
 
 }

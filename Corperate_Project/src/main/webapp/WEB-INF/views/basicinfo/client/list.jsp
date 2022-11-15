@@ -55,7 +55,7 @@
 			<table>
 			<tr>
 				<td>
-					<select id="whatColumn" name="whatColumn" class="form-select" style="width: 200px;" id="whatColumn" >
+					<select id="whatColumn" name="whatColumn" class="form-select" style="width: 200px;">
 	                  <%
 	                  String[] search = {"code","category","name","owner","tel","fax","bank","account","zipcode","address1","address2","email"};
 	                  String[] cate = {"거래처코드","분류","거래처명","대표자명","전화번호","팩스번호","은행명","은행계좌","우편번호","주소","상세주소","이메일"};
@@ -86,7 +86,7 @@
 					<tr>
 						<th scope="col">
 							<div>
-								<input class="form-check-input" type="checkbox" name="allselect" onclick="allSelect()" value="">
+								<input class="form-check-input" type="checkbox" id="allselect" name="allselect" onclick="allSelect()">
 							</div>
 						</th>
 						<th scope="col">분류</th>
@@ -102,13 +102,18 @@
 					<c:if test="${fn:length(list)==0 }">
 					<tr height="400px">
 						<td colspan="7" align="center"><br><br><i class="fa-regular fa-circle-xmark fa-4x"></i><br><br>검색된 결과가 없습니다</td>
+						
 					</tr>
 					</c:if>
 					<c:forEach var="item" items="${list }">
 					<tr>
 						<td>
 							<div>
-								<input class="form-check-input" type="checkbox" name="rowcheck" value="${item.no }">
+								<input class="form-check-input" type="checkbox" id="rowcheck" name="rowcheck" value="${item.no }">
+								<!--선택 삭제할때도 넘어가게하기 위해  -->
+								<input type="hidden" name="keyword" id="keyword3" >
+								<input type="hidden" name="whatColumn" id="whatColumn2">
+             					<input type="hidden" name="pageNumber" id="pageNumber2">
 							</div>
 						</td>
 						<td>
@@ -140,7 +145,7 @@
 											d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                           </svg>
 								</button>
-								<button type="button" class="btn btn-light d-flex text-danger" onclick="deleteClient('${item.no}')" id="deleteClient">
+								<button type="button" class="btn btn-light d-flex text-danger" onclick="deleteClient('${item.no}')">
 									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
 										fill="none" viewBox="0 0 24 24" stroke="currentColor"
 										aria-hidden="true">
@@ -300,13 +305,9 @@
 			datatype : 'json',
 				success : function(data){ // 사용가능 불가능 한 걸 data로 받는다. data:응답정보 url 갔다온 답
 				const pd = JSON.parse(data);
-				alert(pd.name);
 				document.getElementById('code').value=pd.code;
-					if(pd.category==0)
-						pd.category="수주처";
-					else
-						pd.category="발주처";
 					var el = document.getElementById('category');  //select box
+					el.options[0].selected = true;
 					var len = el.options.length; //select box의 option 갯수
 					//select box의 option 갯수만큼 for문 돌림
 					for (var i=0; i<len; i++){  
@@ -361,13 +362,8 @@
 			datatype : 'json',
 				success : function(data){ // 사용가능 불가능 한 걸 data로 받는다. data:응답정보 url 갔다온 답
 				const pu = JSON.parse(data);
-				alert(pu.no)
 				document.getElementById('no').value=pu.no;
 				document.getElementById('code').value=pu.code;
-					if(pu.category==0)
-						pu.category="수주처";
-					else
-						pu.category="발주처";
 					var el = document.getElementById('category');  //select box
 					var len = el.options.length; //select box의 option 갯수
 					el.options[0].selected = true;
@@ -405,7 +401,6 @@
 		var whatColumn = $('select option:selected').val();
 		var keyword = $('#keyword').val();
 		var pageNumber = $('#pageNumber').val();
-
 		if(confirm("삭제하시겠습니까?")){
 			location.href="/basicinfo/client/delete?item_no="+item_no+"&whatColumn="+whatColumn+"&keyword="+keyword+"&pageNumber="+pageNumber;
 		}
@@ -422,7 +417,6 @@
 		}
 		search.submit();
 	}
-
 /** 우편번호 찾기 */
 	function execDaumPostcode() {
 	    daum.postcode.load(function(){
@@ -563,24 +557,22 @@
 		var ac = document.f.allselect;
 		var rc = document.f.rowcheck;
 
-	if (ac.checked) {
-			for (var i = 0; i < rc.length; i++) {
-				rc[i].checked = true;
+		if (ac.checked) {
+				for (var i = 0; i < rc.length; i++) {
+					rc[i].checked = true;
+				}
+			}
+		else {
+				for (var i = 0; i < rc.length; i++) {
+					rc[i].checked = false;
+				}
 			}
 		}
-	else {
-			for (var i = 0; i < rc.length; i++) {
-				rc[i].checked = false;
-			}
-		}
-	
-	}//allselect
-	
 	function selectDelete(){
-
+		
 		x=false;
 		var rc = document.f.rowcheck;
-
+		
 		for(var i=0;i<rc.length;i++){
 			if(rc[i].checked==true){
 				x=true;
@@ -590,10 +582,11 @@
 			alert("체크박스를 선택하세요");
 			return;
 		}
-		if(confirm("삭제하시겠습니까?"))
+		if(confirm("삭제하시겠습니까?")){
 			f.submit();
 		}
-	
+
+	}
 	function addreadonly(){
 		$("#code" ).prop('readonly', true);
 		$('#category').attr('disabled', true);
@@ -604,7 +597,6 @@
 		$('#bank').attr('disabled', true);
 		$("#account" ).prop('readonly', true);
 		$("#zipcode" ).prop('readonly', true);
-		$("#address1" ).prop('readonly', true);
 		$("#address2" ).prop('readonly', true);
 		$("#email" ).prop('readonly', true);
 		$('#search_zipcode').hide();
@@ -619,7 +611,6 @@
 		$('#bank').attr('disabled', false);
 		$("#account" ).prop('readonly', false);
 		$("#zipcode" ).prop('readonly', false);
-		$("#address1" ).prop('readonly', false);
 		$("#address2" ).prop('readonly', false);
 		$("#email" ).prop('readonly', false);
 		$('#search_zipcode').show();

@@ -29,7 +29,6 @@ public class SigninController {
 	
 	@GetMapping("/")
 	public String home() {
-		
 		return "signin";
 	}
 	

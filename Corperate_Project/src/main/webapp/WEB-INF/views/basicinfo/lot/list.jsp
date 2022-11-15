@@ -242,8 +242,8 @@
 	
 	/* 체크박스 */
 	function allSelect(){
-		var ac = document.f.allselect;
-		var rc = document.f.rowcheck;
+		var ac = document.getElementsByName("allselect");
+		var rc = document.getElementsByName("rowcheck");
 
 	if (ac.checked) {
 			for (var i = 0; i < rc.length; i++) {
@@ -261,8 +261,8 @@
 	function selectDelete(){
 
 		x=false;
-		var rc = document.f.rowcheck;
-
+		var rc = document.getElementsByName("rowcheck");
+		
 		for(var i=0;i<rc.length;i++){
 			if(rc[i].checked==true){
 				x=true;

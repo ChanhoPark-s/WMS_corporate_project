@@ -6,8 +6,18 @@
 <mapper namespace="com.spring.mapper.RackMapper">
 <select id="selectAll" resultType="com.spring.domain.RackVO">
 	select * from rack
+	order by no
 </select>
-<!-- <insert id="insertWareHouse">
-	insert into warehouse values()
-</insert> -->
+<select id="getListByAreaNo" resultType="com.spring.domain.RackVO">
+	select * from rack
+	where area_no = #{no}
+	order by no
+</select>
+<delete id="deleteRackByNo">
+	delete rack
+	where no = #{rack_no}
+</delete>
+<insert id="insert">
+	insert into rack values(seq_rack.nextval,#{arealocation},#{rackcode},#{rackname})
+</insert>
 </mapper>

@@ -45,8 +45,8 @@ public class Client_Paging {
 			int beginRow
 			) {		
 
-		System.out.println("Client_Paging에서의 whatColumn:"+whatColumn);
-		System.out.println("Client_Paging에서의 키워드:"+keyword);
+		//System.out.println("Client_Paging에서의 whatColumn:"+whatColumn);
+		//System.out.println("Client_Paging에서의 키워드:"+keyword);
 		
 		if(  _pageNumber == null || _pageNumber.equals("null") || _pageNumber.equals("")  ){
 			System.out.println("_pageNumber:"+_pageNumber); // null
@@ -88,9 +88,6 @@ public class Client_Paging {
 	}
 	
 	private String getPagingHtml( String url ){ //페이징 문자열을 만든다.
-		System.out.println("getPagingHtml url:"+url); 
-		System.out.println("getPagingHtml에서의 whatColumn:"+whatColumn);
-		System.out.println("getPagingHtml에서의 키워드:"+keyword);
 		String result = "" ;
 		String added_param = "&whatColumn=" + whatColumn + "&keyword=" + keyword; 
 		
@@ -115,7 +112,7 @@ public class Client_Paging {
 			 	
 			}
 		}
-		System.out.println("토탈페이지:"+this.totalPage);
+		//System.out.println("토탈페이지:"+this.totalPage);
 		if ( this.endPage != this.totalPage) { // 뒤쪽
 			
 			result += "&nbsp;<a href='" + url  

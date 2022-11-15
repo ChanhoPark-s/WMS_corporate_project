@@ -6,8 +6,22 @@
 <mapper namespace="com.spring.mapper.CellMapper">
 <select id="selectAll" resultType="com.spring.domain.CellVO">
 	select * from cell
+	order by no
 </select>
-<!-- <insert id="insertWareHouse">
-	insert into warehouse values()
-</insert> -->
+<select id="getListByRackNo" resultType="com.spring.domain.CellVO">
+	select * from cell
+	where rack_no = #{no}
+	order by no
+</select>
+<delete id="deleteCellByNo">
+	delete cell
+	where no = #{cell_no}
+</delete>
+<insert id="insert">
+	insert into cell values(seq_cell.nextval,#{racklocation},#{cellcode},#{cellname})
+</insert>
+<!-- <select id="selectOneCellByNo" resultType="com.spring.domain.WareHouseAllAreaVO">
+	select * from cell
+	where no = #{no}
+</select> -->
 </mapper>

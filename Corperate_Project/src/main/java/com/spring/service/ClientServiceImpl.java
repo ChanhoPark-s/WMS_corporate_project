@@ -2,6 +2,7 @@ package com.spring.service;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,5 +65,10 @@ public class ClientServiceImpl implements ClientService{
 	public int selectDelete(String[] parameterValues) {
 		return mapper.selectDelete(parameterValues);
 		
+	}
+	
+	@Override
+	public List<ClientVO> GetAllClient() {
+		return mapper.getAllClient();
 	}
 }
