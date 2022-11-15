@@ -24,7 +24,7 @@
         <img src="resources/assets/img/logo.svg" alt="Mimity admin" width="32" height="32" class="mb-3" style="transform:rotate(180deg)">
         <h1 class="fw-black mb-2">WMS Project</h1>
         <p class="fw-light text-secondary mb-4"></p>
-        <form class="needs-validation" novalidate>
+        <form class="needs-validation" novalidate name="loginForm">
           <div class="mb-3">
             <label class="form-label fw-bold" for="InputEmail">아이디</label>
             <input type="text" class="form-control" id="id" placeholder="아이디를 입력하세요" autocomplete="off" autofocus required>
@@ -37,7 +37,7 @@
           </div>
           <div class="mb-3 d-flex justify-content-between align-items-center">
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="remember">
+              <input class="form-check-input" type="checkbox" id="idsave" name="idsave">
               <label class="form-check-label" for="remember">기억하기</label>
             </div>
             <a style="width: 250px; text-align: right;" href="forgot-password.html" class="link-primary small text-decoration-none">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;관리자에게 문의</a>
@@ -56,6 +56,14 @@
     // Example starter JavaScript for disabling form submissions if there are invalid fields
      
    $(function(){
+	   
+	   if (getCookie("id")) { // getCookie함수로 id라는 이름의 쿠키를 불러와서 있을경우
+           document.loginForm.id.value = getCookie("id"); //input 이름이 id인곳에 getCookie("id")값을 넣어줌
+           document.loginForm.idsave.checked = true; // 체크는 체크됨으로
+       }
+	   
+	   
+	   /* 키보드가 올라오면  */
 	   $("#id").keyup(function(){
 		   $('#id').attr("class","form-control is-valid")
 		   $('#msg').hide()
@@ -92,15 +100,40 @@
 		  						$('#msg').html("<font color=red>아이디 또는 비밀번호가 일치하지 않습니다</font><br>")
 		  					}
 		  					else{
+		  						 if (document.loginForm.idsave.checked == true) { // 아이디 저장을 체크 하였을때
+		  				            setCookie("id", document.loginForm.id.value, 7); //쿠키이름을 id로 아이디입력필드값을 7일동안 저장
+		  				        } else { // 아이디 저장을 체크 하지 않았을때
+		  				            setCookie("id", document.loginForm.id.value, 0); //날짜를 0으로 저장하여 쿠키삭제
+		  				        }
 		  						location.href='/home';
 		  					}
 		  				}
 		  		});//ajax
 			}//else
       })
-    
-   
-  </script>
+      
+        
+			function setCookie(name, value, expiredays) { //쿠키 저장함수
+				var todayDate = new Date();
+				todayDate.setDate(todayDate.getDate() + expiredays);
+				document.cookie = name + "=" + escape(value)
+						+ "; path=/; expires=" + todayDate.toGMTString() + ";"
+			}
+
+			function getCookie(Name) { // 쿠키 불러오는 함수
+				var search = Name + "=";
+				if (document.cookie.length > 0) { // if there are any cookies
+					offset = document.cookie.indexOf(search);
+					if (offset != -1) { // if cookie exists
+						offset += search.length; // set index of beginning of value
+						end = document.cookie.indexOf(";", offset); // set index of end of cookie value
+						if (end == -1)
+							end = document.cookie.length;
+						return unescape(document.cookie.substring(offset, end));
+					}
+				}
+			}
+		</script>
 </body>
 
 </html>
