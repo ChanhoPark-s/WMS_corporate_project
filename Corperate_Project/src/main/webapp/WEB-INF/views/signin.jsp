@@ -27,12 +27,12 @@
         <form class="needs-validation" novalidate>
           <div class="mb-3">
             <label class="form-label fw-bold" for="InputEmail">아이디</label>
-            <input type="email" class="form-control" id="InputEmail" placeholder="아이디를 입력하세요" autocomplete="off" autofocus required>
+            <input type="text" class="form-control" id="id" placeholder="아이디를 입력하세요" autocomplete="off" autofocus required>
             <div class="invalid-feedback">아이디 입력</div>
           </div>
           <div class="mb-3">
             <label class="form-label fw-bold" for="InputPassword">비밀번호</label>
-            <input type="password" class="form-control" id="InputPassword" placeholder="비밀번호를 입력하세요" required>
+            <input type="password" class="form-control" id="pw" placeholder="비밀번호를 입력하세요" required>
             <div class="invalid-feedback">비밀번호 입력</div>
           </div>
           <div class="mb-3 d-flex justify-content-between align-items-center">
@@ -42,28 +42,64 @@
             </div>
             <a style="width: 250px; text-align: right;" href="forgot-password.html" class="link-primary small text-decoration-none">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;관리자에게 문의</a>
           </div>
-          <button type="submit" class="btn btn-primary w-100">로그인</button>
+          <span id="msg"></span>
+          <button type="button" class="btn btn-primary w-100" id="check_user">로그인</button>
           <input type="button" value="home" class="btn btn-primary w-100" onclick="location.href='/home'">
           <div class="divider-text"></div>
         </form>
       </div>
     </div>
   </div>
-  
+  <!-- jQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script>
     // Example starter JavaScript for disabling form submissions if there are invalid fields
-    void(function() {
-      document.querySelectorAll('.needs-validation').forEach(form => {
-        form.addEventListener('submit', event => {
-          if (!form.checkValidity()) {
-            event.preventDefault()
-            event.stopPropagation()
-          }
-
-          form.classList.add('was-validated')
-        })
+     
+   $(function(){
+	   $("#id").keyup(function(){
+		   $('#id').attr("class","form-control is-valid")
+		   $('#msg').hide()
+	   })
+	   $("#pw").keyup(function(){
+		   $('#pw').attr("class","form-control is-valid")
+		   $('#msg').hide()
+	   })
+   })
+		
+		$('#check_user').click(function(){
+			if($("#id").val()=="")
+				$('#id').attr("class","form-control is-invalid")
+			if($("#id").val()!="")
+				$('#id').attr("class","form-control is-valid")
+			if($('#pw').val()=="")
+				$('#pw').attr("class","form-control is-invalid")
+			if($('#pw').val()!="")
+				$('#pw').attr("class","form-control is-valid")
+			if($("#id").val()!="" && $("#pw").val()!=""){
+				$.ajax({// 다른 jsp 가서 중복체크할것
+		  			url : "/check_user ", // 일로가서 중복체크
+		  			type : "post",
+		  			data : {  // 보낼 데이터
+		  				id : $('#id').val(),
+		  				pw : $('#pw').val()// 값을 담을 변수 내맘 userid= choi 가지고 jsp로 넘어감.
+		  			
+		  			},
+		  			datatype : 'json',
+		  				success : function(data){// 사용가능 불가능 한 걸 data로 받는다. data:응답정보 url 갔다온 답
+		  					const parse = JSON.parse(data);
+		  					if(parse==0){
+		  						$('#msg').show()
+		  						$('#msg').html("<font color=red>아이디 또는 비밀번호가 일치하지 않습니다</font><br>")
+		  					}
+		  					else{
+		  						location.href='/home';
+		  					}
+		  				}
+		  		});//ajax
+			}//else
       })
-    })()
+    
+   
   </script>
 </body>
 

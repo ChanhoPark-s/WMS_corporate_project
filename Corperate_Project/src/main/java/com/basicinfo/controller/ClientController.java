@@ -67,16 +67,20 @@ public class ClientController {
 	//update
 	@PostMapping("/update")
 	public String update(ClientVO VO,SearchVO searchvo,RedirectAttributes rttr) {
+		
 		service.update(VO);
 		rttr.addFlashAttribute("searchvo",searchvo);
+		
 		return redirect;
 	}
 	
 	//delete one
 	@GetMapping("/delete")
 	public String delete(SearchVO searchvo,RedirectAttributes rttr) {
+		
 		service.deleteOne(searchvo.getItem_no());
 		rttr.addFlashAttribute("searchvo",searchvo);
+		
 		return redirect;
 	}
 	
@@ -99,7 +103,6 @@ public class ClientController {
 	@PostMapping("/selectDelete")
 	public String selectDelete(HttpServletRequest request,HttpServletResponse response) throws IOException {
 		
-		//
 		service.selectDelete(request.getParameterValues("rowcheck"));
 		
 		return redirect;
