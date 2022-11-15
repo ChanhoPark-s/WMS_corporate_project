@@ -20,4 +20,15 @@
 <insert id="insert">
 	insert into rack values(seq_rack.nextval,#{arealocation},#{rackcode},#{rackname})
 </insert>
+<select id="selectOneRackByNo" resultType="com.spring.domain.WareHouseAllAreaVO">
+select * from
+    (select
+        warehouse.code warehousecode, warehouse.name warehousename,
+        area.code areacode, area.ware_no warehouselocation, area.name areaname,
+        rack.no no, rack.code rackcode, rack.area_no arealocation, rack.name rackname
+    from area, rack, warehouse
+    where warehouse.no = area.ware_no
+        and area.no = rack.area_no)
+where no=#{no}
+</select>
 </mapper>

@@ -48,7 +48,7 @@ public class CellServiceImpl implements CellService{
 	}
 
 	@Override
-	public List<CellVO> selectOneCellByNo(int no) {
+	public WareHouseAllAreaVO selectOneCellByNo(int no) {
 		return mapper.selectOneCellByNo(no);
 	}
 

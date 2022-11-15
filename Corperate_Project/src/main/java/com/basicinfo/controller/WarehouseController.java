@@ -24,6 +24,7 @@ import com.spring.service.CellService;
 import com.spring.service.RackService;
 import com.spring.service.WareHouseService;
 
+//초기 창고구역list띄우기
 @Controller
 @RequestMapping("/basicinfo/warehouse/*")
 public class WarehouseController {
@@ -66,6 +67,7 @@ public class WarehouseController {
 	}
 	
 	
+	//창고구역삭제
 	@GetMapping(value="/delete")
 	public String delete(Model model,@RequestParam(value="ware_no",required = false) String ware_no,
 			@RequestParam(value="area_no",required = false) String area_no,
@@ -92,6 +94,7 @@ public class WarehouseController {
 	}
 	
 	
+	//창고구역삽입
 	@GetMapping(value="/insert")
 	public String insert(WareHouseAllAreaVO vo) {
 		
@@ -121,7 +124,7 @@ public class WarehouseController {
 	
 	//수정하기위해 데이터 불러오기
 	@ResponseBody
-	@PostMapping(value="/selectByNo")
+	@PostMapping(value="/selectByNo", produces = "application/text; charset=utf8")
 	public String selectByNo(WareHouseAllAreaVO vo,@RequestParam(value="id",required = false) String id,
 			@RequestParam(value="no",required = false) String no) {
 		
@@ -129,18 +132,61 @@ public class WarehouseController {
 		System.out.println("수정하기위해no가져옴:"+no);
 		int checkno = Integer.parseInt(no);
 		if(id.contains("warehouse")) {
-			List<AreaVO> lists = areaservice.getListByWareNo(checkno);
-			return new Gson().toJson(lists);
+			System.out.println("warehouse가 있다");
 		} else if(id.contains("area")) {
-			List<RackVO> lists = rackservice.getListByAreaNo(checkno);
-			return new Gson().toJson(lists);
+			System.out.println("area가있다");
 		} else if(id.contains("rack")) {
-			List<CellVO> lists = cellservice.selectOneCellByNo(checkno);
-			return new Gson().toJson(lists);
+			System.out.println("rack가있다");
 		} else {
-			List<WareHouseVO> lists = warehouseservice.list();				
-			return new Gson().toJson(lists);
+			System.out.println("default가있ㅏ");
 		}
 		
+		if(id.contains("warehouse")) {
+			WareHouseAllAreaVO getvo = areaservice.selectOneAreaByNo(checkno);
+			return new Gson().toJson(getvo);
+		} else if(id.contains("area")) {
+			WareHouseAllAreaVO getvo = rackservice.selectOneRackByNo(checkno);
+			return new Gson().toJson(getvo);
+		} else if(id.contains("rack")) {
+			WareHouseAllAreaVO getvo = cellservice.selectOneCellByNo(checkno);
+			return new Gson().toJson(getvo);
+		} else {
+			WareHouseAllAreaVO getvo = warehouseservice.selectOneWareHouseByNo(checkno);				
+			return new Gson().toJson(getvo);
+		}
+	}
+	
+	//수정하기
+	@PostMapping(value="/update")
+	public String update(Model model,@RequestParam(value="id",required = false) String id,
+			@RequestParam(value="no",required = false) String no) {	
+		
+		//내가가진 상위구역의 코드에 따라 수정 셀렉트박스 처리하고 하자
+//		int checkno = Integer.parseInt(no);
+//		if(id.contains("warehouse")) {
+//			areaservice.updateByNo(checkno);
+//		}
+//		else if(id.contains("area")) {
+//			rackservice.updateByNo(checkno);
+//		} else if(id.contains("rack")) {
+//			cellservice.updateByNo(checkno);
+//		} else {
+//			warehouseservice.updateByNo(checkno);		
+//		}
+		
+		return "redirect:/basicinfo/warehouse/list";
+	}
+	
+	//구역이 가진 창고일련번호에따른 구역가져오기
+	@ResponseBody
+	@PostMapping(value="/OptionsByLocationNo", produces = "application/text; charset=utf8")
+	public String selectAreaByWareHouseLocation(@RequestParam(value="warehouselocation",required = false) String warehouselocation,
+			@RequestParam(value="no",required = false) String no) {
+		System.out.println("구역데이터1");
+		
+		int checkno = Integer.parseInt(no);
+		List<AreaVO> lists = areaservice.getListByWareNo(checkno);
+		System.out.println("구역데이터2");
+		return new Gson().toJson(lists);
 	}
 }

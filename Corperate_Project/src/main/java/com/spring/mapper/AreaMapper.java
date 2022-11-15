@@ -12,4 +12,5 @@ public interface AreaMapper {
 	public int delete(int no); 					//구역삭제
 	public List<AreaVO> getListByWareNo(int no);//구역일련번호에따른 창고일련번호가져오기
 	public int deleteAreaByNo(String area_no);
+	public WareHouseAllAreaVO selectOneAreaByNo(int no);
 }

@@ -12,4 +12,5 @@ public interface WareHouseService {
 	public int modify(int no);
 	public int delete(int no);
 	public int deleteWareHouseByNo(String ware_no);
+	public WareHouseAllAreaVO selectOneWareHouseByNo(int no);
 }

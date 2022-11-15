@@ -15,4 +15,8 @@
 <insert id="insert">
 	insert into warehouse values(seq_warehouse.nextval,#{warehousecode},#{warehousename})
 </insert>
+<select id="selectOneWareHouseByNo" resultType="com.spring.domain.WareHouseAllAreaVO">
+	select * from warehouse
+	where no=#{no}
+</select>
 </mapper>

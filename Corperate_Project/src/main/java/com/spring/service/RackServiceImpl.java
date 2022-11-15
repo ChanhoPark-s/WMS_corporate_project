@@ -47,4 +47,9 @@ public class RackServiceImpl implements RackService{
 		return mapper.insert(vo);
 	}
 
+	@Override
+	public WareHouseAllAreaVO selectOneRackByNo(int checkno) {
+		return mapper.selectOneRackByNo(checkno);
+	}
+
 }

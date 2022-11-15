@@ -13,5 +13,5 @@ public interface CellService {
 	public int delete(int no);
 	public List<CellVO> getListByRackNo(int no);
 	public int deleteCellByNo(String cell_no);
-	public List<CellVO> selectOneCellByNo(int no);
+	public WareHouseAllAreaVO selectOneCellByNo(int no);
 }

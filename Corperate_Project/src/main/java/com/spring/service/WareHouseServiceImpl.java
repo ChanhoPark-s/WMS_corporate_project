@@ -42,4 +42,9 @@ public class WareHouseServiceImpl implements WareHouseService{
 		return mapper.insert(vo);
 	}
 
+	@Override
+	public WareHouseAllAreaVO selectOneWareHouseByNo(int no) {
+		return mapper.selectOneWareHouseByNo(no);
+	}
+
 }

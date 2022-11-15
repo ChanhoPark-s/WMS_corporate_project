@@ -11,4 +11,5 @@ public interface WareHouseMapper {
 	public int update(int no); 				//창고수정
 	public int delete(int no); 				//창고삭제
 	public int deleteWareHouseByNo(String ware_no);
+	public WareHouseAllAreaVO selectOneWareHouseByNo(int no);
 }
