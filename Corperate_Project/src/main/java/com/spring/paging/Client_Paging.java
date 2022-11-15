@@ -8,7 +8,7 @@ public class Client_Paging {
 	private int pageSize = 0 ; //한 페이지에 보여줄 건수
 	private int beginRow = 0 ; //현재 페이지의 시작 행
 	private int endRow = 0 ; //현재 페이지의 끝 행
-	private int pageCount = 3 ; // 한 화면에 보여줄 페이지 링크 수 (페이지 갯수)
+	private int pageCount = 5 ; // 한 화면에 보여줄 페이지 링크 수 (페이지 갯수)
 	private int beginPage = 0 ; //페이징 처리 시작 페이지 번호
 	private int endPage = 0 ; //페이징 처리 끝 페이지 번호
 	private int offset = 0 ;
@@ -237,7 +237,11 @@ public class Client_Paging {
 		String added_param = "&whatColumn=" + whatColumn + "&keyword=" + keyword ; 
 		
 		if (this.beginPage != 1) { // 앞쪽, pageSize:한 화면에 보이는 레코드 수
-			result += "&nbsp;<a href='" + url  
+			result +="<nav aria-label='Page navigation example'>"
+					+ "<ul class='pagination'>"
+					+ "<li class='page-item'>";
+			
+			result += "&nbsp;<a class='page-link' href='" + url  
 					+ "?pageNumber=" + ( 1 ) + "&pageSize=" + this.pageSize 
 					+ added_param + "'><i class='fa-solid fa-angles-left'></i></a>&nbsp;" ;
 			result += "&nbsp;<a href='" + url 
