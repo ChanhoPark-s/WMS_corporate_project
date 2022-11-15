@@ -2,6 +2,8 @@ package com.basicinfo.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,17 +63,17 @@ public class MemberController {
 	}
 	
 	@PostMapping(value="/insert")
-	public String insert(Model model, MemberVO member) throws Exception {
+	public String insert(Model model, MemberVO member, HttpServletRequest request) throws Exception {
 		
-		service.insert(member);
+		service.insert(member, request);
 		return "redirect:list";
 	}
 	
 	@PostMapping(value="/update/{no}")
-	public String update(Model model, MemberVO member, @PathVariable(value="no") int no) throws Exception {
+	public String update(Model model, MemberVO member, @PathVariable(value="no") int no, HttpServletRequest request) throws Exception {
 		
 		member.setNo(no);
-		service.update(member);
+		service.update(member, request);
 		return "redirect:/basicinfo/member/list";
 	}
 	

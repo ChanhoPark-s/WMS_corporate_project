@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
+import com.spring.domain.AreaVO;
+import com.spring.domain.WareHouseVO;
+import com.spring.service.AreaService;
+import com.spring.service.CellService;
+import com.spring.service.RackService;
+import com.spring.service.WareHouseService;
 
 
 @Controller
@@ -23,6 +30,18 @@ public class InitWareHouseController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(InitWareHouseController.class);
 	
+	@Autowired
+	private WareHouseService warehouseservice;
+	
+	@Autowired
+	private AreaService areaservice;
+	
+	@Autowired
+	private RackService rackservice;
+	
+	@Autowired
+	private CellService cellservice;
+	
 	@GetMapping(value="/insert")
 	public void insert(Model model) {	
 		
@@ -30,7 +49,7 @@ public class InitWareHouseController {
 	}
 	
 	@ResponseBody
-	@PostMapping(value="/get", produces = "application/json; charset=utf8")
+	@PostMapping(value="/geti", produces = "application/json; charset=utf8")
 	public String get(Model model) {
 		
 		ItemVO vo = new ItemVO(7, 28, "asd", "테스트", 10000, 10000, "스크린샷_20221026_034152.png");
@@ -40,17 +59,37 @@ public class InitWareHouseController {
 	}
 	
 	@ResponseBody
-	@GetMapping(value="/get/{no}", produces = "application/json; charset=utf8")
+	@GetMapping(value="/geti/{no}", produces = "application/json; charset=utf8")
 	public String get2(Model model, @PathVariable(value="no") int no) {
 		
 		ItemVO vo = new ItemVO(7, 28, "asd", "테스트", 10000, 10000, "스크린샷_20221026_034152.png");
 		return new Gson().toJson(vo);
 	}
 	
+	@ResponseBody
+	@GetMapping(value="/getw", produces = "application/json; charset=utf8")
+	public String getw(Model model) {
+		
+		List<WareHouseVO> wLists = warehouseservice.list();
+		
+		return new Gson().toJson(wLists);
+	}
+	
+	@ResponseBody
+	@GetMapping(value="/geta/{no}", produces = "application/json; charset=utf8")
+	public String geta(Model model, @PathVariable(value="no") int no) {
+		System.out.println();
+		List<AreaVO> aLists = areaservice.list();
+		
+		return new Gson().toJson(aLists);
+	}
+	
 	@PostMapping(value="/save")
 	public String save(Model model, @RequestBody List<ItemVO> vo) {
 		
-		System.out.println(vo.get(0).getNo());
+		for(int i = 0; i < vo.size(); i++) {
+			System.out.println(vo.get(i).getItem_code());
+		}
 		
 		return null;
 	}
@@ -62,9 +101,14 @@ class ItemVO {
 	private int client_no;
 	private String code;
 	private String name;
+	private String item_code;
 	private int in_price;
 	private int out_price;
 	private String image;
+	
+	public ItemVO() {
+		
+	}
 	
 	public ItemVO(int no, int client_no, String code, String name, int in_price, int out_price, String image) {
 		super();
@@ -101,6 +145,14 @@ class ItemVO {
 	public void setName(String name) {
 		this.name = name;
 	}
+	public String getItem_code() {
+		return item_code;
+	}
+
+	public void setItem_code(String item_code) {
+		this.item_code = item_code;
+	}
+
 	public int getIn_price() {
 		return in_price;
 	}

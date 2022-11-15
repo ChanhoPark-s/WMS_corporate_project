@@ -3,7 +3,7 @@ package com.spring.service;
 import java.io.File;
 import java.util.List;
 
-import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,9 +18,6 @@ public class MemberServiceImpl implements MemberService{
 	//spring 4.3 이상에서 자동 처리
 	@Autowired
 	private MemberMapper mapper;
-	
-	@Autowired
-	private ServletContext servletContext;
 
 	@Override
 	public List<MemberVO> list() {
@@ -28,9 +25,9 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public void insert(MemberVO member) throws Exception {
+	public void insert(MemberVO member, HttpServletRequest reqeust) throws Exception {
 		
-		updateProfile(member);
+		updateProfile(member, reqeust);
 		mapper.insert(member);
 	}
 
@@ -40,9 +37,9 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public void update(MemberVO member) throws Exception {
+	public void update(MemberVO member, HttpServletRequest request) throws Exception {
 
-		updateProfile(member);
+		updateProfile(member, request);
 		mapper.update(member);
 	}
 
@@ -51,9 +48,9 @@ public class MemberServiceImpl implements MemberService{
 		mapper.delete(no);
 	}
 	
-	public void updateProfile(MemberVO member) throws Exception {
+	public void updateProfile(MemberVO member, HttpServletRequest request) throws Exception {
 		
-		String realPath = servletContext.getRealPath("/resources/assets/img/user");
+		String realPath = request.getServletContext().getRealPath("/resources/assets/img/user");
 	
 		MultipartFile mf = member.getImage();
 		if(!mf.isEmpty()) {
