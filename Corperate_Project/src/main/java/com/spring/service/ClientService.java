@@ -15,6 +15,6 @@ public interface ClientService {
 	public int deleteOne(String item_no);
 	public int update(ClientVO vO);
 	public int getTotalCount(SearchVO searchvo);
-	public List<ClientVO> GetAllClient();
+	public List<ClientVO> GetAllClient(Client_Paging pageInfo);
 	
 }

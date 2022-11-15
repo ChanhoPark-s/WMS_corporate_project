@@ -56,7 +56,7 @@ public class ClientServiceImpl implements ClientService{
 
 
 	@Override
-	public List<ClientVO> GetAllClient() {
-		return mapper.getAllClient();
+	public List<ClientVO> GetAllClient(Client_Paging pageInfo) {
+		return mapper.getAllClient(pageInfo);
 	}
 }

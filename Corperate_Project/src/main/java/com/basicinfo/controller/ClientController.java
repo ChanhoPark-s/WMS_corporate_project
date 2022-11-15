@@ -47,8 +47,8 @@ public class ClientController {
 			searchvo =(SearchVO)flashMap.get("searchvo");
 		System.out.println("category:는?"+searchvo.getCategory());
 		int totalCount = service.getTotalCount(searchvo);
-		
 		Client_Paging pageInfo = new Client_Paging(searchvo.getPageNumber(),"10",totalCount,"/basicinfo/client/list",searchvo.getWhatColumn(),searchvo.getKeyword(),0);
+		
 		
 		model.addAttribute("pageInfo",pageInfo);
 		model.addAttribute("totalCount",totalCount);
