@@ -11,4 +11,8 @@ public interface SellService {
 	
 	public List<SellVO> read();
 
+	public void delete(int no);
+
+	public void update(SellVO sell); 
+
 }

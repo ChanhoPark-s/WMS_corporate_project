@@ -30,4 +30,16 @@ public class SellServiceImpl implements SellService{
 		System.out.println("판매 리스트 불러오기");
 		return mapper.read(); // 존재하지 않는 레코드를 얻으려고하면 null이 반환됨
 	}
+	
+	@Override
+	public void delete(int no) {
+		System.out.println("판매 리스트 불러오기");
+		mapper.delete(no); // 존재하지 않는 레코드를 얻으려고하면 null이 반환됨
+	}
+	
+	@Override
+	public void update(SellVO sell) {
+		System.out.println("판매 리스트 불러오기");
+		mapper.update(sell); // 존재하지 않는 레코드를 얻으려고하면 null이 반환됨
+	}
 }

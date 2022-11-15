@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.spring.domain.SellVO;
 import com.spring.service.SellService;
 
+import lombok.Data;
+import lombok.Getter;
 
 @Controller
 @RequestMapping("/sell/origin/*")
@@ -39,14 +41,33 @@ public class SellController {
 	
 	@PostMapping(value="/insert")
 	public String insertSold(Model model, SellVO sell) {
-		
+	
 		System.out.println(sell.getMember_no());
 		System.out.println(sell.getOrder_no());
 		System.out.println(sell.getDay());
 		service.get(sell);
+
 		
+		return "redirect:/sell/origin/list";
+	}
+	
+	@GetMapping(value="/delete")
+	public String deleteSold(Model model, @RequestParam(value="no") int no) {
 		
-		logger.info("/sell/origin/insert.jsp 반환");
+		System.out.println(no);
+
+		service.delete(no);
+		
+	
+		return "redirect:/sell/origin/list";
+	}
+	
+	@PostMapping(value="/update")
+	public String updateSold(Model model, SellVO sell) {
+		
+		System.out.println(sell.getNo()+"/"+sell.getOrder_no()+"/"+sell.getMember_no()+"/"+sell.getDay());
+		
+		service.update(sell);
 		
 		return "redirect:/sell/origin/list";
 	}

@@ -13,5 +13,12 @@
 		select * from sell order by no desc
 	</select>
 	
+	<delete id="delete">
+	delete sell where no = #{no}
+	</delete>
+
+	<update id="update">
+	update sell set member_no = #{member_no}, order_no = #{order_no}, day = #{day} where no = #{no}
+	</update>
 
 </mapper>
