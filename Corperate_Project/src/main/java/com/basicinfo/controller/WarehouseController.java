@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 import com.spring.domain.AreaVO;
+import com.spring.domain.CellVO;
 import com.spring.domain.RackVO;
 import com.spring.domain.WareHouseAllAreaVO;
+import com.spring.domain.WareHouseVO;
 import com.spring.service.AreaService;
 import com.spring.service.CellService;
 import com.spring.service.RackService;
@@ -51,21 +53,15 @@ public class WarehouseController {
 		model.addAttribute("showid",showid);
 		model.addAttribute("id",id);
 		model.addAttribute("no",no);
-		System.out.println("list에서본 id"+id);
-		System.out.println("list에서본 no"+no);
 		
-		
-		if(showid==null || showid=="") {//최초에 창고리스트 보여준다
+		//첫화면에서 showid가 설정되어있지 않기에 undefined도 if케이스 중 하나로 설정한다
+		if(showid==null || showid=="" || showid.equals("undefined")) {//최초에 창고리스트 보여준다
 			model.addAttribute("lists",warehouseservice.list());
 		}else {//등록/수정/삭제후 보고있던(선택했던) 데이터를 불러온다
-			System.out.println("showid 리스트에서본"+showid);
 			int delete_no = showid.indexOf("collapse");
-			System.out.println("list에서본 collapse의 0부터n번째위치 숫자"+delete_no);
 			
 			String showid_no = showid.substring(delete_no+8);
-			System.out.println("list에서본 collapse뒤의"+showid_no);
 			int checkno = Integer.parseInt(showid_no);
-			System.out.println(checkno);
 			
 			if(showid.contains("rack")) {//rack-collapse1왔을시 셀이가진 rack_no넘버이기에 셀에서찾는다
 				model.addAttribute("lists",cellservice.getListByRackNo(checkno));
@@ -84,6 +80,29 @@ public class WarehouseController {
 	}
 	
 	
+	//ajax로 테이블 만들기 위해 데이터를 보내준다
+	@ResponseBody
+	@GetMapping(value="/get-data", produces = "application/text; charset=utf8")
+	public String check(Model model, @RequestParam(value="id",required = false) String id,
+			@RequestParam(value="no",required = false) String no) {
+
+			int checkno = Integer.parseInt(no);
+			if(id.contains("warehouse")) {
+				List<AreaVO> lists = areaservice.getListByWareNo(checkno);
+				return new Gson().toJson(lists);
+			} else if(id.contains("area")) {
+				List<RackVO> lists = rackservice.getListByAreaNo(checkno);
+				return new Gson().toJson(lists);
+			} else if(id.contains("rack")) {
+				List<CellVO> lists = cellservice.getListByRackNo(checkno);
+				return new Gson().toJson(lists);
+			} else {
+				List<WareHouseVO> lists = warehouseservice.list();				
+				return new Gson().toJson(lists);
+			}
+	}
+	
+	
 	//창고구역삭제
 	@GetMapping(value="/delete")
 	public String delete(Model model,@RequestParam(value="ware_no",required = false) String ware_no,
@@ -93,9 +112,6 @@ public class WarehouseController {
 			@RequestParam(value="id",required = false) String id,
 			@RequestParam(value="no",required = false) String no,
 			@RequestParam(value="showid",required = false) String showid) {
-		System.out.println("showid 삭제에서본"+showid);
-		System.out.println("id 삭제에서본"+id);
-		System.out.println("no 삭제에서본"+no);
 		
 		//등록수정삭제 이후페이지에서 데이타불러오고 기존 사이드바 보기위해 보낸다
 		model.addAttribute("showid",showid);
@@ -103,19 +119,15 @@ public class WarehouseController {
 		model.addAttribute("no",no);
 		
 		if(ware_no != null) {
-			System.out.println("창고일련번호:"+ware_no);
 			warehouseservice.deleteWareHouseByNo(ware_no);
 		}
 		if(area_no != null) {
-			System.out.println("ㄱㅇ일련번호:"+area_no);
 			areaservice.deleteAreaByNo(area_no);
 		}
 		if(rack_no != null) {
-			System.out.println("ㄹ일련번호:"+rack_no);
 			rackservice.deleteRackByNo(rack_no);
 		}
 		if(cell_no != null) {
-			System.out.println("ㅅ일련번호:"+cell_no);
 			cellservice.deleteCellByNo(cell_no);
 		}
 
@@ -134,25 +146,20 @@ public class WarehouseController {
 		model.addAttribute("id",id);
 		model.addAttribute("no",no);
 		
-		System.out.println("showid 삽입에서본"+showid);
 		//창고삽입위치
 		if(vo.getWarehouselocation() == "") {
-			System.out.println("입력한창고이름:"+vo.getWarehousename());
 			warehouseservice.insert(vo);
 			
 		//구역삽입위치
 		}else if(vo.getArealocation() == "") {
-			System.out.println("입력한구역이름:"+vo.getAreaname());
 			areaservice.insert(vo);
 			
 		//랙삽입위치
 		}else if(vo.getRacklocation() == "") {
-			System.out.println("입력한랙이름:"+vo.getRackname());
 			rackservice.insert(vo);
 			
 		//셀삽입위치
 		}else {
-			System.out.println("입력한셀이름:"+vo.getCellname());
 			cellservice.insert(vo);
 		}
 		
@@ -160,14 +167,13 @@ public class WarehouseController {
 //		return "redirect:/basicinfo/warehouse/list?showid="+showid;
 	}
 	
+	
 	//수정하기위해 데이터 불러오기
 	@ResponseBody
 	@PostMapping(value="/selectByNo", produces = "application/text; charset=utf8")
 	public String selectByNo(WareHouseAllAreaVO vo,@RequestParam(value="id",required = false) String id,
 			@RequestParam(value="no",required = false) String no) {
 		
-		System.out.println("수정하기위해id가져옴:"+id);
-		System.out.println("수정하기위해no가져옴:"+no);
 		int checkno = Integer.parseInt(no);
 		
 		if(id.contains("warehouse")) {
@@ -185,15 +191,12 @@ public class WarehouseController {
 		}
 	}
 	
+	
 	//수정하기
 	@PostMapping(value="/update")
 	public String update(Model model,WareHouseAllAreaVO vo,@RequestParam(value="sendid",required = false) String id,
 			@RequestParam(value="sendno",required = false) String no,
 			@RequestParam(value="showid",required = false) String showid) {	
-		System.out.println("보낸아디"+id);
-		System.out.println("수정하기위해가져온아이디"+vo.getSendid());
-		System.out.println("수정하기위해가져온번호"+vo.getSendno());
-		System.out.println("showid 수정에서본"+showid);
 		
 		//등록수정삭제 이후페이지에서 데이타불러오고 기존 사이드바 보기위해 보낸다
 		model.addAttribute("showid",showid);
@@ -214,6 +217,7 @@ public class WarehouseController {
 		return "redirect:/basicinfo/warehouse/list";
 	}
 	
+	
 	//구역이 가진 창고일련번호에따른 구역가져오기
 	@ResponseBody
 	@PostMapping(value="/OptionsByLocationNo", produces = "application/text; charset=utf8")
@@ -223,6 +227,7 @@ public class WarehouseController {
 		List<AreaVO> lists = areaservice.getListByWareNo(checkno);
 		return new Gson().toJson(lists);
 	}
+	
 	
 	//랙이 가진 구역일련번호에따른 랙가져오기
 	@ResponseBody

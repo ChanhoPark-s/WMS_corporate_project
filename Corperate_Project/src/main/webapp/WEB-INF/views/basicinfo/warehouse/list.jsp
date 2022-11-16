@@ -18,7 +18,7 @@
             
          <ul class="nav flex-column">
           <li class="nav-item">
-           <a href="#default-collapse" class="nav-link px-0 dropdown-toggle d-flex align-items-center gap-3" data-bs-toggle="collapse" role="button" aria-expanded="true" aria-controls="default-collapse"
+           <a href="#default-collapse1" class="nav-link px-0 dropdown-toggle d-flex align-items-center gap-3" data-bs-toggle="collapse" role="button" aria-expanded="true" aria-controls="default-collapse"
             	id="mydefault" data-value="0" onclick="clickFunction(this.id)">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
@@ -169,12 +169,7 @@
 					셀 등록
 				</button>
 			</div>
-<!-- 			<form>
-				<input type="text" class="form-control" placeholder="Search user">
-			</form> -->
 		</div>
-		<!-- 우측테이블상단의 버튼/검색끝 -->
-		
 		
 		<div class="table-responsive my-1">
 		<form name="form">
@@ -207,7 +202,12 @@
 						<td>${lists.name }</td>
 						<td>
 							<div class="btn-group btn-group-sm" role="group">
-								<button type="button" class="btn btn-light d-flex" id="updatewarehouse" onclick="updatefunction(${lists.no},'${param.id }')">
+								<button type="button" class="btn btn-light d-flex" id="updatewarehouse" onclick="updatefunction(${lists.no},
+								<c:choose>
+									<c:when test="${param.id eq null}">'mydefault'</c:when>
+									<c:otherwise>'${param.id }'</c:otherwise>
+								</c:choose>
+								)">
 									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
 										fill="none" viewBox="0 0 24 24" stroke="currentColor"
 										aria-hidden="true">
@@ -216,7 +216,12 @@
 											d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                           </svg>
 								</button>
-								<button type="button" class="btn btn-light d-flex text-danger" onclick="deletefunction(${lists.no},'${param.id }')">
+								<button type="button" class="btn btn-light d-flex text-danger" onclick="deletefunction(${lists.no},
+								<c:choose>
+									<c:when test="${param.id eq null}">'mydefault'</c:when>
+									<c:otherwise>'${param.id }'</c:otherwise>
+								</c:choose>
+								)">
 									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
 										fill="none" viewBox="0 0 24 24" stroke="currentColor"
 										aria-hidden="true">
@@ -238,37 +243,6 @@
 			
 		</div>
 		
-		
-		<nav aria-label="Page navigation borderless example">
-			<ul class="pagination pagination-borderless justify-content-end">
-				<li class="page-item disabled"><a
-					class="page-link d-flex align-items-center px-2" href="#"
-					tabindex="-1" aria-disabled="true" aria-label="Previous"> <svg
-							width="20" height="20" xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd"
-								d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-								clip-rule="evenodd"></path>
-                    </svg>
-				</a></li>
-				<li class="page-item active" aria-current="page"><a
-					class="page-link" href="javascript:void(0)">1</a></li>
-				<li class="page-item"><a class="page-link"
-					href="javascript:void(0)">2</a></li>
-				<li class="page-item"><a class="page-link"
-					href="javascript:void(0)">3</a></li>
-				<li class="page-item"><a
-					class="page-link d-flex align-items-center px-2"
-					href="javascript:void(0)" aria-label="Next"> <svg width="20"
-							height="20" xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd"
-								d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-								clip-rule="evenodd"></path>
-                    </svg>
-				</a></li>
-			</ul>
-		</nav>
 	</div>
 </div>
 <!-- 우측영역에넣을테이블 -->
@@ -396,48 +370,16 @@
 <!-- bottom.jsp -->
 <%@include file="../../common/bottom.jsp"%>
 <script type="text/javascript">
-// document.addEventListener("DOMContentLoaded", function(){
-// 	var getid = "${id}";
-// 	var getshowid = "${showid}";
-// 	var getno = "${no}";
-
-// 	document.getElementById(getshowid).setAttribute("aria-expanded", "true");
-// 	document.getElementById(getshowid).classList.remove('collapsed');
-// 	document.getElementById(getshowid).classList.add("show");
-	
-	
-// 	document.getElementById("rack-collapse1").setAttribute("aria-expanded", "true");
-// 	document.getElementById('rack-collapse1').classList.remove('collapsed');
-// 	document.getElementById("rack-collapse1").classList.add("show");
-
-// 	document.getElementById("area-collapse1").setAttribute("aria-expanded", "true");
-// 	document.getElementById('area-collapse1').classList.remove('collapsed');
-// 	document.getElementById("area-collapse1").classList.add("show");
-
-// 	document.getElementById("warehouse-collapse1").setAttribute("aria-expanded", "true");
-// 	document.getElementById('warehouse-collapse1').classList.remove('collapsed');
-// 	document.getElementById("warehouse-collapse1").classList.add("show");
-// });
 var id;
 var no;
 var showid;
 $(function(){
+	
 	/* 왼쪽 카테고리창이 해당화면에 맞게 펼쳐지게 하는 코드 */
 	document.getElementById('basicinfo').click();
-	console.log("/basicinfo/warehouse/list.jsp");
 	
-	
-	/* 왼쪽 창고-셀창이 등록/수정/삭제이후 보던 목차가펼쳐지게 하는 코드 */
-	//
+	/* 왼쪽 창고-셀 사이드바가 등록/수정/삭제이후 보던 목차가펼쳐지게 하는 코드 */
 	var myshowid = "${param.showid}";
-	//등록/수정/삭제후 컨트롤러를 거친showid를 다시 입력
-// 	document.elementgetById('showid').value="${param.showid}";
-	
-// 	console.log(myshowid);
-// 	$('#area-collapse1').closest('div').addClass('show');
-// 	$('#warehouse-collapse1').closest('div').addClass('show');
-//	$('#'+myshowid).addClass('show');
-//	console.log('dd'+$('#'+myshowid).closest('div').prop('id'));
 
 	var selected = document.querySelector('#' + myshowid); // 최하위시작시 rack(셀보여줌)
 	selected.classList.add('show');
@@ -451,54 +393,36 @@ $(function(){
 	var parent3 = parent2.parentElement.closest('div'); // default(창고보여줌)
 	parent3.classList.add('show');
 	
-	//보던 데이터를 불러와서 볼때 해당 수정/삭제 가능하게 id,no재입력해준다
+	//등록/수정/삭제후 컨트롤러를 거친showid를 다시 입력, 보던 데이터를 불러와서 볼때 해당 수정/삭제 가능하게 id,no재입력해준다
 	id = "${param.id}";
 	no =  "${param.no}";
 	showid =  "${param.showid}";
-	console.log("화면에서의id"+id);
-	console.log("화면에서의no"+no);
-	console.log("화면에서의showid"+showid);
-// 	$('#'+myshowid).closest('div').addClass('show');
-// 	$('#warehouse-collapse1').addClass('show');
 });
 
 
 
 //선택한 사이드바메뉴에 따른 하위구역 우측에 띄워준다
 function clickFunction(clicked_id){
-// 	id = clicked_id;
-// 	no = document.getElementById(clicked_id).getAttribute('data-value');
-// 	alert(id+"+"+"+"+showid+"+"+no);
-// 	location.href="/basicinfo/warehouse/list?id="+id+"&showid="+showid+"&no="+no;
 	id = clicked_id;
 	showid = document.getElementById(clicked_id).getAttribute('href').substring(1); //등록수정삭제시 창고-셀 사이드바 보던 화면으로 가기 위한 변수
 	no = document.getElementById(clicked_id).getAttribute('data-value');
-// 	alert(showid);
-// 	alert(id);
-	
+
+	//클릭시 showid설정
 	document.getElementById('showid').value = showid;
 
+	/*ajax로 each 돌려서 우측 테이블td생성*/
 	$.ajax({
 		url : "/basicinfo/warehouse/get-data",
 		type : "get",
-// 		datatype : "json",
-// 		contentType : 'application/json; charset=UTF-8',
 		data : ({
 			"id" : id,
 			"no" : no
 		}),
 		success : function(data){
 			var mydata = JSON.parse(data);
-			console.log(mydata);
-// 			var rowcount = Object.keys(mydata).length;
-// 			alert(JSON.stringify(data));
-// 			var mydata1 = JSON.stringify(data);
-// 			alert(data);
-// 			alert(rowcount);
 			$('#tddata *').remove();
 			var tabledata = '<tr>';
 			$.each(mydata,function(i){
-				/*ajax로 each 돌려서 우측 테이블td생성*/
 				tabledata +=	
 									'<td>'+
 									'<div>'+
@@ -534,7 +458,6 @@ function clickFunction(clicked_id){
 // 				rowcount = rowcount-1;
 				});
 			$("#tddata").append(tabledata);
-				/*ajax로 each 돌려서 우측 테이블td생성 끝*/
 				
 		},
 		error: function (request, status, error) {
@@ -544,8 +467,6 @@ function clickFunction(clicked_id){
 	    }
 
 	});//ajax
-	
-
 };//clickFunction
 
 
@@ -554,28 +475,25 @@ function clickFunction(clicked_id){
 function deletefunction(no,id){
 	alert(no+' del '+id);
 	var deletecheck;
-	console.log('삭제클릭한아이디'+id);
-	console.log('삭제클릭한아이디의번호'+no);
 	$('#sendid').val(id);
 	$('#sendno').val(no);
 	$('#showid').val(showid);
 	if(id.indexOf('ware')>0){
 		deletecheck = confirm('해당 구역을 정말로 삭제하시겠습니까?');
 		if(deletecheck){
-// 			location.href="/basicinfo/warehouse/delete";
 			location.href="/basicinfo/warehouse/delete?area_no="+no+"&showid="+showid+"&id="+id+"&no="+no;
 		}
 	}
 	if(id.indexOf('area')>0){
 		deletecheck = confirm('해당 랙을 정말로 삭제하시겠습니까?');
 		if(deletecheck){
-			location.href="/basicinfo/warehouse/delete?rack_no="+no+"&showid="+showid;
+			location.href="/basicinfo/warehouse/delete?rack_no="+no+"&showid="+showid+"&id="+id+"&no="+no;
 		}
 	}		
 	if(id.indexOf('rack')>0){
 		deletecheck = confirm('해당 셀을 정말로 삭제하시겠습니까?');
 		if(deletecheck){
-			location.href="/basicinfo/warehouse/delete?cell_no="+no+"&showid="+showid;
+			location.href="/basicinfo/warehouse/delete?cell_no="+no+"&showid="+showid+"&id="+id+"&no="+no;
 		}
 	}		
 	if(id.indexOf('default')>0){
@@ -591,45 +509,37 @@ function deletefunction(no,id){
 //우측에서 수정아이콘 클릭시 해당 위치를 수정한다
 function updatefunction(no,id){
 	alert(no+' upd '+id);
-	console.log("수정버튼클릭시id"+id);
-	console.log("수정버튼클릭시no"+no);
 	
 	$('#submit_btn').html('수정');
 	$('#sendid').val(id);
 	$('#sendno').val(no);
 	$('#showid').val(showid);
 	$('#taskForm').attr("action", "/basicinfo/warehouse/update");
+	$('#warehouselocationtitle').hide();
+	$('#arealocationtitle').hide();
+	$('#racklocationtitle').hide();
+	$('#warehousecodetitle').hide();
+	$('#warehousenametitle').hide();
+	$('#areacodetitle').hide();
+	$('#areanametitle').hide();
+	$('#rackcodetitle').hide();
+	$('#racknametitle').hide();
+	$('#cellcodetitle').hide();
+	$('#cellnametitle').hide();
 	
 	if(id.indexOf('default')>0){
 		//창고수정
 		$('#modaltitle').html('창고수정');
-		$('#warehouselocationtitle').hide();
-		$('#arealocationtitle').hide();
-		$('#racklocationtitle').hide();
 		$('#warehousecodetitle').show();
 		$('#warehousenametitle').show();
-		$('#areacodetitle').hide();
-		$('#areanametitle').hide();
-		$('#rackcodetitle').hide();
-		$('#racknametitle').hide();
-		$('#cellcodetitle').hide();
-		$('#cellnametitle').hide();
 		$('#MyModal').modal('show');
 	}
 	if(id.indexOf('ware')>0){
 		//구역수정
 		$('#modaltitle').html('구역수정');
 		$('#warehouselocationtitle').show();
-		$('#arealocationtitle').hide();
-		$('#racklocationtitle').hide();
-		$('#warehousecodetitle').hide();
-		$('#warehousenametitle').hide();
 		$('#areacodetitle').show();
 		$('#areanametitle').show();
-		$('#rackcodetitle').hide();
-		$('#racknametitle').hide();
-		$('#cellcodetitle').hide();
-		$('#cellnametitle').hide();
 		$('#MyModal').modal('show');
 	}
 	if(id.indexOf('area')>0){
@@ -637,15 +547,8 @@ function updatefunction(no,id){
 		$('#modaltitle').html('랙수정');
 		$('#warehouselocationtitle').show();
 		$('#arealocationtitle').show();
-		$('#racklocationtitle').hide();
-		$('#warehousecodetitle').hide();
-		$('#warehousenametitle').hide();
-		$('#areacodetitle').hide();
-		$('#areanametitle').hide();
 		$('#rackcodetitle').show();
 		$('#racknametitle').show();
-		$('#cellcodetitle').hide();
-		$('#cellnametitle').hide();
 		$('#MyModal').modal('show');
 	}
 	if(id.indexOf('rack')>0){
@@ -654,18 +557,12 @@ function updatefunction(no,id){
 		$('#warehouselocationtitle').show();
 		$('#arealocationtitle').show();
 		$('#racklocationtitle').show();
-		$('#warehousecodetitle').hide();
-		$('#warehousenametitle').hide();
-		$('#areacodetitle').hide();
-		$('#areanametitle').hide();
-		$('#rackcodetitle').hide();
-		$('#racknametitle').hide();
 		$('#cellcodetitle').show();
 		$('#cellnametitle').show();
 		$('#MyModal').modal('show');
 	}
 
-	//수정할때 입력했던 데이터 가져오기위해 하단코드작성중
+	//수정할때 입력했던 데이터 가져오기위한 하단의 코드
 	var warehouselocation;
 	var arealocation;
 	var racklocation;
@@ -687,7 +584,6 @@ function updatefunction(no,id){
 		}),
 		success : function(data){
 			var mydata = JSON.parse(data);
-			console.log(mydata);
 			
 			warehouselocation = mydata.warehouselocation;
 			arealocation = mydata.arealocation;
@@ -835,7 +731,6 @@ function change1(){
 		}),
 		success : function(data){
 			var mydata = JSON.parse(data);
-			console.log(mydata);
 			
 			$('#arealocation *').remove();
 			$('#arealocation').append('<option value="">구역위치를 선택하세요</option>');
@@ -867,7 +762,6 @@ function change2(){
 		}),
 		success : function(data){
 			var mydata = JSON.parse(data);
-			console.log(mydata);
 			
 			$('#racklocation *').remove();
 			$('#racklocation').append('<option value="">랙위치를 선택하세요</option>');
