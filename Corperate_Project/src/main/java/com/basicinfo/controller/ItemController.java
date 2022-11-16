@@ -52,7 +52,7 @@ public class ItemController {
 		if(flashMap!=null)
 			searchvo =(SearchVO)flashMap.get("searchvo");
 		int totalCount = service.getTotalCount(searchvo);
-		Client_Paging pageInfo = new Client_Paging(searchvo.getPageNumber(),"3",totalCount,"/basicinfo/item/list",searchvo.getWhatColumn(),searchvo.getKeyword(),0);
+		Client_Paging pageInfo = new Client_Paging(searchvo.getPageNumber(),"10",totalCount,"/basicinfo/item/list",searchvo.getWhatColumn(),searchvo.getKeyword(),0);
 		
 		List<ItemVO> lists = service.selectAll(pageInfo);
 		model.addAttribute("lists", lists);

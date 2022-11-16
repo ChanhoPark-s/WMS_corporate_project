@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 <!-- top.jsp -->
 <%@include file="../../common/top.jsp"%>
@@ -46,10 +45,10 @@
 						<th scope="col">이미지</th>
 						<th scope="col">품목코드</th>
 						<th scope="col">거래처코드</th>
-						<th scope="col">품목명</th>
+						<th scope="col">품목</th>
 						<th scope="col">입고단가</th>
 						<th scope="col">출고단가</th>
-						<th scope="col">Actions</th>
+						<th scope="col">수정/삭제</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -119,7 +118,7 @@
 					<div class="mb-3">
 						<label for="code" class="form-label">품목코드</label> <input
 							type="text" class="form-control" name="code" id="code"
-							required autofocus>
+							placeholder="품목코드 입력은 필수입니다.">
 					</div>
 					<div class="mb-3">
 						<label for="client_no" class="form-label">거래처코드[거래처명]</label> 
@@ -131,19 +130,19 @@
 	                </select>
 					</div>
 					<div class="mb-3">
-						<label for="name" class="form-label">품목명</label> <input
+						<label for="name" class="form-label">품목</label> <input
 							type="text" name="name" class="form-control" id="name"
-							required autofocus>
+							placeholder="품목 입력은 필수입니다.">
 					</div>
 					<div class="mb-3">
 						<label for="in_price" class="form-label">입고단가</label> <input
 							type="text" class="form-control" name="in_price" id="in_price"
-							required autofocus>
+							placeholder="입고단가 입력은 필수입니다.">
 					</div>
 					<div class="mb-3">
 						<label for="out_price" class="form-label">출고단가</label> <input
 							type="text" class="form-control" name="out_price" id="out_price"
-							required autofocus>
+							placeholder="출고단가 입력은 필수입니다.">
 					</div>
 					 <input type="hidden" name="pageNumber" id="pageNumber" value="${pageInfo.pageNumber }">
 				</form>
@@ -158,10 +157,16 @@
      
 <!-- bottom.jsp -->
 <%@include file="../../common/bottom.jsp"%>
+<script src="https://kit.fontawesome.com/75769dc150.js" crossorigin="anonymous"></script>
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js?autoload=false"></script>
 <script type="text/javascript">
 $(function(){
 	/* 왼쪽 카테고리창이 해당화면에 맞게 펼쳐지게 하는 코드 */
     document.getElementById('basicinfo').click();
+    $('#code').keyup(function(){$('#code').attr("class","form-control is-valid")})
+    $('#name').keyup(function(){$('#name').attr("class","form-control is-valid")})
+    $('#in_price').keyup(function(){$('#in_price').attr("class","form-control is-valid")})
+    $('#out_price').keyup(function(){$('#out_price').attr("class","form-control is-valid")})
 })
 $('#insertBtn').on("click",function(){
 	$(".modal").find("#modal-title").text("등록하기");
@@ -169,6 +174,35 @@ $('#insertBtn').on("click",function(){
 	
 	var taskForm = $("#modalForm");
 	$('#modaladdBtn').click(function(){
+		if($("#code").val() == ""){
+			$('#code').attr("class","form-control is-invalid");
+	    	$("#code").focus();
+	    	return "/basicinfo/item/insert";
+		
+	}
+		if($("#name").val() == ""){
+			$('#name').attr("class","form-control is-invalid");
+	    	$("#name").focus();
+	    	return "/basicinfo/item/insert";
+		
+	}
+		if($("select[name=client_no] > option:selected").text() == "good"){ 
+			$('#client_no').attr("class","form-control is-invalid");
+    		$("#client_no").focus();
+    		return "/basicinfo/item/insert";
+	}
+		if($("#in_price").val() == ""){
+			$('#in_price').attr("class","form-control is-invalid");
+	    	$("#in_price").focus();
+	    	return "/basicinfo/item/insert";
+		
+	}
+		if($("#out_price").val() == ""){
+			$('#out_price').attr("class","form-control is-invalid");
+	    	$("#out_price").focus();
+	    	return "/basicinfo/item/insert";
+		
+	}
 		taskForm.attr("action", "/basicinfo/item/insert").submit();
 	});
 	
@@ -187,12 +221,37 @@ function update(no){
 	$(".modal").find("#modal-title").text("수정하기");
 	$(".modal").find('#modaladdBtn').text("수정");
 	
-	var whatColumn = $('select option:selected').val();
-	$('input[name="whatColumn"]').val(whatColumn);
-	$('#keyword2').val($('#keyword').val());
-	
 	var taskForm = $("#modalForm");
 	$('#modaladdBtn').click(function(){
+		if($("#code").val() == ""){
+			$('#code').attr("class","form-control is-invalid");
+	    	$("#code").focus();
+	    	return "/basicinfo/item/update";
+		
+	}
+		if($("#name").val() == ""){
+			$('#name').attr("class","form-control is-invalid");
+	    	$("#name").focus();
+	    	return "/basicinfo/item/update";
+		
+	}
+		if($("select[name=client_no] > option:selected").text() == "good"){ 
+			$('#client_no').attr("class","form-control is-invalid");
+    		$("#client_no").focus();
+    		return "/basicinfo/item/update";
+	}
+		if($("#in_price").val() == ""){
+			$('#in_price').attr("class","form-control is-invalid");
+	    	$("#in_price").focus();
+	    	return "/basicinfo/item/update";
+		
+	}
+		if($("#out_price").val() == ""){
+			$('#out_price').attr("class","form-control is-invalid");
+	    	$("#out_price").focus();
+	    	return "/basicinfo/item/update";
+		
+	}
 		taskForm.attr("action", "/basicinfo/item/update").submit();
 	})
 	$.ajax({
@@ -204,13 +263,21 @@ function update(no){
 			dataType:'json',
 			success : function(data){
 			 	
+				
 				document.getElementById('code').value=data.code;
 				document.getElementById('name').value=data.name;
+				const client_no = document.getElementById('client_no'); 
+				const leng = client_no.options.length;
+				
+				for(var j=0;j<leng;j++){
+					if(client_no.options[j].value == data.client_no)
+						client_no.options[j].selected = true;
+				}
 				document.getElementById('in_price').value=data.in_price;
 				document.getElementById('out_price').value=data.out_price;
 			}
 		});
 	
 }
-
+		
 </script>
