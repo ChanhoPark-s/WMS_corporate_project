@@ -117,31 +117,31 @@
 				<h5 id="modal-title">로트번호 상세</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
-			<div class="modal-body">
+			<div class="modal-body row g-3">
               <div align="center">
               	<img src="" id="image" width="280px" height="280px">
               </div>
-              <div class="col-sm-5" style="width:250px;">
+              <div class="col-sm-5" style="width:230px;">
                 <label for="code" class="form-label">로트번호</label>
                 <input type="text" class="form-control" aria-describedby="emailHelp" name="code" id="code" readonly>
               </div>
-              <div class="col-sm-5" style="width: 227px;">
+              <div class="col-sm-5" style="width: 230px;">
                 <label for="owner" class="form-label">상품명</label>
                 <input type="text" class="form-control" id="item_name" name="item_name" readonly>
               </div>
-              <div class="col-sm-5" style="width: 250px;">
+              <div class="col-sm-5" style="width: 230px;">
                 <label for="name" class="form-label">거래처명</label>
                 <input type="text" class="form-control" id="client_name" name="client_name"readonly>
               </div>
-              <div class="col-sm-5" style="width: 227px;">
+              <div class="col-sm-5" style="width: 230px;">
                 <label for="client_tel" class="form-label">거래처 연락처</label>
                 <input type="text" class="form-control" id="client_tel" name="client_tel"readonly>
               </div>
-              <div class="col-sm-5" style="width: 250px;">
+              <div class="col-sm-5" style="width: 230px;">
                 <label for="name" class="form-label">구매단가</label>
                 <input type="text" class="form-control" id="in_price" name="in_price"readonly>
               </div>
-              <div class="col-sm-4" style="width: 227px;">
+              <div class="col-sm-4" style="width: 230px;">
                 <label for="owner" class="form-label">판매단가</label>
                 <input type="text" class="form-control" id="out_price" name="out_price" readonly>
               </div>
