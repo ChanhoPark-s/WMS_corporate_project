@@ -13,4 +13,11 @@ public class Purchase_sheetVO {
 	private String delivery_date;
 	private int status;
 	
+	//거래처 이름
+	private String client_name;
+	//담당자 이름
+	private String member_name;
+	//품목 이름
+	private String order_name;
+	
 }

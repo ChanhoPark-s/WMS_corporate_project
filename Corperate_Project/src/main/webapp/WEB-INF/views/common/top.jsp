@@ -117,7 +117,7 @@
             </a>
             <div class="ms-5 collapse" id="request-order-collapse" data-bs-parent="#mainMenu">
               <ul class="navbar-nav">
-                <li class="nav-item"><a class="nav-link" href="list.ps">발주지시정보</a></li>
+                <li class="nav-item"><a class="nav-link" href="/list.ps">발주지시정보</a></li>
               </ul>
             </div>
           </li>

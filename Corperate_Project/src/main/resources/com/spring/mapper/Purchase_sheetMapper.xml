@@ -6,7 +6,15 @@
 <mapper namespace="com.spring.mapper.Purchase_sheetMapper">
 
 	<select id="selectAll" resultType="com.spring.domain.Purchase_sheetVO">
-		select * from Purchase_sheet order by no desc
+		select p.no, p.member_no, p.client_no, p.order_no, p.day, p.delivery_date, p.status, c.name as client_name, m.name as member_name
+		from Purchase_sheet p, Client c, Member m,Purchase_sheet_Detail pd, Item i
+		where p.client_no = c.no(+)
+		and p.member_no = m.no(+)
+		and p.no = pd.Purchase_sheet_no 
+	</select>
+	
+	<select id="selectOne" resultType="com.spring.domain.Purchase_sheetVO">
+		select * from Purchase_sheet where no = #{no}
 	</select>
 
 	<insert id="insert">

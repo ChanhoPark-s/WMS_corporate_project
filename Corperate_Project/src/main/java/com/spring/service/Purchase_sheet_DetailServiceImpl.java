@@ -30,8 +30,13 @@ public class Purchase_sheet_DetailServiceImpl implements Purchase_sheet_DetailSe
 	}
 
 	@Override
-	public int delete(Purchase_sheet_DetailVO vo) {
-		return mapper.delete(vo);
+	public int delete(int no) {
+		return mapper.delete(no);
+	}
+
+	@Override
+	public List<Purchase_sheet_DetailVO> selectList(String purchase_sheet_no) {
+		return mapper.selectList(purchase_sheet_no);
 	}
 
 }

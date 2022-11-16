@@ -10,4 +10,5 @@ public interface Purchase_sheetService {
 	public int insert(Purchase_sheetVO vo);
 	public int update(Purchase_sheetVO vo);
 	public int delete(Purchase_sheetVO vo);
+	public Purchase_sheetVO selectOne(String no);
 }

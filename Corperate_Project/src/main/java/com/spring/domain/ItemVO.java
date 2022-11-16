@@ -14,7 +14,14 @@ public class ItemVO {
 	private MultipartFile upload;
 	private String client_code;
 	private String get;
+	private String cname;
 	
+	public String getCname() {
+		return cname;
+	}
+	public void setCname(String cname) {
+		this.cname = cname;
+	}
 	public String getGet() {
 		return get;
 	}
@@ -77,5 +84,6 @@ public class ItemVO {
 	public void setImage(String image) {
 		this.image = image;
 	}
+	
 	
 }

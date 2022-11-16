@@ -34,4 +34,9 @@ public class Purchase_sheetServiceImpl implements Purchase_sheetService{
 		return mapper.delete(vo);
 	}
 
+	@Override
+	public Purchase_sheetVO selectOne(String no) {
+		return mapper.selectOne(no);
+	}
+
 }
