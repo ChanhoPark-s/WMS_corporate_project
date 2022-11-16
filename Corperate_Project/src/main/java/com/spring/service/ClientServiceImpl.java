@@ -56,7 +56,25 @@ public class ClientServiceImpl implements ClientService{
 
 
 	@Override
+	public int codeCheck(String code) {
+		return mapper.checkCode(code);
+	}
+
+
+	@Override
+	public int selectDelete(String[] parameterValues) {
+		return mapper.selectDelete(parameterValues);
+		
+	}
+	
+	@Override
 	public List<ClientVO> GetAllClient() {
 		return mapper.getAllClient();
+	}
+
+
+	@Override
+	public ClientVO selectByCode(String code) {
+		return mapper.selectByCode(code);
 	}
 }

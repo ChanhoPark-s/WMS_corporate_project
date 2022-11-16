@@ -37,4 +37,8 @@
 	<delete id="delete">
 		delete from member where no = #{no}
 	</delete>
+	
+	<select id="check_user" resultType="int">
+		select count(*) from member where id = #{id} and pw = #{pw}
+	</select>
 </mapper>
