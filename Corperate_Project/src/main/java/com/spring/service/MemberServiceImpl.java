@@ -9,8 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.spring.domain.ClientVO;
 import com.spring.domain.MemberVO;
+import com.spring.domain.PageDTO;
 import com.spring.mapper.MemberMapper;
+import com.spring.paging.Criteria;
 
 @Service // 계층 구조상 비지니스 영역을 담당하는 객체임을 표시하기 위해 사용함
 public class MemberServiceImpl implements MemberService{
@@ -67,5 +70,15 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public int check_user(MemberVO membervo) {
 		return mapper.check_user(membervo);
+	}
+	
+	@Override
+	public PageDTO<MemberVO> getListPage(Criteria cri) {
+		
+		int totalCount = mapper.getCountAll(cri);
+		List<MemberVO> list = mapper.getListWithPaging(cri); 
+		PageDTO<MemberVO> pageDTO = new PageDTO<MemberVO>(totalCount, list, cri);
+		
+		return pageDTO;
 	}
 }

@@ -88,8 +88,8 @@ public class ClientServiceImpl implements ClientService{
 		
 		int totalCount = mapper.getCountAll(cri);
 		List<ClientVO> list = mapper.getListWithPaging(cri); 
-		PageDTO<ClientVO> clientPageDTO = new PageDTO<ClientVO>(totalCount, list, cri);
+		PageDTO<ClientVO> pageDTO = new PageDTO<ClientVO>(totalCount, list, cri);
 		
-		return clientPageDTO;
+		return pageDTO;
 	}
 }

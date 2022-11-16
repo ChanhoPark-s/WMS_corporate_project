@@ -41,4 +41,50 @@
 	<select id="check_user" resultType="int">
 		select count(*) from member where id = #{id} and pw = #{pw}
 	</select>
+	
+	<!-- 이하 ajax API 관련 SQL -->
+	<select id="getListWithPaging" resultType="com.spring.domain.MemberVO">
+		<![CDATA[
+		select * 
+		from(
+		    select rownum rn, no, id, pw, name, dep_name, rank_name, email, image, reg_date
+		    from (select m.no, m.id, m.pw, m.name, m.dep dep_name, r.name rank_name, m.email, m.image, m.reg_date
+		          from(
+		                select m.no, m.id, m.pw, m.name, d.name dep, m.rank_no, m.email, m.image, m.reg_date
+		                from member m inner join department d
+		                on m.dep_no = d.no
+		          ) m inner join rank r
+		    on m.rank_no = r.no)
+		where rownum <= #{cri.pageNum} * #{cri.amount}
+		]]>     
+		
+		    <if test="cri.whatColumn=='dep' and cri.keyword != null"> and dep_name like '%' ||  #{cri.keyword} || '%' </if>
+		    <if test="cri.whatColumn=='rank' and cri.keyword != null"> and rank_name like '%' ||  #{cri.keyword} || '%' </if>
+		    <if test="cri.whatColumn=='name' and cri.keyword != null"> and name like '%' ||  #{cri.keyword} || '%' </if>
+		    
+		<![CDATA[   
+		    order by no
+		)where rn > (#{cri.pageNum} - 1) * #{cri.amount}
+		]]>
+	</select>
+	
+	<select id="getCountAll" resultType="int">
+		<![CDATA[
+		select count(*)
+		from(
+		    select rownum rn, no, id, pw, name, dep_name, rank_name, email, image, reg_date
+		    from (select m.no, m.id, m.pw, m.name, m.dep dep_name, r.name rank_name, m.email, m.image, m.reg_date
+		          from(
+		                select m.no, m.id, m.pw, m.name, d.name dep, m.rank_no, m.email, m.image, m.reg_date
+		                from member m inner join department d
+		                on m.dep_no = d.no
+		          ) m inner join rank r
+		    on m.rank_no = r.no)
+		) where no > 0
+		]]> 
+		
+		<if test="cri.whatColumn=='dep' and cri.keyword != null"> and dep_name like '%' ||  #{cri.keyword} || '%' </if>
+		<if test="cri.whatColumn=='rank' and cri.keyword != null"> and rank_name like '%' ||  #{cri.keyword} || '%' </if>	
+		<if test="cri.whatColumn=='name' and cri.keyword != null"> and name like '%' ||  #{cri.keyword} || '%' </if>
+	</select>
 </mapper>
