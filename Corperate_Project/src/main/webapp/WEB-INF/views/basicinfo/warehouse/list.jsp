@@ -71,13 +71,13 @@
 		                      </a>
                             
                             <!-- 셀 -->
-                            <div class="ms-5 collapse" id="rack-collapse${rackLists.no }">
+                            <div class="ms-4 collapse" id="rack-collapse${rackLists.no }">
 		                        <ul class="nav flex-column">
 		                          
 		                          <c:forEach items="${cellLists }" var="cellLists" varStatus="cellstatus">
 		                          <c:if test="${rackLists.no eq cellLists.rack_no }">
 		                          <li class="nav-item m-2">
-		                             ●   ${cellLists.name }
+		                             ●&nbsp;&nbsp;&nbsp;${cellLists.name }
 		                          </li>
 		                          </c:if>
 		                          </c:forEach> <!-- cell -->
