@@ -8,11 +8,11 @@
       <div id="main-body">
 
         <div class="row g-4">
-          <div class="col-md-4 col-lg-3 d-none d-md-block">
+          <div class="col-md-4 col-lg-4 d-none d-md-block">
             <div class="card h-100">
               <div class="card-body navbar-light">
                 <!-- 좌측영역에넣을테이블 -->
-<div class="col-md-6">
+<div class="col-md-10">
             <h3 class="fw-black">창고정보 관리</h3>
             <p>창고, 구역, 랙, 셀 목록</p>
             
@@ -118,7 +118,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-8 col-lg-9">
+          <div class="col-md-8 col-lg-8">
             <div class="card h-100">
               <div class="card-body tab-content">
                 <!-- 우측영역에넣을테이블 -->
@@ -428,6 +428,7 @@ $(function(){
 	
 	
 	/* 왼쪽 창고-셀창이 등록/수정/삭제이후 보던 목차가펼쳐지게 하는 코드 */
+	//
 	var myshowid = "${param.showid}";
 	//등록/수정/삭제후 컨트롤러를 거친showid를 다시 입력
 // 	document.elementgetById('showid').value="${param.showid}";
@@ -463,6 +464,7 @@ $(function(){
 
 
 
+//선택한 사이드바메뉴에 따른 하위구역 우측에 띄워준다
 function clickFunction(clicked_id){
 // 	id = clicked_id;
 // 	no = document.getElementById(clicked_id).getAttribute('data-value');
@@ -471,8 +473,8 @@ function clickFunction(clicked_id){
 	id = clicked_id;
 	showid = document.getElementById(clicked_id).getAttribute('href').substring(1); //등록수정삭제시 창고-셀 사이드바 보던 화면으로 가기 위한 변수
 	no = document.getElementById(clicked_id).getAttribute('data-value');
-	alert(showid);
-	alert(id);
+// 	alert(showid);
+// 	alert(id);
 	
 	document.getElementById('showid').value = showid;
 
@@ -546,23 +548,22 @@ function clickFunction(clicked_id){
 
 };//clickFunction
 
-$(function(){
-	console.log("클릭함수지난화면에서의id"+id);
-	console.log("클릭함수지난화면에서의no"+no);
-	console.log("클릭함수지난화면에서의showid"+showid);
-	});
 
 
-
+//우측에서 삭제아이콘 클릭시 해당 위치를 삭제한다
 function deletefunction(no,id){
 	alert(no+' del '+id);
 	var deletecheck;
 	console.log('삭제클릭한아이디'+id);
 	console.log('삭제클릭한아이디의번호'+no);
+	$('#sendid').val(id);
+	$('#sendno').val(no);
+	$('#showid').val(showid);
 	if(id.indexOf('ware')>0){
 		deletecheck = confirm('해당 구역을 정말로 삭제하시겠습니까?');
 		if(deletecheck){
-			location.href="/basicinfo/warehouse/delete?area_no="+no+"&showid="+showid;
+// 			location.href="/basicinfo/warehouse/delete";
+			location.href="/basicinfo/warehouse/delete?area_no="+no+"&showid="+showid+"&id="+id+"&no="+no;
 		}
 	}
 	if(id.indexOf('area')>0){
@@ -585,7 +586,9 @@ function deletefunction(no,id){
 	}		
 }
 
-//보여지는 목록에서 수정버튼 클릭시
+
+
+//우측에서 수정아이콘 클릭시 해당 위치를 수정한다
 function updatefunction(no,id){
 	alert(no+' upd '+id);
 	console.log("수정버튼클릭시id"+id);
@@ -594,6 +597,7 @@ function updatefunction(no,id){
 	$('#submit_btn').html('수정');
 	$('#sendid').val(id);
 	$('#sendno').val(no);
+	$('#showid').val(showid);
 	$('#taskForm').attr("action", "/basicinfo/warehouse/update");
 	
 	if(id.indexOf('default')>0){
@@ -723,6 +727,8 @@ function updatefunction(no,id){
 	document.getElementById('racklocation').disabled = true;
 }//창고-셀 수정하기
 
+
+
 //창고등록모달
 function warehouseinsert(){
 	resetmodal();
@@ -739,6 +745,9 @@ function warehouseinsert(){
 	$('#racknametitle').hide();
 	$('#cellcodetitle').hide();
 	$('#cellnametitle').hide();
+	$('#showid').val(showid);
+	$('#sendid').val(id);
+	$('#sendno').val(no);
 	document.getElementById('taskForm').setAttribute('action','/basicinfo/warehouse/insert');
 }
 
@@ -758,6 +767,9 @@ function areainsert(){
 	$('#racknametitle').hide();
 	$('#cellcodetitle').hide();
 	$('#cellnametitle').hide();
+	$('#showid').val(showid);
+	$('#sendid').val(id);
+	$('#sendno').val(no);
 	document.getElementById('taskForm').setAttribute('action','/basicinfo/warehouse/insert');
 }
 
@@ -779,6 +791,9 @@ function rackinsert(){
 	$('#racknametitle').show();
 	$('#cellcodetitle').hide();
 	$('#cellnametitle').hide();
+	$('#showid').val(showid);
+	$('#sendid').val(id);
+	$('#sendno').val(no);
 	document.getElementById('taskForm').setAttribute('action','/basicinfo/warehouse/insert');
 }
 
@@ -802,8 +817,13 @@ function cellinsert(){
 	$('#racknametitle').hide();
 	$('#cellcodetitle').show();
 	$('#cellnametitle').show();
+	$('#showid').val(showid);
+	$('#sendid').val(id);
+	$('#sendno').val(no);
 	document.getElementById('taskForm').setAttribute('action','/basicinfo/warehouse/insert');
 }
+
+
 
 //상위창고위치 셀렉트 선택에 따른 상위구역위치 옵션 설정
 function change1(){
@@ -835,6 +855,7 @@ function change1(){
 	    }
 	});//ajax
 }
+
 
 //상위구역위치 셀렉트 선택에 따른 상위랙위치 옵션 설정
 function change2(){
