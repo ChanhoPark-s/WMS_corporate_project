@@ -3,6 +3,7 @@ package com.spring.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.JsonElement;
 import com.spring.domain.ClientVO;
 import com.spring.domain.SearchVO;
 import com.spring.paging.Client_Paging;
@@ -16,5 +17,8 @@ public interface ClientService {
 	public int update(ClientVO vO);
 	public int getTotalCount(SearchVO searchvo);
 	public List<ClientVO> GetAllClient();
+	public int codeCheck(String code);
+	public int selectDelete(String[] parameterValues);
+	public ClientVO selectByCode(String code);
 	
 }

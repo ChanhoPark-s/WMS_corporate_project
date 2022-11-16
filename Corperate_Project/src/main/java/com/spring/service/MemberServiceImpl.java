@@ -66,4 +66,9 @@ public class MemberServiceImpl implements MemberService{
 		}
 		
 	}
+
+	@Override
+	public int check_user(MemberVO membervo) {
+		return mapper.check_user(membervo);
+	}
 }

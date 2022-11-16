@@ -15,4 +15,6 @@ public interface MemberService {
 	public void update(MemberVO member) throws Exception;
 
 	public void delete(int no);
+
+	public int check_user(MemberVO membervo);
 }

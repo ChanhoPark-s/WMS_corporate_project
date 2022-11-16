@@ -17,5 +17,8 @@ public interface ClientMapper {
 	public int update(ClientVO VO);
 	public int getTotalCount(SearchVO searchvo);
 	public List<ClientVO> getAllClient();
+	public int checkCode(String code);
+	public int selectDelete(String[] parameterValues);
+	public ClientVO selectByCode(String code);
 	
 }
