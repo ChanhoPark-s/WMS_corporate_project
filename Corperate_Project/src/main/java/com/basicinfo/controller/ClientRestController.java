@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spring.domain.ClientPageDTO;
+import com.spring.domain.PageDTO;
 import com.spring.paging.Criteria;
 import com.spring.service.ClientService;
 
@@ -23,11 +23,11 @@ public class ClientRestController {
 	@Autowired
 	private ClientService service;
 		
-	//testURL : http://localhost:8080/basicinfo/client/pages/1/10/bank/한국
+	//testURL : http://localhost:8080/basicinfo/client/pages/1/10/owner/이재용
 	@GetMapping(
 			value={"/pages/{pageNum}/{amount}", "/pages/{pageNum}/{amount}/{whatColumn}", "/pages/{pageNum}/{amount}/{whatColumn}/{keyword}"}, 
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<ClientPageDTO> clientlist(
+	public ResponseEntity<PageDTO> clientlist(
 			@PathVariable("pageNum") int pageNum,
 			@PathVariable("amount") int amount,
 			@PathVariable(value="whatColumn", required = false) String whatColumn,

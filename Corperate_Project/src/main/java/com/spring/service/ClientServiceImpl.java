@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.spring.domain.ClientPageDTO;
+import com.spring.domain.PageDTO;
 import com.spring.domain.ClientVO;
 import com.spring.domain.SearchVO;
 import com.spring.mapper.ClientMapper;
@@ -81,11 +81,11 @@ public class ClientServiceImpl implements ClientService{
 	}
 	
 	@Override
-	public ClientPageDTO getListPage(Criteria cri) {
+	public PageDTO<ClientVO> getListPage(Criteria cri) {
 		
 		int totalCount = mapper.getCountAll(cri);
 		List<ClientVO> list = mapper.getListWithPaging(cri); 
-		ClientPageDTO clientPageDTO = new ClientPageDTO(totalCount, list, cri);
+		PageDTO<ClientVO> clientPageDTO = new PageDTO<ClientVO>(totalCount, list, cri);
 		
 		return clientPageDTO;
 	}
