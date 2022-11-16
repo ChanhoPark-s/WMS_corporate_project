@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.JsonElement;
+import com.spring.domain.ClientPageDTO;
 import com.spring.domain.ClientVO;
 import com.spring.domain.SearchVO;
 import com.spring.paging.Client_Paging;
+import com.spring.paging.Criteria;
 
 public interface ClientService {
 
@@ -21,4 +23,6 @@ public interface ClientService {
 	public int selectDelete(String[] parameterValues);
 	public ClientVO selectByCode(String code);
 	
+	/* ajax paging */
+	public ClientPageDTO getListPage(Criteria cri);
 }

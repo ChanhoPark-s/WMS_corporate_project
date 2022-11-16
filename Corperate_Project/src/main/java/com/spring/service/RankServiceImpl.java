@@ -16,9 +16,6 @@ public class RankServiceImpl implements RankService{
 	//spring 4.3 이상에서 자동 처리
 	@Autowired
 	private RankMapper mapper;
-	
-	@Autowired
-	private ServletContext servletContext;
 
 	@Override
 	public void insert(RankVO rank) {
