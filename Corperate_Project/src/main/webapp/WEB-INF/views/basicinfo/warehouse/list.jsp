@@ -176,11 +176,6 @@
 			<table class="table align-middle">
 				<thead>
 					<tr>
-						<th scope="col">
-							<div>
-								<input class="form-check-input" type="checkbox" value="">
-							</div>
-						</th>
 						<th scope="col">일련번호</th>
 						<th scope="col">코드</th>
 						<th scope="col">위치명</th>
@@ -190,11 +185,6 @@
 				<tbody id="tddata">
 					<c:forEach items="${lists }" var="lists" varStatus="status">
 					<tr>
-						<td>
-							<div>
-								<input class="form-check-input" type="checkbox" value="">
-							</div>
-						</td>
 						<td>
 							${status.count}
 						</td>
@@ -424,11 +414,6 @@ function clickFunction(clicked_id){
 			var tabledata = '<tr>';
 			$.each(mydata,function(i){
 				tabledata +=	
-									'<td>'+
-									'<div>'+
-											'<input class="form-check-input" type="checkbox" value="">'+
-										'</div>'+
-									'</td>'+
 									'<td>'+(i+1)+'</td>'+
 									'<td>'+mydata[i].code+'</td>'+
 									'<td>'+mydata[i].name+'</td>'+
