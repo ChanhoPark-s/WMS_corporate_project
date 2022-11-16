@@ -10,11 +10,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.spring.domain.ClientVO;
 import com.spring.domain.PageDTO;
 import com.spring.paging.Criteria;
 import com.spring.service.ClientService;
-
-import lombok.extern.log4j.Log4j;
 
 @RestController
 @RequestMapping("/basicinfo/client/*")
@@ -27,7 +26,7 @@ public class ClientRestController {
 	@GetMapping(
 			value={"/pages/{pageNum}/{amount}", "/pages/{pageNum}/{amount}/{whatColumn}", "/pages/{pageNum}/{amount}/{whatColumn}/{keyword}"}, 
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<PageDTO> clientlist(
+	public ResponseEntity<PageDTO<ClientVO>> clientlist(
 			@PathVariable("pageNum") int pageNum,
 			@PathVariable("amount") int amount,
 			@PathVariable(value="whatColumn", required = false) String whatColumn,
