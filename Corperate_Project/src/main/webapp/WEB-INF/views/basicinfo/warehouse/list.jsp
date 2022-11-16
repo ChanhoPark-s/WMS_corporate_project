@@ -411,9 +411,9 @@ function clickFunction(clicked_id){
 		success : function(data){
 			var mydata = JSON.parse(data);
 			$('#tddata *').remove();
-			var tabledata = '<tr>';
+			var tabledata = "";
 			$.each(mydata,function(i){
-				tabledata +=	
+				tabledata +=	'<tr>'+
 									'<td>'+(i+1)+'</td>'+
 									'<td>'+mydata[i].code+'</td>'+
 									'<td>'+mydata[i].name+'</td>'+
@@ -569,7 +569,7 @@ function updatefunction(no,id){
 		}),
 		success : function(data){
 			var mydata = JSON.parse(data);
-			
+
 			warehouselocation = mydata.warehouselocation;
 			arealocation = mydata.arealocation;
 			racklocation = mydata.racklocation;
@@ -712,7 +712,7 @@ function change1(){
 		url : "/basicinfo/warehouse/OptionsByLocationNo",
 		type : "post",
 		data : ({
-			"no" : taskForm.warehouselocation.selectedIndex
+			"no" : taskForm.warehouselocation.value
 		}),
 		success : function(data){
 			var mydata = JSON.parse(data);
@@ -743,7 +743,7 @@ function change2(){
 		url : "/basicinfo/warehouse/OptionsByAreaLocationNo",
 		type : "post",
 		data : ({
-			"no" : taskForm.arealocation.selectedIndex
+			"no" : taskForm.arealocation.value
 		}),
 		success : function(data){
 			var mydata = JSON.parse(data);
