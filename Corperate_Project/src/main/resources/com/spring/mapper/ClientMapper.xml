@@ -59,20 +59,22 @@
 		<if test="category=='수주처'">where category = '수주처'</if>
 	</select>
 	
-	
+	<!-- 이하 ajax API 관련 SQL -->
 	<select id="getListWithPaging" resultType="com.spring.domain.ClientVO">
 		<![CDATA[
 		select no, code, category, name, owner, tel, fax, bank, account, zipcode, address1, address2, email
 		from(
 		    select rownum rn, no, code, category, name, owner, tel, fax, bank, account, zipcode, address1, address2, email
 		    from client
-		    where rownum <= #{cri.pageNum} * #{cri.amount}
+		    where rownum <= #{cri.pageNum} * #{cri.amount} and category='수주처'
 		]]>    
-		    <if test="cri.whatColumn=='name'"> and name like '%' ||  #{cri.keyword} || '%'</if>
-		    <if test="cri.whatColumn=='bank'"> and bank like '%' ||  #{cri.keyword} || '%'</if>
+		
+		    <if test="cri.whatColumn=='code' and cri.keyword != null"> and code like '%' ||  #{cri.keyword} || '%' </if>
+		    <if test="cri.whatColumn=='name' and cri.keyword != null"> and name like '%' ||  #{cri.keyword} || '%' </if>
+		    <if test="cri.whatColumn=='owner' and cri.keyword != null"> and owner like '%' ||  #{cri.keyword} || '%' </if>
 		    
 		<![CDATA[    
-			order by name
+			order by no
 		)where rn > (#{cri.pageNum} - 1) * #{cri.amount}
 		]]>
 	</select>
@@ -80,9 +82,11 @@
 	<select id="getCountAll" resultType="int">
 		select count(*)
 		from client
-		where no > 0
-		<if test="cri.whatColumn=='name'"> and name like '%' ||  #{cri.keyword} || '%'</if>
-		<if test="cri.whatColumn=='bank'"> and bank like '%' ||  #{cri.keyword} || '%'</if>
+		where no > 0 and category='수주처'
+		
+		<if test="cri.whatColumn=='code' and cri.keyword != null"> and code like '%' ||  #{cri.keyword} || '%' </if>
+		<if test="cri.whatColumn=='name' and cri.keyword != null"> and name like '%' ||  #{cri.keyword} || '%' </if>	
+		<if test="cri.whatColumn=='owner' and cri.keyword != null"> and owner like '%' ||  #{cri.keyword} || '%' </if>
 	</select>
 	
 </mapper>

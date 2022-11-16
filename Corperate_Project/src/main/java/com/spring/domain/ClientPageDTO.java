@@ -2,6 +2,7 @@ package com.spring.domain;
 
 import java.util.List;
 
+import com.spring.paging.Criteria;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,4 +13,6 @@ public class ClientPageDTO {
 	
 	private int totalCount;
 	private List<ClientVO> list;
+	private Criteria cri;
+	
 }

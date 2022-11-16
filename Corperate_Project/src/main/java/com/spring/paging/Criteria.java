@@ -7,10 +7,10 @@ import lombok.Setter;
 @Setter
 public class Criteria {
 	
-	int pageNum;
-	int amount;
-	String whatColumn;
-	String keyword;
+	private int pageNum;
+	private int amount;
+	private String whatColumn;
+	private String keyword;
 	
 	public Criteria(){
 		this.pageNum = 1;
@@ -24,3 +24,5 @@ public class Criteria {
 		this.keyword = keyword;
 	}	
 }
+
+// 해당 페이지의 리스트를 가져올 때 사용하는 기준정보
