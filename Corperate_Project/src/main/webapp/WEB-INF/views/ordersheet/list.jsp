@@ -620,34 +620,19 @@
 				<!-- form start -->
 				<form class="needs-validation" novalidate id="modalForm" action="" method="post">
 					
-					<!-- 
-					<div class="mb-3">
-						<label for="userFullname" class="form-label">담당자</label>
-						<div class="row">
-							<div class="col">
-								<input type="text" id="member_name" class="form-control" readonly>
-								<input type="hidden" name="member_no" class="form-control" readonly>
-							</div>
-							<div class="col">
-								<button type="button" class="btn btn-primary" data-bs-target="#choiceMemberModal" data-bs-toggle="modal" data-bs-dismiss="modal" id="choiceMemberBtn">담당자 선택</button>
-							</div>
-						</div>
-					</div> 
-					-->
-					
 					<div class="row">		
 						<div class="col-sm-3">		
-							<label for="userFullname" class="form-label">코드</label>
-							<input type="text" id="member_code" class="form-control" readonly>
+							<label for="userFullname" class="form-label">부서명</label>
+							<input type="text" id="member_dep_name" class="form-control" readonly>
 						</div>
-						<div class="col-sm-5">		
+						<div class="col-sm-5">
 							<label for="userFullname" class="form-label">담당자명</label>
 							<input type="text" id="member_name" class="form-control" readonly>
-							<input type="hidden" name="member_no" class="form-control" readonly>
+							<input type="hidden" name="member_no" class="form-control" readonly>		
 						</div>
 						<div class="col-sm-4">	
 							<label for="userFullname" class="form-label">&nbsp;&nbsp;</label>
-							<button type="button" class="btn btn-primary" style="display:block" data-bs-target="#choiceClientModal" data-bs-toggle="modal" data-bs-dismiss="modal" id="choiceMembertBtn">담당자 선택</button>	
+							<button type="button" class="btn btn-primary" style="display:block" data-bs-target="#choiceClientModal" data-bs-toggle="modal" data-bs-dismiss="modal" id="choiceMemberBtn">담당자 선택</button>	
 						</div>
 					</div>
 					
@@ -666,20 +651,6 @@
 							<button type="button" class="btn btn-primary" style="display:block" data-bs-target="#choiceClientModal" data-bs-toggle="modal" data-bs-dismiss="modal" id="choiceClientBtn">거래처 선택</button>	
 						</div>
 					</div>		
-					<!-- 
-					<div class="mb-3">
-						<label for="userFullname" class="form-label">거래처</label>
-						<div class="row">
-							<div class="col">
-								<input type="text" id="client_name" class="form-control" readonly>
-								<input type="hidden" name="client_no" class="form-control" readonly>
-							</div>
-							<div class="col">
-								<button type="button" class="btn btn-primary" data-bs-target="#choiceClientModal" data-bs-toggle="modal" data-bs-dismiss="modal" id="choiceClientBtn">거래처 선택</button>
-							</div>
-						</div>
-					</div> 
-					-->
 					
 					<div class="mb-3">
 						<label for="userFullname" class="form-label">납기일자</label>
@@ -712,7 +683,7 @@
 	<div class="modal-dialog modal-dialog-scrollable">
 		<div class="modal-content">
 			<div class="modal-header border-0">
-				<h5 id="modal-title">거래처 입력</h5>
+				<h5 id="second-modal-title">거래처 입력</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
@@ -720,37 +691,22 @@
 						<div class="modal-footer border-0">
 							<form style="margin:auto;text-align:center;" onsubmit="return false;">
 								<div class="d-flex gap-1 me-auto flex-wrap">
-									<!-- <input type="text" class="form-control" placeholder="Search Client"> -->
-									<%
-						                String[] search = {"code","name","owner"};
-						                String[] cate = {"거래처코드","거래처명","대표자명"};
-					                %>
-		                  			<c:set value="<%=search %>" var="s"></c:set>
-		                  			<c:set value="<%=cate %>" var="c"></c:set>
-									
-										<select id="clientWhatColumn" class="form-select" style="width: 140px;">
-							                <option value="" selected>검색 선택</option>
-							                <c:forEach begin="0" end="2" var="i">
-							                <option value="${s[i] }"<c:if test="${searchvo.whatColumn== s[i] }">selected</c:if>>${c[i] }</option>
-							                </c:forEach>
+										<select id="searchWhatColumn" class="form-select" style="width: 140px;">
+											<!-- option이 그려지는 부분 -->
 						              	</select>
-						              	<input type="text" id="clientKeyword" class="form-control" value=<c:if test="${searchvo.keyword=='null' }"></c:if><c:if test="${searchvo.keyword!='null' }">"${searchvo.keyword }"</c:if>  placeholder="입력" style="width: 200px; height: 38px;">
-										<button type="submit" class="btn btn-light" id="searchClientBtn"> 검색 </button>
+									
+						              	<input type="text" id="searchKeyword" class="form-control" placeholder="입력" style="width: 200px; height: 38px;">
+										<button type="submit" class="btn btn-light" id="searchBtn"> 검색 </button>
 								</div>			
 							</form>	
 						</div>
 						<div class="table-responsive my-1">
 							<table class="table align-middle">
-								<thead>
-									<tr>
-										<th scope="col"></th>
-										<th scope="col">거래처코드</th>
-										<th scope="col">거래처명</th>
-										<th scope="col">대표자명</th>
-									</tr>
+								<thead id="secondModalThead">
+									<!-- 테이블의 th 들을 그리는 부분 -->
 								</thead>
-								<tbody id="clientSelectTbody">
-									<!-- 클라이언트 레코드들이 javascript 코드에 의해 그려지는 위치 -->
+								<tbody id="secondModalTbody">
+									<!-- 조회된 레코드들이 javascript 코드에 의해 그려지는 위치 -->
 								</tbody>
 							</table>
 						</div>
@@ -786,75 +742,172 @@
 
 <!-- 거래처를 선택하는 두번째 모달처리 -->
 <script type="text/javascript">
-	var subject = ""; // member or client 이 값은 두번째 모달로 넘어가는 버튼에 의해 변경된다. 
+
+	/* 전역변수 */
+	var secondModalName = ""; // member or client 이 값은 두번째 모달로 넘어가는 버튼에 의해 변경된다. 
 	var pageNum = 1;
 	var amount = 10;
-	var clientWhatColumn = "";
-	var clientKeyword = "";
+	var searchWhatColumn = "";
+	var searchKeyword = "";
 
 	/* 두번째 모달에서 첫번째 모달로 데이터를 옮기는 코드 */
 	$("#delivery_data").on("click", function(e){
-		var clientNo = $('input[name=clientRadio]:checked').parent().next().text();
-		var clientCode = $('input[name=clientRadio]:checked').parent().next().next().text();
-		var clientName = $('input[name=clientRadio]:checked').parent().next().next().next().text();
 		
-		$("input[name='client_no']").val(clientNo);
-		$("#client_code").val(clientCode);
-		$("#client_name").val(clientName);
+		if(secondModalName == "member"){
+			var memberNo = $('input[name=clientRadio]:checked').parent().next().text();
+			var memberDepName = $('input[name=clientRadio]:checked').parent().next().next().text();
+			var memberName = $('input[name=clientRadio]:checked').parent().next().next().next().next().text();
+			
+			console.log(memberNo);
+			console.log(memberDepName);
+			console.log(memberName);
+			
+			$("input[name='member_no']").val(memberNo);
+			$("#member_dep_name").val(memberDepName);
+			$("#member_name").val(memberName);
+		}	
+		else if(secondModalName == "client"){
+			var clientNo = $('input[name=clientRadio]:checked').parent().next().text();
+			var clientCode = $('input[name=clientRadio]:checked').parent().next().next().text();
+			var clientName = $('input[name=clientRadio]:checked').parent().next().next().next().text();
+				
+			$("input[name='client_no']").val(clientNo);
+			$("#client_code").val(clientCode);
+			$("#client_name").val(clientName);	
+		}
 	});
+	
+	
+	$("#choiceMemberBtn").on("click", function(e){
+		
+		// 두번째 모달에서 그려내야할 정보를 지정
+		secondModalName = "member";
+		console.log("secondModalName: " + secondModalName);
+			
+		// 두번째 모달의 제목을 지정
+		$("#second-modal-title").text("담당자 입력");
+		
+		// 두번째 모달의 select의 option을 그려내는 코드
+		var str = "";
+		str += "<option value='' selected>검색 선택</option>";
+		str += "<option value='dep'>부서</option>";
+		str += "<option value='rank'>직급</option>";
+		str += "<option value='name'>이름</option>";
+		$("#searchWhatColumn").html(str);
+		
+		// 초기화 코드
+		$("#searchKeyword").val("");
+		searchWhatColumn = "";
+		searchKeyword = "";
+		
+		// 두번째 모달의 테이블의 th를 그려내는 코드
+		var str = "";
+		str += "<tr>";
+		str += "<th scope='col'></th>";
+		str += "<th scope='col'>부서</th>";
+		str += "<th scope='col'>직급</th>";
+		str += "<th scope='col'>이름</th>";
+		str += "</tr>";
+		$("#secondModalThead").html(str);	
+		
+		// 두번째 모달의 테이블의 레코드를 그려내는 코드
+		requestClientRecord();
+	});
+	
 	
 	
 	/* 첫번째 모달에서 거래처 선택이 눌렸을 때 이동한 두번째 모달창에서 데이터를 요청하고 관련 화면을 그리는 부분 */
 	$("#choiceClientBtn").on("click", function(e){
-		/*** 여기서 선택박스 초기화 하는거 해줘야함 ***/
-		$("#clientKeyword").val("");
-		clientWhatColumn = "";
-		clientKeyword = "";
 		
+		// 두번째 모달에서 그려내야할 정보를 지정
+		secondModalName = "client";
+		console.log("secondModalName: " + secondModalName);
+		
+		// 두번째 모달의 제목을 지정
+		$("#second-modal-title").text("거래처 입력");
+		
+		// 두번째 모달의 select의 option을 그려내는 코드
+		var str = "";
+		str += "<option value='' selected>검색 선택</option>";
+		str += "<option value='code'>거래처코드</option>";
+		str += "<option value='name'>거래처명</option>";
+		str += "<option value='owner'>대표자명</option>";
+		$("#searchWhatColumn").html(str);
+		
+		// 초기화 코드
+		$("#searchKeyword").val("");
+		searchWhatColumn = "";
+		searchKeyword = "";
+		
+		// 두번째 모달의 테이블의 th를 그려내는 코드
+		var str = "";
+		str += "<tr>";
+		str += "<th scope='col'></th>";
+		str += "<th scope='col'>거래처코드</th>";
+		str += "<th scope='col'>거래처명</th>";
+		str += "<th scope='col'>대표자명</th>";
+		str += "</tr>";
+		$("#secondModalThead").html(str);
+		
+		// 두번째 모달의 테이블의 레코드를 그려내는 코드
 		requestClientRecord();
 	});
 	
 	/* ajax로 거래처정보를 요청하는 부분 + 화면전환없이 레코드들을 그리는 부분 + 화면전환없이 페이지네이션을 그리는 부분 */
 	function requestClientRecord(){
-		console.log("요청url" + "/basicinfo/client/pages/"+ pageNum +"/" + amount + "/" + clientWhatColumn + "/" + clientKeyword)
-		$.getJSON("/basicinfo/client/pages/"+ pageNum +"/" + amount + "/" + clientWhatColumn + "/" + clientKeyword,  
+		console.log("요청url : " + "/basicinfo/" + secondModalName + "/pages/"+ pageNum +"/" + amount + "/" + searchWhatColumn + "/" + searchKeyword)
+		$.getJSON("/basicinfo/" + secondModalName + "/pages/"+ pageNum +"/" + amount + "/" + searchWhatColumn + "/" + searchKeyword,  
  			function(resdata){
 				console.log("list: " + resdata.list); 	  			// 1페이지 레코드들이 담긴 객체
  				console.log("totalCount: " + resdata.totalCount); 	// 검색조건으로 뽑힌 총 레코드 수
  				console.log("cri: " + resdata.cri); 	  			// 검색에 사용된 기준정보가 담긴 객체
  				
- 				paintClientRecord(resdata.list); 			// 레코드들을 그리는 함수
- 				paintClientPageNation(resdata.totalCount, resdata.cri); 	// 페이지네이션을 그리는 함수
+ 				paintRecord(resdata.list); 							// 레코드들을 그리는 함수
+ 				paintPageNation(resdata.totalCount, resdata.cri); 	// 페이지네이션을 그리는 함수
  				
  			}).fail(function(xhr, status, err){
- 					alert("거래처 조회실패");
+ 					alert("데이터 조회실패");
  			});	
 	}
 	
 	/* 거래처 선택 모달의 거래처 레코드들을 그리는 함수 */
-	function paintClientRecord(list){
+	function paintRecord(list){
 
 			var str = "";
 			
-			for(var i = 0, len = list.length || 0; i < len; i++){
-				str += "<tr>";
-				str += "<td><input class='form-check-input' type='radio' name='clientRadio' value=" + list[i].name + "></td>";
-				str += "<td style='display:none'>" + list[i].no +"</td>";
-				str += "<td>" + list[i].code +"</td>";
-				str += "<td>" + list[i].name +"</td>";
-				str += "<td>" + list[i].owner +"</td>";
-				str += "</tr>";
+			if(secondModalName == "member"){
+				for(var i = 0, len = list.length || 0; i < len; i++){
+					str += "<tr>";
+					str += "<td><input class='form-check-input' type='radio' name='clientRadio' value=" + list[i].name + "></td>";
+					str += "<td style='display:none'>" + list[i].no +"</td>";
+					str += "<td>" + list[i].dep_name +"</td>";
+					str += "<td>" + list[i].rank_name +"</td>";
+					str += "<td>" + list[i].name +"</td>";
+					str += "</tr>";
+				}
+			}
+			
+			else if(secondModalName == "client"){
+				for(var i = 0, len = list.length || 0; i < len; i++){
+					str += "<tr>";
+					str += "<td><input class='form-check-input' type='radio' name='clientRadio' value=" + list[i].name + "></td>";
+					str += "<td style='display:none'>" + list[i].no +"</td>";
+					str += "<td>" + list[i].code +"</td>";
+					str += "<td>" + list[i].name +"</td>";
+					str += "<td>" + list[i].owner +"</td>";
+					str += "</tr>";
+				}
 			}
 			
 			if(list.length == 0){
 				str = "<tr><td colspan='5' style='text-align:center'>검색결과가 없습니다</td></tr>";
 			}
 			
-			$("#clientSelectTbody").html(str);
+			$("#secondModalTbody").html(str);
 	}
 	
 	/* 거래처 선택 모달의 페이지네이션을 그리는 함수 */
-	function paintClientPageNation(totalCount, cri){
+	function paintPageNation(totalCount, cri){
 		
 		var str = ""; 
 		
@@ -940,13 +993,13 @@
 	});
 	
 	/* 거래처 선택 모달에서 사용자가 검색을 시도할 때 이를 처리하는 부분*/
-	$("#searchClientBtn").on("click", function(e){
-		clientWhatColumn = $("#clientWhatColumn").val();
-		clientKeyword = $("#clientKeyword").val();
-		console.log("clientWhatColumn: " + clientWhatColumn);
-		console.log("clientKeyword: " + clientKeyword);
+	$("#searchBtn").on("click", function(e){
+		searchWhatColumn = $("#searchWhatColumn").val();
+		searchKeyword = $("#searchKeyword").val();
+		console.log("searchWhatColumn: " + searchWhatColumn);
+		console.log("searchKeyword: " + searchKeyword);
 		
-		if(clientWhatColumn == ""){
+		if(searchWhatColumn == ""){
 			alert("검색 조건을 선택하세요");
 			return;
 		}

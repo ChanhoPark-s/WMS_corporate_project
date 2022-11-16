@@ -4,7 +4,10 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.spring.domain.ClientVO;
 import com.spring.domain.MemberVO;
+import com.spring.domain.PageDTO;
+import com.spring.paging.Criteria;
 
 public interface MemberService {
 
@@ -20,4 +23,6 @@ public interface MemberService {
 
 	public int check_user(MemberVO membervo);
 	
+	/* ajax paging */
+	public PageDTO<MemberVO> getListPage(Criteria cri);
 }
