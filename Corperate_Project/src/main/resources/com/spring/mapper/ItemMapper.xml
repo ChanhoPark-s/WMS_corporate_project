@@ -30,4 +30,5 @@
 		where no=#{no}
 	</update>
 	
+	
 </mapper>

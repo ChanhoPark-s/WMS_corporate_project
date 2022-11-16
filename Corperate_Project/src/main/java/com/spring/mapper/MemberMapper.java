@@ -16,5 +16,7 @@ public interface MemberMapper {			// 게시물 조회
 	public void update(MemberVO member);
 
 	public void delete(int no);
+
+	public int check_user(MemberVO membervo);
 	
 }
