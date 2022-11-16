@@ -15,5 +15,6 @@ public class WareHouseAllAreaVO {
 	private String rackname;
 	private String cellcode;
 	private String cellname;
-	
+	private String sendid;
+	private String sendno;
 }

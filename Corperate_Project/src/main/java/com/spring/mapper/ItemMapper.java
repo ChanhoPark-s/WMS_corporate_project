@@ -14,5 +14,6 @@ public interface ItemMapper {
 	public ItemVO selectOne(int no);
 	public void update(ItemVO vo);
 	public int getTotalCount(SearchVO searchvo);
+	public int code_check(String code); 
 	
 }

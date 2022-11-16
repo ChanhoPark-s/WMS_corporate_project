@@ -44,6 +44,8 @@
   		and i.name like '%' || #{keyword} || '%'
   	</if>
   </select>
- 
+ 	<select id="code_check" parameterType="com.spring.domain.ItemVO" resultType="int">
+		select count(code) from item where code=#{code}
+	</select>
 	
 </mapper>

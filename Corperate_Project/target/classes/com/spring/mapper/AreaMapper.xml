@@ -20,4 +20,17 @@
 <insert id="insert">
 	insert into area values(seq_area.nextval,#{warehouselocation},#{areacode},#{areaname})
 </insert>
+<select id="selectOneAreaByNo" resultType="com.spring.domain.WareHouseAllAreaVO">
+select * from
+    (select
+        warehouse.code warehousecode, warehouse.name warehousename,
+        area.no no, area.code areacode, area.ware_no warehouselocation, area.name areaname
+    from area, warehouse
+    where warehouse.no = area.ware_no)
+where no=#{no}
+</select>
+<update id="updateAreaByNo">
+	update area set code=#{areacode}, name=#{areaname}
+	where no=#{sendno}
+</update>
 </mapper>

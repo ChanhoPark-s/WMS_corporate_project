@@ -14,5 +14,5 @@ public interface ItemService {
 	public ItemVO selectOne(int no);
 	public void update(ItemVO vo) throws Exception;
 	public int getTotalCount(SearchVO searchvo);
-	
+	public int code_check(String code);
  }

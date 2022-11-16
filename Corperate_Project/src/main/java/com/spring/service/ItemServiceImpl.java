@@ -89,9 +89,14 @@ public class ItemServiceImpl implements ItemService{
 		mapper.update(vo);
 	}
 	@Override
-	public int getTotalCount(SearchVO searchvo) {
+	public int getTotalCount(SearchVO searchvo) { 
 		return mapper.getTotalCount(searchvo);
 	}
+	@Override
+	public int code_check(String code) { 
+		return mapper.code_check(code);
+	}
+
 	
 
 }

@@ -1,5 +1,8 @@
 package com.spring.paging;
 
+import lombok.Data;
+
+@Data
 public class Client_Paging {
 	//페이징 관련 변수	
 	private int totalCount = 0 ; //총 레코드 건수
@@ -19,132 +22,7 @@ public class Client_Paging {
 	private String whatColumn = "" ; //검색 모드(작성자, 글제목, 전체 검색은 all) 등등
 	private String keyword = "" ; //검색할 단어 
 	
-	// 검색하기위해 쓰는데 왜 여기 써야하는지 모르겠음;;
-	private String category;
-	public String getCategory() {
-		return category;
-	}
-	public void setCategory(String category) {
-		this.category = category;
-	}
-
-	public void setTotalCount(int totalCount) {
-		this.totalCount = totalCount;
-	}
-
-
-	public int getTotalPage() {
-		return totalPage;
-	}
-
-
-	public void setTotalPage(int totalPage) {
-		this.totalPage = totalPage;
-	}
-
-
-	public int getPageNumber() {
-		return pageNumber;
-	}
-
-
-	public void setPageNumber(int pageNumber) {
-		this.pageNumber = pageNumber;
-	}
-
-
-	public int getPageSize() {
-		return pageSize;
-	}
-
-
-	public void setPageSize(int pageSize) {
-		this.pageSize = pageSize;
-	}
-
-
-	public int getBeginRow() {
-		return beginRow;
-	}
-
-
-	public void setBeginRow(int beginRow) {
-		this.beginRow = beginRow;
-	}
-
-
-	public int getEndRow() {
-		return endRow;
-	}
-
-
-	public void setEndRow(int endRow) {
-		this.endRow = endRow;
-	}
-
-
-	public int getPageCount() {
-		return pageCount;
-	}
-
-
-	public void setPageCount(int pageCount) {
-		this.pageCount = pageCount;
-	}
-
-
-	public int getBeginPage() {
-		return beginPage;
-	}
-
-
-	public void setBeginPage(int beginPage) {
-		this.beginPage = beginPage;
-	}
-
-
-	public int getEndPage() {
-		return endPage;
-	}
-
-
-	public void setEndPage(int endPage) {
-		this.endPage = endPage;
-	}
-
-
-	public int getOffset() {
-		return offset;
-	}
-
-
-	public void setOffset(int offset) {
-		this.offset = offset;
-	}
-
-
-	public int getLimit() {
-		return limit;
-	}
-
-
-	public void setLimit(int limit) {
-		this.limit = limit;
-	}
-
-
-	public String getUrl() {
-		return url;
-	}
-
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-
 	public String getPagingHtml() {
-		System.out.println("pagingHtml:"+pagingHtml);
 		
 		return pagingHtml;
 //		pagingHtml:
@@ -152,29 +30,8 @@ public class Client_Paging {
 
 	}
 
-
 	public void setPagingHtml(String pagingHtml) {
 		this.pagingHtml = pagingHtml;
-	}
-
-
-	public String getWhatColumn() {
-		return whatColumn;
-	}
-
-
-	public void setWhatColumn(String whatColumn) {
-		this.whatColumn = whatColumn;
-	}
-
-
-	public String getKeyword() {
-		return keyword;
-	}
-
-
-	public void setKeyword(String keyword) {
-		this.keyword = keyword;
 	}
 
 
@@ -185,10 +42,11 @@ public class Client_Paging {
 			String url, 
 			String whatColumn, 
 			String keyword,
-			int beginRow) {		
+			int beginRow
+			) {		
 
-		System.out.println("Client_Paging에서의 whatColumn:"+whatColumn);
-		System.out.println("Client_Paging에서의 키워드:"+keyword);
+		//System.out.println("Client_Paging에서의 whatColumn:"+whatColumn);
+		//System.out.println("Client_Paging에서의 키워드:"+keyword);
 		
 		if(  _pageNumber == null || _pageNumber.equals("null") || _pageNumber.equals("")  ){
 			System.out.println("_pageNumber:"+_pageNumber); // null
@@ -230,18 +88,11 @@ public class Client_Paging {
 	}
 	
 	private String getPagingHtml( String url ){ //페이징 문자열을 만든다.
-		System.out.println("getPagingHtml url:"+url); 
-		System.out.println("getPagingHtml에서의 whatColumn:"+whatColumn);
-		System.out.println("getPagingHtml에서의 키워드:"+keyword);
 		String result = "" ;
-		String added_param = "&whatColumn=" + whatColumn + "&keyword=" + keyword ; 
+		String added_param = "&whatColumn=" + whatColumn + "&keyword=" + keyword; 
 		
 		if (this.beginPage != 1) { // 앞쪽, pageSize:한 화면에 보이는 레코드 수
-			result +="<nav aria-label='Page navigation example'>"
-					+ "<ul class='pagination'>"
-					+ "<li class='page-item'>";
-			
-			result += "&nbsp;<a class='page-link' href='" + url  
+			result += "&nbsp;<a href='" + url  
 					+ "?pageNumber=" + ( 1 ) + "&pageSize=" + this.pageSize 
 					+ added_param + "'><i class='fa-solid fa-angles-left'></i></a>&nbsp;" ;
 			result += "&nbsp;<a href='" + url 
@@ -261,7 +112,7 @@ public class Client_Paging {
 			 	
 			}
 		}
-		System.out.println("토탈페이지:"+this.totalPage);
+		//System.out.println("토탈페이지:"+this.totalPage);
 		if ( this.endPage != this.totalPage) { // 뒤쪽
 			
 			result += "&nbsp;<a href='" + url  

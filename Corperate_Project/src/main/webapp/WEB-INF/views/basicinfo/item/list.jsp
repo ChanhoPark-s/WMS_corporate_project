@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-
 <!-- top.jsp -->
 <%@include file="../../common/top.jsp"%>
 
@@ -19,7 +18,6 @@
                   </svg>
                   등록하기
 				</button>
-				
 			</div>
 			<form action="/basicinfo/item/list" method="get"> 
 			<table>
@@ -172,6 +170,28 @@ $('#insertBtn').on("click",function(){
 	$(".modal").find("#modal-title").text("등록하기");
 	$(".modal").find('#modaladdBtn').text("등록");
 	
+	$("#code_check").click(function(){
+		$("#signup").attr("type", "button");
+		const code = $("#code").val();
+		$.ajax({
+		type: "get",
+		async: false,
+		url: "/basicinfo/item/code_check",
+		data: {code: code},
+		success: function (data) {
+		if(data == 1) {
+			$("#olmessage").text("이미 사용중인 품목코드 입니다.");
+			$("#olmessage").addClass("olmessagef");
+			$("#olmessage").removeClass("olmessaget");
+			}else {
+			$("#olmessage").text("사용 가능한 품목코드 입니다.");
+			$("#olmessage").addClass("olmessaget");
+			$("#olmessage").removeClass("olmessagef");
+			$("#signup").attr("type", "submit");
+			}
+			}
+		})
+		});
 	var taskForm = $("#modalForm");
 	$('#modaladdBtn').click(function(){
 		if($("#code").val() == ""){
@@ -279,5 +299,38 @@ function update(no){
 		});
 	
 }
-		
+
+//중복체크
+		$(function(){
+		$('#code').keyup(function(){
+		check = false;
+		const code = $("#code").val();
+		$.ajax({
+		type: "post",
+		async: false,
+		url: "/basicinfo/item/code_check",
+		data:{ code : code },
+		success: function (data) {
+			alert(data);
+		if(data == 1) {//사용자가 입력한 값이 DB에 존재할 경우, 서버가 1을 보내준다
+			$('#code').attr("class","form-control is-valid");
+			check = true;
+			}else {
+			$('#code').attr("class","form-control is-invalid");
+				}
+			}
+		}); 
+	});//key up
+	$('#modaladdBtn').click(function(){
+		if($('#code').val()==''){
+			$('#code').attr("class","form-control is-invalid")
+			$('#code').focus()
+		}
+		else if(!check){
+			$('#code').attr("class","form-control is-invalid")
+			$('#code').focus();
+			alert("품목코드가 중복되었습니다.")
+		}
+		})
+		})		
 </script>
