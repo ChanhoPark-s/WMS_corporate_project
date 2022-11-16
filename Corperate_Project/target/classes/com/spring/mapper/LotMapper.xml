@@ -2,22 +2,28 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
+
 <mapper namespace="com.spring.mapper.LotMapper">
 <select id="GetAll" resultType="com.spring.domain.LotVO">
-	SELECT * FROM lot 
-		<if test="whatColumn=='code'">where code like '%' ||  #{keyword} || '%'</if>
-		<if test="whatColumn=='item_no'">where name like '%' ||  #{keyword} || '%'</if>
+		select l.no,l.code,l.item_no,i.name item_name from lot l ,item i where i.no=l.item_no 
+		<if test="whatColumn=='code'">and l.code like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='name'">and i.name like '%' ||  #{keyword} || '%'</if>
 		ORDER BY no desc OFFSET #{beginRow} ROWS FETCH NEXT #{pageSize} ROWS ONLY
 </select>
 
 <select id="getTotalCount" resultType="int">
-		select count(*) from lot 
-		<if test="whatColumn=='code'">where code like '%' ||  #{keyword} || '%'</if>
-		<if test="whatColumn=='item_no'">where item_no like '%' ||  #{keyword} || '%'</if>
+		select count(*) FROM lot l, item i  where i.no=l.item_no 
+		<if test="whatColumn=='code'">and l.code like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='name'">and i.name like '%' ||  #{keyword} || '%'</if>
 </select>
 
 <delete id="deleteOne">
 	delete lot where no = #{value}
 </delete>
+
+<select id="getOne" resultType="com.spring.domain.LotVO">
+	select l.code code,i.name item_name,i.image,c.name client_name ,i.in_price,i.out_price,i.image,c.tel client_tel 
+	from lot l ,item i,client c 
+	where i.no=l.item_no and c.no=i.client_no and l.code = #{value} 
+</select>
 </mapper>

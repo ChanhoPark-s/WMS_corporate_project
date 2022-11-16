@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,8 +25,6 @@ import com.spring.service.ItemService;
 @RequestMapping("/basicinfo/item/*")
 public class ItemController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(ItemController.class);
-
 	@Autowired
 	private ItemService service;
 	
@@ -52,7 +48,6 @@ public class ItemController {
 	//등록
 	@PostMapping(value="/insert")
 	public String insert(Model model, ItemVO vo) throws Exception {
-		
 		service.insert(vo);
 		return "redirect:/basicinfo/item/list";
 	}
@@ -60,7 +55,6 @@ public class ItemController {
 	//삭제
 	@GetMapping("/delete")
 	public String delete(@RequestParam("no") int no) throws Exception {
-		
 		service.delete(no);
 		return "redirect:/basicinfo/item/list";
 	}
@@ -69,9 +63,6 @@ public class ItemController {
 	@ResponseBody
 	@PostMapping(value="/get", produces = "application/json; charset=utf8")
 	public String get(@RequestParam("no") int no) {
-		System.out.println("no:???"+no);
-		String gson  = new Gson().toJson(service.selectOne(no));
-		System.out.println("gson:"+gson);
 		return  new Gson().toJson(service.selectOne(no));
 	} 
 	
@@ -83,6 +74,4 @@ public class ItemController {
 		service.update(vo);
 		return "redirect:/basicinfo/item/list";
 	}
-	
-	
 }

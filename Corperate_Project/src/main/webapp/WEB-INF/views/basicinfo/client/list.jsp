@@ -267,6 +267,9 @@
 <script src="https://kit.fontawesome.com/75769dc150.js" crossorigin="anonymous"></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js?autoload=false"></script>
 <script type="text/javascript">
+	/* 거래처 코드 중복확인  */
+	var codeCheck = false;
+	
 	var modal = $(".modal");
 	var modalForm = $("#modalForm");
 	$(function(){
@@ -470,6 +473,7 @@
 	
 	$(function(){
 		$('#code').keyup(function(){
+			codeCheck = false;
 			$.ajax({// 다른 jsp 가서 중복체크할것
 				url : "/basicinfo/client/check ", // 일로가서 중복체크
 				type : "post",
@@ -483,6 +487,7 @@
 					}
 					else{
 						$('#code').attr("class","form-control is-valid");
+						codeCheck = true;
 					}
 				}//success 
 			})//ajax
@@ -499,10 +504,14 @@
 		$('#business').keyup(function(){$('#business').attr("class","form-control is-valid")})
 			
 		$('#okaybtn').click(function(){
-			
 			if($('#code').val()==''){
 				$('#code').attr("class","form-control is-invalid")
 				$('#code').focus()
+			}
+			else if(!codeCheck){
+				$('#code').attr("class","form-control is-invalid")
+				$('#code').focus();
+				alert("거래처 코드 중복")
 			}
 			else if($('#category').val()==''){
 				$('#category').attr("class","form-control is-invalid")

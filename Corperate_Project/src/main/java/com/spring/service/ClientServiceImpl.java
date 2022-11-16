@@ -71,4 +71,10 @@ public class ClientServiceImpl implements ClientService{
 	public List<ClientVO> GetAllClient() {
 		return mapper.getAllClient();
 	}
+
+
+	@Override
+	public ClientVO selectByCode(String code) {
+		return mapper.selectByCode(code);
+	}
 }

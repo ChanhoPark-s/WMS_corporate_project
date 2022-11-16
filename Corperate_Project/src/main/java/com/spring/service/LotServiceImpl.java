@@ -31,6 +31,11 @@ public class LotServiceImpl implements LotService{
 	public int deleteOne(String item_no) {
 		return mapper.deleteOne(item_no);
 	}
+
+	@Override
+	public LotVO getOne(String code) {
+		return mapper.getOne(code);
+	}
 	
 	
 

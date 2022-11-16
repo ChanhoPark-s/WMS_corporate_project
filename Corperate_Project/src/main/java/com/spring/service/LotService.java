@@ -11,6 +11,7 @@ public interface LotService {
 	public int getTotalCount(SearchVO searchvo);
 	public ArrayList<LotVO> GetAll(Client_Paging pageInfo);
 	public int deleteOne(String item_no);
+	public LotVO getOne(String code);
 
 	
 }

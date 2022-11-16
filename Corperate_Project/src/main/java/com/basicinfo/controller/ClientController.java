@@ -83,12 +83,6 @@ public class ClientController {
 		return redirect;
 	}
 	
-	//select_one
-	@ResponseBody
-	@PostMapping(value="/select",produces = "application/text;charset=utf8")
-	public String select(@RequestParam("item_no")String item_no) {
-		return new Gson().toJson(service.selectOne(item_no));
-	}
 	
 	// check code
 	@ResponseBody
@@ -102,5 +96,18 @@ public class ClientController {
 		
 		service.selectDelete(request.getParameterValues("rowcheck"));
 		return redirect;
+	}
+	
+	//select_one
+	@ResponseBody
+	@PostMapping(value="/select",produces = "application/text;charset=utf8")
+	public String select(@RequestParam("item_no")String item_no) {
+		return new Gson().toJson(service.selectOne(item_no));
+	}
+	//select_one
+	@ResponseBody
+	@PostMapping(value="/selectByCode",produces = "application/text;charset=utf8")
+	public String selectByCode(@RequestParam("code")String code) {
+		return new Gson().toJson(service.selectByCode(code));
 	}
 }

@@ -32,12 +32,12 @@
 				<td>
 					<select id="whatColumn" name="whatColumn" class="form-select" style="width: 200px;" id="whatColumn" >
 	                  <%
-	                  String[] search = {"code","item_no"};
+	                  String[] search = {"code","name"};
 	                  String[] cate = {"로트번호","상품명"};
 	                  %>
-	                  <c:set value="<%=search %>" var="s"></c:set>
-	                  <c:set value="<%=cate %>" var="c"></c:set>
-	                  <option>검색 선택</option>
+	                  		<c:set value="<%=search %>" var="s"></c:set>
+	                  		<c:set value="<%=cate %>" var="c"></c:set>
+	                  		<option value="">검색 선택</option>
 	                  	<c:forEach begin="0" end="1" var="i">
 	                  		<option value="${s[i] }"<c:if test="${searchvo.whatColumn== s[i] }">selected</c:if>>${c[i] }</option>
 	                  	</c:forEach>
@@ -82,20 +82,17 @@
 						<td>
 							<div>
 								<input class="form-check-input" type="checkbox" name="rowcheck" value="${item.no }">
+								<input type="hidden" name="keyword" id="keyword3" >
+								<input type="hidden" name="whatColumn" id="whatColumn2">
+             					<input type="hidden" name="pageNumber" id="pageNumber2">
 							</div>
 						</td>
-						<td>${item.code }</td>
-						<td>${item.no }</td>
+						<td onclick="detail('${item.code}')" data-bs-toggle="modal" data-bs-target="#ClientModal" style="cursor: pointer;">${item.code }</td>
+						<td>${item.item_name }</td>
 						<td>
 							<div class="btn-group btn-group-sm" role="group">
 								<button type="button" class="btn btn-light d-flex text-danger" onclick="deleteClient('${item.no}')" >
-									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
-										fill="none" viewBox="0 0 24 24" stroke="currentColor"
-										aria-hidden="true">
-                            <path stroke-linecap="round"
-											stroke-linejoin="round" stroke-width="2"
-											d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                          </svg>
+									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
 								</button>
 							</div>
 						</td>
@@ -117,84 +114,40 @@
 	<div class="modal-dialog modal-dialog-scrollable" >
 		<div class="modal-content" >
 			<div class="modal-header border-0" >
-				<h5 id="modal-title"></h5>
+				<h5 id="modal-title">로트번호 상세</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				<form class="row g-3" name="modalForm" id="modalForm" action="" method="post">
-				
-				<!-- 수정했을때도 가게 만들기위해 -->
-				<input type="hidden" name="keyword" id="keyword2" value="">
-				<input type="hidden" name="whatColumn" id="whatColumn" value="">
-             
+              <div align="center">
+              	<img src="" id="image" width="280px" height="280px">
+              </div>
               <div class="col-sm-5" style="width:250px;">
-                <label for="code" class="form-label">거래처 코드</label>
-                <input type="hidden" name="no" id="no" value="">
-                <input type="text" class="form-control" aria-describedby="emailHelp" name="code" id="code" placeholder="거래처 코드">
+                <label for="code" class="form-label">로트번호</label>
+                <input type="text" class="form-control" aria-describedby="emailHelp" name="code" id="code" readonly>
               </div>
-              <div class="col-sm-4" style="width: 227px;">
-                <label for="category" class="form-label">분류</label>
-                <select id="category" name="category" class="form-select">
-                  <option selected value="">선택</option>
-                  <option value="수주처">수주처</option>
-                  <option value="발주처">발주처</option>
-                </select>
+              <div class="col-sm-5" style="width: 227px;">
+                <label for="owner" class="form-label">상품명</label>
+                <input type="text" class="form-control" id="item_name" name="item_name" readonly>
               </div>
-            
               <div class="col-sm-5" style="width: 250px;">
                 <label for="name" class="form-label">거래처명</label>
-                <input type="text" class="form-control" id="name" name="name" placeholder="거래처명">
+                <input type="text" class="form-control" id="client_name" name="client_name"readonly>
+              </div>
+              <div class="col-sm-5" style="width: 227px;">
+                <label for="client_tel" class="form-label">거래처 연락처</label>
+                <input type="text" class="form-control" id="client_tel" name="client_tel"readonly>
+              </div>
+              <div class="col-sm-5" style="width: 250px;">
+                <label for="name" class="form-label">구매단가</label>
+                <input type="text" class="form-control" id="in_price" name="in_price"readonly>
               </div>
               <div class="col-sm-4" style="width: 227px;">
-                <label for="owner" class="form-label">대표자명</label>
-                <input type="text" class="form-control" id="owner" name="owner" placeholder="대표자명">
+                <label for="owner" class="form-label">판매단가</label>
+                <input type="text" class="form-control" id="out_price" name="out_price" readonly>
               </div>
-              <div class="col-12">
-                <label for="tel" class="form-label">전화번호</label>
-                <input type="text" class="form-control" id="tel" name="tel" placeholder="010-1234-5678">
-              </div>
-              <div class="col-12">
-                <label for="fax" class="form-label">팩스번호</label>
-                <input type="text" class="form-control" id="fax" name="fax" placeholder="02-123-5678">
-              </div>
-              <div class="col-sm-4">
-                <label for="bank" class="form-label">은행명</label>
-                <select id="bank" name="bank" class="form-select">
-                  <option selected value="">선택</option>
-                  <option value="KEB">KEB</option>
-                  <option value="SC제일">SC제일</option>
-                  <option value="국민">국민</option>
-                  <option value="신한">신한</option>
-                  <option value="외환">외한</option>
-                  <option value="우리">우리</option>
-                  <option value="한국시티">한국시티</option>
-                </select>
-              </div>
-               <div class="col-sm-5" style="width:318px;">
-                <label for="account" class="form-label">계좌번호</label>
-                <input type="text" class="form-control" name="account" id="account" placeholder="302-1209-3456">
-              </div>
-              <div class="col-12">
-              	<label for="address1" class="form-label">주소</label>
-                <input type="text" class="form-control" id="address1" name="address1" placeholder="주소" readonly>
-                <input type="hidden" class="form-control" id="zipcode" name="zipcode" placeholder="주소">
-              </div>
-              <div  class="col-12">
-              	<label for="address2" class="form-label">상세주소</label>
-                <input type="text" class="form-control" id="address2" name="address2" placeholder="상세주소">
-              </div>
-                <input class="btn btn-outline-primary" id="search_zipcode" type="button" value="우편번호 찾기" onclick="execDaumPostcode()">
-				<div class="col-12">
-	                <label for="email" class="form-label">이메일</label>
-	                <input type="email" class="form-control" id="email" name="email" placeholder="이메일">
-	              </div>
-	          <!-- 수정 했을 때 넘기기 위해 -->
-	          <input type="hidden" name="pageNumber" id="pageNumber" value="${pageInfo.pageNumber }">
-            </form>
 			</div>
 			<div class="modal-footer border-0">
 				<button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
-				<button type="button" form="taskForm" class="btn btn-primary px-5" id="okaybtn"></button>
 			</div>
 		</div>
 	</div>
@@ -211,7 +164,6 @@
 	$(function(){
 	/* 메뉴바가 클릭되게 하기 위해 */
 	document.getElementById('basicinfo').click();
-	
 	})
 	
 	/* 삭제 버튼 눌렀을 때  */
@@ -228,6 +180,9 @@
 	
 	/* 검색 */
 	function searchForm(){
+		var whatColumn = $('select option:selected').val();
+		$('input[name="whatColumn"]').val(whatColumn);
+		$('#keyword2').val($('#keyword').val());
 		search.submit();
 	}
 	
@@ -237,17 +192,16 @@
 		var ac = document.f.allselect;
 		var rc = document.f.rowcheck;
 
-	if (ac.checked) {
+		if (ac.checked) {
 			for (var i = 0; i < rc.length; i++) {
 				rc[i].checked = true;
 			}
 		}
-	else {
+		else {
 			for (var i = 0; i < rc.length; i++) {
 				rc[i].checked = false;
 			}
-		}
-	
+		}		
 	}//allselect
 	
 	function selectDelete(){
@@ -267,36 +221,30 @@
 		if(confirm("삭제하시겠습니까?"))
 			f.submit();
 		}
-	
-	function addreadonly(){
-		$("#code" ).prop('readonly', true);
-		$('#category').attr('disabled', true);
-		$("#name" ).prop('readonly', true);
-		$("#owner" ).prop('readonly', true);
-		$("#tel" ).prop('readonly', true);
-		$("#fax" ).prop('readonly', true);
-		$('#bank').attr('disabled', true);
-		$("#account" ).prop('readonly', true);
-		$("#zipcode" ).prop('readonly', true);
-		$("#address1" ).prop('readonly', true);
-		$("#address2" ).prop('readonly', true);
-		$("#email" ).prop('readonly', true);
-		$('#search_zipcode').hide();
-	}
-	function deletereadonly(){
-		$("#code" ).prop('readonly', false);
-		$('#category').attr('disabled', false);
-		$("#name" ).prop('readonly', false);
-		$("#owner" ).prop('readonly', false);
-		$("#tel" ).prop('readonly', false);
-		$("#fax" ).prop('readonly', false);
-		$('#bank').attr('disabled', false);
-		$("#account" ).prop('readonly', false);
-		$("#zipcode" ).prop('readonly', false);
-		$("#address1" ).prop('readonly', false);
-		$("#address2" ).prop('readonly', false);
-		$("#email" ).prop('readonly', false);
-		$('#search_zipcode').show();
+	/* 상세페이지 눌렀을때 */
+	function detail(code){
+		
+		/* 수정으로 가게 만들기 위해 */
+		$.ajax({
+			url : "/basicinfo/lot/selectOne ",
+			type : "post",
+			data : {  
+				code : code 
+			},
+			datatype : 'json',
+				success : function(data){ 
+					const pd = JSON.parse(data);
+					document.getElementById('code').value=pd.code;
+					document.getElementById('client_name').value=pd.client_name;
+					document.getElementById('item_name').value=pd.item_name;
+					document.getElementById('in_price').value=pd.formattedIn_price;
+					document.getElementById('out_price').value=pd.formattedOut_price;
+					document.getElementById('client_tel').value=pd.client_tel;
+					$('#image').attr("src","${pageContext.request.contextPath}/resources/assets/itemimg/"+pd.image);
+					// /assets/itemimg
+				}//success 
+		});//ajax 
+		
 	}
 	
 </script>

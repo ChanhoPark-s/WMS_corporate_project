@@ -70,4 +70,8 @@
 		#{arr}
 		</foreach>
 	</delete>
+	
+	<select id="selectByCode" resultType="com.spring.domain.ClientVO">
+		select * from client where code = #{value}
+	</select>
 </mapper>
