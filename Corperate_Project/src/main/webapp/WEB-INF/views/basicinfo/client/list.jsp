@@ -162,7 +162,7 @@
 			</table>
 		 </form>
 		</div>
-		<div align="center">
+		<div style="margin-left: 800px;">
 			${pageInfo.pagingHtml}
 		</div>
 	</div>
