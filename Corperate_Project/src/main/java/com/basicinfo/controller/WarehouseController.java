@@ -46,6 +46,8 @@ public class WarehouseController {
 		model.addAttribute("areaLists",areaservice.list());
 		model.addAttribute("rackLists",rackservice.list());
 		model.addAttribute("cellLists",cellservice.list());
+		
+		//등록수정삭제 이후페이지에서 데이타불러오고 기존 사이드바 보기위해 보낸다
 		model.addAttribute("showid",showid);
 		model.addAttribute("id",id);
 		model.addAttribute("no",no);
@@ -88,8 +90,17 @@ public class WarehouseController {
 			@RequestParam(value="area_no",required = false) String area_no,
 			@RequestParam(value="rack_no",required = false) String rack_no,
 			@RequestParam(value="cell_no",required = false) String cell_no,
+			@RequestParam(value="id",required = false) String id,
+			@RequestParam(value="no",required = false) String no,
 			@RequestParam(value="showid",required = false) String showid) {
 		System.out.println("showid 삭제에서본"+showid);
+		System.out.println("id 삭제에서본"+id);
+		System.out.println("no 삭제에서본"+no);
+		
+		//등록수정삭제 이후페이지에서 데이타불러오고 기존 사이드바 보기위해 보낸다
+		model.addAttribute("showid",showid);
+		model.addAttribute("id",id);
+		model.addAttribute("no",no);
 		
 		if(ware_no != null) {
 			System.out.println("창고일련번호:"+ware_no);
@@ -108,15 +119,20 @@ public class WarehouseController {
 			cellservice.deleteCellByNo(cell_no);
 		}
 
-		return "redirect:/basicinfo/warehouse/list?showid="+showid;
+		return "redirect:/basicinfo/warehouse/list";
 	}
 	
 	
 	//창고구역삽입
 	@PostMapping(value="/insert")
-	public String insert(Model model,WareHouseAllAreaVO vo,
+	public String insert(Model model,WareHouseAllAreaVO vo,@RequestParam(value="sendid",required = false) String id,
+			@RequestParam(value="sendno",required = false) String no,
 			@RequestParam(value="showid",required = false) String showid) {
+		
+		//등록수정삭제 이후페이지에서 데이타불러오고 기존 사이드바 보기위해 보낸다
 		model.addAttribute("showid",showid);
+		model.addAttribute("id",id);
+		model.addAttribute("no",no);
 		
 		System.out.println("showid 삽입에서본"+showid);
 		//창고삽입위치
@@ -178,7 +194,8 @@ public class WarehouseController {
 		System.out.println("수정하기위해가져온아이디"+vo.getSendid());
 		System.out.println("수정하기위해가져온번호"+vo.getSendno());
 		System.out.println("showid 수정에서본"+showid);
-		//등록수정삭제 이후페이지에서 데이타불러오고 기존 사이드바 보기위한변수
+		
+		//등록수정삭제 이후페이지에서 데이타불러오고 기존 사이드바 보기위해 보낸다
 		model.addAttribute("showid",showid);
 		model.addAttribute("id",id);
 		model.addAttribute("no",no);
