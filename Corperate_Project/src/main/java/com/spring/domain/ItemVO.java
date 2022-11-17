@@ -15,7 +15,14 @@ public class ItemVO {
 	private String client_code;
 	private String client_name;
 	private String get;
+	private String client_name;
 	
+	public String getClient_name() {
+		return client_name;
+	}
+	public void setClient_name(String client_name) {
+		this.client_name = client_name;
+	}
 	public String getGet() {
 		return get;
 	}

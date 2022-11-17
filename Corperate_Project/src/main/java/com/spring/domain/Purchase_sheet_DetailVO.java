@@ -14,4 +14,11 @@ public class Purchase_sheet_DetailVO {
 	private int ITEM_NO;
 	private int WARE_NO;
 	
+	//품목이름
+	private String ITEM_Name;
+	//품목코드
+	private String ITEM_Code;
+	//창고이름
+	private String WARE_Name;
+	
 }

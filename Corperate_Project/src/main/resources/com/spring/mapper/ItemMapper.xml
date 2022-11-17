@@ -6,11 +6,13 @@
 <mapper namespace="com.spring.mapper.ItemMapper">
 
 	<select id="selectAll" resultType="com.spring.domain.ItemVO">
-		select i.no no, i.code code, c.code as client_code, i.name, i.in_price, i.out_price, i.image
-		from item i
-		inner join client c
-		on i.client_no=c.no
-		order by 1
+		select item.no, item.code, client.name as client_name, item.name, item.in_price, item.out_price, item.image
+		from item, client
+		where item.client_no = client.no
+		<if test="whatColumn == 'code'"> and item.code like '%' || #{keyword} || '%' </if>
+		<if test="whatColumn =='client_name'"> and client.name like '%' || #{keyword} || '%' </if>
+		<if test="whatColumn =='name'"> and item.name like '%' || #{keyword} || '%' </if>
+		order by no  desc OFFSET #{beginRow} ROWS FETCH NEXT #{pageSize} ROWS ONLY
 	</select>
 	<insert id="insert">
 		insert into item
@@ -29,6 +31,23 @@
 		update item set client_no=#{client_no}, code=#{code}, name=#{name}, in_price=#{in_price}, out_pirce=#{out_price}, image=#{image}
 		where no=#{no}
 	</update>
+	
+	<select id="getTotalCount" resultType="int">
+  		select count(*) from client c,item i where i.client_no = c.no
+	  	<if test="whatColumn == 'code'">
+  			and i.code like '%' || #{keyword} || '%'  
+	  	</if>
+	  	<if test="whatColumn == 'client_name'">
+  			and c.code like '%' || #{keyword} || '%'
+	  	</if>
+  		<if test="whatColumn == 'name'">
+  			and i.name like '%' || #{keyword} || '%'
+	  	</if>
+  	</select>
+  	
+ 	<select id="code_check" parameterType="com.spring.domain.ItemVO" resultType="int">
+		select count(code) from item where code=#{code}
+	</select>
 	
 	<!-- 이하 ajax API 관련 SQL -->
 	<select id="getListWithPaging" resultType="com.spring.domain.ItemVO">
