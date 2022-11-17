@@ -855,17 +855,15 @@ function checkcodefunction(getcode,location){
 			var code = JSON.parse(data);
 			
 			if(location=='ware'){
-				if(getcode != document.getElementById('warehousecode').value()){
-					if(code>0){
-						document.getElementById('warehousecode').classList.add('is-invalid');
-						$('#submit_btn').attr("disabled","disabled");
-						checkcode = false;
-						
-					} else{
-						document.getElementById('warehousecode').classList.remove('is-invalid');
-						document.getElementById('submit_btn').removeAttribute('disabled');
-						checkcode = true;
-					}
+				if(code>0){
+					document.getElementById('warehousecode').classList.add('is-invalid');
+					$('#submit_btn').attr("disabled","disabled");
+					checkcode = false;
+					
+				} else{
+					document.getElementById('warehousecode').classList.remove('is-invalid');
+					document.getElementById('submit_btn').removeAttribute('disabled');
+					checkcode = true;
 				}
 			}else if(location=='area'){
 				if(code>0){
