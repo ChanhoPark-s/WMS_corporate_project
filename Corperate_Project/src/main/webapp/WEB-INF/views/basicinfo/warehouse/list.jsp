@@ -295,8 +295,8 @@
 					<div class="mb-3" id="warehousecodetitle">
 						<label for="warehousecode" class="form-label" >창고코드</label> <input
 							type="text" name="warehousecode" class="form-control" id="warehousecode"
-							required autofocus>
-						<div class="invalid-feedback">User full name is required.</div>
+							required>
+						<div class="invalid-feedback">이미 사용중인 창고코드입니다</div>
 					</div>
 					<div class="mb-3" id="warehousenametitle">
 						<label for="warehousename" class="form-label">창고명</label> <input
@@ -308,7 +308,7 @@
 						<label for="areacode" class="form-label">구역코드</label> <input
 							type="text" name="areacode" class="form-control" id="areacode"
 							required >
-						<div class="invalid-feedback">User email is required.</div>
+						<div class="invalid-feedback">이미 사용중인 구역코드입니다</div>
 					</div>
 					<div class="mb-3" id="areanametitle">
 						<label for="areaname" class="form-label">구역명</label> <input
@@ -320,7 +320,7 @@
 						<label for="rackcode" class="form-label">랙코드</label> <input
 							type="text" name="rackcode" class="form-control" id="rackcode"
 							required >
-						<div class="invalid-feedback">User email is required.</div>
+						<div class="invalid-feedback">이미 사용중인 랙코드입니다</div>
 					</div>
 					<div class="mb-3" id="racknametitle">
 						<label for="rackname" class="form-label">랙명</label> <input
@@ -332,7 +332,7 @@
 						<label for="cellcode" class="form-label">셀코드</label> <input
 							type="text" name="cellcode" class="form-control" id="cellcode"
 							required >
-						<div class="invalid-feedback">User email is required.</div>
+						<div class="invalid-feedback">이미 사용중인 셀코드입니다</div>
 					</div>
 					<div class="mb-3" id="cellnametitle">
 						<label for="cellname" class="form-label">셀명</label> <input
@@ -523,6 +523,7 @@ function updatefunction(no,id){
 		$('#modaltitle').html('창고수정');
 		$('#warehousecodetitle').show();
 		$('#warehousenametitle').show();
+		$('#warehousecode').attr("autofocus","autofocus");
 		$('#MyModal').modal('show');
 		
 		//유효성
@@ -535,6 +536,7 @@ function updatefunction(no,id){
 		$('#warehouselocationtitle').show();
 		$('#areacodetitle').show();
 		$('#areanametitle').show();
+		$('#areacode').attr("autofocus","autofocus");
 		$('#MyModal').modal('show');
 		
 		//유효성
@@ -549,6 +551,7 @@ function updatefunction(no,id){
 		$('#arealocationtitle').show();
 		$('#rackcodetitle').show();
 		$('#racknametitle').show();
+		$('#rackcode').attr("autofocus","autofocus");
 		$('#MyModal').modal('show');
 		
 		//유효성
@@ -565,6 +568,7 @@ function updatefunction(no,id){
 		$('#racklocationtitle').show();
 		$('#cellcodetitle').show();
 		$('#cellnametitle').show();
+		$('#cellcode').attr("autofocus","autofocus");
 		$('#MyModal').modal('show');
 		
 		//유효성
@@ -638,6 +642,7 @@ function updatefunction(no,id){
 
 
 
+
 //등록 클릭시 해당영역 등록
 function insertfunction(getid){
 	resetmodal();
@@ -659,11 +664,13 @@ function insertfunction(getid){
 	$('#cellcodetitle').hide();
 	$('#cellnametitle').hide();
 	
+	
 	if(getid.indexOf('default')>=0){
 		//창고등록
 		$('#modaltitle').html('창고등록');
 		$('#warehousecodetitle').show();
 		$('#warehousenametitle').show();
+		$('#warehousecode').attr("autofocus","autofocus");
 		$('#MyModal').modal('show');
 		
 		//유효성
@@ -676,6 +683,7 @@ function insertfunction(getid){
 		$('#warehouselocationtitle').show();
 		$('#areacodetitle').show();
 		$('#areanametitle').show();
+		$('#warehouselocation').attr("autofocus","autofocus");
 		$('#MyModal').modal('show');
 		
 		//유효성
@@ -690,6 +698,7 @@ function insertfunction(getid){
 		$('#arealocationtitle').show();
 		$('#rackcodetitle').show();
 		$('#racknametitle').show();
+		$('#warehouselocation').attr("autofocus","autofocus");
 		$('#MyModal').modal('show');
 		
 		//유효성
@@ -706,6 +715,7 @@ function insertfunction(getid){
 		$('#racklocationtitle').show();
 		$('#cellcodetitle').show();
 		$('#cellnametitle').show();
+		$('#warehouselocation').attr("autofocus","autofocus");
 		$('#MyModal').modal('show');
 		
 		//유효성
@@ -802,7 +812,7 @@ function resetmodal(){
 
 
 
-//required해제
+//에러메세지/중복메세지 해제
 function resetrequired(){
 	document.getElementById('warehouselocation').removeAttribute('required');
 	document.getElementById('arealocation').removeAttribute('required');
@@ -815,5 +825,114 @@ function resetrequired(){
 	document.getElementById('rackname').removeAttribute('required');
 	document.getElementById('cellcode').removeAttribute('required');
 	document.getElementById('cellname').removeAttribute('required');
+	document.getElementById('submit_btn').removeAttribute('disabled');
+	document.getElementById('warehouselocation').classList.remove('is-invalid');
+	document.getElementById('arealocation').classList.remove('is-invalid');
+	document.getElementById('racklocation').classList.remove('is-invalid');
+	document.getElementById('warehousecode').classList.remove('is-invalid');
+	document.getElementById('warehousename').classList.remove('is-invalid');
+	document.getElementById('areacode').classList.remove('is-invalid');
+	document.getElementById('areaname').classList.remove('is-invalid');
+	document.getElementById('rackcode').classList.remove('is-invalid');
+	document.getElementById('rackname').classList.remove('is-invalid');
+	document.getElementById('cellcode').classList.remove('is-invalid');
+	document.getElementById('cellname').classList.remove('is-invalid');
+
 };
+
+//코드만 중복검사
+function checkcodefunction(getcode,location){
+	console.log(getcode);
+	console.log(location);
+	$.ajax({
+		url : "/basicinfo/warehouse/checkCode",
+		type : "post",
+		data : ({
+			"getcode" : getcode,
+			"location" : location
+		}),
+		success : function(data){
+			var code = JSON.parse(data);
+			
+			if(location=='ware'){
+				if(getcode != document.getElementById('warehousecode').value()){
+					if(code>0){
+						document.getElementById('warehousecode').classList.add('is-invalid');
+						$('#submit_btn').attr("disabled","disabled");
+						checkcode = false;
+						
+					} else{
+						document.getElementById('warehousecode').classList.remove('is-invalid');
+						document.getElementById('submit_btn').removeAttribute('disabled');
+						checkcode = true;
+					}
+				}
+			}else if(location=='area'){
+				if(code>0){
+					document.getElementById('areacode').classList.add('is-invalid');
+					$('#submit_btn').attr("disabled","disabled");
+					checkcode = false;
+				} else{
+					document.getElementById('areacode').classList.remove('is-invalid');
+					document.getElementById('submit_btn').removeAttribute('disabled');
+					checkcode = true;
+				}
+			}else if(location=='rack'){
+				if(code>0){
+					document.getElementById('rackcode').classList.add('is-invalid');
+					$('#submit_btn').attr("disabled","disabled");
+					checkcode = false;
+				} else{
+					document.getElementById('rackcode').classList.remove('is-invalid');
+					document.getElementById('submit_btn').removeAttribute('disabled');
+					checkcode = true;
+				}
+			}else{
+				if(code>0){
+					document.getElementById('cellcode').classList.add('is-invalid');
+					$('#submit_btn').attr("disabled","disabled");
+					checkcode = false;
+					
+				} else{
+					document.getElementById('cellcode').classList.remove('is-invalid');
+					document.getElementById('submit_btn').removeAttribute('disabled');
+					checkcode = true;
+				}
+			}
+			console.log(checkcode);
+		},
+		error: function (request, status, error) {
+	        console.log("code: " + request.status);
+	        console.log("message: " + request.responseText);
+	        console.log("error: " + error);
+	    }
+	});//ajax
+}//중복검사
+
+//중복검사
+var checkcode;
+$(function(){
+	/* 중복검사 */
+	//창고코드입력시
+	$('#warehousecode').keyup(function(){
+		var wcode = $('#warehousecode').val();
+		checkcode = checkcodefunction(wcode,'ware');
+	});
+	//구역코드입력시
+	$('#areacode').keyup(function(){
+		var acode = $('#areacode').val();
+		checkcodefunction(acode,'area');
+
+	});
+	//랙코드입력시
+	$('#rackcode').keyup(function(){
+		var rcode = $('#rackcode').val();
+		checkcodefunction(rcode,'rack');
+	});
+	//셀코드입력시
+	$('#cellcode').keyup(function(){
+		var ccode = $('#cellcode').val();
+		checkcodefunction(ccode,'cell');
+	});
+});
 </script>

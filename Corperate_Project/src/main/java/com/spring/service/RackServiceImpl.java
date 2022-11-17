@@ -57,4 +57,9 @@ public class RackServiceImpl implements RackService{
 		return mapper.updateRackByNo(vo);
 	}
 
+	@Override
+	public int checkCode(String code) {
+		return mapper.checkCode(code);
+	}
+
 }
