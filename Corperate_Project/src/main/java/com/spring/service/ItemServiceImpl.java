@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.domain.ItemVO;
+import com.spring.domain.PageDTO;
 import com.spring.mapper.ItemMapper;
+import com.spring.paging.Criteria;
 
 @Service
 public class ItemServiceImpl implements ItemService{
@@ -87,7 +89,12 @@ public class ItemServiceImpl implements ItemService{
 		mapper.update(vo);
 	}
 
-
-	
-
+	@Override
+	public PageDTO<ItemVO> getListPage(Criteria cri) {
+		int totalCount = mapper.getCountAll(cri);
+		List<ItemVO> list = mapper.getListWithPaging(cri); 
+		PageDTO<ItemVO> pageDTO = new PageDTO<ItemVO>(totalCount, list, cri);
+		
+		return pageDTO;
+	}
 }

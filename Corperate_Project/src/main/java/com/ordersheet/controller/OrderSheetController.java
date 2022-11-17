@@ -14,10 +14,9 @@ import com.spring.service.DepartmentService;
 @RequestMapping("/ordersheet/*")
 public class OrderSheetController {
 	
-
 	@Autowired
 	private DepartmentService service;
-
+	
 	@GetMapping(value="/list")
 	public void list(Model model) {
 		//model.addAttribute("voList", service.list());

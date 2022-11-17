@@ -30,5 +30,40 @@
 		where no=#{no}
 	</update>
 	
+	<!-- 이하 ajax API 관련 SQL -->
+	<select id="getListWithPaging" resultType="com.spring.domain.ItemVO">
+		<![CDATA[
+		select no, code, name, client_name, in_price, out_price, image
+		from(
+		    select rownum rn, i.no, i.code, i.name, c.name client_name, i.in_price, i.out_price, i.image
+    		from item i inner join client c
+    		on i.client_no = c.no
+		    where rownum <= #{cri.pageNum} * #{cri.amount}
+		]]>
+		
+		    <if test="cri.whatColumn=='code' and cri.keyword != null"> and i.code like '%' ||  #{cri.keyword} || '%' </if>
+			<if test="cri.whatColumn=='name' and cri.keyword != null"> and i.name like '%' ||  #{cri.keyword} || '%' </if>
+			<if test="cri.whatColumn=='client_name' and cri.keyword != null"> and c.name like '%' ||  #{cri.keyword} || '%' </if>
+		    
+		<![CDATA[    
+			order by no
+		)where rn > (#{cri.pageNum} - 1) * #{cri.amount}
+		]]> 
+	</select>
 	
+	<select id="getCountAll" resultType="int">
+		select count(*)
+		from(
+	        select *
+	        from(
+				select rownum rn, i.no, i.code, i.name, c.name client_name, i.in_price, i.out_price, i.image
+		    	from item i inner join client c
+		    	on i.client_no = c.no)
+		)where no > 0
+		
+		<if test="cri.whatColumn=='code' and cri.keyword != null"> and code like '%' ||  #{cri.keyword} || '%' </if>
+		<if test="cri.whatColumn=='name' and cri.keyword != null"> and name like '%' ||  #{cri.keyword} || '%' </if>
+		<if test="cri.whatColumn=='client_name' and cri.keyword != null"> and client_name like '%' ||  #{cri.keyword} || '%' </if>
+		
+	</select>
 </mapper>
