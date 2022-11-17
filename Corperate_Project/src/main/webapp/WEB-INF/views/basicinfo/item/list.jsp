@@ -220,9 +220,13 @@ $(function(){
     $('#in_price').keyup(function(){$('#in_price').attr("class","form-control is-valid")})
     $('#out_price').keyup(function(){$('#out_price').attr("class","form-control is-valid")})
 })
+//등록하기 버튼
 $('#insertBtn').on("click",function(){
 	$(".modal").find("#modal-title").text("등록하기");
 	$(".modal").find('#modaladdBtn').text("등록");
+	
+	clearModal();
+
 
 	var taskForm = $("#modalForm");
 	$('#modaladdBtn').click(function(){
@@ -268,7 +272,7 @@ function deleteItem(no){
 		location.href="/basicinfo/item/delete?no="+no+"&whatColumn="+whatColumn+"&keyword="+keyword+"&pageNumber="+pageNumber;
 	}
 };
-//수정
+//수정 버튼
 function update(no){
 	$(".modal").find("#modal-title").text("수정하기");
 	$(".modal").find('#modaladdBtn').text("수정");
@@ -314,7 +318,6 @@ function update(no){
 			},
 			dataType:'json',
 			success : function(data){
-			 	
 				
 				document.getElementById('code').value=data.code;
 				document.getElementById('name').value=data.name;
@@ -347,6 +350,7 @@ function update(no){
 			}
 		}); 
 	});//key up
+	
 	$('#modaladdBtn').click(function(){
 		
 		if(!check){
@@ -355,7 +359,15 @@ function update(no){
 			alert("품목코드가 중복되었습니다.")
 		}
 		})
-		})		
+		})
+		function clearModal(){
+			document.getElementById('code').value="";
+			document.getElementById('client_code').value="";
+			document.getElementById('client_name').value="";
+			document.getElementById('name').value="";
+			document.getElementById('in_price').value="";
+			document.getElementById('out_price').value="";
+		}
 		<!-- 거래처를 선택하는 두번째 모달처리 -->
 
 			/* 전역변수 */
