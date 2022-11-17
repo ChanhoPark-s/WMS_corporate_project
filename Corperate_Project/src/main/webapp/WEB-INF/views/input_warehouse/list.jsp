@@ -148,7 +148,6 @@
 					</tr>
 				</thead>
 				<tbody>
-				<c:forEach var="inputd" items="${lists}">
 					<tr>
 						<td>${inputd.no}</td>
 						<td>${inputd.input_WareHouse_No}</td>
@@ -185,7 +184,6 @@
 							</div>
 						</td>
 					</tr>
-					</c:forEach>
 				</tbody>
 			</table>
 		</div>

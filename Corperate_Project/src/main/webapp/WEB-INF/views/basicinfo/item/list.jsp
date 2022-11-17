@@ -42,7 +42,7 @@
 						<th scope="col">번호</th>
 						<th scope="col">이미지</th>
 						<th scope="col">품목코드</th>
-						<th scope="col">거래처코드</th>
+						<th scope="col">거래처명</th>
 						<th scope="col">품목</th>
 						<th scope="col">입고단가</th>
 						<th scope="col">출고단가</th>
@@ -57,7 +57,7 @@
 						<img src="<%=request.getContextPath()%>/resources/assets/itemimg/${item.image}" width="100" height="100" loading="lazy">
 						</td>
 						<td>${item.code}</td> 
-						<td>${item.client_code}</td>
+						<td>${item.client_name}</td>
 						<td>${item.name}</td>
 						<td>${item.in_price}</td>
 						<td>${item.out_price}</td>
