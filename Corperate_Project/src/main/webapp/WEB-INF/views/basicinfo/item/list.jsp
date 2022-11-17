@@ -25,7 +25,7 @@
 				<td><select name="whatColumn" id="whatColumn" class="dselect form-select" data-dselect-clearable="true">
 					<option value="">선택</option>
 					<option value="code">품목코드</option>
-					<option value="client_code">거래처코드</option>
+					<option value="client_name">거래처명</option>
 					<option value="name">품목명</option>
 				</select></td>
 				<td>
@@ -54,7 +54,7 @@
 					<tr>
 						<td>${item.no} </td>
 						<td> <!-- 이미지 -->
-						<img src="<%=request.getContextPath()%>/resources/assets/itemimg/${item.image}" width="100" height="100" loading="lazy">
+						<img src="<%=request.getContextPath()%>/resources/assets/img/item/${item.image}" width="100" height="100" loading="lazy">
 						</td>
 						<td>${item.code}</td> 
 						<td>${item.client_name}</td>
