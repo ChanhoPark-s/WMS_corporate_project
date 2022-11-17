@@ -58,6 +58,9 @@ public class ClientServiceImpl implements ClientService{
 
 
 	@Override
+	public List<ClientVO> GetAllClient(Client_Paging pageInfo) {
+		return mapper.getAllClient(pageInfo);
+	}
 	public int codeCheck(String code) {
 		return mapper.checkCode(code);
 	}

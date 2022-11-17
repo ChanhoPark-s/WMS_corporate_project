@@ -143,7 +143,7 @@
             </a>
             <div class="ms-5 collapse" id="come-process-collapse" data-bs-parent="#mainMenu">
               <ul class="navbar-nav">
-                <li class="nav-item"><a class="nav-link" href="index.html">입고정보</a></li>
+                <li class="nav-item"><a class="nav-link" href="/input_warehouse/list">입고정보</a></li>
               </ul>
             </div>
           </li>

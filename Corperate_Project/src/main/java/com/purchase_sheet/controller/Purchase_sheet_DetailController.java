@@ -56,7 +56,7 @@ public class Purchase_sheet_DetailController {
 		//거래처조회
 		ClientVO cvo = cs.selectOne(Integer.toString(ivo.getClient_no()));
 		
-		ivo.setCname(cvo.getName());
+		ivo.setClient_name(cvo.getName());
 		
 		LOGGER.info("cvo.getName():"+cvo.getName());
 		LOGGER.info("ItemVO:"+ivo);

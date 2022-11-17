@@ -73,7 +73,7 @@ public class Purchase_sheetController {
 		List<ClientVO> clientList = cs.GetAllClient();
 		
 		//품목조회
-		List<ItemVO> itemList = is.selectAll();
+		//List<ItemVO> itemList = is.selectAll();
 		
 		//창고조회
 		List<WareHouseVO> WareList = ws.list();
@@ -86,7 +86,7 @@ public class Purchase_sheetController {
 		mav.addObject("lists", lists);
 		mav.addObject("memberList", memberList);
 		mav.addObject("clientList", clientList);
-		mav.addObject("itemList", itemList);
+		//mav.addObject("itemList", itemList);
 		mav.addObject("WareList", WareList);
 		
 		return mav;

@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.domain.ItemVO;
+import com.spring.domain.SearchVO;
 import com.spring.mapper.ItemMapper;
+import com.spring.paging.Client_Paging;
 
 @Service
 public class ItemServiceImpl implements ItemService{
@@ -22,15 +24,15 @@ public class ItemServiceImpl implements ItemService{
 	private ServletContext servletContext;
 	
 	@Override
-	public List<ItemVO> selectAll() {
-		List<ItemVO> lists=mapper.selectAll();
+	public List<ItemVO> selectAll(Client_Paging pageInfo) {
+		List<ItemVO> lists=mapper.selectAll(pageInfo);
 		return lists;
 	}
 
 	@Override
 	public void insert(ItemVO vo) throws Exception {
 		
-		String uploadPath = servletContext.getRealPath("/resources/assets/itemimg");
+		String uploadPath = servletContext.getRealPath("/resources/assets/img/item/");
 		System.out.println(uploadPath);
 		File file = new File(uploadPath);
 		if(!file.exists()) {
@@ -67,7 +69,7 @@ public class ItemServiceImpl implements ItemService{
 	@Override
 	public void update(ItemVO vo) throws Exception {
 		
-		String uploadPath = servletContext.getRealPath("/resources/assets/itemimg");
+		String uploadPath = servletContext.getRealPath("/resources/assets/img/item/");
 		System.out.println(uploadPath);
 		File file = new File(uploadPath);
 		if(!file.exists()) {
@@ -86,7 +88,14 @@ public class ItemServiceImpl implements ItemService{
 		System.out.println("살려줘");
 		mapper.update(vo);
 	}
-
+	@Override
+	public int getTotalCount(SearchVO searchvo) { 
+		return mapper.getTotalCount(searchvo);
+	}
+	@Override
+	public int code_check(String code) { 
+		return mapper.code_check(code);
+	}
 
 	
 
