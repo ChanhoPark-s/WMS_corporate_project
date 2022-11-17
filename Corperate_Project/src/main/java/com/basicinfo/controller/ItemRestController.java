@@ -33,7 +33,7 @@ public class ItemRestController {
 			@PathVariable(value="keyword", required = false) String keyword) {				
 		
 
-		System.out.println(pageNum + " " + amount + " " + whatColumn + " " + keyword);
+		//System.out.println(pageNum + " " + amount + " " + whatColumn + " " + keyword);
 		
 		Criteria cri = new Criteria(pageNum, amount, whatColumn, keyword);
 		
