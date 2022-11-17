@@ -1,12 +1,11 @@
 package com.spring.service;
 
-import org.springframework.stereotype.Service;
+import java.util.List;
 
+import com.spring.domain.Init_Input_WareHouseVO;
 import com.spring.domain.Input_WareHouseVO;
 
-@Service
-public interface Input_WareHouseService{
-
-	public int save(Input_WareHouseVO vo);
-
+public interface Input_WareHouseService {
+	public List<Input_WareHouseVO> list();
+	public int insert(Input_WareHouseVO vo);
 }

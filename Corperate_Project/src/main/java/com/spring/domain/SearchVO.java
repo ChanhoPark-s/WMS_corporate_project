@@ -9,5 +9,6 @@ public class SearchVO {
 	private String pageNumber;
 	private String item_no;
 	private String category;
+	private String name;
 	
 }

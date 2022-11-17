@@ -29,13 +29,10 @@ import com.spring.service.ClientService;
 @RequestMapping("/basicinfo/client/*")
 public class ClientController {
 	
-
 	@Autowired
 	private ClientService service;
 	
 	private final String redirect = "redirect:/basicinfo/client/list";
-	
-	
 	
 	// getAll
 	@GetMapping(value="/list", produces = "application/text;charset=utf8")
@@ -45,21 +42,55 @@ public class ClientController {
 		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
 		if(flashMap!=null)
 			searchvo =(SearchVO)flashMap.get("searchvo");
-		System.out.println("category:는?"+searchvo.getCategory());
 		int totalCount = service.getTotalCount(searchvo);
-		
 		Client_Paging pageInfo = new Client_Paging(searchvo.getPageNumber(),"10",totalCount,"/basicinfo/client/list",searchvo.getWhatColumn(),searchvo.getKeyword(),0);
+		
 		
 		model.addAttribute("pageInfo",pageInfo);
 		model.addAttribute("totalCount",totalCount);
 		model.addAttribute("list",service.GetAll(pageInfo));
 		model.addAttribute("searchvo",searchvo);
+		
 	}
 	 
 	// insert
 	@PostMapping("/add")
 	public String Add(ClientVO Vo) {
 		service.Insert(Vo);
+		return redirect;
+	}
+	
+	//update
+	@PostMapping("/update")
+	public String update(ClientVO VO,SearchVO searchvo,RedirectAttributes rttr) {
+		
+		service.update(VO);
+		rttr.addFlashAttribute("searchvo",searchvo);
+		
+		return redirect;
+	}
+	
+	//delete one
+	@GetMapping("/delete")
+	public String delete(SearchVO searchvo,RedirectAttributes rttr) {
+		
+		service.deleteOne(searchvo.getItem_no());
+		rttr.addFlashAttribute("searchvo",searchvo);
+		
+		return redirect;
+	}
+	
+	// check code
+	@ResponseBody
+	@PostMapping("/check")
+	public String check(@RequestParam("code")String code) {
+		return String.valueOf(service.codeCheck(code));
+	}
+	
+	@PostMapping("/selectDelete")
+	public String selectDelete(HttpServletRequest request){
+		
+		service.selectDelete(request.getParameterValues("rowcheck"));
 		return redirect;
 	}
 	
@@ -70,20 +101,10 @@ public class ClientController {
 		return new Gson().toJson(service.selectOne(item_no));
 	}
 	
-	//update
-	@PostMapping("/update")
-	public String update(ClientVO VO,SearchVO searchvo,RedirectAttributes rttr) {
-		service.update(VO);
-		rttr.addFlashAttribute("searchvo",searchvo);
-		return redirect;
+	//select_one
+	@ResponseBody
+	@PostMapping(value="/selectByCode",produces = "application/text;charset=utf8")
+	public String selectByCode(@RequestParam("code")String code) {
+		return new Gson().toJson(service.selectByCode(code));
 	}
-	
-	//delete one
-	@GetMapping("/delete")
-	public String delete(SearchVO searchvo,RedirectAttributes rttr) {
-		service.deleteOne(searchvo.getItem_no());
-		rttr.addFlashAttribute("searchvo",searchvo);
-		return redirect;
-	}
-	
 }
