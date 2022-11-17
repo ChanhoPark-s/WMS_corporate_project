@@ -4,13 +4,19 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="com.spring.mapper.Purchase_sheetMapper">
-
+	<!-- 발주서조회 -->
 	<select id="selectAll" resultType="com.spring.domain.Purchase_sheetVO">
-		select p.no, p.member_no, p.client_no, p.order_no, p.day, p.delivery_date, p.status, c.name as client_name, m.name as member_name
-		from Purchase_sheet p, Client c, Member m,Purchase_sheet_Detail pd, Item i
-		where p.client_no = c.no(+)
-		and p.member_no = m.no(+)
-		and p.no = pd.Purchase_sheet_no 
+		SELECT no ,member_no, client_no, order_no, day, delivery_date, status, client_name, member_name , LISTAGG(item_name,',') WITHIN GROUP (ORDER BY item_name) AS item_name
+		FROM 
+		(select p.no , p.member_no, p.client_no, p.order_no, p.day, p.delivery_date, p.status, c.name as client_name, m.name as member_name , i.name as item_name
+				from Purchase_sheet p, Client c, Member m, purchase_sheet_detail psd, item i
+				where p.client_no = c.no(+)
+				and p.member_no = m.no(+)
+				and p.no = psd.purchase_sheet_no(+)
+				and psd.item_no = i.no(+)
+				order by p.no desc)
+		GROUP BY no,member_no, client_no, order_no, day, delivery_date, status, client_name, member_name
+		ORDER BY status,no desc
 	</select>
 	
 	<select id="selectOne" resultType="com.spring.domain.Purchase_sheetVO">
@@ -26,7 +32,52 @@
 	</update>
 	
 	<update id="delete">
-		update Purchase_sheet set status=2 where no=#{no}
+		update Purchase_sheet set status=2 where no=#{no} and status=0
 	</update>
+	
+	<!-- 이하 ajax API 관련 SQL -->
+	<select id="getListWithPaging" resultType="com.spring.domain.Purchase_sheetVO">
+		<![CDATA[
+		select * 
+		from(
+		    select rownum rn, no, id, pw, name, dep_name, rank_name, email, image, reg_date
+		    from (select m.no, m.id, m.pw, m.name, m.dep dep_name, r.name rank_name, m.email, m.image, m.reg_date
+		          from(
+		                select m.no, m.id, m.pw, m.name, d.name dep, m.rank_no, m.email, m.image, m.reg_date
+		                from member m inner join department d
+		                on m.dep_no = d.no
+		          ) m inner join rank r
+		    on m.rank_no = r.no)
+		where rownum <= #{cri.pageNum} * #{cri.amount}
+		]]>    
+		
+		    <if test="cri.whatColumn=='code' and cri.keyword != null"> and code like '%' ||  #{cri.keyword} || '%' </if>
+		    <if test="cri.whatColumn=='name' and cri.keyword != null"> and name like '%' ||  #{cri.keyword} || '%' </if>
+		    <if test="cri.whatColumn=='owner' and cri.keyword != null"> and owner like '%' ||  #{cri.keyword} || '%' </if>
+		    
+		<![CDATA[    
+			order by no
+		)where rn > (#{cri.pageNum} - 1) * #{cri.amount}
+		]]>
+	</select>
+	
+	<select id="getCountAll" resultType="int">
+		select count(*)
+		from(
+		    select rownum rn, no, id, pw, name, dep_name, rank_name, email, image, reg_date
+		    from (select m.no, m.id, m.pw, m.name, m.dep dep_name, r.name rank_name, m.email, m.image, m.reg_date
+		          from(
+		                select m.no, m.id, m.pw, m.name, d.name dep, m.rank_no, m.email, m.image, m.reg_date
+		                from member m inner join department d
+		                on m.dep_no = d.no
+		          ) m inner join rank r
+		    on m.rank_no = r.no)
+		) where no > 0
+		<!-- where no > 0 and category='수주처' -->
+		
+		<if test="cri.whatColumn=='code' and cri.keyword != null"> and code like '%' ||  #{cri.keyword} || '%' </if>
+		<if test="cri.whatColumn=='name' and cri.keyword != null"> and name like '%' ||  #{cri.keyword} || '%' </if>	
+		<if test="cri.whatColumn=='owner' and cri.keyword != null"> and owner like '%' ||  #{cri.keyword} || '%' </if>
+	</select>
 
 </mapper>

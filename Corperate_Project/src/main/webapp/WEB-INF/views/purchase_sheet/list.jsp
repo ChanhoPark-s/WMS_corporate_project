@@ -2,11 +2,6 @@
     pageEncoding="UTF-8"%>
 
 <%@include file="/WEB-INF/views/common/top.jsp" %>
-
-<head>
-  <title>발주서</title>
-</head>
-	
       	<!-- 
         <nav aria-label="breadcrumb" id="main-breadcrumb">
           <ol class="breadcrumb">
@@ -25,7 +20,7 @@
                 <a href="modal2.ps"></a>
               	</form>
               </div>
-              <button class="btn btn-primary d-inline-flex align-items-center gap-1 insert" data-bs-toggle="modal" data-bs-target="#addUserModal" >
+              <button class="btn btn-primary d-inline-flex align-items-center gap-1 insert" data-bs-toggle="modal" data-bs-target="#addOrderSheetModal" >
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                     <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
                   </svg>
@@ -52,7 +47,7 @@
                     <th scope="col">발주번호</th>
                     <th scope="col">거래처</th>
                     <th scope="col">담당자</th>
-                    <th scope="col">품목</th>
+                    <th scope="col">품목명</th>
                     <th scope="col" nowrap>등록일자</th>
                     <th scope="col" nowrap>납기일자</th>
                     <th scope="col">상태</th>
@@ -73,9 +68,21 @@
                     </td>
                     <td>${list.client_name }</td>
                     <td>${list.member_name}</td>
-                    <td><span class="badge bg-light text-muted">${list.order_no }</span></td>
-                    <td>${list.day }</td>
-                    <td>${list.delivery_date }</td>
+                    <td>
+                    <span class="badge bg-light text-muted">
+                    <c:set var="item_name" value="${fn:split(list.item_name,',')}" />
+                    ${item_name[0] }
+					<c:if test="${fn:length(item_name) > 1}">외 ${fn:length(item_name) - 1}개</c:if>
+                    </span>
+                    </td>
+                    <td>
+                    <fmt:parseDate value="${list.day}" var="day" pattern="yyyy-MM-dd" />
+					<fmt:formatDate value="${day}" pattern="yyyy-MM-dd" />
+                    </td>
+                    <td>
+                    <fmt:parseDate value="${list.delivery_date}" var="delivery_date" pattern="yyyy-MM-dd" />
+					<fmt:formatDate value="${delivery_date}" pattern="yyyy-MM-dd" />
+                    </td>
                     <td>
                     <c:choose>
                     <c:when test="${list.status eq 0 }">발주중</c:when>
@@ -157,29 +164,12 @@
                 </tbody>
               </table>
             </div>
-            <nav aria-label="Page navigation borderless example">
-              <ul class="pagination pagination-borderless justify-content-end">
-                <li class="page-item disabled">
-                  <a class="page-link d-flex align-items-center px-2" href="#" tabindex="-1" aria-disabled="true" aria-label="Previous">
-                    <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                    </svg>
-                  </a>
-                </li>
-                <li class="page-item active" aria-current="page">
-                  <a class="page-link" href="javascript:void(0)">1</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="javascript:void(0)">2</a></li>
-                <li class="page-item"><a class="page-link" href="javascript:void(0)">3</a></li>
-                <li class="page-item">
-                  <a class="page-link d-flex align-items-center px-2" href="javascript:void(0)" aria-label="Next">
-                    <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-                    </svg>
-                  </a>
-                </li>
-              </ul>
-            </nav>
+            <!-- 페이지내이션 -->
+			<nav aria-label="Page navigation borderless example">
+				<ul class="pagination pagination-borderless justify-content-end" id="clientPageNation">
+					<!-- 페이지내이션이 javascript 코드에 의해 그려지는 위치 -->
+				</ul>
+			</nav>
           </div>
         </div>
 
@@ -194,6 +184,11 @@
 	<%@include file="/WEB-INF/views/common/bottom.jsp" %>
     <!-- /Main footer -->
 <script type="text/javascript">
+/* 1,000 숫자표기 함수 */
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 /* 발주상세 조회 */
 $('.tr').on('click',function(){
 	$('#detailList *').remove();
@@ -230,11 +225,11 @@ $('.tr').on('click',function(){
                 + data[i].ITEM_Name
                 + '</td>'
                 + '<td>'
-                + data[i].IN_PRICE
-                + '</td>'
+                + numberWithCommas(data[i].IN_PRICE)
+                + '원</td>'
                 + '<td>'
                 + data[i].AMOUNT
-                + '</td>'
+                + '개</td>'
                 + '<td>'
                 + data[i].WARE_Name
                 + '</td>'

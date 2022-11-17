@@ -18,6 +18,6 @@ public class Purchase_sheetVO {
 	//담당자 이름
 	private String member_name;
 	//품목 이름
-	private String order_name;
+	private String item_name;
 	
 }
