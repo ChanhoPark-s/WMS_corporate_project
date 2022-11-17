@@ -11,8 +11,8 @@
 <div class="card">
 	<div class="card-body">
         <div class="mb-3">
-          <label for="userFullname" class="form-label">담당자</label>
-          <input type="text" name="name" class="form-control" id="userFullname" required autofocus>
+          <label for="member_no" class="form-label">담당자</label>
+          <input type="text" name="name" class="form-control" id="member_no" required autofocus>
           <div class="invalid-feedback">User full name is required.</div>
         </div>
 	</div>
@@ -28,7 +28,7 @@
               </svg>
               품목추가
             </button>
-            <button class="btn btn-primary d-inline-flex align-items-center gap-1">
+            <button class="btn btn-primary d-inline-flex align-items-center gap-1" onclick="saveData()">
               저장
             </button>
           </div>
@@ -61,18 +61,15 @@
 	              <table class="table item-table">
 	                <thead class="table-dark">
 	                  <tr>
-	                    <th scope="col">품목번호</th>
-	                    <th scope="col">품목코드</th>
-	                    <th scope="col">품목이름</th>
+	                    <th scope="col" class="text-center">번호</th>
+	                    <th scope="col" class="text-center">코드</th>
+	                    <th scope="col" class="text-center">이름</th>
+	                    <th scope="col" class="text-center">선택</th>
 	                  </tr>
 	                </thead>
 	                <tbody></tbody>
 	              </table>
 	            </div>
-              </div>
-              <div class="modal-footer border-0">
-                <button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
-                <button type="submit" form="taskForm" class="btn btn-primary px-5">저장</button>
               </div>
             </div>
           </div>
@@ -87,7 +84,6 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-              	<form id="warehouseForm">
               	<div class="mb-3">
                     <label for="warehouse" class="form-label">창고</label>
                     <input type="text" name="warehouse" class="form-control" id="warehouse" readonly required>
@@ -95,41 +91,40 @@
                   </div>
                   <div class="mb-3">
                     <label for="area" class="form-label">구역</label>
-                    <input type="text" name="area" class="form-control" id="area">
+                    <input type="text" name="area" class="form-control" id="area" readonly>
                     <div class="invalid-feedback">User id is required.</div>
                   </div>
                   <div class="mb-3">
                     <label for="rack" class="form-label">렉</label>
-                    <input type="text" name="rack" class="form-control" id="rack">
+                    <input type="text" name="rack" class="form-control" id="rack" readonly>
                     <div class="invalid-feedback">User password is required.</div>
                   </div>
                   <div class="mb-3">
                     <label for="cell" class="form-label">셀</label>
-                    <input type="text" name="cell" class="form-control" id="cell" required>
+                    <input type="text" name="cell" class="form-control" id="cell" readonly>
                     <div class="invalid-feedback">User password is required.</div>
                   </div>
 	             	<div class="table-responsive">
 		              <table class="table warehouse-table">
 		                <thead class="table-dark">
 		                  <tr>
-		                    <th scope="col">번호</th>
-		                    <th scope="col">코드</th>
-		                    <th scope="col">이름</th>
+		                    <th scope="col" class="text-center">번호</th>
+		                    <th scope="col" class="text-center">코드</th>
+		                    <th scope="col" class="text-center">이름</th>
+		                    <th scope="col" class="text-center">선택</th>
 		                  </tr>
 		                </thead>
 		                <tbody class="modal-tbody"></tbody>
 		              </table>
 		            </div>
-		           </form>
               </div>
               <div class="modal-footer border-0">
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
-                <button type="submit" form="warehouseForm" class="btn btn-primary px-5">저장</button>
+                <button type="button" form="warehouseForm" data-bs-dismiss="modal" class="btn btn-primary px-5 saveWareHouse" >저장</button>
               </div>
             </div>
           </div>
         </div>
-
 <!-- bottom.jsp -->
 <%@include file="/WEB-INF/views/common/bottom.jsp" %>
 
@@ -140,7 +135,15 @@
 				tagname: 'input',
 				type: 'text',
 				class:'form-control',
-		}
+		},
+		wt = document.querySelector('.warehouse-table tbody'),
+		warehouse = document.querySelector('#warehouse'),
+		area = document.querySelector('#area'),
+		rack = document.querySelector('#rack'),
+		cell = document.querySelector('#cell'),
+		saveWareHouse = document.querySelector('.saveWareHouse'),
+		arr = [warehouse, area, rack, cell];
+		
 		function Plguin(table, columns) {
 			this.table = table;
 			this.columns = columns;
@@ -156,9 +159,6 @@
 			// row 생성
 			this.itemInput(this);
 		}
-		Plugin.prototype.itemDelete = function (t) {
-			console.log(t);
-		}
 		Plguin.prototype.itemInput = function () {
 			const body = document.querySelector('.' + this.table + ' tbody');
 			const tr = makeElement('tr');
@@ -172,6 +172,7 @@
 				tr.append(td);
 				
 				if(column == '품목') addItemEventListener(input);
+				if(column == '창고') addWareHouseEventListener(input);
 			});
 			let delRow = makeElement('td');
 			delRow.innerHTML =  '<button class="btn btn-light d-flex text-danger delete" onclick=item.itemDelete(this) >'
@@ -190,6 +191,7 @@
 		Plguin.prototype.getColumns = function() {
 			return this.columns;
 		}
+		
 		function makeTheadTbody() {
 			const t = document.querySelector('.' + this.table),
 				head = makeElement('thead'),
@@ -207,6 +209,134 @@
 			t.append(head);
 			t.append(body);
 		}
+		function addItemEventListener(elem) {
+			elem.addEventListener('click', async (event) => {
+				
+				const	
+					target = event.target,
+					body = document.querySelector('.item-table tbody'),
+					url = 'http://localhost:8080/warehouse/init/item/get',
+					attr = {method: 'post'};
+						
+				body.innerHTML = "";
+				
+				// fetch를 이용해 품목리스트 가져옴
+				getJsonData(url, attr, (data) => {
+					data.forEach((value, index) => {
+						let {no, code, name} = value;
+						
+						let tr = document.createElement('tr');
+						
+						let td1 = document.createElement('td');
+						td1.textContent = no;
+						td1.classList.add('text-center');
+						tr.append(td1);
+						
+						let td2 = document.createElement('td');
+						td2.textContent = code;
+						td2.classList.add('text-center');
+						tr.append(td2);
+						
+						let td3 = document.createElement('td');
+						td3.textContent = name;
+						td3.classList.add('text-center');
+						tr.append(td3);
+						
+						let td4 = document.createElement('td');
+						td4.innerHTML = '<button type="button" class="btn btn-primary btn-sm">선택</button>';
+						td4.setAttribute('data-bs-dismiss', 'modal');
+						td4.classList.add('text-center');
+						tr.append(td4);
+						
+						td4.addEventListener('click', event => {
+							elem.value = name;
+							elem.setAttribute('data-value', no);
+						});
+						
+						body.append(tr);
+					});
+				
+				});
+			})
+		}
+		
+		let elemEventTarget;
+		function addWareHouseEventListener(elem) {
+			elem.addEventListener('click', elemEvent => {
+				// 클로저 땜시 분리했음
+				elemEventTarget = elemEvent.target;
+			})
+		}
+		saveWareHouse.addEventListener('click', btnEvent => {
+			const tr = elemEventTarget.closest('tr');
+			const tds = Array.from(tr.children).slice(2, 6);
+			btnEvent.target.setAttribute('data-bs-dismiss', 'modal');
+			tds.forEach((value, index) => {
+				value.querySelector('input').value = arr[index].value;
+				value.querySelector('input').setAttribute('data-value', arr[index].dataset.no);
+			});			
+		});
+		warehouse.addEventListener('click', event => {
+			addItemToTable(event);
+		});
+		area.addEventListener('click', event => {
+			addItemToTable(event, warehouse);
+		});
+		rack.addEventListener('click', event => {
+			addItemToTable(event, area);
+		});
+		
+		cell.addEventListener('click', event => {
+			addItemToTable(event, rack);
+		});
+		function addItemToTable(event, prev) {
+			wt.innerHTML = '';
+			const target = event.target,
+				no = prev && prev.dataset.no || '';
+				name = target.name,
+				url = 'http://localhost:8080/warehouse/init/' + name + '/get/' + no,
+				attr = {headers: {'Content-Type' : 'application/json; charset=utf-8'}};
+				
+			getJsonData(url, attr, (data) => {
+				data.forEach( data => {
+					const tr = makeElement('tr');
+					
+					const no = makeElement('td');
+					no.textContent = data.no;
+					no.classList.add('text-center');
+					tr.append(no);
+					
+					const code = makeElement('td');
+					code.textContent = data.code;
+					code.classList.add('text-center');
+					tr.append(code);
+					
+					const name = makeElement('td');
+					name.textContent = data.name;
+					name .classList.add('text-center');
+					tr.append(name);
+					
+					const btntd = makeElement('td');
+					btntd.classList.add('text-center');
+					const btn = makeElement('button', {class: 'btn btn-primary btn-sm'});
+					btn.textContent = '선택';
+					btntd.append(btn);
+					tr.append(btntd);
+					wt.append(tr);
+					
+					btn.addEventListener('click', event => {
+						const ttr = event.target.closest('tr');
+						target.value = ttr.children[2].textContent;
+						target.setAttribute('data-no', ttr.children[0].textContent);
+					});
+				});
+			});
+		}
+		async function getJsonData(url, attr, callback) {
+			const data = await fetch(url, attr);
+			const json = await data.json();
+			callback(json);
+		};
 		function makeElement(elem, attr, event) {
 			const e = document.createElement(elem);
 			attr && Object.keys(attr).forEach((key, index) => {
@@ -224,98 +354,12 @@
 			event && e.addEventListener(event.type, event.event);
 			return e;
 		}
-		// 품목 리스트 fetch
-		async function getItemList() {
-			const data = await fetch('http://localhost:8080/warehouse/init/geti', {method: 'post'});
-			const json = await data.json();
-			return json;
-		};
-		function addItemEventListener(elem) {
-			elem.addEventListener('click', async (event) => {
-				
-				const 	target = event.target,
-						body = document.querySelector('.item-table tbody');
-				body.innerHTML = "";
-				
-				// fetch를 이용해 품목리스트 가져옴
-				const items = await getItemList();
-				
-				items.forEach((value, index) => {
-					let {no, code, name} = value;
-					
-					let tr = document.createElement('tr');
-					tr.setAttribute('data-bs-dismiss', 'modal');
-					
-					let td1 = document.createElement('td');
-					td1.textContent = no;
-					tr.append(td1);
-					let td2 = document.createElement('td');
-					td2.textContent = code;
-					tr.append(td2);
-					let td3 = document.createElement('td');
-					td3.textContent = name;
-					tr.append(td3);
-					
-					body.append(tr);
-					tr.addEventListener('click', event => {
-						elem.value = name;
-						elem.setAttribute('data-value', code);
-					});
-				});
-			})
-		}
-		return Plguin;
-	})();
-	// 창고
-	(function() {
-		const arr = Array(3),
-			wt = document.querySelector('.warehouse-table tbody'),
-			warehouse = document.querySelector('#warehouse'),
-			area = document.querySelector('#area');
 		
-		warehouse.addEventListener('click', async (event) => {
-			wt.innerHTML = "";
-			const target = event.target;
-			const data = await fetch('http://localhost:8080/warehouse/init/getw');
-			const json = await data.json();
-			addItemToTable(json, target => {
-				target.addEventListener('click', event => {
-					const ttr = event.target.closest('tr');
-					warehouse.value = ttr.children[2].textContent;
-					warehouse.setAttribute('data-no', ttr.children[0].textContent);
-				})
-			});
-		});
-		area.addEventListener('click', async (event) => {
-			if(!warehouse.value){
-				alert('창고를 입력하세요');
-				return;
-			}
-			wt.innerHTML = "";
-			const target = event.target;
-			const no = warehouse.dataset.no;
-			const data = await fetch('http://localhost:8080/warehouse/init/geta/' + no, {headers: {'Content-Type' : 'application/json; charset=utf-8'}});
-			const json = await data.json();
-			addItemToTable(json, target => {
-				target.addEventListener('click', event => {
-					const ttr = event.target.closest('tr');
-					warehouse.value = ttr.children[2].textContent;
-					warehouse.setAttribute('data-no', ttr.children[0].textContent);
-				})
-			});
-		});
-		function addItemToTable(item, event) {
-			item.forEach(value => {
-				const tr = document.createElement('tr');
-				const td = '<td>' + value.no +'</td><td>'+ value.code +'</td><td>'+ value.name +'</td>';
-				tr.innerHTML = td;
-				wt.append(tr);
-				event(tr)
-			})
-		}
+		return Plguin;
+		
 	})();
 	const item = new Item('table', [
-		{column: '품목', name: 'item_code', class:'form-control insert', 'data-bs-toggle':"modal", 'data-bs-target':"#addUserModal", autocomplete:"off", readonly: "readonly"},
+		{column: '품목', name: 'item_no', class:'form-control insert', 'data-bs-toggle':"modal", 'data-bs-target':"#addUserModal", autocomplete:"off", readonly: "readonly"},
 		{column: '수량', name: 'qty', class:'form-control'},
 		{column: '창고', name: 'ware_code', class:'form-control', 'data-bs-toggle':"modal", 'data-bs-target':"#searchInvenModal", readonly: "readonly"},
 		{column: '구역', name: 'area_code', class:'form-control', readonly: "readonly"},
@@ -326,14 +370,16 @@
 	function saveData() {
 		const trs = Array.from(document.querySelectorAll('.table-item tr')).slice(1),
 		columns = item.getColumns(),
+		member_no = document.querySelector('#member_no').value;
 		lists = [];
 		trs.forEach((value, index) => {
 			let obj = {};
 			Array.from(value.querySelectorAll('.form-control')).forEach((value, index) => {
-				obj[columns[index].name] = value.dataset.value;
+				obj[columns[index].name] = value.name === 'qty'? value.value : value.dataset.value;
 			});
 			lists.push(obj);
 		});
-		fetch('http://localhost:8080/warehouse/init/save', {method: 'post', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(lists)});
+		fetch('http://localhost:8080/warehouse/init/save', {method: 'post', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({member_no: member_no, detail: lists})});
+		window.location.reload();
 	}
 </script>
