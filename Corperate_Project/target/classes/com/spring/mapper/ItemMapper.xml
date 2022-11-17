@@ -33,17 +33,18 @@
 	</update>
 	
 	<select id="getTotalCount" resultType="int">
-  	select count(*) from client c,item i where i.client_no = c.no
-  	<if test="whatColumn == 'code'">
-  		and i.code like '%' || #{keyword} || '%'  
-  	</if>
-  	<if test="whatColumn == 'client_name'">
-  		and c.code like '%' || #{keyword} || '%'
-  	</if>
-  	<if test="whatColumn == 'name'">
-  		and i.name like '%' || #{keyword} || '%'
-  	</if>
-  </select>
+  		select count(*) from client c,item i where i.client_no = c.no
+	  	<if test="whatColumn == 'code'">
+  			and i.code like '%' || #{keyword} || '%'  
+	  	</if>
+	  	<if test="whatColumn == 'client_name'">
+  			and c.code like '%' || #{keyword} || '%'
+	  	</if>
+  		<if test="whatColumn == 'name'">
+  			and i.name like '%' || #{keyword} || '%'
+	  	</if>
+  	</select>
+  	
  	<select id="code_check" parameterType="com.spring.domain.ItemVO" resultType="int">
 		select count(code) from item where code=#{code}
 	</select>

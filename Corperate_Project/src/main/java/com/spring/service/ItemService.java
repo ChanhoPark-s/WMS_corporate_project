@@ -2,9 +2,10 @@ package com.spring.service;
 
 import java.util.List;
 
-import com.spring.domain.ClientVO;
 import com.spring.domain.ItemVO;
 import com.spring.domain.PageDTO;
+import com.spring.domain.SearchVO;
+import com.spring.paging.Client_Paging;
 import com.spring.paging.Criteria;
 
 public interface ItemService {

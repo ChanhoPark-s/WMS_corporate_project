@@ -10,17 +10,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.domain.ItemVO;
-<<<<<<< HEAD
 import com.spring.domain.PageDTO;
-=======
 import com.spring.domain.SearchVO;
->>>>>>> branch 'main' of https://github.com/ChanhoPark-s/WMS_corporate_project.git
 import com.spring.mapper.ItemMapper;
-<<<<<<< HEAD
 import com.spring.paging.Criteria;
-=======
 import com.spring.paging.Client_Paging;
->>>>>>> branch 'main' of https://github.com/ChanhoPark-s/WMS_corporate_project.git
 
 @Service
 public class ItemServiceImpl implements ItemService{
@@ -96,17 +90,16 @@ public class ItemServiceImpl implements ItemService{
 		System.out.println("살려줘");
 		mapper.update(vo);
 	}
-<<<<<<< HEAD
-
+	
 	@Override
 	public PageDTO<ItemVO> getListPage(Criteria cri) {
 		int totalCount = mapper.getCountAll(cri);
-		List<ItemVO> list = mapper.getListWithPaging(cri); 
+		List<ItemVO> list = mapper.getListWithPaging(cri);
 		PageDTO<ItemVO> pageDTO = new PageDTO<ItemVO>(totalCount, list, cri);
-		
+	
 		return pageDTO;
 	}
-=======
+
 	@Override
 	public int getTotalCount(SearchVO searchvo) { 
 		return mapper.getTotalCount(searchvo);
@@ -115,8 +108,4 @@ public class ItemServiceImpl implements ItemService{
 	public int code_check(String code) { 
 		return mapper.code_check(code);
 	}
-
-	
-
->>>>>>> branch 'main' of https://github.com/ChanhoPark-s/WMS_corporate_project.git
 }

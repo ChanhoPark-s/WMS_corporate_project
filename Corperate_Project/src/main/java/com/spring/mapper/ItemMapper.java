@@ -5,12 +5,9 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.spring.domain.ItemVO;
-<<<<<<< HEAD
 import com.spring.paging.Criteria;
-=======
 import com.spring.domain.SearchVO;
 import com.spring.paging.Client_Paging;
->>>>>>> branch 'main' of https://github.com/ChanhoPark-s/WMS_corporate_project.git
 
 //이 인터페이스는 root-context.xml에서 mybatis-spring 으로 스캔해줌
 public interface ItemMapper {
