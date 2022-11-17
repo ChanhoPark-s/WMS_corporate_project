@@ -17,8 +17,6 @@ import com.spring.service.Input_WareHouseService;
 @Controller
 @RequestMapping("/input_warehouse/*")
 public class Input_WareHouseController {
-	
-	private static final Logger logger = LoggerFactory.getLogger(Input_WareHouseController.class);
 
 	@Autowired
 	private Input_WareHouseService service;
@@ -27,8 +25,8 @@ public class Input_WareHouseController {
 	@GetMapping(value="/list")
 	public void list(Model model) {
 		List<Input_WareHouseVO> lists = service.list();
+		
 		model.addAttribute("lists", lists);
-		logger.info("/input_warehouse/list.jsp 반환");
 	}
 	
 
