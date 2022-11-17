@@ -32,7 +32,7 @@ public class ItemServiceImpl implements ItemService{
 	@Override
 	public void insert(ItemVO vo) throws Exception {
 		
-		String uploadPath = servletContext.getRealPath("/resources/assets/itemimg");
+		String uploadPath = servletContext.getRealPath("/resources/assets/img/item/");
 		System.out.println(uploadPath);
 		File file = new File(uploadPath);
 		if(!file.exists()) {
@@ -69,7 +69,7 @@ public class ItemServiceImpl implements ItemService{
 	@Override
 	public void update(ItemVO vo) throws Exception {
 		
-		String uploadPath = servletContext.getRealPath("/resources/assets/itemimg");
+		String uploadPath = servletContext.getRealPath("/resources/assets/img/item/");
 		System.out.println(uploadPath);
 		File file = new File(uploadPath);
 		if(!file.exists()) {

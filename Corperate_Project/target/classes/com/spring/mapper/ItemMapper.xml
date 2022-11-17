@@ -6,11 +6,11 @@
 <mapper namespace="com.spring.mapper.ItemMapper">
 
 	<select id="selectAll" resultType="com.spring.domain.ItemVO">
-		select item.no, item.code, client.code as client_code, item.name, item.in_price, item.out_price, item.image
+		select item.no, item.code, client.name as client_name, item.name, item.in_price, item.out_price, item.image
 		from item, client
 		where item.client_no = client.no
 		<if test="whatColumn == 'code'"> and item.code like '%' || #{keyword} || '%' </if>
-		<if test="whatColumn =='client_code'"> and client.code like '%' || #{keyword} || '%' </if>
+		<if test="whatColumn =='client_name'"> and client.name like '%' || #{keyword} || '%' </if>
 		<if test="whatColumn =='name'"> and item.name like '%' || #{keyword} || '%' </if>
 		order by no  desc OFFSET #{beginRow} ROWS FETCH NEXT #{pageSize} ROWS ONLY
 	</select>
@@ -37,7 +37,7 @@
   	<if test="whatColumn == 'code'">
   		and i.code like '%' || #{keyword} || '%'  
   	</if>
-  	<if test="whatColumn == 'client_code'">
+  	<if test="whatColumn == 'client_name'">
   		and c.code like '%' || #{keyword} || '%'
   	</if>
   	<if test="whatColumn == 'name'">
