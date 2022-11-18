@@ -6,6 +6,25 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
+
+<style>
+.box {
+    width: 50px;
+    height: 50px; 
+    border-radius: 70%;
+    z-index:1;
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    cursor: pointer;
+}
+.profile {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+</style>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,6 +42,9 @@
   <link rel="stylesheet" href="/resources/assets/css/style.css">
   <link rel="stylesheet" href="/resources/assets/css/sidebar-dark.css" id="sidebar-theme"> <!-- available themes: dark, light, cyan, green, indigo, red -->
   
+  <!-- Fontawesome icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <!-- jQuery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
@@ -159,6 +181,18 @@
                 <li class="nav-item"><a class="nav-link" href="/sell/origin/list">출고정보</a></li>
               </ul>
             </div>
+          <li class="nav-item">
+            <a class="nav-link px-2 d-flex align-items-center gap-3 dropdown-toggle" href="#out-process-collapse" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="dashboard-collapse">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="24px" height="30px" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.3" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              <span class="me-auto">채팅</span>
+            </a>
+            <div class="ms-5 collapse" id="out-process-collapse" data-bs-parent="#mainMenu">
+              <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="/chat">채팅</a></li>
+              </ul>
+            </div>
           </li>
         </ul>
       </div>
@@ -287,8 +321,11 @@
         </nav>
       </div>
       <!-- /Main header -->
+			<div class="box" style="background:#6610f2;">
+				<img alt="chatting" src="/resources/assets/img/chat.png">
+			</div>
 
-      <!-- Main body -->
+			<!-- Main body -->
       <div id="main-body">
 
 
