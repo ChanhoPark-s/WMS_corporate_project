@@ -12,7 +12,7 @@ select
 from
     warehouse_detail wd, item i
 where
-    wd.item_no = i.no
+    wd.item_no = i.no(+)
     and wd.ware_no = #{ware_no}
 </select>
 <select id="selectStockByAreaNo" resultType="com.spring.domain.WareHouseDetailVO" parameterType="com.spring.domain.WareHouseDetailVO">
@@ -23,7 +23,7 @@ select
 from
     warehouse_detail wd, item i
 where
-    wd.item_no = i.no
+    wd.item_no = i.no(+)
     and wd.ware_no = #{ware_no}
     and wd.area_no = #{area_no}
 </select>
@@ -35,7 +35,7 @@ select
 from
     warehouse_detail wd, item i
 where
-    wd.item_no = i.no
+    wd.item_no = i.no(+)
 	and wd.ware_no = #{ware_no}
     and wd.area_no = #{area_no}
     and wd.rack_no = #{rack_no}
@@ -48,10 +48,62 @@ select
 from
     warehouse_detail wd, item i
 where
-    wd.item_no = i.no
+    wd.item_no = i.no(+)
 	and wd.ware_no = #{ware_no}
     and wd.area_no = #{area_no}
     and wd.rack_no = #{rack_no}
     and wd.cell_no = #{cell_no}
 </select>
+
+
+<!-- 이하 ajax API 관련 SQL -->
+	<select id="getListWithPaging" resultType="com.spring.domain.WareHouseDetailVO">
+		<![CDATA[
+		select
+		    no, lot_code, amount, ordered_amount, item_no,
+		    ware_no, area_no, rack_no, cell_no,
+		    i_no, code, name, in_price, out_price, image
+		from(
+		    select
+			    rownum rn, wd.no, wd.lot_code, wd.amount, wd.ordered_amount, wd.item_no,
+			    wd.ware_no, wd.area_no, wd.rack_no, wd.cell_no,
+			    i.no i_no, i.code, i.name, i.in_price, i.out_price, i.image
+		    from
+		    	warehouse_detail wd, item i
+		    where
+		    	wd.item_no = i.no(+)
+                and wd.ware_no = #{ware_no}
+                and rownum <= #{pageNum} * #{amount}
+		]]>    
+		
+<!-- 		    <if test="cri.whatColumn=='code' and cri.keyword != null"> and code like '%' ||  #{cri.keyword} || '%' </if> -->
+<!-- 		    <if test="cri.whatColumn=='name' and cri.keyword != null"> and name like '%' ||  #{cri.keyword} || '%' </if> -->
+<!-- 		    <if test="cri.whatColumn=='owner' and cri.keyword != null"> and owner like '%' ||  #{cri.keyword} || '%' </if> -->
+		    
+		<![CDATA[    
+			order by no
+			)
+		where rn > (#{pageNum} - 1) * #{amount}
+		]]>
+	</select>
+	
+	<select id="getCountAll" resultType="int">
+		select
+		    count(*)
+		from
+		    (select
+		        wd.no, wd.lot_code, wd.amount, wd.ordered_amount, wd.item_no,
+		        wd.ware_no, wd.area_no, wd.rack_no, wd.cell_no,
+		        i.no i_no, i.code, i.name, i.in_price, i.out_price, i.image
+		    from
+		        warehouse_detail wd, item i
+		    where
+		        wd.item_no = i.no(+)
+		        and wd.ware_no = #{ware_no})
+		where no>0
+		
+<!-- 		<if test="cri.whatColumn=='code' and cri.keyword != null"> and code like '%' ||  #{cri.keyword} || '%' </if> -->
+<!-- 		<if test="cri.whatColumn=='name' and cri.keyword != null"> and name like '%' ||  #{cri.keyword} || '%' </if>	 -->
+<!-- 		<if test="cri.whatColumn=='owner' and cri.keyword != null"> and owner like '%' ||  #{cri.keyword} || '%' </if> -->
+	</select>
 </mapper>
