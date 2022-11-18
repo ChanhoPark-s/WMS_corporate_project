@@ -82,7 +82,7 @@
 		from(
 		    select rownum rn, no, code, category, name, owner, tel, fax, bank, account, zipcode, address1, address2, email
 		    from client
-		    where rownum <= #{cri.pageNum} * #{cri.amount} and category='수주처'
+		    where rownum <= #{cri.pageNum} * #{cri.amount}
 		]]>    
 		
 		    <if test="cri.whatColumn=='code' and cri.keyword != null"> and code like '%' ||  #{cri.keyword} || '%' </if>
@@ -98,7 +98,7 @@
 	<select id="getCountAll" resultType="int">
 		select count(*)
 		from client
-		where no > 0 and category='수주처'
+		where no > 0
 		
 		<if test="cri.whatColumn=='code' and cri.keyword != null"> and code like '%' ||  #{cri.keyword} || '%' </if>
 		<if test="cri.whatColumn=='name' and cri.keyword != null"> and name like '%' ||  #{cri.keyword} || '%' </if>	

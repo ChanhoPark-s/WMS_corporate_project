@@ -60,7 +60,7 @@ public class Client_Paging {
 		//this.limit = pageSize ; // 한 페이지에 보여줄 레코드 갯수
 
 		this.totalCount = totalCount ; 
-
+		System.out.println("paging에서 totalCount"+totalCount);
 		this.totalPage = (int)Math.ceil((double)this.totalCount / this.pageSize) ;
 		// 5/2 double 돼서 2.5 ceil(올림) = 3 
 		

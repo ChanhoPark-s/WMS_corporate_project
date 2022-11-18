@@ -13,7 +13,15 @@
 
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
-
+	
+	<!-- 웹소켓 중간에 잡아주는 핸들러 -->
+	<websocket:handlers>
+		<websocket:mapping handler="echoHandler" path="/echo" />
+		<websocket:sockjs />
+	</websocket:handlers>
+	<beans:bean id="echoHandler" class="com.spring.EchoHandler"></beans:bean>
+	
+	
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/views/" />

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.spring.mapper.OrderSheetMapper">
+  
+	<insert id="insertMainSheet">
+		<!-- 인자로 넘겨받은 객체의 멤버변수인 no를 자동으로 시퀀스 값으로 세팅해줌 -->
+		<selectKey keyProperty="no" order="BEFORE" resultType="int">
+			select order_sheet_seq.nextval from dual
+		</selectKey>
+	
+		insert into order_sheet
+		values(#{no}, #{member_no}, #{client_no}, sysdate, #{out_day}, 0)
+	</insert>
+	
+	<insert id="insertDetailSheet">
+		insert into order_detail
+		values(order_detail_seq.nextval, #{mainSheetNo}, #{itemNo}, #{itemAmount})
+	</insert>
+	
+</mapper>
