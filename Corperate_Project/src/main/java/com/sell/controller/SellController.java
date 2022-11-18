@@ -1,6 +1,7 @@
 package com.sell.controller;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.spring.domain.SellDetailVO;
 import com.spring.domain.SellVO;
+import com.spring.service.SellDetailService;
 import com.spring.service.SellService;
 
 import lombok.Data;
@@ -28,11 +31,16 @@ public class SellController {
 	@Autowired(required = false)
 	private SellService service;
 	
+	@Autowired(required = false)
+	private SellDetailService sdservice;
+	
 	@GetMapping(value="/list")
 	public void list(Model model) {				
 		
 		List<SellVO> lists = service.read();
+		List<SellDetailVO> detaillists = sdservice.read();
 		model.addAttribute("lists", lists);
+		model.addAttribute("detaillists", detaillists);
 		System.out.println("리스트의 개수: " + lists.size());
 		logger.info("/sell/origin/list.jsp 반환");
 		
@@ -40,13 +48,27 @@ public class SellController {
 	}
 	
 	@PostMapping(value="/insert")
-	public String insertSold(Model model, SellVO sell) {
+	public String insertSold(Model model, SellVO sell, SellDetailVO selldetail) {
 	
-		System.out.println(sell.getMember_no());
+		
+//		System.out.println("어떻게 나올까.,:"+sell.getMember_no());
+//		
+//		ArrayList<Integer> memlists = sell.getMember_no();
+//		
+//		for(int i = 0;i<sell.getMember_no().size();i++) {
+//			System.out.println(memlists.get(i));
+//		}
+		
 		System.out.println(sell.getOrder_no());
 		System.out.println(sell.getDay());
-		service.get(sell);
-
+		service.insert(sell);
+		System.out.println("selldetail 판매상세번호:"+selldetail.getNo());
+		System.out.println("selldetail 품목번호:"+selldetail.getItem_no());
+		System.out.println("selldetail 품목수량:"+selldetail.getAmount());
+		System.out.println("selldetail 단가:"+selldetail.getSell_price());
+		System.out.println("selldetail 로트코드:"+selldetail.getLot_code());
+		System.out.println("selldetail 판매번호:"+selldetail.getSell_no());
+		sdservice.insert(selldetail);
 		
 		return "redirect:/sell/origin/list";
 	}

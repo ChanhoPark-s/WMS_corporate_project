@@ -16,7 +16,7 @@ public class SellServiceImpl implements SellService{
 	private SellMapper mapper;
 
 	@Override
-	public void get(SellVO sell) {
+	public void insert(SellVO sell) {
 		
 		System.out.println("SellServiceImpl member_no :"+sell.getMember_no());
 		System.out.println("SellServiceImpl order_no :"+sell.getOrder_no());
