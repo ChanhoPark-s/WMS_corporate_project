@@ -137,5 +137,9 @@
 		insert into Purchase_sheet_Detail
 		values(Purchase_sheet_Detail_SEQ.nextval, #{mainSheetNo}, #{orderDetailNo, jdbcType=INTEGER}, #{itemAmount}, 0, #{itemNo}, #{wareNo})
 	</insert>
+	
+	<update id="deleteDetail">
+		update Purchase_sheet_Detail set status=2 where Purchase_sheet_no=#{no} and status=0
+	</update>
 
 </mapper>

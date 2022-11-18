@@ -136,13 +136,12 @@ public class Purchase_sheetController {
 		return new Gson().toJson(psvo);
 	}
 	
-	@ResponseBody
-	@GetMapping("/delete")
-	public String delete(Purchase_sheetVO vo) {
-		System.out.println(vo.getNo());
-		int cnt = ps.delete(vo);
+	@GetMapping("/delete.ps")
+	public String delete(int no) {
+		System.out.println(no);
+		int cnt = ps.delete(no);
 		System.out.println("cnt: " + cnt);
-		cnt = ps.deleteDetail(vo.getNo());
+		cnt = ps.deleteDetail(no);
 		System.out.println("cnt: " + cnt);
 		return re;
 	}

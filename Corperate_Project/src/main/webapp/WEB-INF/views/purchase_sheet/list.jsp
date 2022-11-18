@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<head>
+<script src="https://kit.fontawesome.com/4d5e8e1a50.js" crossorigin="anonymous"></script>
+<script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+</head>
 <style>
 .btn_search{
   cursor : pointer;
@@ -29,8 +33,7 @@
           <!-- 상단바 start -->
             <div class="d-flex gap-1 mb-4 flex-wrap">
 			<div class="d-flex gap-1 me-auto flex-wrap" style="height: 20px;">
-				<button id="" onclick=""
-					class="btn btn-primary d-inline-flex align-items-center gap-1"
+				<button class="btn btn-primary d-inline-flex align-items-center gap-1"
 					data-bs-toggle="modal" data-bs-target="#addOrderSheetModal">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
 						fill="currentColor" aria-hidden="true">
@@ -39,6 +42,16 @@
 							clip-rule="evenodd" />
                   </svg>
 					발주 등록
+				</button>
+				<button class="btn btn-primary d-inline-flex align-items-center gap-1"
+					data-bs-toggle="modal" data-bs-target="#">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+						fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd"
+							d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+							clip-rule="evenodd" />
+                  </svg>
+					수주서 조회
 				</button>
 			</div>
 			
@@ -66,7 +79,7 @@
 					<input type="text"  name="keyword" id="keyword" class="form-control" value=<c:if test="${searchvo.keyword=='null' }">""</c:if><c:if test="${searchvo.keyword!='null' }">"${searchvo.keyword }"</c:if>  placeholder="입력" style="width: 200px; height: 38px;">
 				</td>
 				<td>
-					<i class="fa-solid fa-magnifying-glass btn_search" id="searchIcon" onclick="searchForm()">검색이미지</i>
+					<i class="fa-solid fa-magnifying-glass btn_search" id="searchIcon" onclick="searchForm()"></i>
 				</td>
 			</tr>	
 			</table>
@@ -78,11 +91,6 @@
               <table class="table align-middle">
                 <thead>
                   <tr>
-                    <th scope="col">
-                      <div>
-                        <input class="form-check-input" type="checkbox" value="">
-                      </div>
-                    </th>
                     <th scope="col">발주번호</th>
                     <th scope="col">거래처</th>
                     <th scope="col">담당자</th>
@@ -98,11 +106,6 @@
                 <!-- lists -->
                 <c:forEach var="list" items="${lists}">
                   <tr class="tr" data-no=" ${list.no }">
-                    <td>
-                      <div>
-                        <input class="form-check-input" type="checkbox" value="">
-                      </div>
-                    </td>
                     <td>
                           ${list.no }
                     </td>
@@ -136,13 +139,8 @@
                     </td>
                     <td>
                       <div class="btn-group btn-group-sm" role="group">
-                        <!-- 수정버튼 -->
-                        <button type="button" class="btn btn-light d-flex update" data-bs-toggle="modal" data-bs-target="#addUserModal" data-no="${list.no }">
-                        <svg width="17" height="17" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                          </svg></button>
                           <!-- 삭제버튼 -->
-                        <button type="button" class="btn btn-light d-flex text-danger" data-no="${list.no }"><svg width="17" height="17" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <button type="button" class="btn btn-light d-flex text-danger delete" data-no="${list.no }"><svg width="17" height="17" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                           </svg></button>
                       </div>
@@ -167,11 +165,6 @@
               <table class="table align-middle">
                 <thead>
                   <tr>
-                    <th scope="col">
-                      <div>
-                        <input class="form-check-input" type="checkbox" value="">
-                      </div>
-                    </th>
                     <th scope="col">품목코드</th>
                     <th scope="col">품목명</th>
                     <th scope="col">입고단가</th>
@@ -237,11 +230,6 @@ $('.tr').on('click',function(){
         		
 	        		str += '<tr>'
 	        		+ '<td>'
-	        		+ 	'<div>'
-	        		+ 		'<input class="form-check-input" type="checkbox" value="">'
-	        		+ 	'</div>'
-	        		+ '</td>'
-	        		+ '<td>'
 	        		+ data[i].ITEM_Code
 	                + '</td>'
 	                + '<td>'
@@ -279,4 +267,10 @@ $('.tr').on('click',function(){
 function searchForm(){
 	search.submit();
 }
+
+/* 삭제 */
+$('.delete').click(function(){
+	location.href='delete.ps?no='+$(this).data('no');
+	
+})
 </script> 
