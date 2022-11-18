@@ -1,28 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
-<!-- JS --> 
-<script type="text/javascript">
-$(document).ready(function(){
-	$(".insert,.update").on("click",function(){
-		$(".form-control,.form-select,.cancel").val('');
-	});
-	
-	$(".insert").on("click",function(){
-		$(".modal-title").text("발주서등록");
-	});
-	
-	$(".update").on("click",function(){
-		$(".modal-title").text("발주서수정");
-	});
-});
-</script>
+
 <!-- Modal 코드 넣을 위치 -->
 <div class="modal fade" id="addOrderSheetModal" tabindex="-1">
 	<div class="modal-dialog modal-dialog-scrollable modal-lg">
 		<div class="modal-content">
 			<div class="modal-header border-0">
-				<h5 id="modal-title">수주서 등록</h5>
+				<h5 id="modal-title">발주서 등록</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
