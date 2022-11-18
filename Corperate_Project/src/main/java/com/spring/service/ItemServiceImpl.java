@@ -10,9 +10,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.domain.ItemVO;
+import com.spring.domain.MemberVO;
+import com.spring.domain.PageDTO;
 import com.spring.domain.SearchVO;
 import com.spring.mapper.ItemMapper;
 import com.spring.paging.Client_Paging;
+import com.spring.paging.Criteria;
 
 @Service
 public class ItemServiceImpl implements ItemService{
@@ -98,5 +101,15 @@ public class ItemServiceImpl implements ItemService{
 	}
 
 	
-
+	/**
+	 * ajax 전용 getListPage 메서드 by song
+	 */
+	@Override
+	public PageDTO<ItemVO> getListPage(Criteria cri) {
+		
+		int totalCount = mapper.getCountAll(cri);
+		List<ItemVO> list = mapper.getListWithPaging(cri); 
+		
+		return new PageDTO<ItemVO>(totalCount, list, cri);
+	}
 }

@@ -48,4 +48,29 @@
 		select count(code) from item where code=#{code}
 	</select>
 	
+	<!-- 
+		ajax 전용 페이징 품목검색
+	 -->
+	<select id="getCountAll" resultType="int">
+		select count(*) from item
+		where 1=1
+	  	<if test="cri.whatColumn == 'code'">
+	  		and code like '%' || #{cri.keyword} || '%'  
+	  	</if>
+		<if test="cri.whatColumn == 'name'">
+			and name like '%' || #{cri.keyword} || '%'  
+		</if>
+	</select>
+	<select id="getListWithPaging" resultType="com.spring.domain.ItemVO">
+		select * from item
+		where 1=1
+	  	<if test="cri.whatColumn == 'code'">
+	  		and code like '%' || #{cri.keyword} || '%'  
+	  	</if>
+		<if test="cri.whatColumn == 'name'">
+			and name like '%' || #{cri.keyword} || '%'  
+		</if>
+		<![CDATA[order by no desc OFFSET (#{cri.pageNum} - 1) * #{cri.amount} ROWS FETCH NEXT #{cri.amount} ROWS ONLY]]>	
+	</select>
+	
 </mapper>

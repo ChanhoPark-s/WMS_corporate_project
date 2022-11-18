@@ -29,6 +29,9 @@
               품목추가
             </button>
             <button class="btn btn-primary d-inline-flex align-items-center gap-1" onclick="saveData()">
+              	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-save2" viewBox="0 0 16 16">
+				  <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v4.5h2a.5.5 0 0 1 .354.854l-2.5 2.5a.5.5 0 0 1-.708 0l-2.5-2.5A.5.5 0 0 1 5.5 6.5h2V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z"/>
+				</svg>
               저장
             </button>
           </div>
@@ -50,16 +53,18 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                <form class="needs-validation" novalidate id="taskForm" enctype="multipart/form-data" method="post" action="">
-                  <div class="mb-3">
-                    <label for="userFullname" class="form-label">검색</label>
-                    <input type="text" name="name" class="form-control" id="userFullname" required autofocus>
-                    <div class="invalid-feedback">User full name is required.</div>
-                  </div>
-                </form>
+                <div class="modal-footer border-0">
+					<form style="margin:auto;text-align:center;" onsubmit="return false;">
+						<div class="d-flex gap-1 me-auto flex-wrap">
+							<select id="searchWhatColumn" class="form-select" style="width: 140px;"><option value="" selected="">검색 선택</option><option value="dep">부서</option><option value="rank">직급</option><option value="name">이름</option></select>
+			              	<input type="text" id="searchKeyword" class="form-control" placeholder="입력" style="width: 200px; height: 38px;">
+							<button type="submit" class="btn btn-light" id="searchBtn"> 검색 </button>
+						</div>			
+					</form>	
+				</div>
                 <div class="table-responsive">
 	              <table class="table item-table">
-	                <thead class="table-dark">
+	                <thead class="table">
 	                  <tr>
 	                    <th scope="col" class="text-center">번호</th>
 	                    <th scope="col" class="text-center">코드</th>
@@ -70,6 +75,12 @@
 	                <tbody></tbody>
 	              </table>
 	            </div>
+            	<!-- 페이지내이션 -->
+				<nav aria-label="Page navigation borderless example">
+					<ul class="pagination pagination-borderless justify-content-end" id="clientPageNation">
+						<!-- 페이지내이션이 javascript 코드에 의해 그려지는 위치 -->
+					</ul>
+				</nav>
               </div>
             </div>
           </div>
@@ -106,7 +117,7 @@
                   </div>
 	             	<div class="table-responsive">
 		              <table class="table warehouse-table">
-		                <thead class="table-dark">
+		                <thead class="table">
 		                  <tr>
 		                    <th scope="col" class="text-center">번호</th>
 		                    <th scope="col" class="text-center">코드</th>
@@ -117,6 +128,12 @@
 		                <tbody class="modal-tbody"></tbody>
 		              </table>
 		            </div>
+	            	<!-- 페이지내이션 -->
+					<nav aria-label="Page navigation borderless example">
+						<ul class="pagination pagination-borderless justify-content-end" id="clientPageNation">
+							<!-- 페이지내이션이 javascript 코드에 의해 그려지는 위치 -->
+						</ul>
+					</nav>
               </div>
               <div class="modal-footer border-0">
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
@@ -143,6 +160,14 @@
 		cell = document.querySelector('#cell'),
 		saveWareHouse = document.querySelector('.saveWareHouse'),
 		arr = [warehouse, area, rack, cell];
+		
+		/* 페이징 전역변수 */
+		let pageNum = 1,
+			amount = 10,
+			searchWhatColumn = "",
+			searchKeyword = "";
+		
+		let target;
 		
 		function Plguin(table, columns) {
 			this.table = table;
@@ -209,55 +234,79 @@
 			t.append(head);
 			t.append(body);
 		}
+		
 		function addItemEventListener(elem) {
-			elem.addEventListener('click', async (event) => {
-				
-				const	
-					target = event.target,
-					body = document.querySelector('.item-table tbody'),
-					url = 'http://localhost:8080/warehouse/init/item/get',
-					attr = {method: 'post'};
-						
-				body.innerHTML = "";
-				
-				// fetch를 이용해 품목리스트 가져옴
-				getJsonData(url, attr, (data) => {
-					data.forEach((value, index) => {
-						let {no, code, name} = value;
-						
-						let tr = document.createElement('tr');
-						
-						let td1 = document.createElement('td');
-						td1.textContent = no;
-						td1.classList.add('text-center');
-						tr.append(td1);
-						
-						let td2 = document.createElement('td');
-						td2.textContent = code;
-						td2.classList.add('text-center');
-						tr.append(td2);
-						
-						let td3 = document.createElement('td');
-						td3.textContent = name;
-						td3.classList.add('text-center');
-						tr.append(td3);
-						
-						let td4 = document.createElement('td');
-						td4.innerHTML = '<button type="button" class="btn btn-primary btn-sm">선택</button>';
-						td4.setAttribute('data-bs-dismiss', 'modal');
-						td4.classList.add('text-center');
-						tr.append(td4);
-						
-						td4.addEventListener('click', event => {
-							elem.value = name;
-							elem.setAttribute('data-value', no);
-						});
-						
-						body.append(tr);
-					});
-				
-				});
+			elem.addEventListener('click', (event) => {
+				target = event.target;
+				drawItem();
 			})
+		}
+		
+		function getItemList(paging, callback) {
+			const	
+				target = event.target,
+				attr = {method: 'GET'};	
+			let
+				url = 'http://localhost:8080/item/pages/'+paging.pageNum + '/' + paging.amount;
+				
+			url += paging.whatColumn ? '' : '/' + paging.whatColumn;
+			url += paging.keyword ? '' : '/' + paging.keyword;
+			
+			// fetch를 이용해 품목리스트 가져옴
+			getJsonData(url, attr, (data) => {
+				callback(data);
+			});		
+		}
+		
+		function drawItem(paging) {
+			let defaultPaging = {
+					pageNum : 1,
+					amount : 10,
+					whatColumn : null,
+					keyword : null,
+			},
+			body = document.querySelector('.item-table tbody');
+			
+			const newPaging = {...defaultPaging, ...paging};
+			
+			getItemList(newPaging, data => {
+				body.innerHTML = "";
+				data.list.forEach((value, index) => {
+					let {no, code, name} = value;
+					
+					let tr = document.createElement('tr');
+					
+					let td1 = document.createElement('td');
+					td1.textContent = no;
+					td1.classList.add('text-center');
+					tr.append(td1);
+					
+					let td2 = document.createElement('td');
+					td2.textContent = code;
+					td2.classList.add('text-center');
+					tr.append(td2);
+					
+					let td3 = document.createElement('td');
+					td3.textContent = name;
+					td3.classList.add('text-center');
+					tr.append(td3);
+					
+					let td4 = document.createElement('td');
+					td4.innerHTML = '<button type="button" class="btn btn-primary btn-sm">선택</button>';
+					td4.setAttribute('data-bs-dismiss', 'modal');
+					td4.classList.add('text-center');
+					tr.append(td4);
+					
+					td4.addEventListener('click', event => {
+						target.value = name;
+						target.setAttribute('data-value', no);
+					});
+					
+					body.append(tr);
+				});
+				/* 페이지네이션 */
+				paintPageNation(data.totalCount, data.cri);
+			});
 		}
 		
 		let elemEventTarget;
@@ -354,6 +403,92 @@
 			event && e.addEventListener(event.type, event.event);
 			return e;
 		}
+		
+		/* 거래처 선택 모달의 페이지네이션을 그리는 함수 */
+		function paintPageNation(totalCount, cri){
+			
+			var str = ""; 
+			
+			var pageCount = 5; // 한번에 보여줄 페이지번호 개수 
+			
+			//pageNum에 따른 cri.amount 단위의 시작페이지, 끝페이지를 구함
+			var endPageNum = Math.ceil(pageNum / pageCount) * pageCount;// javascript 에서 pageNum / cri.amount 결과는 그냥 0.1 
+			var startPageNum = endPageNum - (pageCount-1);
+			var lastPageNum = Math.ceil(totalCount / cri.amount	);
+			
+			var isNeedFirst = pageNum > 5;
+			var isNeedPrev = (startPageNum != 1);
+			var isNeedNext = false;
+			var isNeedEnd = true; 
+			
+			//5단위의 endPageNum을 그대로 사용하면 안되는 경우 endPageNum을 다시구함 
+			if(lastPageNum <= endPageNum){
+				endPageNum = lastPageNum;
+				isNeedEnd = false;
+			}
+			
+			
+			if(endPageNum < lastPageNum){
+				isNeedNext = true;
+			}
+			
+			// str을 만듬.
+			str += "<ul class='pagination pull-right'>";
+			
+			if(isNeedFirst){
+				str += "<li class='page-item'><a class='page-link d-flex align-items-center px-2' href='" + 1 +"'>";
+				str += "<svg width='20' height='20' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor'>";
+				str += "<path xmlns='http://www.w3.org/2000/svg' id='svg_1' clip-rule='evenodd' d='m9.49241,5.293a1,1 0 0 1 0,1.414l-3.293,3.293l3.293,3.293a1,1 0 0 1 -1.414,1.414l-4,-4a1,1 0 0 1 0,-1.414l4,-4a1,1 0 0 1 1.414,0z' fill-rule='evenodd'/>";
+				str += "<path xmlns='http://www.w3.org/2000/svg' id='svg_2' clip-rule='evenodd' d='m15.48719,5.37988a1,1 0 0 1 0,1.414l-3.293,3.293l3.293,3.293a1,1 0 0 1 -1.414,1.414l-4,-4a1,1 0 0 1 0,-1.414l4,-4a1,1 0 0 1 1.414,0z' fill-rule='evenodd'/>";
+				str += "</svg>";
+				str += "</a></li>";
+			}
+			
+			//이전 버튼 출력여부에 따라 버튼 표시
+			if(isNeedPrev){
+				str += "<li class='page-item'><a class='page-link d-flex align-items-center px-2' href='" + (startPageNum-1) +"'>";
+				str += "<svg width='20' height='20' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor'>";
+				str += "<path fill-rule='evenodd' d='M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z' clip-rule='evenodd'></path>";
+				str += "</svg>";
+				str += "</a></li>"; 
+			}
+			
+			//가운데 숫자 출력
+			for(var i = startPageNum; i <= endPageNum; i++){
+				var active = (pageNum == i ? "active" : "");
+				str += "<li class='page-item " + active +"'>" + "<a class='page-link' href='"+ i +"'>" + i + "</a></li>";
+			}
+			
+			//다음 버튼 출력여부에 따라 버튼 표시
+			if(isNeedNext){
+				str += "<li class='page-item'><a class='page-link d-flex align-items-center px-2' href='" + (endPageNum + 1) +"'>";
+				str += "<svg width='20' height='20' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor'>";
+				str += "<path fill-rule='evenodd' d='M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z' clip-rule='evenodd'></path>";
+				str += "</svg>";
+				str += "</a></li>";
+			}
+			
+			if(isNeedEnd){
+				str += "<li class='page-item'><a class='page-link d-flex align-items-center px-2' href='" + lastPageNum +"'>";
+				str += "<svg width='20' height='20' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor'>";
+				str += "<path id='svg_1' clip-rule='evenodd' d='m4.29467,14.707a1,1 0 0 1 0,-1.414l3.293,-3.293l-3.293,-3.293a1,1 0 0 1 1.414,-1.414l4,4a1,1 0 0 1 0,1.414l-4,4a1,1 0 0 1 -1.414,0z' fill-rule='evenodd'/>";
+				str += "<path id='svg_2' clip-rule='evenodd' d='m10.68001,14.87357a1,1 0 0 1 0,-1.414l3.293,-3.293l-3.293,-3.293a1,1 0 0 1 1.414,-1.414l4,4a1,1 0 0 1 0,1.414l-4,4a1,1 0 0 1 -1.414,0z' fill-rule='evenodd'/>";
+				str += "</svg>";
+				str += "</a></li>";
+			}
+			
+			str += "</ul></div>";
+			
+			$("#clientPageNation").html(str);
+		}
+		
+		/* 거래처 선택 모달의 페이지네이션에서 번호 클릭시 다시 그리는 함수 */
+		$("#clientPageNation").on("click", "li a", function(e){
+			e.preventDefault(); // 번호를 눌러도 페이지가 이동하지 않도록 a태그 기능 무력화
+			pageNum = $(this).attr("href");
+			
+			drawItem({pageNum : pageNum});
+		});
 		
 		return Plguin;
 		

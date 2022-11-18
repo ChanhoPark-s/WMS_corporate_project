@@ -63,7 +63,6 @@ public class InitWareHouseController {
 	@GetMapping(value="/insert")
 	public void insert(Model model) {	
 		
-		System.out.println("Dsfdsfsdf");
 	}
 	
 	@ResponseBody
