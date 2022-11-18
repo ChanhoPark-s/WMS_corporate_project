@@ -162,7 +162,7 @@
 			</table>
 		 </form>
 		</div>
-		<div align="center">
+		<div style="margin-left: 800px;">
 			${pageInfo.pagingHtml}
 		</div>
 	</div>
@@ -269,9 +269,9 @@
 <script type="text/javascript">
 	/* 거래처 코드 중복확인  */
 	var codeCheck = false;
-	
 	var modal = $(".modal");
 	var modalForm = $("#modalForm");
+	var checkcode="";
 	$(function(){
 	/* 메뉴바가 클릭되게 하기 위해 */
 	document.getElementById('basicinfo').click();
@@ -280,9 +280,11 @@
 	
 	/* 거래처 등록 눌렀을 때  */
 	function insert_btn(){
+		codeCheck= false;
+		
 		clearModal();
 		/* readonly attr 삭제 */
-		deletereadonly();
+		readonly(false);
 		
 		modal.find("#modal-title").text("거래처 등록");
 		modal.find('#okaybtn').show();
@@ -298,7 +300,7 @@
 		modal.find("#modal-title").text("거래처 상세");
 		modal.find('#okaybtn').hide();
 		
-		addreadonly();
+		readonly(true);
 		
 		/* 수정으로 가게 만들기 위해 */
 		modalForm.attr("action", "/basicinfo/client/update");
@@ -348,8 +350,11 @@
 	
 	/* 수정버튼을 눌렀을때 */
 	function updateClient(item_no){
+		var code;
+		/* 코드 체크할 필요가 없음 변경되기 전까지는 */
+		codeCheck = true;
 		/* readonly attr 삭제 */
-		deletereadonly();
+		readonly(false);
 		
 		modal.find("#modal-title").text("거래처 수정");
 		modal.find('#okaybtn').show();
@@ -400,9 +405,14 @@
 				document.getElementById('address2').value=pu.address2;
 				document.getElementById('email').value=pu.email;
 				document.getElementById('business').value=pu.business;
+				checkcode = pu.code;
+				
 				}//success 
 		});//ajax
-	}
+		
+		// 수정 화면에서 코드부분 keyup 되면 codeCheck false 되게한다.
+		is_valid();
+	}//updateClient
 	
 	
 	/* 삭제 버튼 눌렀을 때  */
@@ -472,9 +482,20 @@
 	/* 유효성검사 */
 	
 	$(function(){
+			$('#name').keyup(function(){$('#name').attr("class","form-control is-valid")})
+			$('#code').keyup(function(){$('#code').attr("class","form-control is-valid")})
+			$('#owner').keyup(function(){$('#owner').attr("class","form-control is-valid")})
+			$('#tel').keyup(function(){$('#tel').attr("class","form-control is-valid")})
+			$('#fax').keyup(function(){$('#fax').attr("class","form-control is-valid")})
+			$('#account').keyup(function(){$('#account').attr("class","form-control is-valid")})
+			$('#address1').keyup(function(){$('#address1').attr("class","form-control is-valid")})
+			$('#address2').keyup(function(){$('#address2').attr("class","form-control is-valid")})
+			$('#email').keyup(function(){$('#email').attr("class","form-control is-valid")})
+			$('#business').keyup(function(){$('#business').attr("class","form-control is-valid")})
+		
 		$('#code').keyup(function(){
-			codeCheck = false;
-			$.ajax({// 다른 jsp 가서 중복체크할것
+		codeCheck = false;
+		$.ajax({// 다른 jsp 가서 중복체크할것
 				url : "/basicinfo/client/check ", // 일로가서 중복체크
 				type : "post",
 				data : {  // 보낼 데이터
@@ -482,26 +503,24 @@
 				},// 값을 담을 변수 내맘 userid= choi 가지고 jsp로 넘어감.
 				success : function(data){ // 사용가능 불가능 한 걸 data로 받는다. data:응답정보 url 갔다온 답
 					const i = JSON.parse(data);
-					if(i!=0){
-						$('#code').attr("class","form-control is-invalid");
-					}
-					else{
-						$('#code').attr("class","form-control is-valid");
-						codeCheck = true;
-					}
+						if($('#code').val()==checkcode){
+							$('#code').attr("class","form-control is-valid");
+							codeCheck = true;
+						}
+						else{
+							if(i!=0){
+								$('#code').attr("class","form-control is-invalid");
+								codeCheck = false;
+							}
+							else{
+								$('#code').attr("class","form-control is-valid");
+								codeCheck = true;
+								}
+						}
 				}//success 
 			})//ajax
 				
-			})//code keyup
-		$('#name').keyup(function(){$('#name').attr("class","form-control is-valid")})
-		$('#owner').keyup(function(){$('#owner').attr("class","form-control is-valid")})
-		$('#tel').keyup(function(){$('#tel').attr("class","form-control is-valid")})
-		$('#fax').keyup(function(){$('#fax').attr("class","form-control is-valid")})
-		$('#account').keyup(function(){$('#account').attr("class","form-control is-valid")})
-		$('#address1').keyup(function(){$('#address1').attr("class","form-control is-valid")})
-		$('#address2').keyup(function(){$('#address2').attr("class","form-control is-valid")})
-		$('#email').keyup(function(){$('#email').attr("class","form-control is-valid")})
-		$('#business').keyup(function(){$('#business').attr("class","form-control is-valid")})
+		})//code keyup
 			
 		$('#okaybtn').click(function(){
 			if($('#code').val()==''){
@@ -608,35 +627,27 @@
 		}
 
 	}
-	function addreadonly(){
-		$("#code" ).prop('readonly', true);
-		$('#category').attr('disabled', true);
-		$("#name" ).prop('readonly', true);
-		$("#owner" ).prop('readonly', true);
-		$("#tel" ).prop('readonly', true);
-		$("#fax" ).prop('readonly', true);
-		$('#bank').attr('disabled', true);
-		$("#account" ).prop('readonly', true);
-		$("#zipcode" ).prop('readonly', true);
-		$("#address2" ).prop('readonly', true);
-		$("#email" ).prop('readonly', true);
-		$("#business" ).prop('readonly', true);
-		$('#search_zipcode').hide();
+	function readonly(x){
+		$("#code" ).prop('readonly', x);
+		$('#category').attr('disabled', x);
+		$("#name" ).prop('readonly', x);
+		$("#owner" ).prop('readonly', x);
+		$("#tel" ).prop('readonly', x);
+		$("#fax" ).prop('readonly', x);
+		$('#bank').attr('disabled', x);
+		$("#account" ).prop('readonly', x);
+		$("#zipcode" ).prop('readonly', x);
+		$("#address2" ).prop('readonly', x);
+		$("#email" ).prop('readonly', x);
+		$("#business" ).prop('readonly', x);
+		if(x)
+			$('#search_zipcode').hide();
+		else
+			$('#search_zipcode').show();
 	}
-	function deletereadonly(){
-		$("#code" ).prop('readonly', false);
-		$('#category').attr('disabled', false);
-		$("#name" ).prop('readonly', false);
-		$("#owner" ).prop('readonly', false);
-		$("#tel" ).prop('readonly', false);
-		$("#fax" ).prop('readonly', false);
-		$('#bank').attr('disabled', false);
-		$("#account" ).prop('readonly', false);
-		$("#zipcode" ).prop('readonly', false);
-		$("#address2" ).prop('readonly', false);
-		$("#email" ).prop('readonly', false);
-		$("#business" ).prop('readonly', false);
-		$('#search_zipcode').show();
+	
+	function is_valid(){
+		$('.form-control').attr("class","form-control is-valid");
 	}
 	
 </script>

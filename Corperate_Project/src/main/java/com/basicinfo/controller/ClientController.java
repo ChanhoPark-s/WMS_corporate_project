@@ -29,13 +29,10 @@ import com.spring.service.ClientService;
 @RequestMapping("/basicinfo/client/*")
 public class ClientController {
 	
-	
 	@Autowired
 	private ClientService service;
 	
 	private final String redirect = "redirect:/basicinfo/client/list";
-	
-	
 	
 	// getAll
 	@GetMapping(value="/list", produces = "application/text;charset=utf8")
@@ -43,11 +40,11 @@ public class ClientController {
 		
 		// redirect로 객체받기
 		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
-		if(flashMap!=null)
-			searchvo =(SearchVO)flashMap.get("searchvo");
-		int totalCount = service.getTotalCount(searchvo);
+		if(flashMap!=null)searchvo =(SearchVO)flashMap.get("searchvo");
 		
+		int totalCount = service.getTotalCount(searchvo);
 		Client_Paging pageInfo = new Client_Paging(searchvo.getPageNumber(),"10",totalCount,"/basicinfo/client/list",searchvo.getWhatColumn(),searchvo.getKeyword(),0);
+		
 		
 		model.addAttribute("pageInfo",pageInfo);
 		model.addAttribute("totalCount",totalCount);
@@ -83,7 +80,6 @@ public class ClientController {
 		return redirect;
 	}
 	
-	
 	// check code
 	@ResponseBody
 	@PostMapping("/check")
@@ -104,6 +100,7 @@ public class ClientController {
 	public String select(@RequestParam("item_no")String item_no) {
 		return new Gson().toJson(service.selectOne(item_no));
 	}
+	
 	//select_one
 	@ResponseBody
 	@PostMapping(value="/selectByCode",produces = "application/text;charset=utf8")

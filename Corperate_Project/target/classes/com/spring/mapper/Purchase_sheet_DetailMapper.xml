@@ -8,17 +8,27 @@
 	<select id="selectAll" resultType="com.spring.domain.Purchase_sheet_DetailVO">
 		select * from Purchase_sheet_Detail order by no desc
 	</select>
+	
+	<select id="selectList" resultType="com.spring.domain.Purchase_sheet_DetailVO">
+		select pd.no, pd.PURCHASE_SHEET_NO, pd.ORDER_DETAIL_NO, pd.AMOUNT, pd.IN_PRICE, pd.STATUS, pd.ITEM_NO, pd.WARE_NO, i.name as ITEM_Name, w.name as WARE_Name , i.code as ITEM_Code
+		from Purchase_sheet_Detail pd, ITEM i, warehouse w
+		where pd.ITEM_NO = i.no(+)
+		and pd.WARE_NO = w.no(+)
+		and pd.purchase_sheet_no = #{purchase_sheet_no}
+	</select>
 
 	<insert id="insert">
-		insert into Purchase_sheet_Detail values(Purchase_sheet_SEQ.nextval, sysdate, #{delivery_date}, 0, #{order_no}, #{member_no}, #{client_no})
+		insert into Purchase_sheet_Detail values(Purchase_sheet_Detail_SEQ.nextval, #{purchase_sheet_no}, #{order_detail_no, jdbcType=INTEGER}, #{amount}, 0, #{item_no}, #{ware_no})
 	</insert>
 	
 	<update id="update">
 		update Purchase_sheet_Detail delivery_date=#{delivery_date}, member_no=#{member_no} where no=#{no}
 	</update>
 	
-	<update id="delete">
-		update Purchase_sheet_Detail set status=2 where no=#{no}
-	</update>
+	<delete id="delete">
+		update Purchase_sheet_Detail 
+		set STATUS = 2 
+		where Purchase_sheet_no = #{no} and STATUS = 0
+	</delete>
 
 </mapper>

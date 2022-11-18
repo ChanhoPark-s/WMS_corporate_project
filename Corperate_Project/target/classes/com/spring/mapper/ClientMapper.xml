@@ -74,4 +74,35 @@
 	<select id="selectByCode" resultType="com.spring.domain.ClientVO">
 		select * from client where code = #{value}
 	</select>
+	
+	<!-- 이하 ajax API 관련 SQL -->
+	<select id="getListWithPaging" resultType="com.spring.domain.ClientVO">
+		<![CDATA[
+		select no, code, category, name, owner, tel, fax, bank, account, zipcode, address1, address2, email
+		from(
+		    select rownum rn, no, code, category, name, owner, tel, fax, bank, account, zipcode, address1, address2, email
+		    from client
+		    where rownum <= #{cri.pageNum} * #{cri.amount}
+		]]>    
+		
+		    <if test="cri.whatColumn=='code' and cri.keyword != null"> and code like '%' ||  #{cri.keyword} || '%' </if>
+		    <if test="cri.whatColumn=='name' and cri.keyword != null"> and name like '%' ||  #{cri.keyword} || '%' </if>
+		    <if test="cri.whatColumn=='owner' and cri.keyword != null"> and owner like '%' ||  #{cri.keyword} || '%' </if>
+		    
+		<![CDATA[    
+			order by no
+		)where rn > (#{cri.pageNum} - 1) * #{cri.amount}
+		]]>
+	</select>
+	
+	<select id="getCountAll" resultType="int">
+		select count(*)
+		from client
+		where no > 0
+		
+		<if test="cri.whatColumn=='code' and cri.keyword != null"> and code like '%' ||  #{cri.keyword} || '%' </if>
+		<if test="cri.whatColumn=='name' and cri.keyword != null"> and name like '%' ||  #{cri.keyword} || '%' </if>	
+		<if test="cri.whatColumn=='owner' and cri.keyword != null"> and owner like '%' ||  #{cri.keyword} || '%' </if>
+	</select>
+	
 </mapper>
