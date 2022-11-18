@@ -10,23 +10,23 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spring.domain.ClientVO;
+import com.spring.domain.ItemVO;
 import com.spring.domain.PageDTO;
 import com.spring.paging.Criteria;
-import com.spring.service.ClientService;
+import com.spring.service.ItemService;
 
 @RestController
-@RequestMapping("/basicinfo/client/*")
-public class ClientRestController {
+@RequestMapping("/basicinfo/item/*")
+public class ItemRestController {
 	
 	@Autowired
-	private ClientService service;
+	private ItemService service;
 		
 	//testURL : http://localhost:8080/basicinfo/client/pages/1/10/owner/이재용
 	@GetMapping(
 			value={"/pages/{pageNum}/{amount}", "/pages/{pageNum}/{amount}/{whatColumn}", "/pages/{pageNum}/{amount}/{whatColumn}/{keyword}"}, 
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<PageDTO<ClientVO>> clientlist(
+	public ResponseEntity<PageDTO<ItemVO>> clientlist(
 			@PathVariable("pageNum") int pageNum,
 			@PathVariable("amount") int amount,
 			@PathVariable(value="whatColumn", required = false) String whatColumn,

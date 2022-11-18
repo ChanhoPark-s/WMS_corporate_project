@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import com.spring.domain.ClientVO;
 import com.spring.domain.PageDTO;
 import com.spring.domain.Purchase_sheetVO;
+import com.spring.domain.SearchVO;
 import com.spring.mapper.Purchase_sheetMapper;
+import com.spring.paging.Client_Paging;
 import com.spring.paging.Criteria;
 
 @Service
@@ -41,7 +43,19 @@ public class Purchase_sheetServiceImpl implements Purchase_sheetService{
 	public Purchase_sheetVO selectOne(String no) {
 		return mapper.selectOne(no);
 	}
+	
+	//main pageing
+	@Override
+	public int getTotalCount(SearchVO searchvo) {
+		return mapper.getTotalCount(searchvo);
+	}
 
+	@Override
+	public List<Purchase_sheetVO> GetAll(Client_Paging pageInfo) {
+		return mapper.GetAll(pageInfo);
+	}
+	
+	//ajax paging
 	@Override
 	public PageDTO<Purchase_sheetVO> getListPage(Criteria cri) {
 		
@@ -51,5 +65,7 @@ public class Purchase_sheetServiceImpl implements Purchase_sheetService{
 		
 		return pageDTO;
 	}
+	
+	
 
 }

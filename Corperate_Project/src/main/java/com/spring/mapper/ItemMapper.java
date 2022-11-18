@@ -2,7 +2,10 @@ package com.spring.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.spring.domain.ItemVO;
+import com.spring.paging.Criteria;
 import com.spring.domain.SearchVO;
 import com.spring.paging.Client_Paging;
 
@@ -16,4 +19,7 @@ public interface ItemMapper {
 	public int getTotalCount(SearchVO searchvo);
 	public int code_check(String code); 
 	
+	/* ajax paging */
+	public List<ItemVO> getListWithPaging(@Param("cri") Criteria cri);
+	public int getCountAll(@Param("cri") Criteria cri);
 }
