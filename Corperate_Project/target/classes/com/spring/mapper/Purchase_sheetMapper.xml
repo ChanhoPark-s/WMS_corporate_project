@@ -4,9 +4,67 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="com.spring.mapper.Purchase_sheetMapper">
+	<insert id="insertMainSheet">
+		<!-- 인자로 넘겨받은 객체의 멤버변수인 no를 자동으로 시퀀스 값으로 세팅해줌 -->
+		<selectKey keyProperty="no" order="BEFORE" resultType="int">
+			select Purchase_sheet_seq.nextval from dual
+		</selectKey>
+	
+		insert into Purchase_sheet
+		values(#{no}, sysdate, #{delivery_date}, 0, #{order_no}, #{member_no}, #{client_no})
+	</insert>
 
+	<!-- main paging -->
+	<select id="getTotalCount" resultType="int">
+		select count(*) 
+		FROM 
+		(select p.no , p.member_no, p.client_no, p.order_no, p.day, p.delivery_date, p.status, c.name as client_name, m.name as member_name , i.name as item_name
+				from Purchase_sheet p, Client c, Member m, purchase_sheet_detail psd, item i
+				where p.client_no = c.no(+)
+				and p.member_no = m.no(+)
+				and p.no = psd.purchase_sheet_no(+)
+				and psd.item_no = i.no(+)
+				order by p.no desc)
+		<if test="whatColumn=='client_name'">where client_name like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='member_name'">where member_name like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='item_name'">where item_name like '%' ||  #{keyword} || '%'</if>
+	</select>
+	
+	<!-- 발주서조회(페이징) -->
+	<select id="GetAll" resultType="com.spring.domain.Purchase_sheetVO">
+		SELECT no ,member_no, client_no, order_no, day, delivery_date, status, client_name, member_name , LISTAGG(item_name,',') WITHIN GROUP (ORDER BY item_name) AS item_name, LISTAGG(in_price,',') WITHIN GROUP (ORDER BY item_name) AS totalPrice
+		FROM 
+		(select p.no , p.member_no, p.client_no, p.order_no, p.day, p.delivery_date, p.status, c.name as client_name, m.name as member_name , i.name as item_name, i.in_price
+				from Purchase_sheet p, Client c, Member m, purchase_sheet_detail psd, item i
+				where p.client_no = c.no(+)
+				and p.member_no = m.no(+)
+				and p.no = psd.purchase_sheet_no(+)
+				and psd.item_no = i.no(+)
+				order by p.no desc)
+		<if test="whatColumn=='client_name'">where client_name like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='member_name'">where member_name like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='item_name'">where item_name like '%' ||  #{keyword} || '%'</if>
+		GROUP BY no,member_no, client_no, order_no, day, delivery_date, status, client_name, member_name
+		ORDER BY status,no desc OFFSET #{beginRow} ROWS FETCH NEXT #{pageSize} ROWS ONLY
+	</select>  
+	
+	<!-- 발주서조회(안씀) -->
 	<select id="selectAll" resultType="com.spring.domain.Purchase_sheetVO">
-		select * from Purchase_sheet order by no desc
+		SELECT no ,member_no, client_no, order_no, day, delivery_date, status, client_name, member_name , LISTAGG(item_name,',') WITHIN GROUP (ORDER BY item_name) AS item_name
+		FROM 
+		(select p.no , p.member_no, p.client_no, p.order_no, p.day, p.delivery_date, p.status, c.name as client_name, m.name as member_name , i.name as item_name
+				from Purchase_sheet p, Client c, Member m, purchase_sheet_detail psd, item i
+				where p.client_no = c.no(+)
+				and p.member_no = m.no(+)
+				and p.no = psd.purchase_sheet_no(+)
+				and psd.item_no = i.no(+)
+				order by p.no desc)
+		GROUP BY no,member_no, client_no, order_no, day, delivery_date, status, client_name, member_name
+		ORDER BY status,no desc
+	</select>
+	
+	<select id="selectOne" resultType="com.spring.domain.Purchase_sheetVO">
+		select * from Purchase_sheet where no = #{no}
 	</select>
 
 	<insert id="insert">
@@ -18,7 +76,66 @@
 	</update>
 	
 	<update id="delete">
-		update Purchase_sheet set status=2 where no=#{no}
+		update Purchase_sheet set status=2 where no=#{no} and status=0
 	</update>
+	
+	<!-- 이하 ajax API 관련 SQL -->
+	<select id="getListWithPaging" resultType="com.spring.domain.Purchase_sheetVO">
+		<![CDATA[
+		select * 
+		from(
+		    select rownum rn, no, id, pw, name, dep_name, rank_name, email, image, reg_date
+		    from (select m.no, m.id, m.pw, m.name, m.dep dep_name, r.name rank_name, m.email, m.image, m.reg_date
+		          from(
+		                select m.no, m.id, m.pw, m.name, d.name dep, m.rank_no, m.email, m.image, m.reg_date
+		                from member m inner join department d
+		                on m.dep_no = d.no
+		          ) m inner join rank r
+		    on m.rank_no = r.no)
+		where rownum <= #{cri.pageNum} * #{cri.amount}
+		]]>    
+		
+		    <if test="cri.whatColumn=='code' and cri.keyword != null"> and code like '%' ||  #{cri.keyword} || '%' </if>
+		    <if test="cri.whatColumn=='name' and cri.keyword != null"> and name like '%' ||  #{cri.keyword} || '%' </if>
+		    <if test="cri.whatColumn=='owner' and cri.keyword != null"> and owner like '%' ||  #{cri.keyword} || '%' </if>
+		    
+		<![CDATA[    
+			order by no
+		)where rn > (#{cri.pageNum} - 1) * #{cri.amount}
+		]]>
+	</select>
+	
+	<select id="getCountAll" resultType="int">
+		select count(*)
+		from(
+		    select rownum rn, no, id, pw, name, dep_name, rank_name, email, image, reg_date
+		    from (select m.no, m.id, m.pw, m.name, m.dep dep_name, r.name rank_name, m.email, m.image, m.reg_date
+		          from(
+		                select m.no, m.id, m.pw, m.name, d.name dep, m.rank_no, m.email, m.image, m.reg_date
+		                from member m inner join department d
+		                on m.dep_no = d.no
+		          ) m inner join rank r
+		    on m.rank_no = r.no)
+		) where no > 0
+		<!-- where no > 0 and category='수주처' -->
+		
+		<if test="cri.whatColumn=='code' and cri.keyword != null"> and code like '%' ||  #{cri.keyword} || '%' </if>
+		<if test="cri.whatColumn=='name' and cri.keyword != null"> and name like '%' ||  #{cri.keyword} || '%' </if>	
+		<if test="cri.whatColumn=='owner' and cri.keyword != null"> and owner like '%' ||  #{cri.keyword} || '%' </if>
+	</select>
+	
+	<!-- 디테일 -->
+	<select id="selectList" resultType="com.spring.domain.Purchase_sheet_DetailVO">
+		select pd.no, pd.PURCHASE_SHEET_NO, pd.ORDER_DETAIL_NO, pd.AMOUNT, i.IN_PRICE, pd.STATUS, pd.ITEM_NO, pd.WARE_NO, i.name as ITEM_Name, w.name as WARE_Name , i.code as ITEM_Code
+		from Purchase_sheet_Detail pd, ITEM i, warehouse w
+		where pd.ITEM_NO = i.no(+)
+		and pd.WARE_NO = w.no(+)
+		and pd.purchase_sheet_no = #{purchase_sheet_no}
+	</select>
+	
+	<insert id="insertDetailSheet">
+		insert into Purchase_sheet_Detail
+		values(Purchase_sheet_Detail_SEQ.nextval, #{mainSheetNo}, #{orderDetailNo, jdbcType=INTEGER}, #{itemAmount}, 0, #{itemNo}, #{wareNo})
+	</insert>
 
 </mapper>

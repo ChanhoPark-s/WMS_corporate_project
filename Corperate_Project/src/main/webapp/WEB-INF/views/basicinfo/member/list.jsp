@@ -1,6 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 pageEncoding="UTF-8"%>
 <!-- top.jsp -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<style>
+.btn_search{
+  cursor : pointer;
+  position : absolute;
+  right : 7px;
+  top : 50%;
+  transform : translatey(-50%);
+}
+#search{
+  position : relative;
+}
+</style>
+
 <%@include file="/WEB-INF/views/common/top.jsp" %>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -22,13 +38,14 @@ pageEncoding="UTF-8"%>
           <div class="card-body">
             <div class="d-flex gap-1 mb-4 flex-wrap">
               <div class="d-flex gap-1 me-auto flex-wrap">
-                <button class="btn btn-primary d-inline-flex align-items-center gap-1 insert" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                <button class="btn btn-primary d-inline-flex align-items-center gap-1 insert" data-bs-toggle="modal" data-bs-target="#addUserModal" style="height: 40px;">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                     <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
                   </svg>
                   사원등록
                 </button>
               </div>
+<<<<<<< HEAD
               			<div class="search">
 			<form name="search" action="/basicinfo/member/list" id="search">
 			<table>
@@ -43,6 +60,22 @@ pageEncoding="UTF-8"%>
 	                  <c:set value="<%=cate %>" var="c"></c:set>
 	                  <option>검색 선택</option>
 	                  	<c:forEach begin="0" end="${fn:length(s)-1 }" var="i">
+=======
+             <div class="search">
+			<form name="search" action="/basicinfo/client/list" id="search">
+			<table>
+			<tr>
+				<td>
+					<select id="whatColumn" name="whatColumn" class="form-select" style="width: 200px;">
+	                  <%
+	                  String[] search = {"id","name","dep_name","rank_name","email","reg_date"};
+	                  String[] cate = {"아이디","이름","부서","직급","이메일","입사일"};
+	                  %>
+	                  <c:set value="<%=search %>" var="s"></c:set>
+	                  <c:set value="<%=cate %>" var="c"></c:set>
+	                  <option>검색 선택</option>
+	                  	<c:forEach begin="0" end="5" var="i">
+>>>>>>> branch 'main' of https://github.com/ChanhoPark-s/WMS_corporate_project.git
 	                  		<option value="${s[i] }"<c:if test="${searchvo.whatColumn== s[i] }">selected</c:if>>${c[i] }</option>
 	                  	</c:forEach>
 	              </select>
@@ -380,6 +413,10 @@ pageEncoding="UTF-8"%>
         })
       })
     })()
+    
+    function searchForm(){
+		search.submit();
+	}
   </script>
   
 <!-- bottom.jsp -->

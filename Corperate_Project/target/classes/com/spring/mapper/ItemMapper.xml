@@ -6,11 +6,11 @@
 <mapper namespace="com.spring.mapper.ItemMapper">
 
 	<select id="selectAll" resultType="com.spring.domain.ItemVO">
-		select item.no, item.code, client.code as client_code, item.name, item.in_price, item.out_price, item.image
+		select item.no, item.code, client.name as client_name, item.name, item.in_price, item.out_price, item.image
 		from item, client
 		where item.client_no = client.no
 		<if test="whatColumn == 'code'"> and item.code like '%' || #{keyword} || '%' </if>
-		<if test="whatColumn =='client_code'"> and client.code like '%' || #{keyword} || '%' </if>
+		<if test="whatColumn =='client_name'"> and client.name like '%' || #{keyword} || '%' </if>
 		<if test="whatColumn =='name'"> and item.name like '%' || #{keyword} || '%' </if>
 		order by no  desc OFFSET #{beginRow} ROWS FETCH NEXT #{pageSize} ROWS ONLY
 	</select>
@@ -33,44 +33,56 @@
 	</update>
 	
 	<select id="getTotalCount" resultType="int">
-  	select count(*) from client c,item i where i.client_no = c.no
-  	<if test="whatColumn == 'code'">
-  		and i.code like '%' || #{keyword} || '%'  
-  	</if>
-  	<if test="whatColumn == 'client_code'">
-  		and c.code like '%' || #{keyword} || '%'
-  	</if>
-  	<if test="whatColumn == 'name'">
-  		and i.name like '%' || #{keyword} || '%'
-  	</if>
-  </select>
+  		select count(*) from client c,item i where i.client_no = c.no
+	  	<if test="whatColumn == 'code'">
+  			and i.code like '%' || #{keyword} || '%'  
+	  	</if>
+	  	<if test="whatColumn == 'client_name'">
+  			and c.code like '%' || #{keyword} || '%'
+	  	</if>
+  		<if test="whatColumn == 'name'">
+  			and i.name like '%' || #{keyword} || '%'
+	  	</if>
+  	</select>
+  	
  	<select id="code_check" parameterType="com.spring.domain.ItemVO" resultType="int">
 		select count(code) from item where code=#{code}
 	</select>
 	
-	<!-- 
-		ajax 전용 페이징 품목검색
-	 -->
-	<select id="getCountAll" resultType="int">
-		select count(*) from item
-		where 1=1
-	  	<if test="cri.whatColumn == 'code'">
-	  		and code like '%' || #{cri.keyword} || '%'  
-	  	</if>
-		<if test="cri.whatColumn == 'name'">
-			and name like '%' || #{cri.keyword} || '%'  
-		</if>
-	</select>
+	<!-- 이하 ajax API 관련 SQL -->
 	<select id="getListWithPaging" resultType="com.spring.domain.ItemVO">
-		select * from item
-		where 1=1
-	  	<if test="cri.whatColumn == 'code'">
-	  		and code like '%' || #{cri.keyword} || '%'  
-	  	</if>
-		<if test="cri.whatColumn == 'name'">
-			and name like '%' || #{cri.keyword} || '%'  
-		</if>
-		<![CDATA[order by no desc OFFSET (#{cri.pageNum} - 1) * #{cri.amount} ROWS FETCH NEXT #{cri.amount} ROWS ONLY]]>	
+		<![CDATA[
+		select no, code, name, client_name, in_price, out_price, image
+		from(
+		    select rownum rn, i.no, i.code, i.name, c.name client_name, i.in_price, i.out_price, i.image
+    		from item i inner join client c
+    		on i.client_no = c.no
+		    where rownum <= #{cri.pageNum} * #{cri.amount}
+		]]>
+		
+		    <if test="cri.whatColumn=='code' and cri.keyword != null"> and i.code like '%' ||  #{cri.keyword} || '%' </if>
+			<if test="cri.whatColumn=='name' and cri.keyword != null"> and i.name like '%' ||  #{cri.keyword} || '%' </if>
+			<if test="cri.whatColumn=='client_name' and cri.keyword != null"> and c.name like '%' ||  #{cri.keyword} || '%' </if>
+		    
+		<![CDATA[    
+			order by no
+		)where rn > (#{cri.pageNum} - 1) * #{cri.amount}
+		]]> 
 	</select>
 	
+	<select id="getCountAll" resultType="int">
+		select count(*)
+		from(
+	        select *
+	        from(
+				select rownum rn, i.no, i.code, i.name, c.name client_name, i.in_price, i.out_price, i.image
+		    	from item i inner join client c
+		    	on i.client_no = c.no)
+		)where no > 0
+		
+		<if test="cri.whatColumn=='code' and cri.keyword != null"> and code like '%' ||  #{cri.keyword} || '%' </if>
+		<if test="cri.whatColumn=='name' and cri.keyword != null"> and name like '%' ||  #{cri.keyword} || '%' </if>
+		<if test="cri.whatColumn=='client_name' and cri.keyword != null"> and client_name like '%' ||  #{cri.keyword} || '%' </if>
+		
+	</select>
 </mapper>

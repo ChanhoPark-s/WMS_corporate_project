@@ -1,11 +1,10 @@
 package com.basicinfo.controller;
 
-import javax.servlet.ServletContext;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,26 +16,24 @@ import com.spring.paging.Criteria;
 import com.spring.service.ItemService;
 
 @RestController
-@RequestMapping("/item/*")
+@RequestMapping("/basicinfo/item/*")
 public class ItemRestController {
 	
 	@Autowired
 	private ItemService service;
-	
-	@Autowired
-	ServletContext servletContext;
-	
-	//조회
-	@GetMapping(value={"pages/{pageNum}/{amount}", "/pages/{pageNum}/{amount}/{whatColumn}", "pages/{pageNum}/{amount}/{whatColumn}/{keyword}"}, 
+		
+	//testURL : http://localhost:8080/basicinfo/client/pages/1/10/owner/이재용
+	@GetMapping(
+			value={"/pages/{pageNum}/{amount}", "/pages/{pageNum}/{amount}/{whatColumn}", "/pages/{pageNum}/{amount}/{whatColumn}/{keyword}"}, 
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<PageDTO<ItemVO>> memberlist(
+	public ResponseEntity<PageDTO<ItemVO>> clientlist(
 			@PathVariable("pageNum") int pageNum,
 			@PathVariable("amount") int amount,
 			@PathVariable(value="whatColumn", required = false) String whatColumn,
 			@PathVariable(value="keyword", required = false) String keyword) {				
 		
 
-		System.out.println(pageNum + " " + amount + " " + whatColumn + " " + keyword);
+		//System.out.println(pageNum + " " + amount + " " + whatColumn + " " + keyword);
 		
 		Criteria cri = new Criteria(pageNum, amount, whatColumn, keyword);
 		

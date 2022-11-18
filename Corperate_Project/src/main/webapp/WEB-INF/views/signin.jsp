@@ -40,7 +40,7 @@
               <input class="form-check-input" type="checkbox" id="idsave" name="idsave">
               <label class="form-check-label" for="remember">기억하기</label>
             </div>
-            <a style="width: 250px; text-align: right;" href="forgot-password.html" class="link-primary small text-decoration-none">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;관리자에게 문의</a>
+            <a style="width: 250px; text-align: right;" onclick="alert('여누솔루션 박찬섭 과장 [ 010-2452-4563 ]')" class="link-primary small text-decoration-none">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;관리자에게 문의</a>
           </div>
           <span id="msg"></span>
           <button type="button" class="btn btn-primary w-100" id="check_user">로그인</button>

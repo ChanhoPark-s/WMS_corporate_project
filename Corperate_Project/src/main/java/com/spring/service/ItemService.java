@@ -17,5 +17,7 @@ public interface ItemService {
 	public void update(ItemVO vo) throws Exception;
 	public int getTotalCount(SearchVO searchvo);
 	public int code_check(String code);
+	
+	/* ajax paging */
 	public PageDTO<ItemVO> getListPage(Criteria cri);
  }
