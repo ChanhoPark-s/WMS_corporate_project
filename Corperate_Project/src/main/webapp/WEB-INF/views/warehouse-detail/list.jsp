@@ -13,8 +13,8 @@
               <div class="card-body navbar-light">
                 <!-- 좌측영역에넣을테이블 -->
 <div class="col-md-10">
-            <h3 class="fw-black">창고정보 관리</h3>
-            <p>창고, 구역, 랙, 셀 목록</p>
+            <h3 class="fw-black">창고별 재고현황</h3>
+            <p>재고현황을 확인하고 싶은 구역을 클릭하여 재고확인</p>
             
          <ul class="nav flex-column">
           <li class="nav-item">
@@ -33,7 +33,7 @@
               <c:forEach items="${warehouseLists }" var="warehouseLists" varStatus="warehousestatus">
               <li class="nav-item">
                 <a href="#warehouse-collapse${warehouseLists.no }" class="nav-link px-0 dropdown-toggle d-flex align-items-center gap-3" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="warehouse-collapse${warehouseLists.no }"
-                	id="mywarehouseno${warehouseLists.no }" data-value="${warehouseLists.no }" onclick="clickFunction(this.id)">
+                	id="mywarehouseno${warehouseLists.no }" data-value="${warehouseLists.no }" onclick="clickFunction(this.id,${warehouseLists.no },0,0,0)">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
                   </svg>
@@ -48,7 +48,7 @@
                   <c:if test="${warehouseLists.no eq areaLists.ware_no }">
                     <li class="nav-item">
                       <a href="#area-collapse${areaLists.no }" class="nav-link px-0 dropdown-toggle d-flex align-items-center gap-3" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="area-collapse${areaLists.no }"
-                      	id="myareano${areaLists.no }" data-value="${areaLists.no }" onclick="clickFunction(this.id)">
+                      	id="myareano${areaLists.no }" data-value="${areaLists.no }" onclick="clickFunction(this.id,${warehouseLists.no },${areaLists.no },0,0)">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
                         </svg>
@@ -63,7 +63,7 @@
                           <c:if test="${areaLists.no eq rackLists.area_no }">
                           <li class="nav-item">
 		                      <a href="#rack-collapse${rackLists.no }" class="nav-link px-0 dropdown-toggle d-flex align-items-center gap-3" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="rack-collapse${rackLists.no }"
-		                      	id="myrackno${rackLists.no }" data-value="${rackLists.no }" onclick="clickFunction(this.id)">
+		                      	id="myrackno${rackLists.no }" data-value="${rackLists.no }" onclick="clickFunction(this.id,${warehouseLists.no },${areaLists.no },${rackLists.no },0)">
 		                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
 		                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
 		                        </svg>
@@ -76,8 +76,14 @@
 		                          
 		                          <c:forEach items="${cellLists }" var="cellLists" varStatus="cellstatus">
 		                          <c:if test="${rackLists.no eq cellLists.rack_no }">
-		                          <li class="nav-item m-2">
-		                             ●&nbsp;&nbsp;&nbsp;${cellLists.name }
+		                          <li class="nav-item">
+		                            <a href="javascript:void(0)" class="nav-link px-0 d-flex align-items-center gap-3"
+		                            id="mycellno${cellLists.no }" data-value="${cellLists.no }" onclick="clickFunction(this.id,${warehouseLists.no },${areaLists.no },${rackLists.no },${cellLists.no })">
+		                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+		                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+		                              </svg>
+		                              ${cellLists.name }
+		                            </a>
 		                          </li>
 		                          </c:if>
 		                          </c:forEach> <!-- cell -->
@@ -127,22 +133,18 @@
 				<thead>
 					<tr>
 						<th scope="col">번호</th>
-						<th scope="col">품목사진</th>
 						<th scope="col">로트코드</th>
+						<th scope="col">품목사진</th>
 						<th scope="col">품목명</th>
 						<th scope="col">재고수량</th>
 					</tr>
 				</thead>
 				<tbody id="tddata">
-					<c:forEach items="${lists }" var="lists" varStatus="status">
 					<tr>
-						<td>
-							${status.count}
+						<td colspan="5">
+							좌측 메뉴 바에서 재고현황을 확인하고 싶은 영역을 선택하세요
 						</td>
-						<td>${lists.code }</td>
-						<td>${lists.name }</td>
 					</tr>
-					</c:forEach>
 					
 					
 				</tbody>
@@ -310,55 +312,50 @@ $(function(){
 
 
 //선택한 사이드바메뉴에 따른 하위구역 우측에 띄워준다
-function clickFunction(clicked_id){
+function clickFunction(clicked_id,ware_no,area_no,rack_no,cell_no){
 	id = clicked_id;
+	showid = document.getElementById(clicked_id).getAttribute('href').substring(1); //등록수정삭제시 창고-셀 사이드바 보던 화면으로 가기 위한 변수
 	no = document.getElementById(clicked_id).getAttribute('data-value');
-
+console.log(id);
+console.log(showid);
+console.log(no);
 	//클릭시 showid설정
 	document.getElementById('showid').value = showid;
 
 	/*ajax로 each 돌려서 우측 테이블td생성*/
 	$.ajax({
-		url : "/basicinfo/warehouse/get-data",
+		url : "/warehouse-detail/get-data-stock",
 		type : "get",
 		data : ({
 			"id" : id,
-			"no" : no
+			"no" : no,
+			"ware_no" : ware_no,
+			"area_no" : area_no,
+			"rack_no" : rack_no,
+			"cell_no" : cell_no
 		}),
 		success : function(data){
 			var mydata = JSON.parse(data);
+console.log(mydata);
 			$('#tddata *').remove();
 			var tabledata = "";
-			$.each(mydata,function(i){
+			var mydatalen = mydata.length;
+console.log(mydatalen);
+			if(mydatalen==0){
 				tabledata +=	'<tr>'+
-									'<td>'+(i+1)+'</td>'+
-									'<td>'+mydata[i].code+'</td>'+
-									'<td>'+mydata[i].name+'</td>'+
-									'<td>'+
-										'<div class="btn-group btn-group-sm" role="group">'+
-											'<button type="button" class="btn btn-light d-flex" id=update'+id+' onclick="updatefunction('+mydata[i].no+',\'' +id+ '\')">'+
-												'<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"'+
-													'fill="none" viewBox="0 0 24 24" stroke="currentColor"'+
-													'aria-hidden="true">'+
-					                    '<path stroke-linecap="round"'+
-														'stroke-linejoin="round" stroke-width="2"'+
-														'd="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />'+
-					                  '</svg>'+
-											'</button>'+
-											'<button type="button" class="btn btn-light d-flex text-danger" id=delete'+id+' onclick="deletefunction('+mydata[i].no+',\'' +id+ '\')">'+
-												'<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"'+
-													'fill="none" viewBox="0 0 24 24" stroke="currentColor"'+
-													'aria-hidden="true">'+
-					                    '<path stroke-linecap="round"'+
-														'stroke-linejoin="round" stroke-width="2"'+
-														'd="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />'+
-					                  '</svg>'+
-											'</button>'+
-										'</div>'+
-									'</td>'+									
+									'<td colspan="5">'+'현재 선택한 영역은 재고 물품이 없습니다.'+'</td>'+
 								'</tr>';
-// 				rowcount = rowcount-1;
+			}else{
+				$.each(mydata,function(i){
+						tabledata +=	'<tr>'+
+											'<td>'+(i+1)+'</td>'+
+											'<td>'+mydata[i].lot_code+'</td>'+
+											'<td>'+mydata[i].image+'</td>'+
+											'<td>'+mydata[i].name+'</td>'+
+											'<td>'+mydata[i].amount+'</td>'+
+										'</tr>';
 				});
+			}
 			$("#tddata").append(tabledata);
 				
 		},
