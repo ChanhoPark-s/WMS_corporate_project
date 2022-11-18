@@ -19,7 +19,8 @@ public class OrderSheetController {
 	
 	@GetMapping(value="/list")
 	public void list(Model model) {
-		//model.addAttribute("voList", service.list());
+		model.addAttribute("voList", service.getList());
+
 	}
 	
 	@PostMapping(value="/add")
