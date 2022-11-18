@@ -1,5 +1,6 @@
 package com.purchase_sheet.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +16,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.RequestContextUtils;
@@ -35,7 +38,6 @@ import com.spring.service.ClientService;
 import com.spring.service.ItemService;
 import com.spring.service.MemberService;
 import com.spring.service.Purchase_sheetService;
-import com.spring.service.Purchase_sheet_DetailService;
 import com.spring.service.WareHouseService;
 
 
@@ -51,16 +53,17 @@ public class Purchase_sheetController {
 	private Purchase_sheetService ps;
 	
 	@Autowired
-	private Purchase_sheet_DetailService pds;
+	private WareHouseService ws;
 	
 	@Autowired
-	private WareHouseService ws;
+	private ItemService is;
+	
+	@Autowired
+	private ClientService cs;
 	
 	@RequestMapping("/list.ps")
 	public void list(SearchVO searchvo,HttpServletRequest request,Model model) {
 		
-		//발주조회
-		List<Purchase_sheetVO> lists = ps.list();
 		
 		//창고조회
 		List<WareHouseVO> WareList = ws.list();
@@ -73,15 +76,34 @@ public class Purchase_sheetController {
 		
 		//페이지넘버, 페이지당 행갯수, 총레코드수, 위치, 검색명, 검색어, ?
 		Client_Paging pageInfo = new Client_Paging(searchvo.getPageNumber(),"10",totalCount,"/list.ps",searchvo.getWhatColumn(),searchvo.getKeyword(),0);
+		List<Purchase_sheetVO> lists = ps.GetAll(pageInfo);
 		
+		//totalPrice 구하기
+		for(Purchase_sheetVO vo :lists) {
+			System.out.println("vo"+vo);
+			System.out.println("vo.getTotalPrice()"+ vo.getTotalPrice()); 
+			if(vo.getTotalPrice() != null) {
+				String[] price = vo.getTotalPrice().split(",");
+				System.out.println("price"+price);
+				int totalPrice = 0;
+				for(String x :price) {
+					System.out.println("x"+x);
+					totalPrice = Integer.parseInt(x) + totalPrice;
+					System.out.println("totalPrice"+totalPrice);
+				}
+				vo.setTotalPrice(Integer.toString(totalPrice));
+			}
+		}
 		
 		model.addAttribute("pageInfo",pageInfo);
 		model.addAttribute("totalCount",totalCount);
 		//페이징조회
-		model.addAttribute("lists",ps.GetAll(pageInfo));
+		model.addAttribute("lists",lists);
 		model.addAttribute("searchvo",searchvo);
 		
-		LOGGER.info("size : " + lists.size());
+		LOGGER.info("size : " + ps.GetAll(pageInfo).size());
+		
+		
 		
 		//페이징전 조회
 		//model.addAttribute("lists", lists);
@@ -89,11 +111,17 @@ public class Purchase_sheetController {
 		
 	}
 	
-	@GetMapping("/insert.ps")
+	@PostMapping("/insert.ps")
 	public String insert(Purchase_sheetVO vo) {
+		System.out.println(vo.getMember_no());
+		System.out.println(vo.getClient_no());
+		System.out.println(vo.getDelivery_date());
+		System.out.println(vo.getItem_no());
+		System.out.println(vo.getAmount());
+		System.out.println(vo.getOrder_no());
 		
 		int cnt = ps.insert(vo);
-		
+		System.out.println("insert 성공" + cnt);
 		return re;
 	}
 	
@@ -114,7 +142,7 @@ public class Purchase_sheetController {
 		System.out.println(vo.getNo());
 		int cnt = ps.delete(vo);
 		System.out.println("cnt: " + cnt);
-		cnt = pds.delete(vo.getNo());
+		cnt = ps.deleteDetail(vo.getNo());
 		System.out.println("cnt: " + cnt);
 		return re;
 	}
@@ -126,10 +154,38 @@ public class Purchase_sheetController {
 		System.out.println("purchase_sheet_no"+purchase_sheet_no);
 		
 		//발주상세조회
-		List<Purchase_sheet_DetailVO> lists = pds.selectList(purchase_sheet_no);
+		List<Purchase_sheet_DetailVO> lists = ps.selectList(purchase_sheet_no); 
 		
 		return new Gson().toJson(lists);
 	}
 	
+	@ResponseBody
+	@PostMapping(value = "item", produces="application/text;charset=UTF-8")
+	public String item(@RequestParam(value = "no") String no) {
+		System.out.println(no);
+		
+		//품목조회
+		ItemVO ivo = is.selectOne(Integer.parseInt(no));
+		
+		//거래처조회
+		ClientVO cvo = cs.selectOne(Integer.toString(ivo.getClient_no()));
+		
+		ivo.setClient_name(cvo.getName());
+		
+		LOGGER.info("cvo.getName():"+cvo.getName());
+		LOGGER.info("ItemVO:"+ivo);
+		System.out.println("cvo.getName():"+cvo.getName());
+		System.out.println("ItemVO:"+ivo);
+		
+		return new Gson().toJson(ivo);
+	}
+	
+	@ResponseBody
+	@PostMapping(value = "psDetail", produces="application/json;charset=UTF-8")
+	public HashMap<String,String> add(@RequestParam HashMap<String,String> form) {
+		System.out.println("psdetail:"+form);
+		 
+	    return form;
+	}
 	
 }
