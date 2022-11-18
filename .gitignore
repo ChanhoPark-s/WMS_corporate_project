@@ -32,3 +32,6 @@ sequence diagram data.drawio
 hs_err_pid*
 
 /.metadata/
+
+#
+*/target/*

@@ -310,7 +310,14 @@
 				
 				console.log(cell_no, rack_no, area_no, warehouse_no);
 				
-				const url = "get/" + warehouse_no + "/" + area_no + "/" + rack_no + "/" + cell_no;
+				const url = 'get';
+				const attr = {
+						method: 'post',
+						headers: 'application/json; charset=utf-8',
+						body: JSON.stringify({
+							
+						})
+				}
 				
 				getJsonData(url)
 			});

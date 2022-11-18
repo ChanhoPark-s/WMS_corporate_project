@@ -6,9 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.spring.domain.WareHouseAllAreaVO;
 import com.spring.service.AreaService;
 import com.spring.service.CellService;
 import com.spring.service.Init_Input_WareHouseService;
@@ -51,10 +52,9 @@ public class MovemenetHistoryController {
 		
 	}
 	
-	@GetMapping(value="get/{warehouse}/{area}/{rack}/{cell}")
-	public void get(Model model, @PathVariable(value="warehouse") String warehouse, @PathVariable(value="area") String area, @PathVariable(value="rack") String rack, @PathVariable(value="cell") String cell) {
+	@GetMapping(value="get")
+	public void get(Model model, @RequestBody WareHouseAllAreaVO vo) String cell) {
 		
-		
+		System.out.println(vo.get);
 	}
-	
 }

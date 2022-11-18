@@ -33,4 +33,7 @@ where no=#{no}
 	update area set code=#{areacode}, name=#{areaname}
 	where no=#{sendno}
 </update>
+<select id="checkCode" resultType="int">
+		select count(*) from area where code=#{code}
+	</select>
 </mapper>

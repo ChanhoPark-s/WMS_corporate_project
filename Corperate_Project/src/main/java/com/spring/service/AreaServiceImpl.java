@@ -57,5 +57,10 @@ public class AreaServiceImpl implements AreaService{
 		return mapper.updateAreaByNo(vo);
 	}
 
+	@Override
+	public int checkCode(String code) {
+		return mapper.checkCode(code);
+	}
+
 
 }

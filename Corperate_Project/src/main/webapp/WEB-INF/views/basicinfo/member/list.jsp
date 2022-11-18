@@ -45,7 +45,6 @@ pageEncoding="UTF-8"%>
                   사원등록
                 </button>
               </div>
-<<<<<<< HEAD
               			<div class="search">
 			<form name="search" action="/basicinfo/member/list" id="search">
 			<table>
@@ -60,22 +59,6 @@ pageEncoding="UTF-8"%>
 	                  <c:set value="<%=cate %>" var="c"></c:set>
 	                  <option>검색 선택</option>
 	                  	<c:forEach begin="0" end="${fn:length(s)-1 }" var="i">
-=======
-             <div class="search">
-			<form name="search" action="/basicinfo/client/list" id="search">
-			<table>
-			<tr>
-				<td>
-					<select id="whatColumn" name="whatColumn" class="form-select" style="width: 200px;">
-	                  <%
-	                  String[] search = {"id","name","dep_name","rank_name","email","reg_date"};
-	                  String[] cate = {"아이디","이름","부서","직급","이메일","입사일"};
-	                  %>
-	                  <c:set value="<%=search %>" var="s"></c:set>
-	                  <c:set value="<%=cate %>" var="c"></c:set>
-	                  <option>검색 선택</option>
-	                  	<c:forEach begin="0" end="5" var="i">
->>>>>>> branch 'main' of https://github.com/ChanhoPark-s/WMS_corporate_project.git
 	                  		<option value="${s[i] }"<c:if test="${searchvo.whatColumn== s[i] }">selected</c:if>>${c[i] }</option>
 	                  	</c:forEach>
 	              </select>

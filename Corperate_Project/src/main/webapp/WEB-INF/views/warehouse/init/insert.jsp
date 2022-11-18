@@ -247,7 +247,7 @@
 				target = event.target,
 				attr = {method: 'GET'};	
 			let
-				url = 'http://localhost:8080/item/pages/'+paging.pageNum + '/' + paging.amount;
+				url = location.origin + '/basicinfo/item/pages/'+paging.pageNum + '/' + paging.amount;
 				
 			url += paging.whatColumn ? '' : '/' + paging.whatColumn;
 			url += paging.keyword ? '' : '/' + paging.keyword;
