@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
-import com.spring.domain.PageDTO;
+import com.spring.domain.PageForWareHouseDTO;
 import com.spring.domain.WareHouseDetailVO;
-import com.spring.paging.Criteria;
+import com.spring.paging.CriteriaForWareHouse;
 import com.spring.service.AreaService;
 import com.spring.service.CellService;
 import com.spring.service.RackService;
@@ -52,52 +52,7 @@ public class WareHouseDetailController {
 		model.addAttribute("rackLists",rackservice.list());
 		model.addAttribute("cellLists",cellservice.list());
 		
-		//등록수정삭제 이후페이지에서 데이타불러오고 기존 사이드바 보기위해 보낸다
-//		model.addAttribute("showid",showid);
-//		model.addAttribute("id",id);
-//		model.addAttribute("no",no);
-//		System.out.println("showid는"+showid);
-//		System.out.println("id는"+id);
-//		System.out.println("no는"+no);
-//		
-//		WareHouseDetailVO vo = new WareHouseDetailVO();
-//		vo.setWare_no(0);
-//		vo.setArea_no(0);
-//		vo.setRack_no(0);
-//		vo.setCell_no(0);
 		
-//		if(showid==null || showid=="" || showid.equals("undefined")) {
-			
-//		} else {
-//			int delete_no = id.indexOf("collapse");
-//			String showid_no = showid.substring(delete_no+8);
-//			int checkno = Integer.parseInt(showid_no);
-//			model.addAttribute("lists",warehousedetailservice.selectStockByWareNo(checkno));
-//		}
-		
-		//첫화면에서 showid가 설정되어있지 않기에 undefined도 if케이스 중 하나로 설정한다
-//		if(showid==null || showid=="" || showid.equals("undefined")) {//최초에 창고리스트 보여준다
-//			model.addAttribute("lists",warehousedetailservice.selectStockByWareNo(checkno));
-//		}else {//등록/수정/삭제후 보고있던(선택했던) 데이터를 불러온다
-//			int delete_no = showid.indexOf("collapse");
-//			
-//			String showid_no = showid.substring(delete_no+8);
-//			int checkno = Integer.parseInt(showid_no);
-//			
-//			if(showid.contains("rack")) {//rack-collapse1왔을시 셀이가진 rack_no넘버이기에 셀에서찾는다
-//				model.addAttribute("lists",cellservice.getListByRackNo(checkno));
-//			} else if(showid.contains("area")) {
-//				model.addAttribute("lists",rackservice.getListByAreaNo(checkno));
-//			} else if(showid.contains("ware")) {
-//				model.addAttribute("lists",areaservice.getListByWareNo(checkno));
-//			}  else if(showid.contains("default")) {
-//				model.addAttribute("lists",warehouseservice.list());
-//			}
-//		}
-		
-		logger.info("/warehouse-detail-list.jsp 반환");
-		
-//		return "list"; //요청 url과 반환해줄 jsp 파일의 이름이 일치하면 해당 함수는 void 타입이어도 된다. views/basicinfo/department/list.jsp 가 반환됨
 	}
 	
 	
@@ -145,21 +100,27 @@ public class WareHouseDetailController {
 	//testURL : http://localhost:8080/basicinfo/client/pages/1/10/owner/이재용
 		@ResponseBody
 		@GetMapping(
-				value={"/pages/{pageNum}/{amount}", "/pages/{pageNum}/{amount}/{whatColumn}", "/pages/{pageNum}/{amount}/{whatColumn}/{keyword}"}, 
+				value={"/pages/{pageNum}/{amount}/{ware_no}/{area_no}/{rack_no}/{cell_no}",
+						"/pages/{pageNum}/{amount}/{ware_no}/{area_no}/{rack_no}/{cell_no}/{whatColumn}",
+						"/pages/{pageNum}/{amount}/{ware_no}/{area_no}/{rack_no}/{cell_no}/{whatColumn}/{keyword}"}, 
 				produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-		public ResponseEntity<PageDTO<WareHouseDetailVO>> WareHouseDetaillist(
+		public ResponseEntity<PageForWareHouseDTO<WareHouseDetailVO>> WareHouseDetaillist(
 				@PathVariable("pageNum") int pageNum,
 				@PathVariable("amount") int amount,
+				@PathVariable(value="ware_no", required = false) int ware_no,
+				@PathVariable(value="area_no", required = false) int area_no,
+				@PathVariable(value="rack_no", required = false) int rack_no,
+				@PathVariable(value="cell_no", required = false) int cell_no,
 				@PathVariable(value="whatColumn", required = false) String whatColumn,
 				@PathVariable(value="keyword", required = false) String keyword) {				
 			
 
-			System.out.println(pageNum + " " + amount + " " + whatColumn + " " + keyword);
+			System.out.println(pageNum + " " + amount + " " + whatColumn + " " + keyword+" "+ware_no+" "+area_no+" "+rack_no+" "+cell_no);
 			System.out.println("페이징처리위한컨트롤러진입");
 			
 //			Criteria cri = new Criteria(pageNum, amount, whatColumn, keyword);
-			Criteria cri = new Criteria(pageNum, amount, "0", "0");
-			
+			CriteriaForWareHouse cri = new CriteriaForWareHouse(pageNum, amount, "0", "0",ware_no,area_no,rack_no,cell_no);
+			System.out.println("cri생성자다음서본 cri amount"+cri.getAmount()); 
 			return new ResponseEntity<>(warehousedetailservice.getListPage(cri), HttpStatus.OK);		
 		}
 }

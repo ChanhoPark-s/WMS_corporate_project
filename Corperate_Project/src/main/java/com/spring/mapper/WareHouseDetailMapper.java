@@ -3,7 +3,7 @@ package com.spring.mapper;
 import java.util.List;
 
 import com.spring.domain.WareHouseDetailVO;
-import com.spring.paging.Criteria;
+import com.spring.paging.CriteriaForWareHouse;
 
 public interface WareHouseDetailMapper {
 
@@ -13,7 +13,7 @@ public interface WareHouseDetailMapper {
 	public List<WareHouseDetailVO> selectStockByCellNo(WareHouseDetailVO vo);
 	
 	/* ajax paging */
-	public int getCountAll(Criteria cri);
-	public List<WareHouseDetailVO> getListWithPaging(Criteria cri);
+	public int getCountAll(CriteriaForWareHouse cri);
+	public List<WareHouseDetailVO> getListWithPaging(CriteriaForWareHouse cri);
 
 }

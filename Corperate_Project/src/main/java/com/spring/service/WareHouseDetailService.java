@@ -2,9 +2,9 @@ package com.spring.service;
 
 import java.util.List;
 
-import com.spring.domain.PageDTO;
+import com.spring.domain.PageForWareHouseDTO;
 import com.spring.domain.WareHouseDetailVO;
-import com.spring.paging.Criteria;
+import com.spring.paging.CriteriaForWareHouse;
 
 public interface WareHouseDetailService {
 
@@ -14,6 +14,6 @@ public interface WareHouseDetailService {
 	public List<WareHouseDetailVO> selectStockByCellNo(WareHouseDetailVO vo);
 	
 	/* ajax paging */
-	public PageDTO<WareHouseDetailVO> getListPage(Criteria cri);
+	public PageForWareHouseDTO<WareHouseDetailVO> getListPage(CriteriaForWareHouse cri);
 
 }

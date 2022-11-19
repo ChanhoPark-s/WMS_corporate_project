@@ -76,9 +76,9 @@ where
                 and rownum <= #{pageNum} * #{amount}
 		]]>    
 		
-<!-- 		    <if test="cri.whatColumn=='code' and cri.keyword != null"> and code like '%' ||  #{cri.keyword} || '%' </if> -->
-<!-- 		    <if test="cri.whatColumn=='name' and cri.keyword != null"> and name like '%' ||  #{cri.keyword} || '%' </if> -->
-<!-- 		    <if test="cri.whatColumn=='owner' and cri.keyword != null"> and owner like '%' ||  #{cri.keyword} || '%' </if> -->
+<!-- 		    <if test="whatColumn=='code' and keyword != null"> and code like '%' ||  #{keyword} || '%' </if> -->
+<!-- 		    <if test="whatColumn=='name' and keyword != null"> and name like '%' ||  #{keyword} || '%' </if> -->
+<!-- 		    <if test="whatColumn=='owner' and keyword != null"> and owner like '%' ||  #{keyword} || '%' </if> -->
 		    
 		<![CDATA[    
 			order by no
@@ -99,11 +99,15 @@ where
 		        warehouse_detail wd, item i
 		    where
 		        wd.item_no = i.no(+)
-		        and wd.ware_no = #{ware_no})
+		        and wd.ware_no = #{ware_no}
+		        <if test="area_no != 0">and wd.area_no = #{area_no}</if>
+		        <if test="rack_no != 0">and wd.rack_no = #{rack_no}</if>
+		        <if test="cell_no != 0">and wd.cell_no = #{cell_no}</if>
+		    )
 		where no>0
 		
-<!-- 		<if test="cri.whatColumn=='code' and cri.keyword != null"> and code like '%' ||  #{cri.keyword} || '%' </if> -->
-<!-- 		<if test="cri.whatColumn=='name' and cri.keyword != null"> and name like '%' ||  #{cri.keyword} || '%' </if>	 -->
-<!-- 		<if test="cri.whatColumn=='owner' and cri.keyword != null"> and owner like '%' ||  #{cri.keyword} || '%' </if> -->
+<!-- 		<if test="whatColumn=='code' and keyword != null"> and code like '%' ||  #{keyword} || '%' </if> -->
+<!-- 		<if test="whatColumn=='name' and keyword != null"> and name like '%' ||  #{keyword} || '%' </if>	 -->
+<!-- 		<if test="whatColumn=='owner' and keyword != null"> and owner like '%' ||  #{keyword} || '%' </if> -->
 	</select>
 </mapper>

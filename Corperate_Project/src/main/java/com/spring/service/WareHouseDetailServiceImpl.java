@@ -5,11 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.spring.domain.ClientVO;
-import com.spring.domain.PageDTO;
+import com.spring.domain.PageForWareHouseDTO;
 import com.spring.domain.WareHouseDetailVO;
 import com.spring.mapper.WareHouseDetailMapper;
-import com.spring.paging.Criteria;
+import com.spring.paging.CriteriaForWareHouse;
 
 @Service
 public class WareHouseDetailServiceImpl implements WareHouseDetailService{
@@ -39,8 +38,12 @@ public class WareHouseDetailServiceImpl implements WareHouseDetailService{
 
 	/* ajax페이징 */
 	@Override
-	public PageDTO<WareHouseDetailVO> getListPage(Criteria cri) {
-		System.out.println("getListPage 서비스impl에 도달");
+	public PageForWareHouseDTO<WareHouseDetailVO> getListPage(CriteriaForWareHouse cri) {
+		System.out.println(" 서비스impl에 도달 getCountAll 진입전");
+		System.out.println("cri ware_no는:"+cri.getWare_no());
+		System.out.println("cri area_no는:"+cri.getArea_no());
+		System.out.println("cri rack_no는:"+cri.getRack_no());
+		System.out.println("cri cell_no는:"+cri.getCell_no());
 		int totalCount = mapper.getCountAll(cri);
 		System.out.println("getCountAll 통과totalCount: "+totalCount);
 		
@@ -50,7 +53,7 @@ public class WareHouseDetailServiceImpl implements WareHouseDetailService{
 		
 		List<WareHouseDetailVO> list = mapper.getListWithPaging(cri); 
 		System.out.println("getListWithPaging 통과list크기는: "+list.size());
-		PageDTO<WareHouseDetailVO> pageDTO = new PageDTO<WareHouseDetailVO>(totalCount, list, cri);
+		PageForWareHouseDTO<WareHouseDetailVO> pageDTO = new PageForWareHouseDTO<WareHouseDetailVO>(totalCount, list, cri);
 		
 		return pageDTO;
 	}

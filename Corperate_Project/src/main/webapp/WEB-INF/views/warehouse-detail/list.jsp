@@ -19,7 +19,8 @@
          <ul class="nav flex-column">
           <li class="nav-item">
            <a href="#default-collapse1" class="nav-link px-0 dropdown-toggle d-flex align-items-center gap-3" data-bs-toggle="collapse" role="button" aria-expanded="true" aria-controls="default-collapse"
-            	id="mydefault" data-value="0" onclick="clickFunction(this.id)">
+            	id="mydefault" data-value="0" >
+            	<!-- onclick="clickFunction(this.id)" -->
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
               </svg>
@@ -28,7 +29,6 @@
            
            <!-- 창고 -->
            <div class="ms-5 collapse show" id="default-collapse">
-           <!-- 상단부터 창고목록위해 추가된것으로 삭제시 좌측테이블 초기상태 -->
             <ul class="nav flex-column">
               <c:forEach items="${warehouseLists }" var="warehouseLists" varStatus="warehousestatus">
               <li class="nav-item">
@@ -153,7 +153,7 @@
 			
 			<!-- 페이지 -->
 			<nav aria-label="Page navigation borderless example">
-				<ul class="pagination pagination-borderless justify-content-end" id="modalPageNation">
+				<ul class="pagination pagination-borderless justify-content-end" id="PageNation">
 					<!-- 페이지내이션이 javascript 코드에 의해 그려지는 위치 -->
 				</ul>
 			</nav>
@@ -291,10 +291,10 @@ var id;
 var no;
 
 //페이지 번호 클릭시 좌측사이드서 선택한 현재 위치정보를 갖고있기 위한 전역변수
-var re_ware_no;
-var re_area_no;
-var re_rack_no;
-var re_cell_no;
+var ware_no;
+var area_no;
+var rack_no;
+var cell_no;
 
 //페이징을 위한 전역변수
 var pageNum = 1;
@@ -327,99 +327,101 @@ $(function(){
 
 
 //사이드바메뉴 클릭시만 선택한 사이드바메뉴에 따른 하위구역 우측에 띄워준다
-function clickFunction(clicked_id,ware_no,area_no,rack_no,cell_no,plist){
+function clickFunction(clicked_id,w_no,a_no,r_no,c_no){
 	pageNum = 1;
 	id = clicked_id;
 	showid = document.getElementById(clicked_id).getAttribute('href').substring(1); //등록수정삭제시 창고-셀 사이드바 보던 화면으로 가기 위한 변수
 	no = document.getElementById(clicked_id).getAttribute('data-value');
+	
+	//클릭시 showid설정
+	document.getElementById('showid').value = showid;
 // console.log(id);
 // console.log(showid);
 // console.log(no);
-	//클릭시 showid설정
-	document.getElementById('showid').value = showid;
 	
 	//만든 영역의 위치정보를 전역변수에 저장
-	re_ware_no = ware_no;
-	re_area_no = area_no;
-	re_rack_no = rack_no;
-	re_cell_no = cell_no;
+	ware_no = w_no;
+	area_no = a_no;
+	rack_no = r_no;
+	cell_no = c_no;
 	
 	//하단페이지번호도만들고 레코드도만듬
 	requestRecord();
 	
-	
-
 	/*ajax로 each 돌려서 우측 테이블td생성*/
-	$.ajax({
-		url : "/warehouse-detail/get-data-stock",
-		type : "get",
-		data : ({
-			"id" : id,
-			"no" : no,
-			"ware_no" : ware_no,
-			"area_no" : area_no,
-			"rack_no" : rack_no,
-			"cell_no" : cell_no
-		}),
-		success : function(data){
+// 	$.ajax({
+// 		url : "/warehouse-detail/get-data-stock",
+// 		type : "get",
+// 		data : ({
+// 			"id" : id,
+// 			"no" : no,
+// 			"ware_no" : w_no,
+// 			"area_no" : a_no,
+// 			"rack_no" : r_no,
+// 			"cell_no" : c_no
+// 		}),
+// 		success : function(data){
 			
-			var mydata = JSON.parse(data);
-// console.log(mydata);
-			$('#tddata *').remove();
-			var tabledata = "";
-			var mydatalen = mydata.length;
-			
-// 			paintPageNation(mydatalen, resdata.cri);
+// 			var mydata = JSON.parse(data);
+// // console.log(mydata);
+// 			$('#tddata *').remove();
+// 			var tabledata = "";
+// 			var mydatalen = mydata.length;
 
-console.log(mydatalen);
-console.log(pageNum);
-console.log(amount);
-			if(mydatalen==0){
-				tabledata +=	'<tr>'+
-									'<td colspan="5">'+'현재 선택한 영역은 재고 물품이 없습니다.'+'</td>'+
-								'</tr>';
-			}else{
-				$.each(mydata,function(i){
-						tabledata +=	'<tr>'+
-											'<td>'+(i+1)+'</td>'+
-											'<td>'+mydata[i].lot_code+'</td>'+
-											'<td><img width="100px" height="100px" src="${pageContext.request.contextPath }/resources/assets/img/item/'+mydata[i].image+'" ></td>'+
-											'<td>'+mydata[i].name+'</td>'+
-											'<td>'+mydata[i].amount+'</td>'+
-										'</tr>';
-				});
-			}
-			$("#tddata").append(tabledata);
 			
-			
-		},
-		error: function (request, status, error) {
-	        console.log("code: " + request.status);
-	        console.log("message: " + request.responseText);
-	        console.log("error: " + error);
-	    }
 
-	});//ajax
+// console.log(mydatalen);
+// console.log(pageNum);
+// console.log(amount);
+// 			if(mydatalen==0){
+// 				tabledata +=	'<tr>'+
+// 									'<td colspan="5">'+'현재 선택한 영역은 재고 물품이 없습니다.'+'</td>'+
+// 								'</tr>';
+// 			}else{
+// 				$.each(mydata,function(i){
+// 						tabledata +=	'<tr>'+
+// 											'<td>'+(i+1)+'</td>'+
+// 											'<td>'+mydata[i].lot_code+'</td>'+
+// 											'<td><img width="100px" height="100px" src="${pageContext.request.contextPath }/resources/assets/img/item/'+mydata[i].image+'" ></td>'+
+// 											'<td>'+mydata[i].name+'</td>'+
+// 											'<td>'+mydata[i].amount+'</td>'+
+// 										'</tr>';
+// 				});
+// 			}//else
+// 			$("#tddata").append(tabledata);
+// 		},//success
+// 		error: function (request, status, error) {
+// 	        console.log("code: " + request.status);
+// 	        console.log("message: " + request.responseText);
+// 	        console.log("error: " + error);
+// 	    }
+// 	});//ajax
 };//clickFunction
 
 /* 두번째 모달의 페이지네이션에서 번호 클릭시 다시 그리는 함수 */
-$("#modalPageNation").on("click", "li a", function(e){
+$("#PageNation").on("click", "li a", function(e){
 	e.preventDefault(); // 번호를 눌러도 페이지가 이동하지 않도록 a태그 기능 무력화
 	pageNum = $(this).attr("href");
 	
 	requestRecord();
 });
 
-/* ajax로 두번째 모달에서 보여줄 레코드정보를 요청하는 부분 + 화면전환없이 레코드들을 그리는 부분 + 화면전환없이 페이지네이션을 그리는 부분 */
+
+
+
+
+/* ajax로 레코드정보를 요청하는 부분 + 화면전환없이 레코드들을 그리는 부분 + 화면전환없이 페이지네이션을 그리는 부분 */
 function requestRecord(){
-	$.getJSON("/warehouse-detail/pages/"+ pageNum +"/" + amount + "/" + searchWhatColumn + "/" + searchKeyword,  
+	console.log("requestRecord의 mount"+amount)
+	$.getJSON("/warehouse-detail/pages/"+ pageNum +"/" + amount+ "/" + ware_no + "/" + area_no + "/" + rack_no + "/" + cell_no
+			+ "/" + searchWhatColumn + "/" + searchKeyword,  
 			function(resdata){
-			console.log("list: " + resdata.list); 	  			// 1페이지 레코드들이 담긴 객체
-				console.log("getJSON밑의 totalCount: " + resdata.totalCount); 	// 검색조건으로 뽑힌 총 레코드 수
-				console.log("getJSON밑의 cri: " + resdata.cri); 	  			// 검색에 사용된 기준정보가 담긴 객체
+		console.log("requestRecord서확인한resdata.list.length는"+resdata.list.length);
+			console.log("list: " + resdata.list); 	  						// 페이지 하나의 레코드들이 담긴 객체
+			console.log("getJSON밑의 totalCount: " + resdata.totalCount); 	// 검색조건으로 뽑힌 총 레코드 수
+			console.log("getJSON밑의 cri: " + resdata.cri); 	  				// 검색에 사용된 기준정보가 담긴 객체
 				
-	// 			paintRecord(resdata.list); 							// 레코드들을 그리는 함수
-// 				paintPageNation(mydatalen, resdata.cri); 	// 페이지네이션을 그리는 함수
+				makeRecord(resdata.list); 							// 레코드들을 그리는 함수
 				paintPageNation(resdata.totalCount, resdata.cri); 	// 페이지네이션을 그리는 함수
 				
 			}).fail(function(xhr, status, err){
@@ -433,32 +435,33 @@ function requestRecord(){
 
 /* 받아온 레코드들 만든다 */
 function makeRecord(list){
-		$('#tddata *').remove();
-		var tabledata = "";
-		if(mydatalen==0){
-			tabledata +=	'<tr>'+
+	$('#tddata *').remove();
+		var retabledata = "";
+		console.log("list.length는"+list.length);
+		if(list.length==0){
+			retabledata +=	'<tr>'+
 								'<td colspan="5">'+'현재 선택한 영역은 재고 물품이 없습니다.'+'</td>'+
 							'</tr>';
-		}else{
-			$.each(mydata,function(i){
-					tabledata +=	'<tr>'+
-										'<td>'+(i+1)+'</td>'+
-										'<td>'+mydata[i].lot_code+'</td>'+
-										'<td><img width="100px" height="100px" src="${pageContext.request.contextPath }/resources/assets/img/item/'+mydata[i].image+'" ></td>'+
-										'<td>'+mydata[i].name+'</td>'+
-										'<td>'+mydata[i].amount+'</td>'+
-									'</tr>';
-			});
 		}
-		$("#tddata").append(tabledata);
+		else{
+			for(var i = 0, len = list.length || 0; i < len; i++){
+				retabledata +=	'<tr>'+
+									'<td>'+list[i].no+'</td>'+
+									'<td>'+list[i].lot_code+'</td>'+
+									'<td><img width="80px" height="80px" src="${pageContext.request.contextPath }/resources/assets/img/item/'+list[i].image+'" ></td>'+
+									'<td>'+list[i].name+'</td>'+
+									'<td>'+list[i].amount+'</td>'+
+								'</tr>';
+			}
+		}
+		$("#tddata").append(retabledata);
 }
 
 
 
 
 
-
-/* 두번째 모달의 페이지네이션을 그리는 함수 */
+/* 페이지네이션을 그리는 함수 */
 function paintPageNation(totalCount, cri){
 	
 	var str = ""; 
@@ -533,7 +536,7 @@ function paintPageNation(totalCount, cri){
 	
 	str += "</ul></div>";
 	
-	$("#modalPageNation").html(str);
+	$("#PageNation").html(str);
 }
 
 
