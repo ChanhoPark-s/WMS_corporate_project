@@ -9,12 +9,12 @@
 
 <style>
 .box {
-    width: 50px;
-    height: 50px; 
+    width: 45px;
+    height: 45px; 
     border-radius: 70%;
     z-index:1;
     position: fixed;
-    bottom: 50px;
+    bottom: 60px;
     right: 50px;
     cursor: pointer;
 }
@@ -22,6 +22,14 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+#chatModal{
+	min-width: 250px;
+	min-height: 400px;
+	max-width: 250px;
+	max-height: 400px;
+	height: 700px;;
+	min-height: 80%;
 }
 </style>
 
@@ -47,6 +55,41 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <!-- jQuery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<!-- 소켓 라이브러리 추가해주는 코드 -->
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.5/sockjs.min.js"></script>
+	<script type="text/javascript">
+	
+	$(function(){
+	/* 모달 드래그 가능하게 */	
+		
+	$('#msgbtn').click(function(){
+		
+	})
+	
+	$("#sendBtn").click(function() {
+			sendMessage();
+			$('#message').val('')
+		});
+	})	
+	
+		let sock = new SockJS("http://localhost:8080/echo");
+		sock.onmessage = onMessage;
+		sock.onclose = onClose;
+		// 메시지 전송 
+		function sendMessage() {
+			sock.send($("#message").val());
+		}
+		// 서버로부터 메시지를 받았을 때
+		function onMessage(msg) {
+			var data = msg.data;
+			$("#messageArea").append(data + "<br/>");
+		}
+		// 서버와 연결을 끊었을 때
+		function onClose(evt) {
+			$("#messageArea").append("연결 끊김");
+	
+		}
+</script>
 </head>
 
 <body class="preloading">
@@ -71,16 +114,6 @@
       <div class="offcanvas-body px-2 py-3 h-100" data-simplebar>
         <ul class="navbar-nav mb-4" id="mainMenu">
           <li class="nav-label px-2 small mt-3"><small>MENU</small></li>
-          
-          <li class="nav-item">
-            <a class="nav-link px-2 d-flex align-items-center gap-3" href="chat.html">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-              </svg>
-              <span>쪽지</span>
-              <span class="badge rounded-pill ms-auto">3</span>
-            </a>
-          </li>
           <li class="nav-item">
             <a class="nav-link px-2 d-flex align-items-center gap-3 dropdown-toggle" href="#dashboard-collapse" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="dashboard-collapse">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -181,19 +214,6 @@
                 <li class="nav-item"><a class="nav-link" href="/sell/origin/list">출고정보</a></li>
               </ul>
             </div>
-          <li class="nav-item">
-            <a class="nav-link px-2 d-flex align-items-center gap-3 dropdown-toggle" href="#out-process-collapse" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="dashboard-collapse">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="24px" height="30px" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.3" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-              <span class="me-auto">채팅</span>
-            </a>
-            <div class="ms-5 collapse" id="out-process-collapse" data-bs-parent="#mainMenu">
-              <ul class="navbar-nav">
-                <li class="nav-item"><a class="nav-link" href="/chat">채팅</a></li>
-              </ul>
-            </div>
-          </li>
         </ul>
       </div>
     </div>
@@ -321,13 +341,40 @@
         </nav>
       </div>
       <!-- /Main header -->
-			<div class="box" style="background:#6610f2;">
-				<img alt="chatting" src="/resources/assets/img/chat.png">
-			</div>
-
+				<img class="box" alt="chatting" id="msgbtn" src="/resources/assets/img/chat.png" data-bs-toggle="modal" data-bs-target="#chatModal">
 			<!-- Main body -->
+		<!-- Modal 코드 넣을 위치 -->
+<!-- Add user modal -->
+<div class="modal fade" tabindex="-1" id="chatModal">
+	<div class="modal-dialog modal-dialog-scrollable">
+		<div class="modal-content">
+			<div class="modal-header border-0" >
+				<h5 id="modal-title"></h5>
+				<button type="button" class="btn-close btn-light" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			
+			<div class="modal-body">
+			<div class="popover-body">
+                    How can we help? We're here for you! 😄
+                    <time>10:04</time>
+                    <svg width="14" height="14" class="check-icon text-info" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                  </div>
+				<input type="text" id="message" />
+				<input type="button" id="sendBtn" value="submit"/>
+				<div id="messageArea"></div>
+			</div>
+			<div class="modal-footer border-0">
+				<button type="button" form="taskForm" class="btn btn-primary px-5"></button>
+			</div>
+		</div>
+	</div>
+</div>	
+			
+			
       <div id="main-body">
-
+      
 
           
         
