@@ -1,3 +1,4 @@
+<%@page import="com.spring.domain.MemberVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 	
@@ -25,8 +26,6 @@
 	max-height: 350px;
 	max-width: 300px;
 }
-
-
 * {
     padding: 0;
     margin: 0;
@@ -101,6 +100,14 @@ a {
   padding-left: 10px;
   background-color: rgb(233, 233, 233);
 }
+
+.lnamed{
+	font-size: 4px; 
+	display: block;
+}
+.time{
+	font-size: 4px; 
+}
 </style>
 
 <!DOCTYPE html>
@@ -129,56 +136,73 @@ a {
 	<script type="text/javascript">
 	
 	$(function(){
-	/* 모달 드래그 가능하게 */	
-	
+		var msgbtn;
+		
 		$('#msgbtn').click(function(){
+			
+			/* 모달 띄울시 투명도x */
+			$('.modal-backdrop.show').css('opacity','0');
+			/* 모달 띄어도 뒤에 클릭되게 */
+			$('.modal-backdrop').css('position','unset');
+			/* 모달 띄어도 배경 스크롤 되도록  */
+			document.body.style= 'overflow: auto';
+			
+			$("#messageArea").html("");
 			$.getJSON("/chat/getAll", 
 	 			function(c){
 					for(i=0;i<c.length;i++){
-						
+						if(c[i].member_id!='<%=(String)session.getAttribute("id")%>'){
+							$("#messageArea").append(
+								"<div class='chat ch1'>"+
+				            	 "<div class='lnamed'>"+c[i].member_name+"</div><div class='textbox'>"+c[i].content+"</div></div>");
+						}
+						else{
+							$("#messageArea").append(
+							 "<div class='chat ch2'>"+
+					            "<div class='textbox'>"+c[i].content+"</div></div>");
+						}
 					}
 	 			}).fail(function(xhr, status, err){
 	 					alert("데이터 조회실패");
 	 			});	
-			
 		})
-	
-		$("#sendBtn").keypress(function(e){
+		/* 엔터가 눌리면 되게하는법 */
+		$("#chatModal").keypress(function(e){
+			
 			if(e.keyCode===13){
-				sendMessage();
-				$('#message').val('')
+				send();
 			}
 		})
 		$("#sendBtn").click(function() {
-		
-		$.ajax({
-			url : "/chat/insert ",
-			type : "post",
-			data : {  
-			content : $('#message').val()
-			}
-		})//ajax
-			
-			sendMessage();
-			$('#message').val('')
+			send();
 		});
 	})	
-	
+		/* 웹소켓이랑 연결  */
 		let sock = new SockJS("http://localhost:8080/echo");
 		sock.onmessage = onMessage;
 		sock.onclose = onClose;
-		// 메시지 전송 
+		
+		// 메시지 전송 소켓으로 
 		function sendMessage() {
-			sock.send($("#message").val());
+			/* 채팅방에 보여줄때 내가 보낸건지 다른 사람이 보낸건지 확인하기 위해 id를 함께 보내준다.  */
+			sock.send($("#message").val()+"/"+'<%=(String)session.getAttribute("id")%>'+"/"+'<%=(String)session.getAttribute("name")%>');
 			$('#scroll').scrollTop($('#scroll')[0].scrollHeight);
 		}
 		// 서버로부터 메시지를 받았을 때
 		function onMessage(msg) {
 			var data = msg.data;
-			$("#messageArea").append(
-				"<div class='chat ch2'>"+
-	            "<div class='textbox'>"+data+"</div>"+
-		        "</div><br>");
+			/* 아이디를 확인해서 왼쪽 오른쪽 구분해야하기 때문 */
+			var answer = data.split("/");
+			if(answer[1]!='<%=(String)session.getAttribute("id")%>'){
+				$("#messageArea").append(
+					"<div class='chat ch1'>"+
+					"<div class='lnamed'>"+answer[2]+"</div><div class='textbox'>"+answer[0]+"</div><br>");
+			}
+			else{
+				$("#messageArea").append(
+					"<div class='chat ch2'>"+
+		            "<div class='textbox'>"+answer[0]+"</div></div><br>");
+			}
 			$('#scroll').scrollTop($('#scroll')[0].scrollHeight);
 		}
 		// 서버와 연결을 끊었을 때
@@ -186,15 +210,25 @@ a {
 			$("#messageArea").append("연결 끊김");
 	
 		}
+		
+		function send(){
+			$.ajax({
+				url : "/chat/insert ",
+				type : "post",
+				data : {  
+				content : $('#message').val()
+				}
+			})//ajax
+			sendMessage();
+			$('#message').val('')
+		}
 </script>
 </head>
-
 <body class="preloading">
 
   <!-- Wrapper -->
   <div id="wrapper" class="fixed-sidebar fixed-navbar">
     <!-- available options: fixed-sidebar, fixed-navbar, fixed-footer, mini-sidebar -->
-
     <!-- 메뉴 사이드바 파트(링크 추가시 여기 수정하세요.) -->
     <div class="offcanvas offcanvas-start navbar-dark text-nowrap" tabindex="-1" id="sidebar" aria-label="sidebar">
 
@@ -450,14 +484,7 @@ a {
 		<div class="modal-content">
 			<div class="modal-body" id="scroll">
 			<!-- 여기부터-->
-				 <div class="wrap" id="messageArea">
-			        <div class="chat ch1">
-			            <div class="textbox">안녕하세요. 반갑습니다.</div>
-			        </div>
-			        <div class="chat ch2">
-			            <div class="textbox">아유~ 너무요너무요! 요즘 어떻게 지내세요?</div>
-			        </div>
-   				 </div>
+				 <div class="wrap" id="messageArea"></div>
 			<!-- 여기까지 -->
 			</div>
 			<div class="modal-footer border-0">

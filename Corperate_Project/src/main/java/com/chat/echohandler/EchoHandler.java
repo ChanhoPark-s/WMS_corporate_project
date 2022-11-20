@@ -13,14 +13,12 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import com.spring.service.ChatService;
+import com.spring.service.MemberService;
 
 @RequestMapping("/echo")
 public class EchoHandler extends TextWebSocketHandler{
-
 	//세션 리스트
     private List<WebSocketSession> sessionList = new ArrayList<WebSocketSession>();
-
-    private static Logger logger = LoggerFactory.getLogger(EchoHandler.class);
 
     //클라이언트가 연결 되었을 때 실행
     @Override
@@ -31,7 +29,7 @@ public class EchoHandler extends TextWebSocketHandler{
     //클라이언트가 웹소켓 서버로 메시지를 전송했을 때 실행
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        //모든 유저에게 메세지 출력
+    	//모든 유저에게 메세지 출력
         for(WebSocketSession sess : sessionList){
             sess.sendMessage(new TextMessage(message.getPayload()));
         }
