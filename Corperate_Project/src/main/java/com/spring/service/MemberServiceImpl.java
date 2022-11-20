@@ -81,4 +81,9 @@ public class MemberServiceImpl implements MemberService{
 		
 		return pageDTO;
 	}
+
+	@Override
+	public MemberVO getAllById(String id) {
+		return mapper.getAllById(id);
+	}
 }

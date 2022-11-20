@@ -1,4 +1,4 @@
-package com.spring.echohandler;
+package com.chat.echohandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +17,6 @@ import com.spring.service.ChatService;
 @RequestMapping("/echo")
 public class EchoHandler extends TextWebSocketHandler{
 
-	@Autowired
-	private ChatService service;
-	
 	//세션 리스트
     private List<WebSocketSession> sessionList = new ArrayList<WebSocketSession>();
 

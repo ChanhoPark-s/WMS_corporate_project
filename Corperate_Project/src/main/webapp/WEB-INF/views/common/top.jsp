@@ -18,18 +18,88 @@
     right: 50px;
     cursor: pointer;
 }
-.profile {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
+
 #chatModal{
-	min-width: 250px;
-	min-height: 400px;
-	max-width: 250px;
-	max-height: 400px;
-	height: 700px;;
-	min-height: 80%;
+	top:470px;
+	left:1570px;
+	max-height: 350px;
+	max-width: 300px;
+}
+
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+}
+
+.wrap {
+    background-color: #FFF;
+}
+
+.wrap .chat {
+    display: flex;
+    align-items: flex-start;
+}
+
+
+.wrap .chat .textbox {
+    position: relative;
+    display: inline-block;
+    max-width: calc(100% - 70px);
+    padding: 8px;
+    margin-top: 7px;
+    font-size: 11px;
+    border-radius: 10px;
+    color: white;
+}
+
+.wrap .chat .textbox::before {
+    position: absolute;
+    display: block;
+    top: 0;
+    font-size: 1.5rem;
+}
+
+.wrap .ch1 .textbox {
+    margin-left: 20px;
+    background-color: #1f2937;
+}
+
+.wrap .ch1 .textbox::before {
+    left: -15px;
+    content: "◀";
+    color:#1f2937;
+}
+
+.wrap .ch2 {
+    flex-direction: row-reverse;
+}
+
+.wrap .ch2 .textbox {
+    margin-right: 20px;
+    background-color: #5457cd;
+    color: white;
+}
+
+.wrap .ch2 .textbox::before {
+    right: -15px;
+    content: "▶";
+    color: #5457cd;
+}
+#message{
+  width: 220px;
+  height: 32px;
+  font-size: 12px;
+  border: 0;
+  border-radius: 15px;
+  outline: none;
+  padding-left: 10px;
+  background-color: rgb(233, 233, 233);
 }
 </style>
 
@@ -52,7 +122,6 @@
   
   <!-- Fontawesome icon -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <!-- jQuery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<!-- 소켓 라이브러리 추가해주는 코드 -->
@@ -61,12 +130,35 @@
 	
 	$(function(){
 	/* 모달 드래그 가능하게 */	
-		
-	$('#msgbtn').click(function(){
-		
-	})
 	
-	$("#sendBtn").click(function() {
+		$('#msgbtn').click(function(){
+			$.getJSON("/chat/getAll", 
+	 			function(c){
+					for(i=0;i<c.length;i++){
+						
+					}
+	 			}).fail(function(xhr, status, err){
+	 					alert("데이터 조회실패");
+	 			});	
+			
+		})
+	
+		$("#sendBtn").keypress(function(e){
+			if(e.keyCode===13){
+				sendMessage();
+				$('#message').val('')
+			}
+		})
+		$("#sendBtn").click(function() {
+		
+		$.ajax({
+			url : "/chat/insert ",
+			type : "post",
+			data : {  
+			content : $('#message').val()
+			}
+		})//ajax
+			
 			sendMessage();
 			$('#message').val('')
 		});
@@ -78,11 +170,16 @@
 		// 메시지 전송 
 		function sendMessage() {
 			sock.send($("#message").val());
+			$('#scroll').scrollTop($('#scroll')[0].scrollHeight);
 		}
 		// 서버로부터 메시지를 받았을 때
 		function onMessage(msg) {
 			var data = msg.data;
-			$("#messageArea").append(data + "<br/>");
+			$("#messageArea").append(
+				"<div class='chat ch2'>"+
+	            "<div class='textbox'>"+data+"</div>"+
+		        "</div><br>");
+			$('#scroll').scrollTop($('#scroll')[0].scrollHeight);
 		}
 		// 서버와 연결을 끊었을 때
 		function onClose(evt) {
@@ -343,30 +440,29 @@
       <!-- /Main header -->
 				<img class="box" alt="chatting" id="msgbtn" src="/resources/assets/img/chat.png" data-bs-toggle="modal" data-bs-target="#chatModal">
 			<!-- Main body -->
+		
+		
+		
 		<!-- Modal 코드 넣을 위치 -->
 <!-- Add user modal -->
 <div class="modal fade" tabindex="-1" id="chatModal">
-	<div class="modal-dialog modal-dialog-scrollable">
+	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 		<div class="modal-content">
-			<div class="modal-header border-0" >
-				<h5 id="modal-title"></h5>
-				<button type="button" class="btn-close btn-light" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			
-			<div class="modal-body">
-			<div class="popover-body">
-                    How can we help? We're here for you! 😄
-                    <time>10:04</time>
-                    <svg width="14" height="14" class="check-icon text-info" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                    </svg>
-                  </div>
-				<input type="text" id="message" />
-				<input type="button" id="sendBtn" value="submit"/>
-				<div id="messageArea"></div>
+			<div class="modal-body" id="scroll">
+			<!-- 여기부터-->
+				 <div class="wrap" id="messageArea">
+			        <div class="chat ch1">
+			            <div class="textbox">안녕하세요. 반갑습니다.</div>
+			        </div>
+			        <div class="chat ch2">
+			            <div class="textbox">아유~ 너무요너무요! 요즘 어떻게 지내세요?</div>
+			        </div>
+   				 </div>
+			<!-- 여기까지 -->
 			</div>
 			<div class="modal-footer border-0">
-				<button type="button" form="taskForm" class="btn btn-primary px-5"></button>
+				<input type="text" id="message" />
+				<img src="/resources/assets/img/send.png" width="20px;" height="20px;" id="sendBtn" style="cursor: pointer;" >
 			</div>
 		</div>
 	</div>

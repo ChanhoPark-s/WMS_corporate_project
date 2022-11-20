@@ -26,4 +26,6 @@ public interface MemberMapper {			// 게시물 조회
 	/* ajax paging */
 	public List<MemberVO> getListWithPaging(@Param("cri") Criteria cri);
 	public int getCountAll(@Param("cri") Criteria cri);
+
+	public MemberVO getAllById(String id);
 }

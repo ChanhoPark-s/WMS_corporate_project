@@ -17,7 +17,7 @@
 		<websocket:sockjs />
 	</websocket:handlers>
     
-	<beans:bean id="echoHandler" class="com.spring.echohandler.EchoHandler"></beans:bean>
+	<beans:bean id="echoHandler" class="com.chat.echohandler.EchoHandler"></beans:bean>
 	
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">

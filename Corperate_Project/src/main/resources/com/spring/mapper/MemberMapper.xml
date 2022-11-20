@@ -87,4 +87,8 @@
 		<if test="cri.whatColumn=='rank' and cri.keyword != null"> and rank_name like '%' ||  #{cri.keyword} || '%' </if>	
 		<if test="cri.whatColumn=='name' and cri.keyword != null"> and name like '%' ||  #{cri.keyword} || '%' </if>
 	</select>
+	
+	<select id="getAllById" resultType="com.spring.domain.MemberVO" parameterType="string">
+		select * from member where id = #{id}
+	</select>
 </mapper>

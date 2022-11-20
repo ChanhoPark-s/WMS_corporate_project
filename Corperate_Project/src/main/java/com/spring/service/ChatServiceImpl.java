@@ -18,17 +18,14 @@ public class ChatServiceImpl implements ChatService{
 	private ChatMapper mapper;
 
 	@Override
-	public int insertMsg(ChatVO chatVo) {
-		return mapper.insertMsg(chatVo);
+	public int insertChat(ChatVO chatvo) {
+		return mapper.insertChat(chatvo);
 	}
 
 	@Override
-	public ArrayList<ChatVO> getAllMsg() {
-		return mapper.getAllMsg();
+	public ArrayList<ChatVO> getAllContent() {
+		return mapper.getAllContent();
 	}
-	
-	
-	
 
 	
 }

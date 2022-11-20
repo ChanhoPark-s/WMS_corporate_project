@@ -25,4 +25,6 @@ public interface MemberService {
 	
 	/* ajax paging */
 	public PageDTO<MemberVO> getListPage(Criteria cri);
+
+	public MemberVO getAllById(String id);
 }
