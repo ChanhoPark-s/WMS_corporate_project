@@ -81,4 +81,9 @@ public class MemberServiceImpl implements MemberService{
 		
 		return pageDTO;
 	}
+
+	@Override
+	public MemberVO getMemberByNo(int no) {
+		return mapper.selectOneByNo(no);
+	}
 }

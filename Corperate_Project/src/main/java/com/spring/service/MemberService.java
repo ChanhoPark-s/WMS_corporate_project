@@ -16,6 +16,8 @@ public interface MemberService {
    public List<MemberVO> list();
 
    public MemberVO get(int no);
+   
+   public MemberVO getMemberByNo(int no);
 
    public void update(MemberVO member, HttpServletRequest request) throws Exception;
 

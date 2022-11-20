@@ -12,8 +12,10 @@ public class MemberVO {
 	private String pw;
 	private String name;
 	private int dep_no;
+	private String dep_code;
 	private String dep_name;
 	private int rank_no;
+	private String rank_code;
 	private String rank_name;
 	private String email;
 	private MultipartFile image;

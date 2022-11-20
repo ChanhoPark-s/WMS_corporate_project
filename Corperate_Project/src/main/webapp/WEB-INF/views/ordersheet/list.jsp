@@ -134,7 +134,7 @@ table td {
 							</td>
 							<td>
 								<div class="btn-group btn-group-sm" role="group">
-									<button type="button" class="btn btn-light d-flex">
+									<button type="button" class="btn btn-light d-flex editBtn" data-bs-toggle="modal" data-bs-target="#addOrderSheetModal">
 										<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
 											fill="none" viewBox="0 0 24 24" stroke="currentColor"
 											aria-hidden="true">
@@ -198,8 +198,10 @@ table td {
 						<th scope="col" style="display:none">상세번호</th>
 						<th scope="col" style="display:none">수주서번호</th>
 						<th scope="col"></th>
+						<th scope="col" style="display:none">품목번호</th>
 						<th scope="col">품목코드</th>
 						<th scope="col">품목명</th>
+						<th scope="col">취급처</th>
 						<th scope="col">개수</th>
 						<th scope="col">단가</th>
 						<th scope="col">합계</th>
@@ -394,9 +396,7 @@ table td {
 
 	/* 첫번째 모달 이 뜰 때 모달 초기화 */
 	$("#addOrderSheet").on("click", function(e){
-		
-		//$(this).find('form')[0].reset();
-		
+
 		// 납기일자 초기화
 		$("input[name='out_day']").val("");
 		
@@ -413,6 +413,8 @@ table td {
 		// 품목 상세 정보 초기화
 		$("#modalItemDetail").empty();
 		addRowItemDetail();
+		
+		$("#modal-title").text("수주서 등록");
 	});
 	
 	/* 첫번째 모달에서 담당자 선택이 눌렸을 때 이동한 두번째 모달창에서 데이터를 요청하고 관련 화면을 그리는 부분 */
@@ -812,11 +814,11 @@ table td {
 	});
 </script>
 
-<!-- 리스트 화면에서 클릭시 아래 Detail 레코드들을 가져와 뿌려주는 코드 -->
+<!-- 메인화면 상단 동작관련 코드 -->
 <script type="text/javascript">
 	$(function(){
 		
-		/* 비동기로 하단의 상세품목을 불러와 출력해주는 부분 */
+		/* 리스트 화면에서 클릭시 아래 Detail 레코드들을 가져와 뿌려주는 코드 */
 		$("#table1 tbody tr").on("click", function(){
 			// 클릭된 수주서의 no 번호
 			var clickedMainNo = $(this).children("td")[0].innerHTML;
@@ -840,9 +842,11 @@ table td {
 						
 						str += "<td><i class='fa-solid fa-gift'></i></td>";
 						
+						str += "<td style='display:none'>" + list[i].item_no + "</td>";
 						str += "<td>" + list[i].item_code + "</td>";
 						str += "<td>" + list[i].item_name + "</td>";
-						str += "<td>" + list[i].amount + "</td>";
+						str += "<td>" + list[i].client_name + "</td>";
+						str += "<td>" + list[i].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " 개</td>";
 						str += "<td>" + list[i].out_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " 원</td>";
 						str += "<td>" + (list[i].amount * list[i].out_price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " 원</td>";
 						str += "</tr>";
@@ -853,10 +857,69 @@ table td {
 	 			}).fail(function(xhr, status, err){
 	 					alert("데이터 조회실패");
 	 			});
-			
-			
 		});
 		
+		/* 수정버튼이 눌렸을 때 처리 */
+		$(".editBtn").on("click", function(){
+			// 납기일자 초기화
+			$("input[name='out_day']").val("");
+			
+			// 담당자 정보 초기화
+			$("input[name='member_no']").val("");
+			$("#member_dep_name").val("");
+			$("#member_name").val("");
+			
+			// 거래처 정보 초기화
+			$("input[name='client_no']").val("");
+			$("#client_code").val("");
+			$("#client_name").val("");
+			
+			// 품목 상세 정보 초기화
+			$("#modalItemDetail").empty();
+			addRowItemDetail();
+			
+			$("#modal-title").text("수주서 수정");
+			
+			var mainNo = $(this).parent().parent().parent().children("td").eq(0).text();
+			
+			//1. mainNo를 가지고 OrderSheetVO 1줄의 레코드를 가져온다.
+			console.log("요청url : " + "/ordersheet/" + mainNo);
+			$.getJSON("/ordersheet/" + mainNo,  
+	 			function(obj){
+					console.log("obj: " + obj);
+							
+					// 납기일자 입력
+					$("input[name='out_day']").val(obj.out_day);
+					
+					// 담당자 정보 채워넣기
+					$("input[name='member_no']").val(obj.member_no);
+					$("#member_dep_name").val(obj.dep_name);
+					$("#member_name").val(obj.member_name);
+					
+					// 거래처 정보 채워넣기
+					$("input[name='client_no']").val(obj.client_no);
+					$("#client_code").val(obj.client_code);
+					$("#client_name").val(obj.client_name);
+					
+	 			}).fail(function(xhr, status, err){
+	 					alert("데이터 조회실패");
+	 			});
+			
+			/* console.log("요청url : " + "/basicinfo/member/" + mainNo);
+			$.getJSON("/basicinfo/member/" + mainNo,  
+	 			function(obj){
+					console.log("obj: " + obj);
+					alert(obj.name);					
+	 				
+	 			}).fail(function(xhr, status, err){
+	 					alert("데이터 조회실패");
+	 			}); */
+			
+			
+			//2. member_no로 1줄의 레코드를 요청한다.
+			
+			//3. client_no로 1줄의 레코드를 요청한다. 
+		});
 		
 	});
 </script>

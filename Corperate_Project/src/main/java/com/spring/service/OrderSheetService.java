@@ -14,4 +14,5 @@ public interface OrderSheetService {
 	public List<OrderSheetVO> getListByPaging(Client_Paging pageInfo); // 모든 레코드에서 페이징 한 레코드를 가져오는 메소드
 	public int getTotalCount(SearchVO searchvo);
 	public List<OrderSheetDetailVO> getSubList(int mainNo);		// 수주서 번호로 품목 디테일들 모두 가져오는 것	
+	public OrderSheetVO selectOneByMainNo(int no);
 }

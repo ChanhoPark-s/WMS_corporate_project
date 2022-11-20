@@ -26,6 +26,18 @@
 		where no = #{no}
 	</select>
 	
+	<!-- 한번에 모든 정보를 가져올 수 있도록 한 get 업그레이드 버전 -->
+	<select id="selectOneByNo" resultType="com.spring.domain.MemberVO">
+		select no, id, pw, name, dep_no, dep_code, dep_name, rank_no, rank_code, rank_name, email, filename, reg_date 
+		from(select m.no, m.id, m.pw, m.name, d.no dep_no, d.code dep_code, d.name as dep_name, r.no rank_no, r.code rank_code, r.name as rank_name, m.email, m.image as fileName, to_char(to_date(reg_date), 'yyyy.MM.dd') as reg_date
+			from member m inner join department d
+			on m.dep_no = d.no
+			inner join rank r
+			on m.rank_no = r.no
+	        where m.no = #{no})
+	</select>
+	
+	
 	<update id="update">
 		update member set id = #{id}, pw = #{pw}, name = #{name}, email = #{email}, dep_no = #{dep_no}, rank_no = #{rank_no}
 		<if test="fileName != null">
