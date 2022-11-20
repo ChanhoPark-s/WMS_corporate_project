@@ -64,8 +64,12 @@ public class ItemController {
 	
 	//등록
 	@PostMapping(value="/insert")
-	public String insert(Model model, ItemVO vo) throws Exception {
+	public String insert(Model model, ItemVO vo) throws Exception{
 		service.insert(vo);
+		System.out.println("코드"+vo.getCode());
+		System.out.println("이미지"+vo.getImage());
+		System.out.println("입고가"+vo.getIn_price());
+		System.out.println("품목"+vo.getName());
 		return "redirect:/basicinfo/item/list";
 	}
 	

@@ -43,15 +43,15 @@ public class ItemServiceImpl implements ItemService{
 		MultipartFile multi = vo.getUpload();
 		if(!multi.isEmpty()) {
 			String ofn = multi.getOriginalFilename();
-			System.out.println(multi.getOriginalFilename());
+			System.out.println("파일위치"+multi.getOriginalFilename());
 			File uf = new File(uploadPath, ofn);
 			multi.transferTo(uf);
 			vo.setImage(multi.getOriginalFilename());
 		}
-		System.out.println(vo.getCode());
-		System.out.println(vo.getImage());
-		System.out.println(vo.getIn_price());
-		System.out.println(vo.getName());
+		System.out.println("코드"+vo.getCode());
+		System.out.println("이미지"+vo.getImage());
+		System.out.println("입고가"+vo.getIn_price());
+		System.out.println("품목"+vo.getName());
 		mapper.insert(vo);
 	}
 
@@ -68,6 +68,19 @@ public class ItemServiceImpl implements ItemService{
 
 	@Override
 	public void update(ItemVO vo) throws Exception {
+		String deletePath = servletContext.getRealPath("/resources/assets/img/item/"); // 실제 이미지 파일이 들어있는 경로
+		File deletefile = new File(deletePath + vo.getImage()); // 기존 이미지 삭제
+		
+		System.out.println("이미지 파일 경로 : " + deletePath);
+		if (deletefile.exists()) {
+			if (deletefile.delete()) {
+				System.out.println("이미지 삭제 성공");
+			} else {
+				System.out.println("이미지 삭제 실패");
+			}
+		} else {
+			System.out.println("이미지 파일이 존재하지 않음");
+		}
 		
 		String uploadPath = servletContext.getRealPath("/resources/assets/img/item/");
 		System.out.println(uploadPath);
