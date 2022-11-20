@@ -85,4 +85,10 @@
 		<if test="cri.whatColumn=='client_name' and cri.keyword != null"> and client_name like '%' ||  #{cri.keyword} || '%' </if>
 		
 	</select>
+	
+	
+	<select id="getPrice" resultType="int">
+	select out_price from item where no = #{no}
+	
+	</select>
 </mapper>

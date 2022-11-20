@@ -100,4 +100,12 @@ public class ItemController {
 		public String code_check(@RequestParam("code") String code) throws Exception{
 			return String.valueOf(service.code_check(code));
 		}
+	
+	// 판매에서 품목 단가 불러오기
+	@ResponseBody
+	@PostMapping(value="/getPrice", produces = "application/json; charset=utf8")
+	public String getPrice(Model model, @RequestParam("itemNo") int no) {
+		return  new Gson().toJson(service.getPrice(no));
+	
+	}
 }

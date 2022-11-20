@@ -20,4 +20,7 @@ public interface ItemService {
 	
 	/* ajax paging */
 	public PageDTO<ItemVO> getListPage(Criteria cri);
+
+	/* 판매 페이지 ajax */
+	public int getPrice(int no);
  }
