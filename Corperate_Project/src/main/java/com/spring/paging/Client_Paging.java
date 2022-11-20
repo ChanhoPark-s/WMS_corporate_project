@@ -89,7 +89,7 @@ public class Client_Paging {
 		String result = "" ;
 		String added_param = "&whatColumn=" + whatColumn + "&keyword=" + keyword; 
 		
-		result += "<ul class='pagination pull-right' align='center'>";
+		result += "<ul class='pagination pagination-borderless justify-content-end' align='center'>";
 		result += "<li class='page-item'>";
 		
 		if (this.beginPage != 1) { // 앞쪽, pageSize:한 화면에 보이는 레코드 수
