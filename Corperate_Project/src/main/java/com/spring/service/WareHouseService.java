@@ -3,6 +3,7 @@ package com.spring.service;
 import java.util.List;
 
 import com.spring.domain.WareHouseAllAreaVO;
+import com.spring.domain.WareHouseMovementVO;
 import com.spring.domain.WareHouseVO;
 
 public interface WareHouseService {

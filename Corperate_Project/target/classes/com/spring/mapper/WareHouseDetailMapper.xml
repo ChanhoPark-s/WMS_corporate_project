@@ -54,4 +54,127 @@ where
     and wd.rack_no = #{rack_no}
     and wd.cell_no = #{cell_no}
 </select>
+
+<select id="getCountAll" resultType="int">
+select
+    count(*)
+from
+    warehouse_detail wd, item i
+where
+    wd.item_no = i.no
+	and wd.ware_no = #{ware_no}
+    and wd.area_no = #{area_no}
+    and wd.rack_no = #{rack_no}
+    and wd.cell_no = #{cell_no}
+order by 1
+<if test="pageNum != 0 and amount != 0">
+	offset (#{pageNum } - 1) * #{amount} rows fetch next #{amount} rows only
+</if>
+</select>
+<select id="getListWithPaging" resultType="com.spring.domain.WareHouseDetailVO">
+select
+	wd.no, wd.lot_code, wd.amount, wd.ordered_amount, wd.item_no,
+    wd.ware_no, wd.area_no, wd.rack_no, wd.cell_no,
+    w.name ware_name, a.name area_name, r.name rack_name, c.name cell_name,
+    i.no i_no, i.code, i.name, i.in_price, i.out_price, i.image
+from
+    warehouse_detail wd, item i, warehouse w, area a, rack r, cell c
+where
+    wd.item_no = i.no
+    and wd.ware_no = w.no
+    and wd.area_no = a.no
+    and wd.rack_no = r.no
+    and wd.cell_no = c.no
+	and wd.ware_no = #{ware_no}
+    and wd.area_no = #{area_no}
+    and wd.rack_no = #{rack_no}
+    and wd.cell_no = #{cell_no}
+order by 1
+<if test="pageNum != 0 and amount != 0">
+	offset (#{pageNum } - 1) * #{amount} rows fetch next #{amount} rows only
+</if>
+</select>
+<select id="getWare" resultType="com.spring.domain.WareHouseDetailVO">
+select
+    w.no ware_no, a.no area_no, r.no rack_no, c.no cell_no,
+    w.name ware_name, a.name area_name, r.name rack_name, c.name cell_name
+from
+    warehouse w, area a, rack r, cell c
+where
+    a.ware_no = w.no
+    and r.area_no = a.no
+    and c.rack_no = r.no
+	and w.no = #{ware_no}
+    and a.no = #{area_no}
+    and r.no = #{rack_no}
+    and c.no = #{cell_no}
+</select>
+<select id="update">
+declare
+    v_count number := 0;
+    v_item_no Item.no%TYPE;
+begin
+    select
+        count(*) into v_count
+    from
+        warehouse_detail
+    where
+        ware_no = #{ware2, jdbcType=INTEGER}
+        and area_no = #{area2, jdbcType=INTEGER}
+        and rack_no = #{rack2, jdbcType=INTEGER}
+        and cell_no = #{cell2, jdbcType=INTEGER}
+        and lot_code = #{lot_code, jdbcType=VARCHAR};
+        
+    select item.no into v_item_no
+    from item, lot
+    where item.no = lot.item_no
+    and lot.code = #{lot_code, jdbcType=VARCHAR};
+        
+    if v_count = 0 then
+        insert into warehouse_detail
+        values (warehouse_detail_seq.nextval, #{lot_code, jdbcType=VARCHAR}, #{qty, jdbcType=INTEGER}, null, v_item_no, #{ware2, jdbcType=INTEGER}, #{area2, jdbcType=INTEGER}, #{rack2, jdbcType=INTEGER}, #{cell2, jdbcType=INTEGER});
+	else
+	
+		-- 개수 추가 업데이트
+        update
+            warehouse_detail
+        set
+            amount = amount + #{qty, jdbcType=INTEGER}
+        where
+            ware_no = #{ware2, jdbcType=INTEGER}
+            and area_no = #{rack2, jdbcType=INTEGER}
+            and rack_no = #{rack2, jdbcType=INTEGER}
+            and cell_no = #{cell2, jdbcType=INTEGER}
+            and lot_code = #{lot_code, jdbcType=VARCHAR};
+            
+    end if;
+    
+    -- 개수 삭제 업데이트
+    update
+        warehouse_detail
+    set
+        amount = amount - #{qty, jdbcType=INTEGER}
+    where
+        ware_no = #{ware1, jdbcType=INTEGER}
+        and area_no = #{rack1, jdbcType=INTEGER}
+        and rack_no = #{rack1, jdbcType=INTEGER}
+        and cell_no = #{cell1, jdbcType=INTEGER}
+        and lot_code = #{lot_code, jdbcType=VARCHAR};
+        
+    
+    -- 아이템 이동 히스토리
+    insert into item_movement_history
+    values (item_movement_history_seq.nextval, #{lot_code, jdbcType=VARCHAR}, v_item_no, #{qty, jdbcType=INTEGER}, sysdate, #{rack1, jdbcType=INTEGER}, #{rack1, jdbcType=INTEGER}, #{rack1, jdbcType=INTEGER}, #{cell1, jdbcType=INTEGER},
+    #{ware2, jdbcType=INTEGER}, #{rack2, jdbcType=INTEGER}, #{rack2, jdbcType=INTEGER}, #{cell2, jdbcType=INTEGER});
+    
+end;
+</select>
+<select id="itemMovement" resultType="com.spring.domain.WareHouseMovementVO">
+	select h.no, h.lot_no lot_code, i.name item_name, h.amount qty, w1.name ware1, w2.name ware2, h.day
+	from item_movement_history h, item i, warehouse w1, warehouse w2
+	where h.item_no = i.no
+	and h.pr_ware_no = w1.no
+	and h.ware_no = w2.no
+	order by 1 desc
+</select>
 </mapper>

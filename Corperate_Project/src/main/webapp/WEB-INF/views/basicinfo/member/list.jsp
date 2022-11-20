@@ -1,39 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 pageEncoding="UTF-8"%>
 <!-- top.jsp -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
-<style>
-.btn_search{
-  cursor : pointer;
-  position : absolute;
-  right : 7px;
-  top : 50%;
-  transform : translatey(-50%);
-}
-#search{
-  position : relative;
-}
-</style>
-
 <%@include file="/WEB-INF/views/common/top.jsp" %>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
-<style>
-.btn_search{
-  cursor : pointer;
-  position : absolute;
-  right : 7px;
-  top : 50%;
-  transform : translatey(-50%);
-}
-#search{
-  position : relative;
-}
-</style>
-
         <div class="card">
           <div class="card-body">
             <div class="d-flex gap-1 mb-4 flex-wrap">
@@ -45,7 +15,7 @@ pageEncoding="UTF-8"%>
                   사원등록
                 </button>
               </div>
-              			<div class="search">
+       		<div class="search">
 			<form name="search" action="/basicinfo/member/list" id="search">
 			<table>
 			<tr>
@@ -71,7 +41,7 @@ pageEncoding="UTF-8"%>
 				</td>
 			</tr>	
 			</table>
-				</form>
+			</form>
 			</div>
             </div>
             <div class="table-responsive my-1">
@@ -342,7 +312,7 @@ pageEncoding="UTF-8"%>
     		return json;
     	}
     	
-    	// 사원 삭제 (delete_from에 hidden으로 삭제할 사원의 번호를 넣어줌)
+    	// 사원 삭제
     	const del = document.querySelectorAll('.delete');
     	
     	del.forEach((elem)=> {
@@ -351,8 +321,12 @@ pageEncoding="UTF-8"%>
     			let target = event.target;
 				target = target.nodeName == 'BUTTON' ? target : target.nodeName == 'svg' ? target.parentElement : target.parentElement.parentElement;
     			
-    			const no = target.dataset.no;		
-        		delete_from.action = 'delete/' + no;
+    			const no = target.dataset.no;	
+    			
+    			
+    			const search = getSearch();
+    			console.log(search.pageNumber);
+        		delete_from.action = 'delete/' + no + window.location.search;
     		});
     	});
     	
@@ -374,6 +348,21 @@ pageEncoding="UTF-8"%>
     			target.classList.remove('is-invalid');
     		}
     	});
+    	
+    	function getSearch() {
+    		const search = window.location.search;
+    		const pageNumber = search.match(/pageNumber=(\w*)(?=&)/) && search.match(/pageNumber=(\w*)(?=&)/)[1] || null;
+    		const pageSize = search.match(/pageSize=(\w*)(?=&)/) && search.match(/pageSize=(\w*)(?=&)/)[1] || null;
+    		const whatColumn = search.match(/whatColumn=(.*)(?=&)/) && search.match(/whatColumn=(.*)(?=&)/)[1] || null;
+    		const keyword = search.match(/keyword=(.*)/) && search.match(/keyword=(.*)/)[1] || null;
+    		
+    		return {
+    			pageNumber: pageNumber,
+    			pageSize: pageSize,
+    			whatColumn: whatColumn,
+    			keyword: keyword
+    		}
+    	}
     })();
     
     for (const el of document.querySelectorAll('.dselect')) {

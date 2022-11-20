@@ -2,6 +2,9 @@
 package com.basicinfo.controller;
 
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,8 +15,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.spring.domain.DepartmentVO;
+import com.spring.domain.SearchVO;
 import com.spring.service.DepartmentService;
 
 @Controller
@@ -26,8 +31,14 @@ public class DepartmentController {
 	private DepartmentService service;
 
 	@GetMapping(value="/list")
-	public void list(Model model) {
-		model.addAttribute("voList", service.list());
+	public void list(Model model, SearchVO vo, HttpServletRequest request) {
+		
+		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
+		if(flashMap!=null)
+			vo =(SearchVO)flashMap.get("searchvo");
+		int totalCount = service.getTotalCount(vo);
+		
+		model.addAttribute("voList", service.list(vo));
 	}
 	
 	@PostMapping(value="/insert")
@@ -46,10 +57,5 @@ public class DepartmentController {
 	public String delete(DepartmentVO vo, @PathVariable(value="no") int no) {				
 		service.delete(no);
 		return "redirect:/basicinfo/department/list";
-	}
-	
-	// 전체 부서코드 리턴용도의 메서드
-	public List<DepartmentVO> getDeptList() {
-		return service.getDeptList();
 	}
 }

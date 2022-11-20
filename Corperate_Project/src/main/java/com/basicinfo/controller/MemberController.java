@@ -62,7 +62,7 @@ public class MemberController {
 		Client_Paging pageInfo = new Client_Paging(searchvo.getPageNumber(),"10",totalCount,"/basicinfo/member/list",searchvo.getWhatColumn(),searchvo.getKeyword(),0);
 	   
       // dept
-      List<DepartmentVO> deptList = deptService.getDeptList();
+      List<DepartmentVO> deptList = deptService.list();
       model.addAttribute("deptList", deptList);
       
       // rank
@@ -93,9 +93,13 @@ public class MemberController {
    }
    
    @GetMapping(value="/delete/{no}")
-   public String delete(Model model, @PathVariable(value="no") int no) throws Exception {
+   public String delete(Model model, @PathVariable(value="no") int no, HttpServletRequest request, SearchVO searchvo, RedirectAttributes rttr) throws Exception {
       
+	  System.out.println(searchvo.getWhatColumn());
+	  System.out.println(searchvo.getPageNumber());
+	   
       service.delete(no);
+      rttr.addFlashAttribute("searchvo",searchvo);
       return "redirect:/basicinfo/member/list";
    }
    

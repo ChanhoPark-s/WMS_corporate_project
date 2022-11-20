@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.spring.domain.DepartmentVO;
+import com.spring.domain.SearchVO;
 import com.spring.mapper.DepartmentMapper;
 
 @Service
@@ -15,8 +16,8 @@ public class DepartmentServiceImpl implements DepartmentService{
 	private DepartmentMapper mapper;
 	
 	@Override
-	public List<DepartmentVO> list() {
-		return mapper.selectAll();
+	public List<DepartmentVO> list(SearchVO vo) {
+		return mapper.selectAll(vo);
 	}	
 	
 	@Override
@@ -35,7 +36,7 @@ public class DepartmentServiceImpl implements DepartmentService{
 	}
 
 	@Override
-	public List<DepartmentVO> getDeptList() {
-		return mapper.selectAll();
+	public int getTotalCount(SearchVO vo) {
+		return mapper.getTotalCount(vo);
 	}
 }

@@ -15,9 +15,34 @@
                   직급등록
                 </button>
               </div>
-              <form>
-                <input type="text" class="form-control" placeholder="Search user">
-              </form>
+			<div class="search">
+			<form name="search" action="/basicinfo/member/list" id="search">
+			<table>
+			<tr>
+				<td>
+					<select id="whatColumn" name="whatColumn" class="form-select" style="width: 200px;">
+	                  <%
+	                  String[] search = {"name", "id", "email", "dep", "rank"};
+	                  String[] cate = {"이름", "아이디", "이메일", "부서", "직급"};
+	                  %>
+	                  <c:set value="<%=search %>" var="s"></c:set>
+	                  <c:set value="<%=cate %>" var="c"></c:set>
+	                  <option>검색 선택</option>
+	                  	<c:forEach begin="0" end="${fn:length(s)-1 }" var="i">
+	                  		<option value="${s[i] }"<c:if test="${searchvo.whatColumn== s[i] }">selected</c:if>>${c[i] }</option>
+	                  	</c:forEach>
+	              </select>
+				</td>
+				<td>
+					<input type="text"  name="keyword" id="keyword" class="form-control" value=<c:if test="${searchvo.keyword=='null' }">""</c:if><c:if test="${searchvo.keyword!='null' }">"${searchvo.keyword }"</c:if>  placeholder="입력" style="width: 200px; height: 38px;">
+				</td>
+				<td>
+					<i class="fa-solid fa-magnifying-glass btn_search" id="searchIcon" onclick="searchForm()"></i>
+				</td>
+			</tr>	
+			</table>
+			</form>
+			</div>
             </div>
 		<div class="table-responsive my-1">
 			<table class="table align-middle">

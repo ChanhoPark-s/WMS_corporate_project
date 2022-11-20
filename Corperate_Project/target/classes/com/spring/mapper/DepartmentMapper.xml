@@ -9,6 +9,15 @@
 
 	<select id="selectAll" resultType="com.spring.domain.DepartmentVO">
 		select * from department order by no desc
+		<if test="whatColumn=='code'">where code like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='name'">where name like '%' ||  #{keyword} || '%'</if>
+		ORDER BY m.no desc OFFSET #{beginRow} ROWS FETCH NEXT #{pageSize} ROWS ONLY
+	</select>
+	
+	<select id="getTotalCount" resultType="int">
+		select count(*) from department order by no desc
+		<if test="whatColumn=='code'">where code like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='name'">where name like '%' ||  #{keyword} || '%'</if>
 	</select>
 
 	<insert id="insert">
