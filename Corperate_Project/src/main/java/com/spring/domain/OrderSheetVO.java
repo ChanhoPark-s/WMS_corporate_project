@@ -20,5 +20,4 @@ public class OrderSheetVO {
 	private String temp_item_name;		// 수주서 출력시 ㅇㅇ 외 4개 출력을 하기 위한 변수
 	private ArrayList<Integer> item_no; // 품목번호
 	private ArrayList<Integer> amount; 	// 품목별 수주개수
-	
 }

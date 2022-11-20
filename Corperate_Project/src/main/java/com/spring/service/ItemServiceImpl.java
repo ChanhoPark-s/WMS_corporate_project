@@ -3,7 +3,7 @@ package com.spring.service;
 import java.io.File;
 import java.util.List;
 
-import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,9 +22,6 @@ public class ItemServiceImpl implements ItemService{
 	@Autowired
 	private ItemMapper mapper;
 	
-	@Autowired
-	private ServletContext servletContext;
-	
 	@Override
 	public List<ItemVO> selectAll(Client_Paging pageInfo) {
 		List<ItemVO> lists=mapper.selectAll(pageInfo);
@@ -32,9 +29,9 @@ public class ItemServiceImpl implements ItemService{
 	}
 
 	@Override
-	public void insert(ItemVO vo) throws Exception {
+	public void insert(ItemVO vo, HttpServletRequest request) throws Exception {
 		
-		String uploadPath = servletContext.getRealPath("/resources/assets/img/item/");
+		String uploadPath = request.getServletContext().getRealPath("/resources/assets/img/item/");
 		System.out.println(uploadPath);
 		File file = new File(uploadPath);
 		if(!file.exists()) {
@@ -69,9 +66,8 @@ public class ItemServiceImpl implements ItemService{
 	}
 
 	@Override
-	public void update(ItemVO vo) throws Exception {
-		
-		String uploadPath = servletContext.getRealPath("/resources/assets/img/item/");
+	public void update(ItemVO vo, HttpServletRequest request) throws Exception {
+		String uploadPath = request.getServletContext().getRealPath("/resources/assets/img/item/");
 		System.out.println(uploadPath);
 		File file = new File(uploadPath);
 		if(!file.exists()) {

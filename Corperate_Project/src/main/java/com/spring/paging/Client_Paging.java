@@ -1,5 +1,7 @@
 package com.spring.paging;
 
+import java.util.ArrayList;
+
 import lombok.Data;
 
 @Data
@@ -22,6 +24,8 @@ public class Client_Paging {
 	private String whatColumn = "" ; //검색 모드(작성자, 글제목, 전체 검색은 all) 등등
 	private String keyword = "" ; //검색할 단어 
 	
+	private ArrayList<Integer> main_nos; // 상위 수주서 번호들
+	
 	public String getPagingHtml() {
 		
 		return pagingHtml;
@@ -32,6 +36,13 @@ public class Client_Paging {
 		this.pagingHtml = pagingHtml;
 	}
 
+	public void setMain_nos(ArrayList<Integer> list) {
+		this.main_nos = list;
+	}
+	
+	public ArrayList<Integer> getMain_nos(){
+		return this.main_nos;
+	}
 
 	public Client_Paging(
 			String _pageNumber, 
