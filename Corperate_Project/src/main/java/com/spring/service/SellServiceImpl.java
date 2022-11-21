@@ -16,7 +16,7 @@ public class SellServiceImpl implements SellService{
 	private SellMapper mapper;
 
 	@Override
-	public void get(SellVO sell) {
+	public void insert(SellVO sell) {
 		
 		System.out.println("SellServiceImpl member_no :"+sell.getMember_no());
 		System.out.println("SellServiceImpl order_no :"+sell.getOrder_no());
@@ -29,5 +29,17 @@ public class SellServiceImpl implements SellService{
 	public List<SellVO> read() {
 		System.out.println("판매 리스트 불러오기");
 		return mapper.read(); // 존재하지 않는 레코드를 얻으려고하면 null이 반환됨
+	}
+	
+	@Override
+	public void delete(int no) {
+		System.out.println("판매 리스트 불러오기");
+		mapper.delete(no); // 존재하지 않는 레코드를 얻으려고하면 null이 반환됨
+	}
+	
+	@Override
+	public void update(SellVO sell) {
+		System.out.println("판매 리스트 불러오기");
+		mapper.update(sell); // 존재하지 않는 레코드를 얻으려고하면 null이 반환됨
 	}
 }
