@@ -15,14 +15,14 @@ public interface WareHouseDetailMapper {
 	public List<WareHouseDetailVO> selectStockByRackNo(WareHouseDetailVO vo);
 	public List<WareHouseDetailVO> selectStockByCellNo(WareHouseDetailVO vo);
 	
-	/* ajax */
-	public int getCountAll(WareHouseDetailVO vo);
-	public List<WareHouseDetailVO> getListWithPaging(WareHouseDetailVO vo);
+	// song
+	public int getCountAllBySong(WareHouseDetailVO vo);
+	public List<WareHouseDetailVO> getListWithPagingBySong(WareHouseDetailVO vo);
 	public WareHouseDetailVO getWare(WareHouseDetailVO vo);
 	public void update(WareHouseMovementVO vo);
-	
 	public List<WareHouseMovementVO> itemMovement(Client_Paging pageInfo);
 	public int getTotalCount(SearchVO searchvo);
+	
 	/* ajax paging */
 	public int getCountAll(CriteriaForWareHouse cri);
 	public List<WareHouseDetailVO> getListWithPaging(CriteriaForWareHouse cri);

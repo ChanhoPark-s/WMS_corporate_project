@@ -55,7 +55,7 @@ where
     and wd.cell_no = #{cell_no}
 </select>
 
-<select id="getCountAll" resultType="int">
+<select id="getCountAllBySong" resultType="int">
 select
     count(*)
 from
@@ -67,11 +67,8 @@ where
     and wd.rack_no = #{rack_no}
     and wd.cell_no = #{cell_no}
 order by 1
-<if test="pageNum != 0 and amount != 0">
-	offset (#{pageNum } - 1) * #{amount} rows fetch next #{amount} rows only
-</if>
 </select>
-<select id="getListWithPaging" resultType="com.spring.domain.WareHouseDetailVO">
+<select id="getListWithPagingBySong" resultType="com.spring.domain.WareHouseDetailVO">
 select
 	wd.no, wd.lot_code, wd.amount, wd.ordered_amount, wd.item_no,
     wd.ware_no, wd.area_no, wd.rack_no, wd.cell_no,
@@ -94,6 +91,7 @@ order by 1
 	offset (#{pageNum } - 1) * #{amount} rows fetch next #{amount} rows only
 </if>
 </select>
+
 <select id="getWare" resultType="com.spring.domain.WareHouseDetailVO">
 select
     w.no ware_no, a.no area_no, r.no rack_no, c.no cell_no,

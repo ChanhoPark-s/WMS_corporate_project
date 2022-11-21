@@ -43,9 +43,8 @@ public class WareHouseDetailServiceImpl implements WareHouseDetailService{
 	@Override
 	public PageDTO<WareHouseDetailVO> getListPage(WareHouseDetailVO vo) {
 		
-		int totalCount = mapper.getCountAll(vo);
-		System.out.println(totalCount);
-		List<WareHouseDetailVO> list = mapper.getListWithPaging(vo);
+		int totalCount = mapper.getCountAllBySong(vo);
+		List<WareHouseDetailVO> list = mapper.getListWithPagingBySong(vo);
 		return new PageDTO<WareHouseDetailVO>(totalCount, list, vo);
 	}
 

@@ -29,4 +29,6 @@ public class WareHouseDetailVO implements Paging{
 	private String image;
 	
 	private int pageNum;
+	private String whatColumn;
+	private String keyword;
 }
