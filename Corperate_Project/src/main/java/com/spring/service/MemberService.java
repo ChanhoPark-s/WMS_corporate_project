@@ -34,4 +34,6 @@ public interface MemberService {
 	public PageDTO<MemberVO> getListPage(Criteria cri);
 
 	public MemberVO getAllById(String id);
+
+	public int selectDelete(String[] parameterValues);
 }

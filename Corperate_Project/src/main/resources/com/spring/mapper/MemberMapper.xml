@@ -114,4 +114,11 @@
 	<select id="getAllById" resultType="com.spring.domain.MemberVO" parameterType="string">
 		select * from member where id = #{id}
 	</select>
+	
+	<delete id="selectDelete">
+		delete member where no in 
+		<foreach collection="array" item="arr" open='(' close=")" separator=",">
+		#{arr}
+		</foreach>
+	</delete>
 </mapper>

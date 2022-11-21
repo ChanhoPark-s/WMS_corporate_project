@@ -14,4 +14,5 @@ public interface DepartmentMapper {
 	public void delete(int no);								// 부서삭제
 	public int getTotalCount(SearchVO vo);
 	public List<DepartmentVO> noSearchList();
+	public int selectDelete(String[] parameterValues);
 }

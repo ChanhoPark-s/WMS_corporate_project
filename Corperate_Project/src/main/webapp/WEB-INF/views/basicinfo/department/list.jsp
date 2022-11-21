@@ -18,6 +18,7 @@
                   </svg>
 					부서추가
 				</button>
+				<button class="btn btn-light d-inline-flex align-items-center gap-1" onclick="selectDelete()"><i class="fa-regular fa-trash-can fa-1.5x"></i></button>
 			</div>
 			<div class="search">
 			<form name="search" action="/basicinfo/department/list" id="search">
@@ -49,9 +50,15 @@
 			</div>
 		</div>
 		<div class="table-responsive my-1">
+		   <form name="f" action="/basicinfo/department/selectDelete" method="post">
 			<table class="table align-middle">
 				<thead>
 					<tr>
+						<th scope="col">
+							<div>
+								<input class="form-check-input" type="checkbox" id="allselect" name="allselect" onclick="allSelect()">
+							</div>
+						</th>
 						<th scope="col">번호</th>
 						<th scope="col">부서코드</th>
 						<th scope="col">부서명</th>
@@ -61,6 +68,7 @@
 				<tbody>
 					<c:forEach var="vo" items="${voList}">
 						<tr class="dept-${vo.no }">
+							<td><input class="form-check-input" type="checkbox" id="rowcheck" name="rowcheck" value="${vo.no }"></td>
 							<td>${vo.no}	
 							<td>${vo.code}</td>
 							<td>${vo.name}</td>
@@ -90,6 +98,7 @@
 					</c:forEach>
 				</tbody>
 			</table>
+		  </form>
 		</div>
             <div align="center">
 				${pageInfo.pagingHtml}
@@ -235,4 +244,40 @@
       });
       
    })();
+   
+	/* 체크박스 */
+	function allSelect(){
+		var ac = document.f.allselect;
+		var rc = document.f.rowcheck;
+
+		if (ac.checked) {
+				for (var i = 0; i < rc.length; i++) {
+					rc[i].checked = true;
+				}
+			}
+		else {
+				for (var i = 0; i < rc.length; i++) {
+					rc[i].checked = false;
+				}
+			}
+		}
+	function selectDelete(){
+		
+		x=false;
+		var rc = document.f.rowcheck;
+		
+		for(var i=0;i<rc.length;i++){
+			if(rc[i].checked==true){
+				x=true;
+			}
+		}
+		if(!x){
+			alert("체크박스를 선택하세요");
+			return;
+		}
+		if(confirm("삭제하시겠습니까?")){
+			f.submit();
+		}
+
+	}
 </script>

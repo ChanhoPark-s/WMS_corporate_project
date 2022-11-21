@@ -109,4 +109,10 @@ public class MemberServiceImpl implements MemberService{
 	public MemberVO getAllById(String id) {
 		return mapper.getAllById(id);
 	}
+
+
+	@Override
+	public int selectDelete(String[] parameterValues) {
+		return mapper.selectDelete(parameterValues);
+	}
 }

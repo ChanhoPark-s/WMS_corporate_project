@@ -13,7 +13,7 @@
     width: 45px;
     height: 45px; 
     border-radius: 70%;
-    z-index:1;
+    z-index:5;
     position: fixed;
     bottom: 60px;
     right: 50px;
@@ -112,6 +112,18 @@ margin-top: 5px;
 	display: block;
 }
 
+
+.btn_search{
+  cursor : pointer;
+  position : absolute;
+  right : 7px;
+  top : 50%;
+  transform : translatey(-50%);
+}
+#search{
+  position : relative;
+}
+
 </style>
 
 <!DOCTYPE html>
@@ -130,20 +142,24 @@ margin-top: 5px;
   <link rel="stylesheet" href="/resources/assets/css/simplebar.css">
   <link rel="stylesheet" href="/resources/assets/css/style.css">
   <link rel="stylesheet" href="/resources/assets/css/sidebar-dark.css" id="sidebar-theme"> <!-- available themes: dark, light, cyan, green, indigo, red -->
-  
-  <!-- Fontawesome icon -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <!-- fontAwesome icon -->
+  <script src="https://kit.fontawesome.com/6363f16fdc.js" crossorigin="anonymous"></script>
   <!-- jQuery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<!-- 소켓 라이브러리 추가해주는 코드 -->
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.5/sockjs.min.js"></script>
 	<script type="text/javascript">
+	var msgbtn;
 	
 	$(function(){
-		var msgbtn;
+			$('*').on("click",function(){
+				if(<%=(String)session.getAttribute("id")%>==null){
+					alert("로그인 세션이 만료되었습니다.");
+					location.href='/';
+				}
+			})
 		
 		$('#msgbtn').click(function(){
-			
 			/* 모달 띄울시 투명도x */
 			$('.modal-backdrop.show').css('opacity','0');
 			/* 모달 띄어도 뒤에 클릭되게 */
