@@ -58,9 +58,13 @@
                 <div class="modal-footer border-0">
 					<form style="margin:auto;text-align:center;" onsubmit="return false;">
 						<div class="d-flex gap-1 me-auto flex-wrap">
-							<select id="searchWhatColumn" class="form-select" style="width: 140px;"><option value="" selected="">검색 선택</option><option value="dep">부서</option><option value="rank">직급</option><option value="name">이름</option></select>
-			              	<input type="text" id="searchKeyword" class="form-control" placeholder="입력" style="width: 200px; height: 38px;">
-							<button type="submit" class="btn btn-light" id="searchBtn"> 검색 </button>
+							<select id="searchMemberWhatColumn" class="form-select" style="width: 140px;">
+								<option value="" selected="">검색 선택</option>
+								<option value="dep">부서</option>
+								<option value="rank">직급</option>
+								<option value="name">이름</option></select>
+			              	<input type="text" id="searchMemberKeyword" class="form-control" placeholder="입력" style="width: 200px; height: 38px;">
+							<button type="submit" class="btn btn-light" id="searchMemberBtn"> 검색 </button>
 						</div>			
 					</form>	
 				</div>
@@ -88,21 +92,21 @@
           </div>
         </div>
 
-<!-- 물품검색 -->
+<!-- 품목검색 -->
         <div class="modal fade" id="addUserModal" tabindex="-1">
           <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
               <div class="modal-header border-0">
-                <h5 class="modal-title">물품검색</h5>
+                <h5 class="modal-title">품목검색</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
                 <div class="modal-footer border-0">
 					<form style="margin:auto;text-align:center;" onsubmit="return false;">
 						<div class="d-flex gap-1 me-auto flex-wrap">
-							<select id="searchWhatColumn" class="form-select" style="width: 140px;"><option value="" selected="">검색 선택</option><option value="dep">부서</option><option value="rank">직급</option><option value="name">이름</option></select>
-			              	<input type="text" id="searchKeyword" class="form-control" placeholder="입력" style="width: 200px; height: 38px;">
-							<button type="submit" class="btn btn-light" id="searchBtn"> 검색 </button>
+							<select id="searchItemWhatColumn" class="form-select" style="width: 140px;"><option value="" selected="">검색 선택</option><option value="dep">부서</option><option value="rank">직급</option><option value="name">이름</option></select>
+			              	<input type="text" id="searchItemKeyword" class="form-control" placeholder="입력" style="width: 200px; height: 38px;">
+							<button type="submit" class="btn btn-light" id="searchItemsBtn"> 검색 </button>
 						</div>			
 					</form>	
 				</div>
@@ -203,6 +207,15 @@
 				type: 'text',
 				class:'form-control',
 		},
+		
+		// 페이징 기본설정
+		defaultPaging = {
+				pageNum : 1,
+				amount : 10,
+				whatColumn : null,
+				keyword : null,
+		},
+		
 		wt = document.querySelector('.warehouse-table tbody'),
 		warehouse = document.querySelector('#warehouse'),
 		area = document.querySelector('#area'),
@@ -215,12 +228,7 @@
 		let pageNum = 1,
 			amount = 10,
 			searchWhatColumn = "",
-			searchKeyword = "";
-		
-		let pageNum2 = 1,
-			amount2 = 10,
-			searchWhatColumn2 = "",
-			searchKeyword2 = "";			
+			searchKeyword = "";		
 		
 		let target;
 		
@@ -297,37 +305,38 @@
 		
 		// ----------------------------------------------- 멤버 
 		
+		// 메인 페이지의 담당자를 눌렀을 경우 해당 input을 가리킴
+		let memberTarget;
+		
+		// 담당자 검색버튼 눌렀을 경우 (1페이지로 돌아감)
+		document.querySelector('#searchMemberBtn').addEventListener('click', event => {
+			drawMember();
+		});
+		
+		// 메인 페이지의 담당자를 눌렀을 경우 (1페이지로 돌아감)
 		document.querySelector('#member_no').addEventListener('click', event => {
+			memberTarget = event.target;
 			drawMember();	
 		});
 		
+		// 검색 키워드 조회
 		function getMemberList(paging, callback) {
-			const	
-				attr = {method: 'GET'};	
-			let
-				url = location.origin + '/basicinfo/member/pages/' + paging.pageNum + '/' + paging.amount;
-				
-			url += paging.whatColumn ? '' : '/' + paging.whatColumn;
-			url += paging.keyword ? '' : '/' + paging.keyword;
+			const newPaging = {...defaultPaging, ...paging},
+				whatColumn = document.querySelector('#searchMemberWhatColumn').value,
+				keyword = document.querySelector('#searchMemberKeyword').value,
+				attr = null,
+				url = location.origin + '/basicinfo/member/pages/' + newPaging.pageNum + '/' + newPaging.amount + '/' + whatColumn + '/' + keyword;
 			
-			// fetch를 이용해 품목리스트 가져옴
+			// getJsonData 함수 내의 fetch를 이용해 품목리스트 가져옴
 			getJsonData(url, attr, (data) => {
 				callback(data);
 			});		
 		}
 		
+		// 비동기 통신을 이용해 가져온 데이터들을 토대로 테이블 작성
 		function drawMember(paging) {
-			let defaultPaging = {
-					pageNum : 1,
-					amount : 10,
-					whatColumn : null,
-					keyword : null,
-			},
 			body = document.querySelector('.member-table tbody');
-			
-			const newPaging = {...defaultPaging, ...paging};
-			
-			getMemberList(newPaging, data => {
+			getMemberList(paging, data => {
 				body.innerHTML = "";
 				data.list.forEach((value, index) => {
 					let {dep_name, rank_name, name} = value;
@@ -355,35 +364,47 @@
 					td4.classList.add('text-center');
 					tr.append(td4);
 					
+					// 담당자를 선택 시
 					td4.addEventListener('click', event => {
-						target.value = name;
-						target.setAttribute('data-value', no);
+						memberTarget.value = name;
+						memberTarget.setAttribute('data-value', no);
 					});
 					
 					body.append(tr);
 				});
-				/* 페이지네이션 */
+				
+				// 멤버의 페이지네이션을 그림
 				paintPageNation(data.totalCount, data.cri, 'memberPageNation');
 			});
 		}
 		
 		// ----------------------------------------------- 멤버 끝
 		
+		// ----------------------------------------------- 품목
+		
+		// 메인 페이지의 품목 눌렀을 경우 해당 input을 가리킴
+		let itemTarget;
+		
+		// 품목 검색버튼 눌렀을 경우 (1페이지로 돌아감)
+		document.querySelector('#searchItemsBtn').addEventListener('click', event => {
+			drawItem();
+		});
+		
 		// 품목을 클릭했을 경우 이벤트 리스너를 붙여줌
 		function addItemEventListener(elem) {
 			elem.addEventListener('click', (event) => {
-				target = event.target;
+				itemTarget = event.target;
 				drawItem();
 			})
 		}
 		
 		function getItemList(paging, callback) {
-			const attr = {method: 'GET'};	
-			let
-				url = location.origin + '/basicinfo/item/pages/'+paging.pageNum + '/' + paging.amount;
-				
-			url += paging.whatColumn ? '' : '/' + paging.whatColumn;
-			url += paging.keyword ? '' : '/' + paging.keyword;
+			
+			const newPaging = {...defaultPaging, ...paging},
+				whatColumn = document.querySelector('#searchItemWhatColumn').value,
+				keyword = document.querySelector('#searchItemKeyword').value,
+				attr = null,
+				url = location.origin + '/basicinfo/item/pages/' + newPaging.pageNum + '/' + newPaging.amount + '/' + whatColumn + '/' + keyword;
 			
 			// fetch를 이용해 품목리스트 가져옴
 			getJsonData(url, attr, (data) => {
@@ -392,17 +413,8 @@
 		}
 		
 		function drawItem(paging) {
-			let defaultPaging = {
-					pageNum : 1,
-					amount : 10,
-					whatColumn : null,
-					keyword : null,
-			},
 			body = document.querySelector('.item-table tbody');
-			
-			const newPaging = {...defaultPaging, ...paging};
-			
-			getItemList(newPaging, data => {
+			getItemList(paging, data => {
 				body.innerHTML = "";
 				data.list.forEach((value, index) => {
 					let {no, code, name} = value;
@@ -431,8 +443,8 @@
 					tr.append(td4);
 					
 					td4.addEventListener('click', event => {
-						target.value = name;
-						target.setAttribute('data-value', no);
+						itemTarget.value = name;
+						itemTarget.setAttribute('data-value', no);
 					});
 					
 					body.append(tr);
@@ -442,6 +454,9 @@
 			});
 		}
 		
+		// ----------------------------------------------- 품목 끝
+		
+		// ----------------------------------------------- 창고
 		let elemEventTarget;
 		// 창고를 클릭했을 경우 이벤트 리스너를 붙여줌
 		function addWareHouseEventListener(elem) {
@@ -516,6 +531,8 @@
 				});
 			});
 		}
+		
+		// ----------------------------------------------- 창고 끝
 		
 		/* 거래처 선택 모달의 페이지네이션을 그리는 함수 */
 		function paintPageNation(totalCount, cri, location){
@@ -598,7 +615,6 @@
 		$("#itemPageNation").on("click", "li a", function(e){
 			e.preventDefault(); // 번호를 눌러도 페이지가 이동하지 않도록 a태그 기능 무력화
 			pageNum = $(this).attr("href");
-			
 			drawItem({pageNum : pageNum});
 		});
 		

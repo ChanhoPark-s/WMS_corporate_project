@@ -333,10 +333,15 @@
 
 	// 출고 품목 선택
 	(function() {
-		const searchDefault = {
-				pageNum: 1,
-				amount: 10
-		};
+		
+		// 페이징 기본설정
+		const defaultPaging = {
+				pageNum : 1,
+				amount : 10,
+				whatColumn : null,
+				keyword : null,
+		},
+		
 		let 
 			warehouse_no = null,
 			area_no = null,
@@ -438,24 +443,6 @@
 				 itemTable.append(tr);
 			 });
 		}
-		
-		function makeElement(elem, attr, event) {
-			const e = document.createElement(elem);
-			attr && Object.keys(attr).forEach((key, index) => {
-				let value = attr[key];
-				if(key === 'class') {
-					const classes = value.split(' ');
-					classes.map(c => {
-						e.classList.add(c);
-					})
-				}
-				else {
-					e.setAttribute(key, value);
-				}
-			});
-			event && e.addEventListener(event.type, event.event);
-			return e;
-		}
 	})();
 	
 	// 입고 창고 선택
@@ -501,29 +488,6 @@
 				modal1_form.cell2.setAttribute('data-no', jsonData['cell_no'])
 			});
 		});
-		
-		async function getJsonData(url, attr) {
-			const data = await fetch(url, attr);
-			const jsonData = await data.json();
-			return jsonData;
-		}
-		function makeElement(elem, attr, event) {
-			const e = typeof elem === 'string' &&  document.createElement(elem) || elem;
-			attr && Object.keys(attr).forEach((key, index) => {
-				let value = attr[key];
-				if(key === 'class') {
-					const classes = value.split(' ');
-					classes.map(c => {
-						e.classList.add(c);
-					})
-				}
-				else {
-					e.setAttribute(key, value);
-				}
-			});
-			event && e.addEventListener(event.type, event.event);
-			return e;
-		}
 	})();
 	
     // Example starter JavaScript for disabling form submissions if there are invalid fields
@@ -556,13 +520,33 @@
          	event.stopPropagation()
         });
       });
-      
-	 	async function getJsonData(url, attr) {
-			const data = await fetch(url, attr);
-			const jsonData = await data.json();
-			return jsonData;
-		}
     })()
+    
+    // 태그 생성
+   	function makeElement(elem, attr, event) {
+		const e = typeof elem === 'string' &&  document.createElement(elem) || elem;
+		attr && Object.keys(attr).forEach((key, index) => {
+			let value = attr[key];
+			if(key === 'class') {
+				const classes = value.split(' ');
+				classes.map(c => {
+					e.classList.add(c);
+				})
+			}
+			else {
+				e.setAttribute(key, value);
+			}
+		});
+		event && e.addEventListener(event.type, event.event);
+		return e;
+	}
+    
+ 	// fetch를 이용한 비동기 통신
+ 	async function getJsonData(url, attr) {
+		const data = await fetch(url, attr);
+		const jsonData = await data.json();
+		return jsonData;
+	}
     
     // 숫자에 컴마 찍기
    	function transformNumberDot(number) {
