@@ -9,8 +9,12 @@
 		select * from Input_WareHouse order by no desc
 	</select>
 
-	<insert id="insert">
-		insert into Input_WareHouse values()
+	<insert id="insertMainSheet">
+		<selectKey keyProperty="no" order="BEFORE" resultType="int">
+			select input_warehouse_seq.nextval from dual
+		</selectKey>
+		insert into order_sheet
+		values(#{no}, #{member_no}, #{PURCHASE_SHEET_NO}, 0)
 	</insert>
 	
 </mapper>

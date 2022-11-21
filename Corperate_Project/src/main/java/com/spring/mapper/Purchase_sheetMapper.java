@@ -5,7 +5,9 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.spring.domain.ClientVO;
+import com.spring.domain.OrderSheetVO;
 import com.spring.domain.Purchase_sheetVO;
+import com.spring.domain.Purchase_sheet_DetailVO;
 import com.spring.domain.SearchVO;
 import com.spring.paging.Client_Paging;
 import com.spring.paging.Criteria;
@@ -14,8 +16,8 @@ import com.spring.paging.Criteria;
 public interface Purchase_sheetMapper {
 	public List<Purchase_sheetVO> selectAll(); 		// 발주조회
 	public Purchase_sheetVO selectOne(String no);	// 발주선택
-	public int insert(Purchase_sheetVO vo); 		// 발주추가
-	public int update(Purchase_sheetVO vo); 		// 발주수정
+	public int insertMainSheet(Purchase_sheetVO vo);// 발주추가
+	
 	public int delete(Purchase_sheetVO vo); 		// 발주삭제
 	
 	/* main paging */
@@ -25,5 +27,19 @@ public interface Purchase_sheetMapper {
 	/* ajax paging */
 	public List<Purchase_sheetVO> getListWithPaging(@Param("cri") Criteria cri);
 	public int getCountAll(@Param("cri") Criteria cri);
+	
+	//디테일
+	public int insertDetailSheet(
+			@Param("mainSheetNo") int mainSheetNo, 
+			@Param("itemNo") int itemNo, 
+			@Param("itemAmount") int itemAmount,
+			@Param("orderDetailNo") int orderDetailNo,
+			@Param("wareNo") int wareNo
+			);	//상세추가
+	
+	public List<Purchase_sheet_DetailVO> selectList(String purchase_sheet_no);// 상세조회
+	
+	public int deleteDetail(int no);
+	
 	
 }

@@ -66,7 +66,7 @@
 	
 	<delete id="selectDelete">
 		delete client where no in 
-		<foreach collection="array" item="arr" open='(' close=")" separator=",">
+		<foreach collection="main_nos" item="arr" open='(' close=")" separator=",">
 		#{arr}
 		</foreach>
 	</delete>

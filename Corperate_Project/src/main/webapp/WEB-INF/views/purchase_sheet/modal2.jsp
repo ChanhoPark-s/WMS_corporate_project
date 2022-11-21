@@ -1,13 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!-- JS -->
-<script type="text/javascript">
 
-
-
-</script>
 <!-- 거래처를 선택하는 두번째 모달 -->
-<div class="modal fade" id="choiceClientModal" tabindex="-2">
+<div class="modal fade" id="secondModal" tabindex="-2">
 	<div class="modal-dialog modal-dialog-scrollable">
 		<div class="modal-content">
 			<div class="modal-header border-0">
@@ -41,7 +36,7 @@
 						
 						<!-- 페이지내이션 -->
 						<nav aria-label="Page navigation borderless example">
-							<ul class="pagination pagination-borderless justify-content-end" id="clientPageNation">
+							<ul class="pagination pagination-borderless justify-content-end" id="modalPageNation">
 								<!-- 페이지내이션이 javascript 코드에 의해 그려지는 위치 -->
 							</ul>
 						</nav>
@@ -64,45 +59,44 @@
 </script>
 
 
-<!-- 거래처를 선택하는 두번째 모달처리 -->
+<!-- 두번째 모달관련 스크립트 코드 -->
 <script type="text/javascript">
 
 	/* 전역변수 */
-	var secondModalName = ""; // member or client 이 값은 두번째 모달로 넘어가는 버튼에 의해 변경된다. 
+	var secondModalName = ""; 	// member or client or product 이 값은 두번째 모달로 넘어가는 버튼에 의해 변경된다. 
 	var pageNum = 1;
 	var amount = 10;
 	var searchWhatColumn = "";
 	var searchKeyword = "";
+	var clickedLocation; 		// 두번째 모달에서 품목 선택 후 데이터를 옮겨올 곳을 기억하기 위한 변수 
 
-	/* 두번째 모달에서 첫번째 모달로 데이터를 옮기는 코드 */
-	$("#delivery_data").on("click", function(e){
+	/* 첫번째 모달 이 뜰 때 모달 초기화 */
+	$("#addOrderSheet").on("click", function(e){
 		
-		if(secondModalName == "member"){
-			var memberNo = $('input[name=clientRadio]:checked').parent().next().text();
-			var memberDepName = $('input[name=clientRadio]:checked').parent().next().next().text();
-			var memberName = $('input[name=clientRadio]:checked').parent().next().next().next().next().text();
-			
-			console.log(memberNo);
-			console.log(memberDepName);
-			console.log(memberName);
-			
-			$("input[name='member_no']").val(memberNo);
-			$("#member_dep_name").val(memberDepName);
-			$("#member_name").val(memberName);
-		}	
-		else if(secondModalName == "client"){
-			var clientNo = $('input[name=clientRadio]:checked').parent().next().text();
-			var clientCode = $('input[name=clientRadio]:checked').parent().next().next().text();
-			var clientName = $('input[name=clientRadio]:checked').parent().next().next().next().text();
-				
-			$("input[name='client_no']").val(clientNo);
-			$("#client_code").val(clientCode);
-			$("#client_name").val(clientName);	
-		}
+		//$(this).find('form')[0].reset();
+		
+		// 납기일자 초기화
+		$("input[name='out_day']").val("");
+		
+		// 담당자 정보 초기화
+		$("input[name='member_no']").val("");
+		$("#member_dep_name").val("");
+		$("#member_name").val("");
+		
+		// 거래처 정보 초기화
+		$("input[name='client_no']").val("");
+		$("#client_code").val("");
+		$("#client_name").val("");
+		
+		// 품목 상세 정보 초기화
+		$("#modalItemDetail").empty();
+		addRowItemDetail();
 	});
 	
-	/* 첫번째 모달에서 맴버 선택이 눌렸을 때 이동한 두번째 모달창에서 데이터를 요청하고 관련 화면을 그리는 부분 */
+	/* 첫번째 모달에서 담당자 선택이 눌렸을 때 이동한 두번째 모달창에서 데이터를 요청하고 관련 화면을 그리는 부분 */
 	$("#choiceMemberBtn").on("click", function(e){
+		
+		pageNum = 1;
 		
 		// 두번째 모달에서 그려내야할 정보를 지정
 		secondModalName = "member";
@@ -138,10 +132,10 @@
 		requestClientRecord();
 	});
 	
-	
-	
 	/* 첫번째 모달에서 거래처 선택이 눌렸을 때 이동한 두번째 모달창에서 데이터를 요청하고 관련 화면을 그리는 부분 */
 	$("#choiceClientBtn").on("click", function(e){
+		
+		pageNum = 1;
 		
 		// 두번째 모달에서 그려내야할 정보를 지정
 		secondModalName = "client";
@@ -177,21 +171,27 @@
 		requestClientRecord();
 	});
 	
-	/* 첫번째 모달에서 창고 선택이 눌렸을 때 이동한 두번째 모달창에서 데이터를 요청하고 관련 화면을 그리는 부분 */
-	$("#choiceWareBtn").on("click", function(e){
+	/* 첫번째 모달에서 품목 선택이 눌렸을 때 이동한 두번째 모달창에서 데이터를 요청하고 관련 화면을 그리는 부분 */
+	$("#modalItemDetail").on("click", ".choiceItemBtn",function(e){
+		
+		pageNum = 1;
+		
+		clickedLocation = $(this); // 품목입력을 위해 누른 input 의 위치 저장
+		console.log("clickedLocation: " + clickedLocation);
 		
 		// 두번째 모달에서 그려내야할 정보를 지정
-		secondModalName = "ware";
+		secondModalName = "item";
 		console.log("secondModalName: " + secondModalName);
-		
+			
 		// 두번째 모달의 제목을 지정
-		$("#second-modal-title").text("창고 입력");
+		$("#second-modal-title").text("상품 입력");
 		
 		// 두번째 모달의 select의 option을 그려내는 코드
 		var str = "";
 		str += "<option value='' selected>검색 선택</option>";
-		str += "<option value='code'>창고코드</option>";
-		str += "<option value='name'>창고명</option>";
+		str += "<option value='code'>품목코드</option>";
+		str += "<option value='name'>품목명</option>";
+		str += "<option value='client_name'>취급처명</option>";
 		$("#searchWhatColumn").html(str);
 		
 		// 초기화 코드
@@ -203,17 +203,19 @@
 		var str = "";
 		str += "<tr>";
 		str += "<th scope='col'></th>";
-		str += "<th scope='col'>거래처코드</th>";
-		str += "<th scope='col'>거래처명</th>";
-		str += "<th scope='col'>대표자명</th>";
+		str += "<th scope='col'>품목코드</th>";
+		str += "<th scope='col'>품목명</th>";
+		str += "<th scope='col'>취급처명</th>"; // = 발주처
+		str += "<th scope='col'>구입단가</th>"; 
 		str += "</tr>";
-		$("#secondModalThead").html(str);
+		$("#secondModalThead").html(str);	
 		
 		// 두번째 모달의 테이블의 레코드를 그려내는 코드
 		requestClientRecord();
 	});
 	
-	/* ajax로 거래처정보를 요청하는 부분 + 화면전환없이 레코드들을 그리는 부분 + 화면전환없이 페이지네이션을 그리는 부분 */
+	
+	/* ajax로 두번째 모달에서 보여줄 레코드정보를 요청하는 부분 + 화면전환없이 레코드들을 그리는 부분 + 화면전환없이 페이지네이션을 그리는 부분 */
 	function requestClientRecord(){
 		console.log("요청url : " + "/basicinfo/" + secondModalName + "/pages/"+ pageNum +"/" + amount + "/" + searchWhatColumn + "/" + searchKeyword)
 		$.getJSON("/basicinfo/" + secondModalName + "/pages/"+ pageNum +"/" + amount + "/" + searchWhatColumn + "/" + searchKeyword,  
@@ -230,7 +232,7 @@
  			});	
 	}
 	
-	/* 거래처 선택 모달의 거래처 레코드들을 그리는 함수 */
+	/* 두번째 모달의 레코드들을 그리는 함수 */
 	function paintRecord(list){
 
 			var str = "";
@@ -259,6 +261,19 @@
 				}
 			}
 			
+			else if(secondModalName == "item"){
+				for(var i = 0, len = list.length || 0; i < len; i++){
+					str += "<tr>";
+					str += "<td><input class='form-check-input' type='radio' name='clientRadio' value=" + list[i].name + "></td>";
+					str += "<td style='display:none'>" + list[i].no +"</td>";
+					str += "<td>" + list[i].code +"</td>";
+					str += "<td>" + list[i].name +"</td>";
+					str += "<td>" + list[i].client_name +"</td>";
+					str += "<td>" + numberWithCommas(list[i].in_price) +"원</td>";
+					str += "</tr>";
+				}
+			}
+			
 			if(list.length == 0){
 				str = "<tr><td colspan='5' style='text-align:center'>검색결과가 없습니다</td></tr>";
 			}
@@ -266,7 +281,7 @@
 			$("#secondModalTbody").html(str);
 	}
 	
-	/* 거래처 선택 모달의 페이지네이션을 그리는 함수 */
+	/* 두번째 모달의 페이지네이션을 그리는 함수 */
 	function paintPageNation(totalCount, cri){
 		
 		var str = ""; 
@@ -341,18 +356,18 @@
 		
 		str += "</ul></div>";
 		
-		$("#clientPageNation").html(str);
+		$("#modalPageNation").html(str);
 	}
 	
-	/* 거래처 선택 모달의 페이지네이션에서 번호 클릭시 다시 그리는 함수 */
-	$("#clientPageNation").on("click", "li a", function(e){
+	/* 두번째 모달의 페이지네이션에서 번호 클릭시 다시 그리는 함수 */
+	$("#modalPageNation").on("click", "li a", function(e){
 		e.preventDefault(); // 번호를 눌러도 페이지가 이동하지 않도록 a태그 기능 무력화
 		pageNum = $(this).attr("href");
 		
 		requestClientRecord();
 	});
 	
-	/* 거래처 선택 모달에서 사용자가 검색을 시도할 때 이를 처리하는 부분*/
+	/* 두번째 모달에서 사용자가 검색을 시도할 때 이를 처리하는 부분*/
 	$("#searchBtn").on("click", function(e){
 		searchWhatColumn = $("#searchWhatColumn").val();
 		searchKeyword = $("#searchKeyword").val();
@@ -366,4 +381,129 @@
 	
 		requestClientRecord();
 	});
+	
+	
+	/* 두번째 모달에서 첫번째 모달로 데이터를 옮기는 코드 */
+	$("#delivery_data").on("click", function(e){
+		
+		if(secondModalName == "member"){
+			var memberNo = $('input[name=clientRadio]:checked').parent().next().text();
+			var memberDepName = $('input[name=clientRadio]:checked').parent().next().next().text();
+			var memberName = $('input[name=clientRadio]:checked').parent().next().next().next().next().text();
+			
+			console.log(memberNo);
+			console.log(memberDepName);
+			console.log(memberName);
+			
+			$("input[name='member_no']").val(memberNo);
+			$("#member_dep_name").val(memberDepName);
+			$("#member_name").val(memberName);
+		}	
+		else if(secondModalName == "client"){
+			var clientNo = $('input[name=clientRadio]:checked').parent().next().text();
+			var clientCode = $('input[name=clientRadio]:checked').parent().next().next().text();
+			var clientName = $('input[name=clientRadio]:checked').parent().next().next().next().text();
+				
+			$("input[name='client_no']").val(clientNo);
+			$("#client_code").val(clientCode);
+			$("#client_name").val(clientName);	
+		}
+		
+		else if(secondModalName == "item"){
+			var itemNo = $('input[name=clientRadio]:checked').parent().next().text();
+			var itemCode = $('input[name=clientRadio]:checked').parent().next().next().text();
+			var itemName = $('input[name=clientRadio]:checked').parent().next().next().next().text();
+			var itemClientName = $('input[name=clientRadio]:checked').parent().next().next().next().next().text();
+			var itemInPrice = $('input[name=clientRadio]:checked').parent().next().next().next().next().next().text();
+				
+			console.log(itemNo);
+			console.log(itemCode);
+			console.log(itemName);
+			console.log(itemClientName);
+			console.log(itemClientName);
+			
+			clickedLocation.parent().parent().find('input[name=item_no]').val(itemNo);
+			clickedLocation.val(itemCode);
+			clickedLocation.parent().next().find('input[type=text]').val(itemName);
+			clickedLocation.parent().next().next().find('input[type=text]').val(itemClientName);
+			clickedLocation.parent().next().next().next().find('input[type=text]').val(itemInPrice);
+			
+			addRowItemDetail(); // 새로 입력받을 수 있게 아래 줄을 추가하는 함수
+		}
+	});
+	
+	/* 새로 입력받을 수 있게 아래 줄을 추가하는 부분 */
+	function addRowItemDetail(){
+		
+		var str = "<div class='row'>";
+		str += "<input type='hidden' name='item_no' class='form-control' readonly>"; 
+		str += "<div class='col-sm-2'>";
+		str += "<label for='userFullname' class='form-label'>품목코드</label>";
+		str += "<input type='text' class='form-control choiceItemBtn' data-bs-target='#secondModal' data-bs-toggle='modal' data-bs-dismiss='modal' readonly>";
+		str += "</div>";
+		str += "<div class='col-sm-2'>";
+		str += "<label for='userFullname' class='form-label'>품목명</label>";
+		str += "<input type='text' class='form-control' readonly>";
+		str += "</div>";
+		str += "<div class='col-sm-2'>";
+		str += "<label for='userFullname' class='form-label'>취급처</label>";
+		str += "<input type='text' class='form-control' readonly>";
+		str += "</div>";
+		str += "<div class='col-sm-2'>";
+		str += "<label for='userFullname' class='form-label'>구매단가</label>";
+		str += "<input type='text' class='form-control' readonly>";
+		str += "</div>";
+		str += "<div class='col-sm-1'>";
+		str += "<label for='userFullname' class='form-label'>수량</label>";
+		str += "<input type='text' name='amount' class='form-control'>";
+		str += "</div>";
+		str += '<div class="col-sm-2">';
+		str += '<label for="ware_no" class="form-label">창고명</label>';
+		str += '<select class="form-select" id="ware_no" name="ware_no">';
+		str += '<option selected disabled value="">선택</option>';
+		str += '<c:forEach items="${WareList }" var="ware">';
+		str += '<option value="${ware.no }">${ware.name }(${ware.code })</option>';
+		str += '</c:forEach>';
+		str += '</select>';
+		str += '</div>';
+		str += "<div class='col-sm-1'>";
+		str += "<label for='userFullname' class='form-label'>&nbsp;&nbsp;</label>";
+		str += "<button type='button' class='btn btn-primary deleteItemBtn' style='display:block'>삭제</button>";
+		str += "</div>";
+		str += "</div>";
+		
+		$("#modalItemDetail").append(str);
+	}
+	
+	/* 상품상세 쪽에서 상품 삭제 버튼 이벤트 처리 */
+	$("#modalItemDetail").on("click", ".deleteItemBtn", function(e){
+		
+		var currentRowCount = $("#modalItemDetail").find("div[class=row]").length;
+	
+		// 마지막 한줄은 살아있어야 하므로 삭제하지는 않고 값 초기화
+		if( currentRowCount == 1){ 
+			$(this).parent().parent().find("input[type=text]").val("");	
+			return;	
+		}
+		
+		$(this).parent().parent().remove();
+	});
+	
+/* 	$("#modalRegisterBtn").on("click", function(e){
+		
+		//유효성 검사 해야하는 부분
+		
+		
+		//form 전송전에 빈줄 삭제
+		var allItemCodeInputs = $("#modalItemDetail").find(".choiceItemBtn");
+		var currentRowCount = allItemCodeInputs.length; 
+		
+		if(allItemCodeInputs[currentRowCount-1].value == ""){
+			$("#modalItemDetail div[class=row]:last-child").remove();
+		}
+		
+		
+		
+		$("#firstModalForm").submit();
+	}); */
 </script>
