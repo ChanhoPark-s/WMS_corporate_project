@@ -66,9 +66,18 @@
 					</tr>
 				</thead>
 				<tbody>
+					<tr>
+						<td>
+							<input type="hidden" name="keyword" id="keyword3" >
+							<input type="hidden" name="whatColumn" id="whatColumn2">
+	             			<input type="hidden" name="pageNumber" id="pageNumber2">
+						</td>
+					</tr>
 					<c:forEach var="vo" items="${voList}">
 						<tr class="dept-${vo.no }">
-							<td><input class="form-check-input" type="checkbox" id="rowcheck" name="rowcheck" value="${vo.no }"></td>
+							<td>
+								<input class="form-check-input" type="checkbox" id="rowcheck" name="rowcheck" value="${vo.no }">
+							</td>
 							<td>${vo.no}	
 							<td>${vo.code}</td>
 							<td>${vo.name}</td>
@@ -128,6 +137,7 @@
 						<label for="userEmail" class="form-label">부서명</label> 
 						<input type="text" name="name" id="name" class="form-control" required>
 						<div class="invalid-feedback">User email is required.</div>
+						<input type="hidden" name="pageNumber" id="pageNumber" value="${pageInfo.pageNumber }">
 					</div>
 				</form>
 				<!-- form end -->
@@ -262,6 +272,10 @@
 			}
 		}
 	function selectDelete(){
+		
+		document.getElementById('keyword3').value=$('#keyword').val();
+		document.getElementById('whatColumn2').value=$('#whatColumn').val();
+		document.getElementById('pageNumber2').value=$('#pageNumber').val();
 		
 		x=false;
 		var rc = document.f.rowcheck;

@@ -26,4 +26,5 @@ public interface ClientService {
 	
 	/* ajax paging */
 	public PageDTO<ClientVO> getListPage(Criteria cri);
+	public SearchVO replaceSearchvo(SearchVO searchvo);
 }

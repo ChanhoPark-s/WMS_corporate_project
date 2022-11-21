@@ -26,12 +26,6 @@
 	max-height: 350px;
 	max-width: 300px;
 }
-* {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-}
-
 a {
     text-decoration: none;
 }
@@ -106,7 +100,9 @@ margin-top: 5px;
   padding-left: 10px;
   background-color: rgb(233, 233, 233);
 }
-
+#scroll{
+	border-radius:10px;
+}
 .lnamed{
 	font-size: 4px; 
 	display: block;
@@ -198,7 +194,7 @@ margin-top: 5px;
 		});
 	})	
 		/* 웹소켓이랑 연결  */
-		let sock = new SockJS("http://52.79.144.231:8080/echo");//http://52.79.144.231:8080/echo // http://localhost:8080/echo
+		let sock = new SockJS("http://localhost:8080/echo");//http://52.79.144.231:8080/echo // http://localhost:8080/echo
 		sock.onmessage = onMessage;
 		sock.onclose = onClose;
 		

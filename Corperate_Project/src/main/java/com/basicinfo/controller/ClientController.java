@@ -89,9 +89,12 @@ public class ClientController {
 	}
 	
 	@PostMapping("/selectDelete")
-	public String selectDelete(HttpServletRequest request){
+	public String selectDelete(SearchVO searchvo,HttpServletRequest request,RedirectAttributes rttr){
 		
 		service.selectDelete(request.getParameterValues("rowcheck"));
+		
+		service.replaceSearchvo(searchvo);
+		rttr.addFlashAttribute("searchvo",searchvo);
 		return redirect;
 	}
 	
@@ -102,7 +105,7 @@ public class ClientController {
 		return new Gson().toJson(service.selectOne(item_no));
 	}
 	
-	//select_one
+	//select_ByCOde
 	@ResponseBody
 	@PostMapping(value="/selectByCode",produces = "application/text;charset=utf8")
 	public String selectByCode(@RequestParam("code")String code) {
