@@ -54,8 +54,6 @@
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
-
-	
 	<!-- purchase_sheet -->
 	<servlet>
 		<servlet-name>purchase_sheet</servlet-name>

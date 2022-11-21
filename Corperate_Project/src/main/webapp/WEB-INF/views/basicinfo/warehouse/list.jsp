@@ -175,7 +175,7 @@
 						<th scope="col">일련번호</th>
 						<th scope="col">코드</th>
 						<th scope="col">위치명</th>
-						<th scope="col">Actions</th>
+						<th scope="col">기능</th>
 					</tr>
 				</thead>
 				<tbody id="tddata">

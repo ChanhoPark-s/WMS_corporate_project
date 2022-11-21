@@ -12,7 +12,8 @@ SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 <script type="text/javascript">
 	$(document).ready(
 			function() {
-
+				document.getElementById('sell_info').click();
+				
 				$("button[id='update_Sold']").click(function() {
 					$("#Sold_Submit").hide();
 					$("#Sold_Update_Submit").show();
@@ -87,7 +88,7 @@ SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 					<th scope="col" style="text-align: center">주문서 번호</th>
 					<th scope="col" style="text-align: center">담당자 번호</th>
 					<th scope="col" style="text-align: center">판매 날짜</th>
-					<th scope="col" style="text-align: center">Actions</th>
+					<th scope="col" style="text-align: center">기능</th>
 				</tr>
 			</thead>
 			<tbody>

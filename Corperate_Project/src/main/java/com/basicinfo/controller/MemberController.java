@@ -118,4 +118,11 @@ public class MemberController {
       int yn = service.idcheck(id);
       return "{ \"result\" : "+ yn +"}";
    }
+   
+   @PostMapping("/selectDelete")
+	public String selectDelete(HttpServletRequest request){
+		
+		service.selectDelete(request.getParameterValues("rowcheck"));
+		return "redirect:/basicinfo/member/list";
+	}
 }

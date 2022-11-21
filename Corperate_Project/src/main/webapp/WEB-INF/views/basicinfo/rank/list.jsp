@@ -14,6 +14,7 @@
                   </svg>
                   직급등록
                 </button>
+                <button class="btn btn-light d-inline-flex align-items-center gap-1" onclick="selectDelete()"><i class="fa-regular fa-trash-can"></i></button>
               </div>
 			<div class="search">
 			<form name="search" action="/basicinfo/rank/list" id="search">
@@ -34,6 +35,7 @@
 	              </select>
 				</td>
 				<td>
+				
 					<input type="text"  name="keyword" id="keyword" class="form-control" value=<c:if test="${searchvo.keyword=='null' }">""</c:if><c:if test="${searchvo.keyword!='null' }">"${searchvo.keyword }"</c:if>  placeholder="입력" style="width: 200px; height: 38px;">
 				</td>
 				<td>
@@ -45,18 +47,19 @@
 			</div>
             </div>
 		<div class="table-responsive my-1">
+		 <form name="f" action="/basicinfo/rank/selectDelete" method="post">
 			<table class="table align-middle">
 				<thead>
 					<tr>
 						<th scope="col">
 							<div>
-								<input class="form-check-input" type="checkbox" value="">
+								<input class="form-check-input" type="checkbox" id="allselect" name="allselect" onclick="allSelect()">
 							</div>
 						</th>
 						<th scope="col">번호</th>
 						<th scope="col">직급코드</th>
 						<th scope="col">직급명</th>
-						<th scope="col">Actions</th>
+						<th scope="col">기능</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -64,7 +67,7 @@
 						<tr class="rank-${vo.no }">
 							<td>
 								<div>
-									<input class="form-check-input" type="checkbox" value="">
+									<input class="form-check-input" type="checkbox"  id="rowcheck" name="rowcheck" value="${vo.no }">
 								</div>
 							</td>
 							<td>${vo.no}</td>
@@ -96,6 +99,7 @@
 					</c:forEach>
 				</tbody>
 			</table>
+			</form>
 		</div>
         <div align="center">
 			${pageInfo.pagingHtml}
@@ -232,6 +236,42 @@
 		});
 		
 	})();
+	
+	/* 체크박스 */
+	function allSelect(){
+		var ac = document.f.allselect;
+		var rc = document.f.rowcheck;
+
+		if (ac.checked) {
+				for (var i = 0; i < rc.length; i++) {
+					rc[i].checked = true;
+				}
+			}
+		else {
+				for (var i = 0; i < rc.length; i++) {
+					rc[i].checked = false;
+				}
+			}
+		}
+	function selectDelete(){
+		
+		x=false;
+		var rc = document.f.rowcheck;
+		
+		for(var i=0;i<rc.length;i++){
+			if(rc[i].checked==true){
+				x=true;
+			}
+		}
+		if(!x){
+			alert("체크박스를 선택하세요");
+			return;
+		}
+		if(confirm("삭제하시겠습니까?")){
+			f.submit();
+		}
+
+	}
 </script>
 <!-- bottom.jsp -->
 <%@include file="../../common/bottom.jsp"%>

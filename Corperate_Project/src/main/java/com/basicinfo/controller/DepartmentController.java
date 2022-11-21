@@ -30,6 +30,8 @@ public class DepartmentController {
 	@Autowired
 	private DepartmentService service;
 
+	private final String redirect = "redirect:/basicinfo/department/list";
+	
 	@GetMapping(value="/list")
 	public void list(Model model, SearchVO vo, HttpServletRequest request) {
 		
@@ -48,18 +50,25 @@ public class DepartmentController {
 	@PostMapping(value="/insert")
 	public String insert(DepartmentVO vo) {	
 		service.add(vo);
-		return "redirect:/basicinfo/department/list";
+		return redirect;
 	}
 	
 	@PostMapping(value="/update")
 	public String update(DepartmentVO vo) {				
 		service.modify(vo);
-		return "redirect:/basicinfo/department/list";
+		return redirect;
 	}
 	
 	@GetMapping(value="/delete/{no}")
 	public String delete(DepartmentVO vo, @PathVariable(value="no") int no) {				
 		service.delete(no);
-		return "redirect:/basicinfo/department/list";
+		return redirect;
+	}
+	
+	@PostMapping("/selectDelete")
+	public String selectDelete(HttpServletRequest request){
+		
+		service.selectDelete(request.getParameterValues("rowcheck"));
+		return redirect;
 	}
 }
