@@ -114,12 +114,10 @@ public class WareHouseDetailController {
 				@PathVariable(value="whatColumn", required = false) String whatColumn,
 				@PathVariable(value="keyword", required = false) String keyword) {				
 			
-
 			System.out.println(pageNum + " " + amount + " " + whatColumn + " " + keyword+" "+ware_no+" "+area_no+" "+rack_no+" "+cell_no);
 			System.out.println("페이징처리위한컨트롤러진입");
 			
-//			Criteria cri = new Criteria(pageNum, amount, whatColumn, keyword);
-			CriteriaForWareHouse cri = new CriteriaForWareHouse(pageNum, amount, "0", "0",ware_no,area_no,rack_no,cell_no);
+			CriteriaForWareHouse cri = new CriteriaForWareHouse(pageNum, amount, whatColumn, keyword,ware_no,area_no,rack_no,cell_no);
 			System.out.println("cri생성자다음서본 cri amount"+cri.getAmount()); 
 			return new ResponseEntity<>(warehousedetailservice.getListPage(cri), HttpStatus.OK);		
 		}

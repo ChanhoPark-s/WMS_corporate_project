@@ -126,7 +126,34 @@
                 <!-- 우측영역에넣을테이블 -->
 <div class="card">
 	<div class="card-body">
-
+	<!--  -->
+	<!--  -->
+	<div class="d-flex gap-1 mb-4 flex-wrap">
+      <div class="d-flex gap-1 me-auto flex-wrap">
+      	<h4 id="clicked_location"></h4>
+      </div>
+		<form>
+		<table>
+			<tr>
+				<td>
+					<select class="dselect form-select" name="searchWhatColumn" id="searchWhatColumn" style="width:110px;">
+						<option value="">검색선택</option>
+						<option value="lot_code">로트코드</option>
+						<option value="item_name">품목명</option>
+					</select>
+				</td>
+				<td>
+					<input type="text" class="form-control" id="searchKeyword" placeholder="검색어를 입력하세요" style="width:160px;">
+				</td>
+				<td>
+					<button type="submit" class="btn btn-light" id="searchBtn"> 검색 </button>
+				</td>
+			</tr>
+		</table>
+		</form>
+	</div>
+	<!--  -->
+	<!--  -->
 		<div class="table-responsive my-1">
 		<form name="form">
 			<table class="table align-middle">
@@ -345,6 +372,11 @@ function clickFunction(clicked_id,w_no,a_no,r_no,c_no){
 	rack_no = r_no;
 	cell_no = c_no;
 	
+	//선택하세요 클릭시 초기화하는 코드
+	$("#searchKeyword").val("");
+	searchWhatColumn = "";
+	searchKeyword = "";
+	
 	//하단페이지번호도만들고 레코드도만듬
 	requestRecord();
 	
@@ -513,9 +545,8 @@ function paintPageNation(totalCount, cri){
 	//가운데 숫자 출력
 	for(var i = startPageNum; i <= endPageNum; i++){
 		var active = (pageNum == i ? "active" : "");
-		str += "<li class='page-item " + active +"'>" + "<a class='page-link' href='"+ i +"'>" + i + "</a></li>";
+		str += "<li class='page-item " + active +"'>" + "<a class='page-link' id='page-link"+i+"' href='"+ i +"'>" + i + "</a></li>";
 	}
-	
 	//다음 버튼 출력여부에 따라 버튼 표시
 	if(isNeedNext){
 		str += "<li class='page-item'><a class='page-link d-flex align-items-center px-2' href='" + (endPageNum + 1) +"'>";
@@ -539,6 +570,29 @@ function paintPageNation(totalCount, cri){
 	$("#PageNation").html(str);
 }
 
+
+/* 검색 시도할때 처리하는 코드*/
+$("#searchBtn").on("click", function(e){
+	e.preventDefault(); // 번호를 눌러도 페이지가 이동하지 않도록 한다
+	searchWhatColumn = $("#searchWhatColumn").val();
+	searchKeyword = $("#searchKeyword").val();
+	console.log("searchWhatColumn: " + searchWhatColumn);
+	console.log("searchKeyword: " + searchKeyword);
+	
+	if(ware_no == null){
+		alert("좌측 사이드바에서 최소 창고 이하를 클릭해야 검색 가능합니다.");
+	}
+	else{
+		if(searchWhatColumn == ""){
+			alert("검색 조건을 선택하세요");
+			return;
+		}
+	}
+	requestRecord();
+	
+	//검색했을때 1page가 선택되도록 한다
+	document.getElementById('page-link1').click();
+});
 
 
 </script>
