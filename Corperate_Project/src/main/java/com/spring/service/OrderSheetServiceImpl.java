@@ -133,4 +133,9 @@ public class OrderSheetServiceImpl implements OrderSheetService{
 	public List<OrderSheetDetailVO> getSubList(int mainNo) {
 		return mapper.selectSubAllByMainNo(mainNo);
 	}
+
+	@Override
+	public OrderSheetVO selectOneByMainNo(int no) {
+		return mapper.selectOneByMainNo(no);
+	}
 }

@@ -23,6 +23,8 @@ public interface MemberMapper {			// 게시물 조회
 
 	public int check_user(MemberVO membervo);
 	
+	public MemberVO selectOneByNo(int no);
+	
 	/* ajax paging */
 	public List<MemberVO> getListWithPaging(@Param("cri") Criteria cri);
 	public int getCountAll(@Param("cri") Criteria cri);

@@ -25,6 +25,8 @@ public interface OrderSheetMapper {
 	
 	public ArrayList<Integer> selectAllMainNoByItemName(String keyword); // 품목 이름을 넘겨주면 이를 포함하고 있는 상위 수주서 레코드의 no 들을 반환함
 	
+	public OrderSheetVO selectOneByMainNo(int no);
+	
 	/* OrderSheetDetail */
 	public List<OrderSheetDetailVO> selectSubAllByMainNo(int mainNo);
 }
