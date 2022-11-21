@@ -12,15 +12,14 @@
             <div class="card h-100">
               <div class="card-body navbar-light">
                 <!-- 좌측영역에넣을테이블 -->
-<div class="col-md-10">
+<div class="col-md-12">
             <h3 class="fw-black">창고별 재고현황</h3>
             <p>재고현황을 확인하고 싶은 구역을 클릭하여 재고확인</p>
             
-         <ul class="nav flex-column">
+         <ul class="nav flex-column" style=" height: 600px; overflow: auto">
           <li class="nav-item">
            <a href="#default-collapse1" class="nav-link px-0 dropdown-toggle d-flex align-items-center gap-3" data-bs-toggle="collapse" role="button" aria-expanded="true" aria-controls="default-collapse"
             	id="mydefault" data-value="0" >
-            	<!-- onclick="clickFunction(this.id)" -->
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
               </svg>
@@ -28,7 +27,7 @@
            </a>
            
            <!-- 창고 -->
-           <div class="ms-5 collapse show" id="default-collapse">
+           <div class="ms-5 collapse show" id="default-collapse1">
             <ul class="nav flex-column">
               <c:forEach items="${warehouseLists }" var="warehouseLists" varStatus="warehousestatus">
               <li class="nav-item">
@@ -164,15 +163,14 @@
 					<tr>
 						<th scope="col">번호</th>
 						<th scope="col">로트코드</th>
-						<th scope="col">품목사진</th>
 						<th scope="col">품목명</th>
 						<th scope="col">재고수량</th>
 					</tr>
 				</thead>
 				<tbody id="tddata">
 					<tr>
-						<td colspan="5">
-							좌측 메뉴 바에서 재고현황을 확인하고 싶은 영역을 선택하세요
+						<td colspan="4">
+							좌측 메뉴 바에서 재고현황을 확인하고 싶은 영역을 선택하세요.
 						</td>
 					</tr>
 					
@@ -464,7 +462,6 @@ function makeRecord(list,totalCount,cri){
 				retabledata +=	'<tr>'+
 									'<td>'+((totalCount-(pageNum-1)*10)-i)+'</td>'+
 									'<td>'+list[i].lot_code+'</td>'+
-									'<td><img width="80px" height="80px" src="${pageContext.request.contextPath }/resources/assets/img/item/'+list[i].image+'" ></td>'+
 									'<td>'+list[i].name+'</td>'+
 									'<td>'+list[i].amount+'</td>'+
 								'</tr>';

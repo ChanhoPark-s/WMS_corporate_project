@@ -12,11 +12,11 @@
             <div class="card h-100">
               <div class="card-body navbar-light">
                 <!-- 좌측영역에넣을테이블 -->
-<div class="col-md-10">
+<div class="col-md-12">
             <h3 class="fw-black">창고정보 관리</h3>
             <p>창고, 구역, 랙, 셀 목록</p>
             
-         <ul class="nav flex-column">
+         <ul class="nav flex-column" style=" height: 600px; overflow: auto">
           <li class="nav-item">
            <a href="#default-collapse1" class="nav-link px-0 dropdown-toggle d-flex align-items-center gap-3" data-bs-toggle="collapse" role="button" aria-expanded="true" aria-controls="default-collapse"
             	id="mydefault" data-value="0" onclick="clickFunction(this.id)">
@@ -27,7 +27,7 @@
            </a>
            
            <!-- 창고 -->
-           <div class="ms-5 collapse show" id="default-collapse">
+           <div class="ms-5 collapse show" id="default-collapse1">
            <!-- 상단부터 창고목록위해 추가된것으로 삭제시 좌측테이블 초기상태 -->
             <ul class="nav flex-column">
               <c:forEach items="${warehouseLists }" var="warehouseLists" varStatus="warehousestatus">
@@ -352,8 +352,8 @@
 				</form>
 			</div>
 			<div class="modal-footer border-0">
-				<button type="submit" form="taskForm" class="btn btn-primary px-5" id="submit_btn">등록</button>
 				<button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
+				<button type="submit" form="taskForm" class="btn btn-primary px-5" id="submit_btn">등록</button>
 			</div>
 		</div>
 	</div>
@@ -422,7 +422,7 @@ function clickFunction(clicked_id){
 			console.log("mydata.length은"+mydata.length);
 			if(mydata.length==0){
 				tabledata +=	'<tr>'+
-									'<td colspan="4">'+'현재 선택한 영역은 하위 영역이 등록되어있지 않습니다.'+'</td>'+
+									'<td colspan="4">'+'현재 선택한 영역은 하위 영역이 등록되어 있지 않습니다.'+'</td>'+
 								'</tr>';
 			}
 			else{
