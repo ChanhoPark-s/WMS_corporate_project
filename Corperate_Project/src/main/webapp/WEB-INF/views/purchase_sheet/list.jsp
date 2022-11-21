@@ -87,8 +87,9 @@
                     <th scope="col">거래처</th>
                     <th scope="col">담당자</th>
                     <th scope="col">품목명</th>
-                    <th scope="col" nowrap>등록일자</th>
-                    <th scope="col" nowrap>납기일자</th>
+                    <th scope="col">총 구매단가</th>
+                    <th scope="col">등록일자</th>
+                    <th scope="col">납기일자</th>
                     <th scope="col">상태</th>
                     <th scope="col">기능</th>
                   </tr>
@@ -113,6 +114,9 @@
                     ${item_name[0] }
 					<c:if test="${fn:length(item_name) > 1}">외 ${fn:length(item_name) - 1}개</c:if>
                     </span>
+                    </td>
+                    <td>
+                    <fmt:formatNumber value="${list.totalPrice}" pattern="#,###"/>원
                     </td>
                     <td>
                     <fmt:parseDate value="${list.day}" var="day" pattern="yyyy-MM-dd" />
@@ -198,6 +202,10 @@
     <!-- /Main footer -->
 <script type="text/javascript">
 /* 1,000 숫자표기 함수 */
+$(function(){
+	document.getElementById('purchase_info').click();
+})
+
 function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }

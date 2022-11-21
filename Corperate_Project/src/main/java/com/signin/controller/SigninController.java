@@ -45,4 +45,9 @@ public class SigninController {
 		}
 		return new Gson().toJson(result);
 	}
+	@GetMapping("/logout")
+	public String logout(HttpSession session) {
+		session.invalidate();
+		return "signin";
+	}
 }

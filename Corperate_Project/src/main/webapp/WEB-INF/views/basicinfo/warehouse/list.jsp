@@ -71,18 +71,13 @@
 		                      </a>
                             
                             <!-- 셀 -->
-                            <div class="ms-5 collapse" id="rack-collapse${rackLists.no }">
+                            <div class="ms-4 collapse" id="rack-collapse${rackLists.no }">
 		                        <ul class="nav flex-column">
 		                          
 		                          <c:forEach items="${cellLists }" var="cellLists" varStatus="cellstatus">
 		                          <c:if test="${rackLists.no eq cellLists.rack_no }">
-		                          <li class="nav-item">
-		                            <a href="javascript:void(0)" class="nav-link px-0 d-flex align-items-center gap-3">
-		                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-		                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-		                              </svg>
-		                              ${cellLists.name }
-		                            </a>
+		                          <li class="nav-item m-2">
+		                             ●&nbsp;&nbsp;&nbsp;${cellLists.name }
 		                          </li>
 		                          </c:if>
 		                          </c:forEach> <!-- cell -->
@@ -91,6 +86,7 @@
 		                        </ul>
 		                      </div>
 		                      <!-- 셀 -->
+		                      
                           </li>
                           </c:if>
                           </c:forEach> <!-- rack -->
@@ -128,7 +124,7 @@
 		<!-- 우측테이블상단의 버튼/검색 -->
 		<div class="d-flex gap-1 mb-4 flex-wrap">
 			<div class="d-flex gap-1 me-auto flex-wrap">
-				<button class="btn btn-primary d-inline-flex align-items-center gap-1"  onclick="warehouseinsert()"
+				<button class="btn btn-primary d-inline-flex align-items-center gap-1"  onclick="insertfunction('default')"
 					data-bs-toggle="modal" data-bs-target="#MyModal">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
 						fill="currentColor" aria-hidden="true">
@@ -138,7 +134,7 @@
                   </svg>
 					창고 등록
 				</button>
-				<button class="btn btn-primary d-inline-flex align-items-center gap-1"  onclick="areainsert()"
+				<button class="btn btn-primary d-inline-flex align-items-center gap-1"  onclick="insertfunction('ware')"
 					data-bs-toggle="modal" data-bs-target="#MyModal">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
 						fill="currentColor" aria-hidden="true">
@@ -148,7 +144,7 @@
                   </svg>
 					구역 등록
 				</button>
-				<button class="btn btn-primary d-inline-flex align-items-center gap-1"  onclick="rackinsert()"
+				<button class="btn btn-primary d-inline-flex align-items-center gap-1"  onclick="insertfunction('area')"
 					data-bs-toggle="modal" data-bs-target="#MyModal">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
 						fill="currentColor" aria-hidden="true">
@@ -158,7 +154,7 @@
                   </svg>
 					랙 등록
 				</button>
-				<button class="btn btn-primary d-inline-flex align-items-center gap-1"  onclick="cellinsert()"
+				<button class="btn btn-primary d-inline-flex align-items-center gap-1"  onclick="insertfunction('rack')"
 					data-bs-toggle="modal" data-bs-target="#MyModal">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
 						fill="currentColor" aria-hidden="true">
@@ -259,7 +255,7 @@
 					aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				<form class="needs-validation" novalidate id="taskForm" action="" method="post">
+				<form class="needs-validation" id="taskForm" action="" method="post">
 				<input type="hidden" name="sendno" id="sendno">
 				<input type="hidden" name="sendid" id="sendid">
 				<input type="hidden" name="showid" id="showid">
@@ -299,8 +295,8 @@
 					<div class="mb-3" id="warehousecodetitle">
 						<label for="warehousecode" class="form-label" >창고코드</label> <input
 							type="text" name="warehousecode" class="form-control" id="warehousecode"
-							required autofocus>
-						<div class="invalid-feedback">User full name is required.</div>
+							required>
+						<div class="invalid-feedback">이미 사용중인 창고코드입니다</div>
 					</div>
 					<div class="mb-3" id="warehousenametitle">
 						<label for="warehousename" class="form-label">창고명</label> <input
@@ -312,7 +308,7 @@
 						<label for="areacode" class="form-label">구역코드</label> <input
 							type="text" name="areacode" class="form-control" id="areacode"
 							required >
-						<div class="invalid-feedback">User email is required.</div>
+						<div class="invalid-feedback">이미 사용중인 구역코드입니다</div>
 					</div>
 					<div class="mb-3" id="areanametitle">
 						<label for="areaname" class="form-label">구역명</label> <input
@@ -324,7 +320,7 @@
 						<label for="rackcode" class="form-label">랙코드</label> <input
 							type="text" name="rackcode" class="form-control" id="rackcode"
 							required >
-						<div class="invalid-feedback">User email is required.</div>
+						<div class="invalid-feedback">이미 사용중인 랙코드입니다</div>
 					</div>
 					<div class="mb-3" id="racknametitle">
 						<label for="rackname" class="form-label">랙명</label> <input
@@ -336,7 +332,7 @@
 						<label for="cellcode" class="form-label">셀코드</label> <input
 							type="text" name="cellcode" class="form-control" id="cellcode"
 							required >
-						<div class="invalid-feedback">User email is required.</div>
+						<div class="invalid-feedback">이미 사용중인 셀코드입니다</div>
 					</div>
 					<div class="mb-3" id="cellnametitle">
 						<label for="cellname" class="form-label">셀명</label> <input
@@ -411,9 +407,9 @@ function clickFunction(clicked_id){
 		success : function(data){
 			var mydata = JSON.parse(data);
 			$('#tddata *').remove();
-			var tabledata = '<tr>';
+			var tabledata = "";
 			$.each(mydata,function(i){
-				tabledata +=	
+				tabledata +=	'<tr>'+
 									'<td>'+(i+1)+'</td>'+
 									'<td>'+mydata[i].code+'</td>'+
 									'<td>'+mydata[i].name+'</td>'+
@@ -458,7 +454,12 @@ function clickFunction(clicked_id){
 
 //우측에서 삭제아이콘 클릭시 해당 위치를 삭제한다
 function deletefunction(no,id){
-	alert(no+' del '+id);
+	//기본화면(창고리스트)서 등록했을시 id를 불러오지 못할시 id를 mydefault설정하여 수정함
+	if(id==''){
+		id = 'mydefault';
+		console.log(id);
+	}
+	
 	var deletecheck;
 	$('#sendid').val(id);
 	$('#sendno').val(no);
@@ -493,7 +494,12 @@ function deletefunction(no,id){
 
 //우측에서 수정아이콘 클릭시 해당 위치를 수정한다
 function updatefunction(no,id){
-	alert(no+' upd '+id);
+	//기본화면(창고리스트)서 등록했을시 id를 불러오지 못할시 id를 mydefault설정하여 수정함
+	if(id==''){
+		id = 'mydefault';
+		console.log(id);
+	}
+	resetrequired();
 	
 	$('#submit_btn').html('수정');
 	$('#sendid').val(id);
@@ -517,7 +523,12 @@ function updatefunction(no,id){
 		$('#modaltitle').html('창고수정');
 		$('#warehousecodetitle').show();
 		$('#warehousenametitle').show();
+		$('#warehousecode').attr("autofocus","autofocus");
 		$('#MyModal').modal('show');
+		
+		//유효성
+		$('#warehousecode').attr('required','');
+		$('#warehousename').attr('required','');
 	}
 	if(id.indexOf('ware')>0){
 		//구역수정
@@ -525,7 +536,13 @@ function updatefunction(no,id){
 		$('#warehouselocationtitle').show();
 		$('#areacodetitle').show();
 		$('#areanametitle').show();
+		$('#areacode').attr("autofocus","autofocus");
 		$('#MyModal').modal('show');
+		
+		//유효성
+		$('#warehouselocation').attr('required','');
+		$('#areacode').attr('required','');
+		$('#areaname').attr('required','');
 	}
 	if(id.indexOf('area')>0){
 		//랙수정
@@ -534,7 +551,14 @@ function updatefunction(no,id){
 		$('#arealocationtitle').show();
 		$('#rackcodetitle').show();
 		$('#racknametitle').show();
+		$('#rackcode').attr("autofocus","autofocus");
 		$('#MyModal').modal('show');
+		
+		//유효성
+		$('#warehouselocation').attr('required','');
+		$('#arealocation').attr('required','');
+		$('#rackcode').attr('required','');
+		$('#rackname').attr('required','');
 	}
 	if(id.indexOf('rack')>0){
 		//셀수정
@@ -544,7 +568,15 @@ function updatefunction(no,id){
 		$('#racklocationtitle').show();
 		$('#cellcodetitle').show();
 		$('#cellnametitle').show();
+		$('#cellcode').attr("autofocus","autofocus");
 		$('#MyModal').modal('show');
+		
+		//유효성
+		$('#warehouselocation').attr('required','');
+		$('#arealocation').attr('required','');
+		$('#racklocation').attr('required','');
+		$('#cellcode').attr('required','');
+		$('#cellname').attr('required','');
 	}
 
 	//수정할때 입력했던 데이터 가져오기위한 하단의 코드
@@ -569,7 +601,7 @@ function updatefunction(no,id){
 		}),
 		success : function(data){
 			var mydata = JSON.parse(data);
-			
+
 			warehouselocation = mydata.warehouselocation;
 			arealocation = mydata.arealocation;
 			racklocation = mydata.racklocation;
@@ -610,101 +642,91 @@ function updatefunction(no,id){
 
 
 
-//창고등록모달
-function warehouseinsert(){
+
+//등록 클릭시 해당영역 등록
+function insertfunction(getid){
 	resetmodal();
+	resetrequired();
 	$('#submit_btn').html('등록');
-	$('#modaltitle').html('창고등록');
+	$('#sendid').val(id);
+	$('#sendno').val(no);
+	$('#showid').val(showid);
+	$('#taskForm').attr("action", "/basicinfo/warehouse/insert");
 	$('#warehouselocationtitle').hide();
 	$('#arealocationtitle').hide();
 	$('#racklocationtitle').hide();
-	$('#warehousecodetitle').show();
-	$('#warehousenametitle').show();
-	$('#areacodetitle').hide();
-	$('#areanametitle').hide();
-	$('#rackcodetitle').hide();
-	$('#racknametitle').hide();
-	$('#cellcodetitle').hide();
-	$('#cellnametitle').hide();
-	$('#showid').val(showid);
-	$('#sendid').val(id);
-	$('#sendno').val(no);
-	document.getElementById('taskForm').setAttribute('action','/basicinfo/warehouse/insert');
-}
-
-//구역등록모달
-function areainsert(){
-	resetmodal();
-	$('#submit_btn').html('등록');
-	$('#modaltitle').html('구역등록');
-	$('#warehouselocationtitle').show();
-	$('#arealocationtitle').hide();
-	$('#racklocationtitle').hide();
-	$('#warehousecodetitle').hide();
-	$('#warehousenametitle').hide();
-	$('#areacodetitle').show();
-	$('#areanametitle').show();
-	$('#rackcodetitle').hide();
-	$('#racknametitle').hide();
-	$('#cellcodetitle').hide();
-	$('#cellnametitle').hide();
-	$('#showid').val(showid);
-	$('#sendid').val(id);
-	$('#sendno').val(no);
-	document.getElementById('taskForm').setAttribute('action','/basicinfo/warehouse/insert');
-}
-
-//랙등록모달
-function rackinsert(){
-	resetmodal();
-	$('#arealocation *').remove();
-	$('#arealocation').append('<option value="">구역위치를 선택하세요</option>');
-	$('#submit_btn').html('등록');
-	$('#modaltitle').html('랙등록');
-	$('#warehouselocationtitle').show();
-	$('#arealocationtitle').show();
-	$('#racklocationtitle').hide();
-	$('#warehousecodetitle').hide();
-	$('#warehousenametitle').hide();
-	$('#areacodetitle').hide();
-	$('#areanametitle').hide();
-	$('#rackcodetitle').show();
-	$('#racknametitle').show();
-	$('#cellcodetitle').hide();
-	$('#cellnametitle').hide();
-	$('#showid').val(showid);
-	$('#sendid').val(id);
-	$('#sendno').val(no);
-	document.getElementById('taskForm').setAttribute('action','/basicinfo/warehouse/insert');
-}
-
-//셀등록모달
-function cellinsert(){
-	resetmodal();
-	$('#arealocation *').remove();
-	$('#arealocation').append('<option value="">구역위치를 선택하세요</option>');
-	$('#racklocation *').remove();
-	$('#racklocation').append('<option value="">랙위치를 선택하세요</option>');
-	$('#submit_btn').html('등록');
-	$('#modaltitle').html('셀등록');
-	$('#warehouselocationtitle').show();
-	$('#arealocationtitle').show();
-	$('#racklocationtitle').show();
 	$('#warehousecodetitle').hide();
 	$('#warehousenametitle').hide();
 	$('#areacodetitle').hide();
 	$('#areanametitle').hide();
 	$('#rackcodetitle').hide();
 	$('#racknametitle').hide();
-	$('#cellcodetitle').show();
-	$('#cellnametitle').show();
-	$('#showid').val(showid);
-	$('#sendid').val(id);
-	$('#sendno').val(no);
-	document.getElementById('taskForm').setAttribute('action','/basicinfo/warehouse/insert');
+	$('#cellcodetitle').hide();
+	$('#cellnametitle').hide();
+	
+	
+	if(getid.indexOf('default')>=0){
+		//창고등록
+		$('#modaltitle').html('창고등록');
+		$('#warehousecodetitle').show();
+		$('#warehousenametitle').show();
+		$('#warehousecode').attr("autofocus","autofocus");
+		$('#MyModal').modal('show');
+		
+		//유효성
+		$('#warehousecode').attr('required','');
+		$('#warehousename').attr('required','');
+	}
+	if(getid.indexOf('ware')>=0){
+		//구역등록
+		$('#modaltitle').html('구역등록');
+		$('#warehouselocationtitle').show();
+		$('#areacodetitle').show();
+		$('#areanametitle').show();
+		$('#warehouselocation').attr("autofocus","autofocus");
+		$('#MyModal').modal('show');
+		
+		//유효성
+		$('#warehouselocation').attr('required','');
+		$('#areacode').attr('required','');
+		$('#areaname').attr('required','');
+	}
+	if(getid.indexOf('area')>=0){
+		//랙등록
+		$('#modaltitle').html('랙등록');
+		$('#warehouselocationtitle').show();
+		$('#arealocationtitle').show();
+		$('#rackcodetitle').show();
+		$('#racknametitle').show();
+		$('#warehouselocation').attr("autofocus","autofocus");
+		$('#MyModal').modal('show');
+		
+		//유효성
+		$('#warehouselocation').attr('required','');
+		$('#arealocation').attr('required','');
+		$('#rackcode').attr('required','');
+		$('#rackname').attr('required','');
+	}
+	if(getid.indexOf('rack')>=0){
+		//셀등록
+		$('#modaltitle').html('셀등록');
+		$('#warehouselocationtitle').show();
+		$('#arealocationtitle').show();
+		$('#racklocationtitle').show();
+		$('#cellcodetitle').show();
+		$('#cellnametitle').show();
+		$('#warehouselocation').attr("autofocus","autofocus");
+		$('#MyModal').modal('show');
+		
+		//유효성
+		$('#warehouselocation').attr('required','');
+		$('#arealocation').attr('required','');
+		$('#racklocation').attr('required','');
+		$('#cellcode').attr('required','');
+		$('#cellname').attr('required','');
+	}
 }
-
-
+	
 
 //상위창고위치 셀렉트 선택에 따른 상위구역위치 옵션 설정
 function change1(){
@@ -712,7 +734,7 @@ function change1(){
 		url : "/basicinfo/warehouse/OptionsByLocationNo",
 		type : "post",
 		data : ({
-			"no" : taskForm.warehouselocation.selectedIndex
+			"no" : taskForm.warehouselocation.value
 		}),
 		success : function(data){
 			var mydata = JSON.parse(data);
@@ -743,7 +765,7 @@ function change2(){
 		url : "/basicinfo/warehouse/OptionsByAreaLocationNo",
 		type : "post",
 		data : ({
-			"no" : taskForm.arealocation.selectedIndex
+			"no" : taskForm.arealocation.value
 		}),
 		success : function(data){
 			var mydata = JSON.parse(data);
@@ -787,4 +809,128 @@ function resetmodal(){
 	document.getElementById('cellcode').value= '';
 	document.getElementById('cellname').value= '';
 };
+
+
+
+//에러메세지/중복메세지 해제
+function resetrequired(){
+	document.getElementById('warehouselocation').removeAttribute('required');
+	document.getElementById('arealocation').removeAttribute('required');
+	document.getElementById('racklocation').removeAttribute('required');
+	document.getElementById('warehousecode').removeAttribute('required');
+	document.getElementById('warehousename').removeAttribute('required');
+	document.getElementById('areacode').removeAttribute('required');
+	document.getElementById('areaname').removeAttribute('required');
+	document.getElementById('rackcode').removeAttribute('required');
+	document.getElementById('rackname').removeAttribute('required');
+	document.getElementById('cellcode').removeAttribute('required');
+	document.getElementById('cellname').removeAttribute('required');
+	document.getElementById('submit_btn').removeAttribute('disabled');
+	document.getElementById('warehouselocation').classList.remove('is-invalid');
+	document.getElementById('arealocation').classList.remove('is-invalid');
+	document.getElementById('racklocation').classList.remove('is-invalid');
+	document.getElementById('warehousecode').classList.remove('is-invalid');
+	document.getElementById('warehousename').classList.remove('is-invalid');
+	document.getElementById('areacode').classList.remove('is-invalid');
+	document.getElementById('areaname').classList.remove('is-invalid');
+	document.getElementById('rackcode').classList.remove('is-invalid');
+	document.getElementById('rackname').classList.remove('is-invalid');
+	document.getElementById('cellcode').classList.remove('is-invalid');
+	document.getElementById('cellname').classList.remove('is-invalid');
+
+};
+
+//코드만 중복검사
+function checkcodefunction(getcode,location){
+	console.log(getcode);
+	console.log(location);
+	$.ajax({
+		url : "/basicinfo/warehouse/checkCode",
+		type : "post",
+		data : ({
+			"getcode" : getcode,
+			"location" : location
+		}),
+		success : function(data){
+			var code = JSON.parse(data);
+			
+			if(location=='ware'){
+				if(code>0){
+					document.getElementById('warehousecode').classList.add('is-invalid');
+					$('#submit_btn').attr("disabled","disabled");
+					checkcode = false;
+					
+				} else{
+					document.getElementById('warehousecode').classList.remove('is-invalid');
+					document.getElementById('submit_btn').removeAttribute('disabled');
+					checkcode = true;
+				}
+			}else if(location=='area'){
+				if(code>0){
+					document.getElementById('areacode').classList.add('is-invalid');
+					$('#submit_btn').attr("disabled","disabled");
+					checkcode = false;
+				} else{
+					document.getElementById('areacode').classList.remove('is-invalid');
+					document.getElementById('submit_btn').removeAttribute('disabled');
+					checkcode = true;
+				}
+			}else if(location=='rack'){
+				if(code>0){
+					document.getElementById('rackcode').classList.add('is-invalid');
+					$('#submit_btn').attr("disabled","disabled");
+					checkcode = false;
+				} else{
+					document.getElementById('rackcode').classList.remove('is-invalid');
+					document.getElementById('submit_btn').removeAttribute('disabled');
+					checkcode = true;
+				}
+			}else{
+				if(code>0){
+					document.getElementById('cellcode').classList.add('is-invalid');
+					$('#submit_btn').attr("disabled","disabled");
+					checkcode = false;
+					
+				} else{
+					document.getElementById('cellcode').classList.remove('is-invalid');
+					document.getElementById('submit_btn').removeAttribute('disabled');
+					checkcode = true;
+				}
+			}
+			console.log(checkcode);
+		},
+		error: function (request, status, error) {
+	        console.log("code: " + request.status);
+	        console.log("message: " + request.responseText);
+	        console.log("error: " + error);
+	    }
+	});//ajax
+}//중복검사
+
+//중복검사
+var checkcode;
+$(function(){
+	/* 중복검사 */
+	//창고코드입력시
+	$('#warehousecode').keyup(function(){
+		var wcode = $('#warehousecode').val();
+		checkcode = checkcodefunction(wcode,'ware');
+	});
+	//구역코드입력시
+	$('#areacode').keyup(function(){
+		var acode = $('#areacode').val();
+		checkcodefunction(acode,'area');
+
+	});
+	//랙코드입력시
+	$('#rackcode').keyup(function(){
+		var rcode = $('#rackcode').val();
+		checkcodefunction(rcode,'rack');
+	});
+	//셀코드입력시
+	$('#cellcode').keyup(function(){
+		var ccode = $('#cellcode').val();
+		checkcodefunction(ccode,'cell');
+	});
+});
 </script>

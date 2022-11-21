@@ -57,4 +57,9 @@ public class CellServiceImpl implements CellService{
 		return mapper.updateCellByNo(vo);
 	}
 
+	@Override
+	public int checkCode(String code) {
+		return mapper.checkCode(code);
+	}
+
 }

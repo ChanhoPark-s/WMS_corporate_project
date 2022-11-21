@@ -52,4 +52,9 @@ public class WareHouseServiceImpl implements WareHouseService{
 		return mapper.updateWareHouseByNo(vo);
 	}
 
+	@Override
+	public int checkCode(String code) {
+		return mapper.checkCode(code);
+	}
+
 }

@@ -1,5 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<style>
+  table th {
+    text-align: center;
+  }
+  table td {
+    text-align: center;
+  }  
+</style>
+
 
 <!-- top.jsp -->
 <%@include file="../../common/top.jsp"%>
@@ -7,8 +16,8 @@
 <div class="card">
 	<div class="card-body">
 		<div class="d-flex gap-1 mb-4 flex-wrap">
-			<div class="d-flex gap-1 me-auto flex-wrap">
-				<button id="insertBtn" class="btn btn-primary d-inline-flex align-items-center gap-1 add"
+			<div class="d-flex gap-1 me-auto flex-wrap" style="height: 20px;">
+				<button id="insertBtn" onclick="insertBtn()"class="btn btn-primary d-inline-flex align-items-center gap-1 add"
 					data-bs-toggle="modal" data-bs-target="#itemModal">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
 						fill="currentColor" aria-hidden="true">
@@ -16,7 +25,7 @@
 							d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
 							clip-rule="evenodd" />
                   </svg>
-                  등록하기
+                  상품 등록
 				</button>
 			</div>
 			<form action="/basicinfo/item/list" method="get"> 
@@ -54,16 +63,16 @@
 					<tr>
 						<td>${item.no} </td>
 						<td> <!-- 이미지 -->
-						<img src="<%=request.getContextPath()%>/resources/assets/img/item/${item.image}" width="100" height="100" loading="lazy">
+						<img src="<%=request.getContextPath()%>/resources/assets/img/item/${item.image}" width="70" height="70" loading="lazy">
 						</td>
 						<td>${item.code}</td> 
 						<td>${item.client_name}</td>
 						<td>${item.name}</td>
-						<td>${item.in_price}</td>
-						<td>${item.out_price}</td>
+						<td><fmt:formatNumber pattern="###,###" value="${item.in_price}" var="in_price"/>${in_price} 원</td>
+						<td><fmt:formatNumber pattern="###,###" value="${item.out_price}" var="out_price"/>${out_price} 원</td>
 						<td>
 							<div class="btn-group btn-group-sm" role="group">
-								<button type="button" class="btn btn-light d-flex" data-bs-toggle="modal" data-bs-target="#itemModal" onclick="update('${item.no}')" id="updateItem">
+								<button type="button" class="btn btn-light d-flex" data-bs-toggle="modal" data-bs-target="#itemModal" onclick="update('${item.no}')" >
 									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
 										fill="none" viewBox="0 0 24 24" stroke="currentColor"
 										aria-hidden="true">
@@ -105,28 +114,26 @@
 					aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				<form class="needs-validation" id="modalForm" action="" enctype="multipart/form-data" method="post" >
-					
-				<input type="hidden" name="keyword" id="keyword2">
-				<input type="hidden" name="whatColumn" id="whatColumn">					
+				<form class="needs-validation" novalidate id="modalForm" name="modalForm" action="" enctype="multipart/form-data" method="post" >
+				<input type="hidden"id="no" name="no">
 					<div>
-                <label for="image" class="form-label">이미지</label>
+                <label for="image" class="form-label">이미지</label> 
                 <input class="form-control" type="file" id="upload" name="upload">
               		</div>
 					<div class="mb-3">
 						<label for="code" class="form-label">품목코드</label> <input
-							type="text" class="form-control" name="code" id="code"
-							placeholder="품목코드 입력은 필수입니다.">
+							type="text" class="form-control" id="code" name="code"
+							placeholder="품목코드 입력은 필수입니다." >
 					</div>
 								<div class="row">		
 						<div class="col-sm-3">		
-							<label for="client_no" class="form-label">거래처코드</label>
-							<input type="text" id="client_code" name="client_code"class="form-control" readonly>
+							<label for="client_code" class="form-label">거래처코드</label>
+							<input type="text" id="client_code" name="client_code" class="form-control" readonly>
 						</div>
 						<div class="col-sm-5">		
-							<label for="client_no" class="form-label">거래처명</label>
+							<label for="client_name" class="form-label">거래처명</label>
 							<input type="text" id="client_name" name="client_name"class="form-control" readonly>
-							<input type="hidden" name="client_no" class="form-control" readonly>
+							<input type="hidden" name="client_no" id="client_no" class="form-control" readonly>
 						</div>
 						<div class="col-sm-4">	
 							<label for="client_no" class="form-label">&nbsp;&nbsp;</label>
@@ -135,17 +142,17 @@
 					</div>
 					<div class="mb-3">
 						<label for="name" class="form-label">품목</label> <input
-							type="text" name="name" class="form-control" id="name"
+							type="text"class="form-control" id="name" name="name"
 							placeholder="품목 입력은 필수입니다.">
 					</div>
 					<div class="mb-3">
 						<label for="in_price" class="form-label">입고단가</label> <input
-							type="text" class="form-control" name="in_price" id="in_price"
+							type="text" class="form-control" id="in_price" name="in_price"
 							placeholder="입고단가 입력은 필수입니다.">
 					</div>
 					<div class="mb-3">
 						<label for="out_price" class="form-label">출고단가</label> <input
-							type="text" class="form-control" name="out_price" id="out_price"
+							type="text" class="form-control" id="out_price" name="out_price"
 							placeholder="출고단가 입력은 필수입니다.">
 					</div>
 					 <input type="hidden" name="pageNumber" id="pageNumber" value="${pageInfo.pageNumber }">
@@ -158,6 +165,7 @@
 		</div>
 	</div>
 </div>
+
 <!-- 거래처를 선택하는 두번째 모달 -->
 <div class="modal fade" id="choiceClientModal" tabindex="-2">
 	<div class="modal-dialog modal-dialog-scrollable">
@@ -207,155 +215,204 @@
 		</div>
 	</div>
 </div>
+
 <!-- bottom.jsp -->
 <%@include file="../../common/bottom.jsp"%>
+
 <script src="https://kit.fontawesome.com/75769dc150.js" crossorigin="anonymous"></script>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js?autoload=false"></script>
 <script type="text/javascript">
-$(function(){
-	/* 왼쪽 카테고리창이 해당화면에 맞게 펼쳐지게 하는 코드 */
-    document.getElementById('basicinfo').click();
-    $('#code').keyup(function(){$('#code').attr("class","form-control is-valid")})
-    $('#name').keyup(function(){$('#name').attr("class","form-control is-valid")})
-    $('#in_price').keyup(function(){$('#in_price').attr("class","form-control is-valid")})
-    $('#out_price').keyup(function(){$('#out_price').attr("class","form-control is-valid")})
-})
-$('#insertBtn').on("click",function(){
-	$(".modal").find("#modal-title").text("등록하기");
-	$(".modal").find('#modaladdBtn').text("등록");
-
-	var taskForm = $("#modalForm");
-	$('#modaladdBtn').click(function(){
-		if($("#code").val() == ""){
-			$('#code').attr("class","form-control is-invalid");
-	    	$("#code").focus();
-	    	return "/basicinfo/item/insert";
-		
-	}
-		if($("#name").val() == ""){
-			$('#name').attr("class","form-control is-invalid");
-	    	$("#name").focus();
-	    	return "/basicinfo/item/insert";
-		
-	}
-		if($("select[name=client_no] > option:selected").text() == "good"){ 
-			$('#client_no').attr("class","form-control is-invalid");
-    		$("#client_no").focus();
-    		return "/basicinfo/item/insert";
-	}
-		if($("#in_price").val() == ""){
-			$('#in_price').attr("class","form-control is-invalid");
-	    	$("#in_price").focus();
-	    	return "/basicinfo/item/insert";
-		
-	}
-		if($("#out_price").val() == ""){
-			$('#out_price').attr("class","form-control is-invalid");
-	    	$("#out_price").focus();
-	    	return "/basicinfo/item/insert";
-		
-	}
-		taskForm.attr("action", "/basicinfo/item/insert").submit();
-	});
+	var modalForm = $("#modalForm");
+	var check = false;
+	var code = $("#code").val();
 	
-});
-//삭제
-function deleteItem(no){
-	if(confirm("삭제하시겠습니까?")){
-		var whatColumn = $('select option:selected').val();
-		var keyword = $('#keyword').val();
-		var pageNumber = $('#pageNumber').val();
-		location.href="/basicinfo/item/delete?no="+no+"&whatColumn="+whatColumn+"&keyword="+keyword+"&pageNumber="+pageNumber;
-	}
-};
-//수정
-function update(no){
-	$(".modal").find("#modal-title").text("수정하기");
-	$(".modal").find('#modaladdBtn').text("수정");
-	
-	var taskForm = $("#modalForm");
-	$('#modaladdBtn').click(function(){
-		if($("#code").val() == ""){
-			$('#code').attr("class","form-control is-invalid");
-	    	$("#code").focus();
-	    	return "/basicinfo/item/update";
+	$(function(){
+		/* 왼쪽 카테고리창이 해당화면에 맞게 펼쳐지게 하는 코드 */
+	    document.getElementById('basicinfo').click();
 		
-	}
-		if($("#name").val() == ""){
-			$('#name').attr("class","form-control is-invalid");
-	    	$("#name").focus();
-	    	return "/basicinfo/item/update";
-		
-	}
-		if($("select[name=client_no] > option:selected").text() == "good"){ 
-			$('#client_no').attr("class","form-control is-invalid");
-    		$("#client_no").focus();
-    		return "/basicinfo/item/update";
-	}
-		if($("#in_price").val() == ""){
-			$('#in_price').attr("class","form-control is-invalid");
-	    	$("#in_price").focus();
-	    	return "/basicinfo/item/update";
-		
-	}
-		if($("#out_price").val() == ""){
-			$('#out_price').attr("class","form-control is-invalid");
-	    	$("#out_price").focus();
-	    	return "/basicinfo/item/update";
-		
-	}
-		taskForm.attr("action", "/basicinfo/item/update").submit();
-	})
-	$.ajax({
-			url : "/basicinfo/item/get ",
-			type : "post",
-			data : {  
-				no : no 
-			},
-			dataType:'json',
-			success : function(data){
-			 	
-				
-				document.getElementById('code').value=data.code;
-				document.getElementById('name').value=data.name;
-				document.getElementById('in_price').value=data.in_price;
-				document.getElementById('out_price').value=data.out_price;
-			}
-		});
-	
-}
-
-
-//중복체크
-		$(function(){
-		$('#code').keyup(function(){
-		check = false;
-		const code = $("#code").val();
-		$.ajax({
-		type: "post",
-		async: false,
-		url: "/basicinfo/item/code_check",
-		data:{ code : code },
-		success: function (data) {
-		if(data!=0) {//사용자가 입력한 값이 DB에 존재할 경우, 서버가 1을 보내준다
-			$('#code').attr("class","form-control is-invalid");
-			}
-		else {
-			$('#code').attr("class","form-control is-valid");
-			check = true;
+		// 유효성 검사
+	    $('#code').keyup(function(){
+			check = false;
+			$.ajax({
+			url: "/basicinfo/item/code_check",
+			type: "post",
+			data:{ code : code },
+			success: function (data) {
+			if(data!=0) {//사용자가 입력한 값이 DB에 존재할 경우, 서버가 1을 보내준다
+				$('#code').attr("class","form-control is-invalid");
 				}
-			}
-		}); 
-	});//key up
-	$('#modaladdBtn').click(function(){
+			else {
+				$('#code').attr("class","form-control is-valid");
+				check = true;
+					}
+				}//sucess 
+			});//ajax
+		});//key up
+		 $('#upload').keyup(function(){$('#upload').attr("class","form-control is-valid")})
+		 $('#code').keyup(function(){$('#code').attr("class","form-control is-valid")})
+		 $('#client_code').keyup(function(){$('#client_code').attr("class","form-control is-valid")})
+		 $('#client_name').keyup(function(){$('#client_name').attr("class","form-control is-valid")})
+		 $('#name').keyup(function(){$('#name').attr("class","form-control is-valid")})
+		 $('#in_price').keyup(function(){$('#in_price').attr("class","form-control is-valid")})
+		 $('#out_price').keyup(function(){$('#out_price').attr("class","form-control is-valid")})
+	    })
 		
-		if(!check){
-			$('#code').attr("class","form-control is-invalid")
-			$('#code').focus();
-			alert("품목코드가 중복되었습니다.")
-		}
+	   
+		
+	    function insertBtn(){
+		clearModal();
+		
+		$(".modal").find("#modal-title").text("등록하기");
+		$(".modal").find("#modaladdBtn").show();
+		$(".modal").find('#modaladdBtn').text("등록");
+		readonly(false);
+		modalForm.attr("action", "/basicinfo/item/insert");
+		$('#modaladdBtn').click(function(){
+			if($("#upload").val() ==''){
+				$('#upload').attr("class","form-control is-invalid");
+			    $("#upload").focus();
+			    alert("사진은 필수입니다.");
+			}
+			else if($("#code").val() ==''){
+				$('#code').attr("class","form-control is-invalid");
+			    $("#code").focus();
+			}
+			else if(!check){
+				$('#code').attr("class","form-control is-invalid")
+				$('#code').focus();
+				alert("품목코드가 중복되었습니다.")
+			}	
+			else if($("#client_code").val() ==''){
+				$('#client_code').attr("class","form-control is-invalid");
+			    $("#client_code").focus();
+			}
+			else if($("#client_name").val() ==''){
+				$('#client_name').attr("class","form-control is-invalid");
+			    $("#client_name").focus();
+			}
+			else if($("#name").val() ==''){
+				$('#name').attr("class","form-control is-invalid");
+			    $("#name").focus();
+			}
+			else if($("#in_price").val() ==''){
+				$('#in_price').attr("class","form-control is-invalid");
+			    $("#in_price").focus();
+			}
+			else if($("#out_price").val() ==''){
+					$('#out_price').attr("class","form-control is-invalid");
+			    	$("#out_price").focus();
+			}
+			else{
+				modalForm.submit();
+			}
 		})
-		})		
+		
+	
+		
+}
+//등록하기 버튼
+//삭제
+		function deleteItem(no){
+			if(confirm("삭제하시겠습니까?")){
+				var whatColumn = $('select option:selected').val();
+				var keyword = $('#keyword').val();
+				var pageNumber = $('#pageNumber').val();
+				location.href="/basicinfo/item/delete?no="+no+"&whatColumn="+whatColumn+"&keyword="+keyword+"&pageNumber="+pageNumber;
+		
+			}
+		};
+		//수정 버튼
+		function update(no){
+			
+			document.getElementById('no').value=no;
+			$(".modal").find("#modal-title").text("수정하기");
+			$(".modal").find('#modaladdBtn').show();
+			$(".modal").find('#modaladdBtn').text("수정");
+			
+			
+			modalForm.attr("action", "/basicinfo/item/update");
+			
+			$.ajax({
+					url : "/basicinfo/item/get ",
+					type : "post",
+					data : {  
+						no : no 
+					},
+					dataType:'json',
+					success : function(data){
+						$('#code').attr('readonly','true');
+						document.getElementById('code').value=data.code;
+						document.getElementById('client_code').value=data.client_code;
+						document.getElementById('client_name').value=data.client_name;
+						document.getElementById('client_no').value=data.client_no;
+						document.getElementById('name').value=data.name;
+						document.getElementById('in_price').value=data.in_price;
+						document.getElementById('out_price').value=data.out_price;
+					}//success
+				}); //ajax
+			
+				$('#modaladdBtn').click(function(){
+					if($("#upload").val() ==''){
+						$('#upload').attr("class","form-control is-invalid");
+					    $("#upload").focus();
+					    alert("사진은 필수입니다.");
+					}
+					else if($("#code").val() ==''){
+						$('#code').attr("class","form-control is-invalid");
+					    $("#code").focus();
+					}
+					else if($("#client_code").val() ==''){
+						$('#client_code').attr("class","form-control is-invalid");
+					    $("#client_code").focus();
+					}
+					else if($("#client_name").val() ==''){
+						$('#client_name').attr("class","form-control is-invalid");
+					    $("#client_name").focus();
+					}
+					else if($("#name").val() ==''){
+						$('#name').attr("class","form-control is-invalid");
+					    $("#name").focus();
+					}
+					else if($("#in_price").val() ==''){
+						$('#in_price').attr("class","form-control is-invalid");
+					    $("#in_price").focus();
+					}
+					else if($("#out_price").val() ==''){
+							$('#out_price').attr("class","form-control is-invalid");
+					    	$("#out_price").focus();
+					}
+					else{
+						modalForm.submit();
+					}
+				})
+				
+				
+		}//update
+		
+			/* $('#modaladdBtn').click(function(){
+				if($("#code").val() == ""){
+					$('#code').attr("class","form-control is-invalid");
+			    	$("#code").focus();
+				
+				}
+				
+			}) */
+	
+		function clearModal(){
+		
+			document.getElementById('code').value="";
+			document.getElementById('client_code').value="";
+			document.getElementById('client_no').value="";
+			document.getElementById('client_name').value="";
+			document.getElementById('name').value="";
+			document.getElementById('in_price').value="";
+			document.getElementById('out_price').value="";
+		}
+		
+		function readonly(x){
+			$("#code" ).prop('readonly', x);
+		}
+
 		<!-- 거래처를 선택하는 두번째 모달처리 -->
 
 			/* 전역변수 */

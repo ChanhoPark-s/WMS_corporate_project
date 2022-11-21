@@ -12,7 +12,8 @@ SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 <script type="text/javascript">
 	$(document).ready(
 			function() {
-
+				document.getElementById('sell_info').click();
+				
 				$("button[id='update_Sold']").click(function() {
 					$("#Sold_Submit").hide();
 					$("#Sold_Update_Submit").show();

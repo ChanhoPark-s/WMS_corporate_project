@@ -15,4 +15,5 @@ public interface CellService {
 	public int deleteCellByNo(String cell_no);
 	public WareHouseAllAreaVO selectOneCellByNo(int no);
 	public int updateCellByNo(WareHouseAllAreaVO vo);
+	public int checkCode(String code);
 }

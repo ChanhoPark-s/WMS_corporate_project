@@ -1,5 +1,6 @@
 package com.spring.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,24 @@ public class Input_WareHouseServiceImpl implements Input_WareHouseService{
 	
 	@Override
 	public int insert(Input_WareHouseVO vo) {
-		return mapper.insert(vo);
+		if(mapper.insertMainSheet(vo) != 1) { 
+			return -1;
+		}
+		ArrayList<Integer> noList = vo.getItem_no();
+		ArrayList<Integer> amountList = vo.getQTY();
+		
+		int len = noList.size();
+
+		for (int i = 0; i < len; i++) {
+			int mainSheetNo = vo.getNo();
+			int itemNo = noList.get(i);
+			int itemAmount = amountList.get(i);
+			
+			//if(mapper.insertDetailSheet(mainSheetNo, itemNo, itemAmount) != 1) {
+			//	return -1;
+			//}
+		}
+		return 1;
 	}
 
 }

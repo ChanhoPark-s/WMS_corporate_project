@@ -35,4 +35,7 @@ where no=#{no}
 	update rack set code = #{rackcode}, name = #{rackname}
 	where no = #{sendno}
 </update>
+<select id="checkCode" resultType="int">
+		select count(*) from rack where code=#{code}
+	</select>
 </mapper>
