@@ -14,4 +14,5 @@ public interface CellMapper {
 	public int deleteCellByNo(String cell_no);	//셀일련번호에따른 삭제
 	public WareHouseAllAreaVO selectOneCellByNo(int no);//셀일련번호에따른 셀 한개 상위정보포함 가져오기
 	public int updateCellByNo(WareHouseAllAreaVO vo);
+	public int checkCode(String code);
 }

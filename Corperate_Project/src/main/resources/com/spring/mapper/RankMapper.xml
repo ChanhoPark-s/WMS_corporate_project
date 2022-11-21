@@ -12,6 +12,9 @@
 	
 	<select id="list" resultType="com.spring.domain.RankVO">
 		select * from rank
+		<if test="whatColumn=='code'">where code like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='name'">where name like '%' ||  #{keyword} || '%'</if>
+		ORDER BY no desc OFFSET #{beginRow} ROWS FETCH NEXT #{pageSize} ROWS ONLY
 	</select>
 
 	<select id="get" resultType="com.spring.domain.MemberVO">
@@ -26,4 +29,15 @@
 	<delete id="delete">
 		delete from rank where no = #{no}
 	</delete>
+	
+	<select id="getTotalCount" resultType="int">
+		select count(*) from rank
+		<if test="whatColumn=='code'">where code like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='name'">where name like '%' ||  #{keyword} || '%'</if>
+	</select>
+	
+	<select id="noSearchList" resultType="com.spring.domain.RankVO">
+		select * from rank
+		order by no desc
+	</select>
 </mapper>

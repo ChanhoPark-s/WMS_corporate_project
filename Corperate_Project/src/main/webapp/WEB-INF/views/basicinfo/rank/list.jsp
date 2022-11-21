@@ -15,9 +15,34 @@
                   직급등록
                 </button>
               </div>
-              <form>
-                <input type="text" class="form-control" placeholder="Search user">
-              </form>
+			<div class="search">
+			<form name="search" action="/basicinfo/rank/list" id="search">
+			<table>
+			<tr>
+				<td>
+					<select id="whatColumn" name="whatColumn" class="form-select" style="width: 200px;">
+	                  <%
+	                  String[] search = {"code", "name"};
+	                  String[] cate = {"직급코드", "직급명"};
+	                  %>
+	                  <c:set value="<%=search %>" var="s"></c:set>
+	                  <c:set value="<%=cate %>" var="c"></c:set>
+	                  <option>검색 선택</option>
+	                  	<c:forEach begin="0" end="${fn:length(s)-1 }" var="i">
+	                  		<option value="${s[i] }"<c:if test="${searchvo.whatColumn== s[i] }">selected</c:if>>${c[i] }</option>
+	                  	</c:forEach>
+	              </select>
+				</td>
+				<td>
+					<input type="text"  name="keyword" id="keyword" class="form-control" value=<c:if test="${searchvo.keyword=='null' }">""</c:if><c:if test="${searchvo.keyword!='null' }">"${searchvo.keyword }"</c:if>  placeholder="입력" style="width: 200px; height: 38px;">
+				</td>
+				<td>
+					<i class="fa-solid fa-magnifying-glass btn_search" id="searchIcon" onclick="searchForm()"></i>
+				</td>
+			</tr>	
+			</table>
+			</form>
+			</div>
             </div>
 		<div class="table-responsive my-1">
 			<table class="table align-middle">
@@ -72,36 +97,9 @@
 				</tbody>
 			</table>
 		</div>
-		<nav aria-label="Page navigation borderless example">
-			<ul class="pagination pagination-borderless justify-content-end">
-				<li class="page-item disabled"><a
-					class="page-link d-flex align-items-center px-2" href="#"
-					tabindex="-1" aria-disabled="true" aria-label="Previous"> <svg
-							width="20" height="20" xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd"
-								d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-								clip-rule="evenodd"></path>
-                    </svg>
-				</a></li>
-				<li class="page-item active" aria-current="page"><a
-					class="page-link" href="javascript:void(0)">1</a></li>
-				<li class="page-item"><a class="page-link"
-					href="javascript:void(0)">2</a></li>
-				<li class="page-item"><a class="page-link"
-					href="javascript:void(0)">3</a></li>
-				<li class="page-item"><a
-					class="page-link d-flex align-items-center px-2"
-					href="javascript:void(0)" aria-label="Next"> <svg width="20"
-							height="20" xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd"
-								d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-								clip-rule="evenodd"></path>
-                    </svg>
-				</a></li>
-			</ul>
-		</nav>
+        <div align="center">
+			${pageInfo.pagingHtml}
+		</div>
 	</div>
 </div>
 

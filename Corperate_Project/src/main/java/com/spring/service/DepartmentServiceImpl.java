@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.spring.domain.DepartmentVO;
+import com.spring.domain.SearchVO;
 import com.spring.mapper.DepartmentMapper;
+import com.spring.paging.Client_Paging;
 
 @Service
 public class DepartmentServiceImpl implements DepartmentService{
@@ -15,9 +17,14 @@ public class DepartmentServiceImpl implements DepartmentService{
 	private DepartmentMapper mapper;
 	
 	@Override
-	public List<DepartmentVO> list() {
-		return mapper.selectAll();
-	}	
+	public List<DepartmentVO> list(Client_Paging pageInfo) {
+		return mapper.selectAll(pageInfo);
+	}
+	
+	@Override
+	public List<DepartmentVO> noSearchList() {
+		return mapper.noSearchList();
+	}
 	
 	@Override
 	public int add(DepartmentVO vo) {
@@ -35,7 +42,7 @@ public class DepartmentServiceImpl implements DepartmentService{
 	}
 
 	@Override
-	public List<DepartmentVO> getDeptList() {
-		return mapper.selectAll();
+	public int getTotalCount(SearchVO vo) {
+		return mapper.getTotalCount(vo);
 	}
 }
