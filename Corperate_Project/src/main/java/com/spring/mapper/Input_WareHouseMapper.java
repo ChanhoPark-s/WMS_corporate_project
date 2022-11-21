@@ -7,4 +7,5 @@ import com.spring.domain.Input_WareHouseVO;
 public interface Input_WareHouseMapper {
 	public List<Input_WareHouseVO> selectAll(); 	
 	public int insertMainSheet(Input_WareHouseVO vo);
+	public int selectNoFromDual();
 }

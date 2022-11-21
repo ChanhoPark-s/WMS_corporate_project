@@ -10,10 +10,12 @@ public class Input_WareHouse_DetailVO {
 	private int status;
 	private String arrival_Date;
 	private int qty;
-	private String ware_Code;
-	private String area_Code;
-	private String rack_Code;
-	private String cell_Code;
+	private int ware_No;
+	private int area_No;
+	private int rack_No;
+	private int cell_No;
 	private String lot_Code;
-	private String item_Code;
+	private int item_No;
+	
+	
 }

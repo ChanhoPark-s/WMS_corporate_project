@@ -3,12 +3,11 @@ package com.input_warehouse.controller;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.spring.domain.Input_WareHouseVO;
@@ -41,6 +40,13 @@ public class Input_WareHouseController {
 		model.addAttribute("rackLists",rackservice.list());
 		model.addAttribute("cellLists",cellservice.list());
 		model.addAttribute("lists", lists);
+	}
+	
+	@PostMapping(value="/add")
+	public String add(Input_WareHouseVO vo) {
+		service.insert(vo);
+		
+		return "redirect:/input_warehouse/list";
 	}
 	
 

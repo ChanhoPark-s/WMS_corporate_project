@@ -41,7 +41,7 @@
 				<c:forEach var="input" items="${lists}">
 					<tr class="tr" data-no=" ${input.no }">
 						<td>${input.no}</td>
-						<td>${input.member_No}</td>
+						<td>${input.member_no}</td>
 						<td>${input.purchase_Sheet_No}</td>
 						<td>${input.status}</td>
 						<td>

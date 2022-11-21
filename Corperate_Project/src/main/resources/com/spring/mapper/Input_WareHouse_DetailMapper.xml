@@ -10,7 +10,10 @@
 	</select>
 
 	<insert id="insert">
-		insert into Input_WareHouse_Detail values()
+		insert into Input_WareHouse_Detail(no,INPUT_WAREHOUSE_NO,PURCHASE_SHEET_DETAIL_NO,
+		STATUS,ARRIVAL_DATE,QTY,WARE_NO,AREA_NO,RACK_NO,CELL_NO,LOT_CODE,ITEM_NO) 
+		values(INPUT_WAREHOUSE_DATAIL_SEQ.nextval,#{input_WareHouse_No},#{purchase_Sheet_Detail_No},#{status},
+		#{arrival_Date},#{qty},#{ware_No},#{area_No},#{rack_No},#{cell_No},#{lot_Code},#{item_No})
 	</insert>
 
 </mapper>
