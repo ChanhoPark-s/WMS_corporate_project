@@ -94,7 +94,7 @@
 						<th scope="col">대표자명</th>
 						<th scope="col">전화번호</th>
 						<th scope="col">주소</th>
-						<th scope="col">수정&nbsp; / &nbsp; 삭제</th>
+						<th scope="col">기능</th>
 					</tr>
 				</thead>
 				<tbody id="table_insert">

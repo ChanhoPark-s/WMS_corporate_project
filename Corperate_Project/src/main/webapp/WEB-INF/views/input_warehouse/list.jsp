@@ -34,7 +34,7 @@
 						<th scope="col">관리자번호</th>
 						<th scope="col">발주서번호</th>
 						<th scope="col">구분</th>
-						<th scope="col">수정/삭제</th>
+						<th scope="col">기능</th>
 					</tr>
 				</thead>
 				<tbody>

@@ -1,0 +1,20 @@
+#sidebar.navbar-dark {
+  background-color: #1f2937;
+}
+#sidebar.navbar-dark .navbar-nav .nav-link:not(.active):not(:hover):not(.disabled) > svg {
+  color: #6b7280;
+}
+#sidebar.navbar-dark .navbar-nav .show > .nav-link,
+#sidebar.navbar-dark .navbar-nav .nav-link.active {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 0.25rem;
+}
+#sidebar.navbar-dark .navbar-nav .navbar-nav .show > .nav-link,
+#sidebar.navbar-dark .navbar-nav .navbar-nav .nav-link.active {
+  background-color: transparent;
+}
+#sidebar.navbar-dark .badge:not([class^=bg-]) {
+  background-color: #6366f1;
+}
+
+/*# sourceMappingURL=sidebar-dark.css.map */

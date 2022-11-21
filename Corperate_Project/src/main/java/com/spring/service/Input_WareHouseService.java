@@ -2,6 +2,7 @@ package com.spring.service;
 
 import java.util.List;
 
+import com.spring.domain.Init_Input_WareHouseVO;
 import com.spring.domain.Input_WareHouseVO;
 
 public interface Input_WareHouseService {

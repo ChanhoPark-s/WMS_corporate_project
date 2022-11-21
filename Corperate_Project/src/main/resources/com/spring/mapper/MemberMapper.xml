@@ -17,7 +17,12 @@
 		on m.dep_no = d.no
 		inner join rank r
 		on m.rank_no = r.no
-		order by 1 desc
+		<if test="whatColumn=='name'">where m.name like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='id'">where m.id like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='email'">where m.email like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='dep'">where d.name like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='rank'">where r.name like '%' ||  #{keyword} || '%'</if>
+		ORDER BY m.no desc OFFSET #{beginRow} ROWS FETCH NEXT #{pageSize} ROWS ONLY
 	</select>
 
 	<select id="get" resultType="com.spring.domain.MemberVO">
@@ -38,8 +43,26 @@
 		delete from member where no = #{no}
 	</delete>
 	
+	<select id="idcheck" resultType="int">
+		select count(*) from member where id = #{id, jdbcType=VARCHAR}
+	</select>
+	
 	<select id="check_user" resultType="int">
 		select count(*) from member where id = #{id} and pw = #{pw}
+	</select>
+	
+	<select id="getTotalCount" resultType="int">
+		select count(*)
+		from member m
+		inner join department d
+		on m.dep_no = d.no
+		inner join rank r
+		on m.rank_no = r.no
+		<if test="whatColumn=='name'">where m.name like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='id'">where m.id like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='email'">where m.email like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='dep'">where d.name like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='rank'">where r.name like '%' ||  #{keyword} || '%'</if>
 	</select>
 	
 	<!-- 이하 ajax API 관련 SQL -->
