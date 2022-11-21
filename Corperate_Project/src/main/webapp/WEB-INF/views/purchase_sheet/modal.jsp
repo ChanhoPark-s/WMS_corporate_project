@@ -4,7 +4,7 @@
 <!-- Modal 코드 넣을 위치 -->
 <div class="modal fade" id="addOrderSheetModal" tabindex="-1">
 	<div class="modal-dialog modal-dialog-scrollable modal-lg">
-		<div class="modal-content">
+		<div class="modal-content" style="width: 1000px">
 			<div class="modal-header border-0">
 				<h5 id="modal-title">발주서 등록</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
@@ -58,7 +58,7 @@
 							</div>
 							<div class="col-sm-4">	
 								<label for="userFullname" class="form-label">&nbsp;&nbsp;</label>
-								<button type="submit" class="btn btn-primary" style="display:block" data-bs-target="#secondModal" data-bs-toggle="modal" data-bs-dismiss="modal" id="choiceClientBtn">거래처 선택</button>	
+								<button type="button" class="btn btn-primary" style="display:block" data-bs-target="#secondModal" data-bs-toggle="modal" data-bs-dismiss="modal" id="choiceClientBtn">거래처 선택</button>	
 							</div>
 						</div>	
 						
@@ -110,7 +110,7 @@
 				</div>
 				<div class="modal-footer border-0">
 					<button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
-					<button type="submit" form="modal1form" id="modalRegisterBtn" class="btn btn-primary px-5">등록</button>		
+					<button type="button" form="modal1form" id="modalRegisterBtn" class="btn btn-primary px-5">등록</button>		
 				</div>
 			</form>
 			<!-- form end -->
