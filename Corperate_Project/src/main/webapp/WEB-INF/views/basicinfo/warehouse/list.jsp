@@ -490,7 +490,18 @@ function deletefunction(no,id){
 	}		
 }
 
-
+//수정할때 입력했던 데이터 가져오기위한 하단의 코드
+var warehouselocation;
+var arealocation;
+var racklocation;
+var warehousecode;
+var warehousename;
+var areacode;
+var areaname;
+var rackcode;
+var rackname;
+var cellcode;
+var cellname;
 
 //우측에서 수정아이콘 클릭시 해당 위치를 수정한다
 function updatefunction(no,id){
@@ -579,19 +590,7 @@ function updatefunction(no,id){
 		$('#cellname').attr('required','');
 	}
 
-	//수정할때 입력했던 데이터 가져오기위한 하단의 코드
-	var warehouselocation;
-	var arealocation;
-	var racklocation;
-	var warehousecode;
-	var warehousename;
-	var areacode;
-	var areaname;
-	var rackcode;
-	var rackname;
-	var cellcode;
-	var cellname;
-
+	
 	$.ajax({
 		url : "/basicinfo/warehouse/selectByNo",
 		type : "post",
@@ -860,6 +859,13 @@ function checkcodefunction(getcode,location){
 					$('#submit_btn').attr("disabled","disabled");
 					checkcode = false;
 					
+					//입력한 코드가 기존의 코드와 동일할경우 중복검사 통과
+					if(warehousecode == getcode){
+						document.getElementById('warehousecode').classList.remove('is-invalid');
+						document.getElementById('submit_btn').removeAttribute('disabled');
+						checkcode = true;
+					}
+					
 				} else{
 					document.getElementById('warehousecode').classList.remove('is-invalid');
 					document.getElementById('submit_btn').removeAttribute('disabled');
@@ -870,6 +876,13 @@ function checkcodefunction(getcode,location){
 					document.getElementById('areacode').classList.add('is-invalid');
 					$('#submit_btn').attr("disabled","disabled");
 					checkcode = false;
+					
+					//입력한 코드가 기존의 코드와 동일할경우 중복검사 통과
+					if(areacode == getcode){
+						document.getElementById('areacode').classList.remove('is-invalid');
+						document.getElementById('submit_btn').removeAttribute('disabled');
+						checkcode = true;
+					}
 				} else{
 					document.getElementById('areacode').classList.remove('is-invalid');
 					document.getElementById('submit_btn').removeAttribute('disabled');
@@ -880,6 +893,13 @@ function checkcodefunction(getcode,location){
 					document.getElementById('rackcode').classList.add('is-invalid');
 					$('#submit_btn').attr("disabled","disabled");
 					checkcode = false;
+					
+					//입력한 코드가 기존의 코드와 동일할경우 중복검사 통과
+					if(rackcode == getcode){
+						document.getElementById('rackcode').classList.remove('is-invalid');
+						document.getElementById('submit_btn').removeAttribute('disabled');
+						checkcode = true;
+					}
 				} else{
 					document.getElementById('rackcode').classList.remove('is-invalid');
 					document.getElementById('submit_btn').removeAttribute('disabled');
@@ -890,6 +910,13 @@ function checkcodefunction(getcode,location){
 					document.getElementById('cellcode').classList.add('is-invalid');
 					$('#submit_btn').attr("disabled","disabled");
 					checkcode = false;
+					
+					//입력한 코드가 기존의 코드와 동일할경우 중복검사 통과
+					if(cellcode == getcode){
+						document.getElementById('cellcode').classList.remove('is-invalid');
+						document.getElementById('submit_btn').removeAttribute('disabled');
+						checkcode = true;
+					}
 					
 				} else{
 					document.getElementById('cellcode').classList.remove('is-invalid');
