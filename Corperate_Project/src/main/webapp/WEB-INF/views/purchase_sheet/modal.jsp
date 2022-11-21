@@ -4,7 +4,7 @@
 <!-- Modal 코드 넣을 위치 -->
 <div class="modal fade" id="addOrderSheetModal" tabindex="-1">
 	<div class="modal-dialog modal-dialog-scrollable modal-lg">
-		<div class="modal-content" style="width: 1000px">
+		<div class="modal-content" style="width: ">
 			<div class="modal-header border-0">
 				<h5 id="modal-title">발주서 등록</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
@@ -99,9 +99,9 @@
 										</c:forEach>
 					                </select>
 								</div>
-								<div class="col-sm-1">	
-									<label for="userFullname" class="form-label">&nbsp;&nbsp;</label>
-									<button type="button" class="btn btn-primary deleteItemBtn" style="display:block">삭제</button>	
+								<div class="col-sm-1">
+								<label for="" class="form-label">&nbsp;&nbsp;</label>	
+									<button type="button" class="btn btn-primary deleteItemBtn" style="display:block">X</button>	
 								</div>
 							</div>
 							

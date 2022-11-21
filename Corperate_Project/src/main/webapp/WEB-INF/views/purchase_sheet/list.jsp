@@ -216,13 +216,13 @@ function numberWithCommas(x) {
 }
 
 /* 발주상세 조회 */
-$('.tr').not('.tr td:last-child').on('click',function(){
+$('.tr').find('td').not('td:last-child').on('click',function(){
 	$('#detailList *').remove();
 	$.ajax({
         url: "detailList",
         type: "get",
         data: {
-        	purchase_sheet_no : $(this).data("no")
+        	purchase_sheet_no : $(this).parent('.tr').data("no")
         },
         success: function(data){
         	console.log(data); 

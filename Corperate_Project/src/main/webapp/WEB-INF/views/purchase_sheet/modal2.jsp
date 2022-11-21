@@ -468,7 +468,7 @@
 		str += '</div>';
 		str += "<div class='col-sm-1'>";
 		str += "<label for='userFullname' class='form-label'>&nbsp;&nbsp;</label>";
-		str += "<button type='button' class='btn btn-primary deleteItemBtn' style='display:block'>삭제</button>";
+		str += "<button type='button' class='btn btn-primary deleteItemBtn' style='display:block'>X</button>";
 		str += "</div>";
 		str += "</div>";
 		
