@@ -12,4 +12,8 @@ public class SellDetailVO {
 	private String lot_code;
 	private int sell_no;
 	
+	private String code;
+	private String name;
+	
+	
 }
