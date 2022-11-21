@@ -14,6 +14,11 @@ public class WareHouseDetailVO {
 	private int rack_no;
 	private int cell_no;
 	
+	private String ware_name;
+	private String area_name;
+	private String rack_name;
+	private String cell_name;
+	
 	private int i_no;
 	private int client_no;
 	private String code;

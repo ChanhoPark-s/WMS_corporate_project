@@ -128,9 +128,9 @@
 	<div class="card-body">
 	<!--  -->
 	<!--  -->
-	<div class="d-flex gap-1 mb-4 flex-wrap">
+	<div class="d-flex gap-1 mb-1 flex-wrap">
       <div class="d-flex gap-1 me-auto flex-wrap">
-      	<h4 id="clicked_location"></h4>
+
       </div>
 		<form>
 		<table>
@@ -153,6 +153,9 @@
 		</form>
 	</div>
 	<!--  -->
+	<div class="d-flex gap-1 mb-1 flex-wrap">
+		<h3 id="clicked_location"></h3>
+		</div>
 	<!--  -->
 		<div class="table-responsive my-1">
 		<form name="form">
@@ -359,13 +362,7 @@ function clickFunction(clicked_id,w_no,a_no,r_no,c_no){
 	id = clicked_id;
 	showid = document.getElementById(clicked_id).getAttribute('href').substring(1); //등록수정삭제시 창고-셀 사이드바 보던 화면으로 가기 위한 변수
 	no = document.getElementById(clicked_id).getAttribute('data-value');
-	
-	//클릭시 showid설정
-	document.getElementById('showid').value = showid;
-// console.log(id);
-// console.log(showid);
-// console.log(no);
-	
+
 	//만든 영역의 위치정보를 전역변수에 저장
 	ware_no = w_no;
 	area_no = a_no;
@@ -380,54 +377,41 @@ function clickFunction(clicked_id,w_no,a_no,r_no,c_no){
 	//하단페이지번호도만들고 레코드도만듬
 	requestRecord();
 	
-	/*ajax로 each 돌려서 우측 테이블td생성*/
-// 	$.ajax({
-// 		url : "/warehouse-detail/get-data-stock",
-// 		type : "get",
-// 		data : ({
-// 			"id" : id,
-// 			"no" : no,
-// 			"ware_no" : w_no,
-// 			"area_no" : a_no,
-// 			"rack_no" : r_no,
-// 			"cell_no" : c_no
-// 		}),
-// 		success : function(data){
-			
-// 			var mydata = JSON.parse(data);
-// // console.log(mydata);
-// 			$('#tddata *').remove();
-// 			var tabledata = "";
-// 			var mydatalen = mydata.length;
+	//클릭한 값 이름 가지고와서 우측테이블위의 현재보고있는영역을 표시
+	$.ajax({
+		url : "/basicinfo/warehouse/get-location",
+		type : "get",
+		data : ({
+			"id" : id,
+			"no" : no
+		}),
+		success : function(data){
+			var mydata = JSON.parse(data);
+			if(id.indexOf("default")>0){
+				current_location = "창고목록";				
+			}
+			else if(id.indexOf("warehouse")>0){
+				current_location = mydata.warehousename;		
+			}
+			else if(id.indexOf("area")>0){
+				current_location = mydata.warehousename+ " "+mydata.areaname;
+			}
+			else if(id.indexOf("rack")>0){
+				current_location = mydata.warehousename+ " "+mydata.areaname+ " "+mydata.rackname;
+			}
+			else{
+				current_location = mydata.warehousename+ " "+mydata.areaname+ " "+mydata.rackname+ " "+mydata.cellname;
+			}
+			$("#clicked_location").html(current_location);
+				
+		},
+		error: function (request, status, error) {
+	        console.log("code: " + request.status);
+	        console.log("message: " + request.responseText);
+	        console.log("error: " + error);
+	    }
 
-			
-
-// console.log(mydatalen);
-// console.log(pageNum);
-// console.log(amount);
-// 			if(mydatalen==0){
-// 				tabledata +=	'<tr>'+
-// 									'<td colspan="5">'+'현재 선택한 영역은 재고 물품이 없습니다.'+'</td>'+
-// 								'</tr>';
-// 			}else{
-// 				$.each(mydata,function(i){
-// 						tabledata +=	'<tr>'+
-// 											'<td>'+(i+1)+'</td>'+
-// 											'<td>'+mydata[i].lot_code+'</td>'+
-// 											'<td><img width="100px" height="100px" src="${pageContext.request.contextPath }/resources/assets/img/item/'+mydata[i].image+'" ></td>'+
-// 											'<td>'+mydata[i].name+'</td>'+
-// 											'<td>'+mydata[i].amount+'</td>'+
-// 										'</tr>';
-// 				});
-// 			}//else
-// 			$("#tddata").append(tabledata);
-// 		},//success
-// 		error: function (request, status, error) {
-// 	        console.log("code: " + request.status);
-// 	        console.log("message: " + request.responseText);
-// 	        console.log("error: " + error);
-// 	    }
-// 	});//ajax
+	});//ajax
 };//clickFunction
 
 /* 두번째 모달의 페이지네이션에서 번호 클릭시 다시 그리는 함수 */
@@ -453,7 +437,7 @@ function requestRecord(){
 			console.log("getJSON밑의 totalCount: " + resdata.totalCount); 	// 검색조건으로 뽑힌 총 레코드 수
 			console.log("getJSON밑의 cri: " + resdata.cri); 	  				// 검색에 사용된 기준정보가 담긴 객체
 				
-				makeRecord(resdata.list); 							// 레코드들을 그리는 함수
+				makeRecord(resdata.list,resdata.totalCount, resdata.cri); 	// 레코드들을 그리는 함수
 				paintPageNation(resdata.totalCount, resdata.cri); 	// 페이지네이션을 그리는 함수
 				
 			}).fail(function(xhr, status, err){
@@ -466,7 +450,7 @@ function requestRecord(){
 
 
 /* 받아온 레코드들 만든다 */
-function makeRecord(list){
+function makeRecord(list,totalCount,cri){
 	$('#tddata *').remove();
 		var retabledata = "";
 		console.log("list.length는"+list.length);
@@ -478,7 +462,7 @@ function makeRecord(list){
 		else{
 			for(var i = 0, len = list.length || 0; i < len; i++){
 				retabledata +=	'<tr>'+
-									'<td>'+list[i].no+'</td>'+
+									'<td>'+((totalCount-(pageNum-1)*10)-i)+'</td>'+
 									'<td>'+list[i].lot_code+'</td>'+
 									'<td><img width="80px" height="80px" src="${pageContext.request.contextPath }/resources/assets/img/item/'+list[i].image+'" ></td>'+
 									'<td>'+list[i].name+'</td>'+
