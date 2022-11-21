@@ -265,9 +265,8 @@
 		$(".modal").find("#modal-title").text("등록하기");
 		$(".modal").find("#modaladdBtn").show();
 		$(".modal").find('#modaladdBtn').text("등록");
-	
+		readonly(false);
 		modalForm.attr("action", "/basicinfo/item/insert");
-		
 		$('#modaladdBtn').click(function(){
 			if($("#upload").val() ==''){
 				$('#upload').attr("class","form-control is-invalid");
@@ -329,6 +328,7 @@
 			$(".modal").find("#modal-title").text("수정하기");
 			$(".modal").find('#modaladdBtn').show();
 			$(".modal").find('#modaladdBtn').text("수정");
+			
 			
 			modalForm.attr("action", "/basicinfo/item/update");
 			
@@ -407,6 +407,10 @@
 			document.getElementById('name').value="";
 			document.getElementById('in_price').value="";
 			document.getElementById('out_price').value="";
+		}
+		
+		function readonly(x){
+			$("#code" ).prop('readonly', x);
 		}
 
 		<!-- 거래처를 선택하는 두번째 모달처리 -->
