@@ -21,8 +21,8 @@
 }
 
 #chatModal{
-	top:470px;
-	left:1570px;
+	top:52%;
+	left:82%;
 	max-height: 350px;
 	max-width: 300px;
 }
@@ -178,7 +178,7 @@ a {
 		});
 	})	
 		/* 웹소켓이랑 연결  */
-		let sock = new SockJS("http://localhost:8080/echo");
+		let sock = new SockJS("http://localhost:8080/echo");//http://52.79.144.231:8080/echo
 		sock.onmessage = onMessage;
 		sock.onclose = onClose;
 		
@@ -487,7 +487,7 @@ a {
 				 <div class="wrap" id="messageArea"></div>
 			<!-- 여기까지 -->
 			</div>
-			<div class="modal-footer border-0">
+			<div class="modal-footer border-0" id="footer-modal">
 				<input type="text" id="message" />
 				<img src="/resources/assets/img/send.png" width="20px;" height="20px;" id="sendBtn" style="cursor: pointer;" >
 			</div>
