@@ -65,7 +65,7 @@ a {
 }
 
 .wrap .ch1 .textbox {
-    margin-left: 20px;
+    margin-left: 0px;
     background-color: #1f2937;
 }
 
@@ -103,7 +103,6 @@ a {
 
 .lnamed{
 	font-size: 4px; 
-	display: block;
 }
 .time{
 	font-size: 4px; 
