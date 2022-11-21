@@ -24,4 +24,7 @@
 	update warehouse set code = #{warehousecode}, name = #{warehousename}
 	where no = #{sendno}
 </update>
+<select id="checkCode" resultType="int">
+		select count(*) from warehouse where code=#{code}
+	</select>
 </mapper>

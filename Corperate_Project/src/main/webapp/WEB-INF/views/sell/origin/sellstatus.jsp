@@ -22,15 +22,15 @@
 					</tr>
 				</thead>
 				<tbody>
-				<c:forEach var="sell" items="${lists}">
+				<c:forEach var="status" items="${lists}">
 					<tr>
-						<td>${sell.no} </td>
-						<td>${sell.item_name }</td>
-						<td><fmt:formatNumber pattern="###,###" value="${sell.item_in_price}" var="in_price"/>${in_price} 원</td>
-						<td><fmt:formatNumber pattern="###,-###" value="${sell.item_out_price}" var="out_price"/>${out_price} 원</td>
-						<td>${sell.amount }개</td>
-						<td><fmt:formatDate pattern="yyyy-MM-dd" value="${sell.sell_day }"/></td>
-						<td>${sell.item_name }</td>
+						<td>${status.no} </td>
+						<td>${status.item_name }</td>
+						<td><fmt:formatNumber pattern="###,###" value="${status.item_in_price}" var="in_price"/>${in_price} 원</td>
+						<td><fmt:formatNumber pattern="###,-###" value="${status.item_out_price}" var="out_price"/>${out_price} 원</td>
+						<td>${status.amount }개</td>
+						<td><fmt:formatDate pattern="yyyy-MM-dd" value="${status.sell_day }"/></td>
+						<td></td>
 					</tr>
 				</c:forEach>
 				</tbody>

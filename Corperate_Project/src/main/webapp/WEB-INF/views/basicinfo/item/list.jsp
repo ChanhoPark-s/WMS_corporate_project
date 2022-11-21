@@ -10,19 +10,7 @@ table td {
 	text-align: center;
 }
 
-/* 한줄 색 칠하는 기능 */
-#table1 tbody tr:hover {
-	background-color: #EAEAEA;
-}
-
 /* 검색바 */
-.btn_search {
-	cursor: pointer;
-	position: absolute;
-	right: 7px;
-	top: 50%;
-	transform: translatey(-50%);
-}
 
 #search {
 	position: relative;
@@ -299,10 +287,10 @@ table td {
 	    function insertBtn(){
 		clearModal();
 		document.getElementById('no').value='123';
+		readonly(false);
 		$(".modal").find("#modal-title").text("등록하기");
 		$(".modal").find("#modaladdBtn").show();
 		$(".modal").find('#modaladdBtn').text("등록");
-		readonly(false);
 		modalForm.attr("action", "/basicinfo/item/insert");
 		$('#modaladdBtn').click(function(){
 			if($("#upload").val() ==''){
