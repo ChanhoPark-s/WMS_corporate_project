@@ -289,6 +289,7 @@ SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 									
 									
 									var form = {'itemNo':itemNo};
+									/* 상품을 선택했을 때, 자동으로 단가를 불러오는 코드 */
 				        $.ajax({
 							            url: "/basicinfo/item/getPrice",
 							            type: "POST",
@@ -300,7 +301,26 @@ SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 							            error: function(){
 							                alert("데이터 통신 실패");
 							            }
+							        });				        
+				        			/* 상품을 선택했을 때, 자동으로 로트번호를 불러오는 코드
+				        $.ajax({
+							            url: "/basicinfo/lot/getLot",
+							            type: "POST",
+							            data: form,
+							            dataType: 'json',
+							            success: function(data){
+							            	alert(data);
+							            },
+							            error: function(){
+							                alert("로트 데이터 통신 실패");
+							            }
 							        });
+				        */
+				        
+				        
+				        
+				        
+				       				requestLotRecord(itemNo);
 									addRowItemDetail(); // 새로 입력받을 수 있게 아래 줄을 추가하는 함수
 									
 								}
@@ -460,6 +480,34 @@ SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 		
 		$("#modalPageNation").html(str);
 	}
+	
+ 	function requestLotRecord(itemNo){	
+		console.log("요청url : " + "/basicinfo/lotRest/" + itemNo);
+		$.getJSON("/basicinfo/lotRest/" + itemNo , 
+ 			function(resdata){
+				console.log("list: " + resdata.list);
+ 				paintLotRecord(resdata.list);
+ 			}).fail(function(xhr, status, err){
+ 					alert("데이터 조회실패");
+ 			}); 
+	}
+	
+/*  	function paintLotRecord(list){
+
+		var str = "";
+		
+			for(var i = 0, len = list.length || 0; i < len; i++){
+				str += "<option value='";
+				str +=  list[i].code + "'>";
+				str += list[i].code + "</option>";
+			}
+		
+		if(list.length == 0){
+			str = "<option value="">일치하는 로트번호가 없습니다.</option>";
+		}
+		
+		$("#getLotCode").html(str);
+} */
 	
 
 </script>
@@ -755,9 +803,9 @@ SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 							<div class="mb-3" style="width: 300px;">
 								<label for="member_no" class="form-label">담당자 이름</label> <input
 									type="text" class="form-control choiceMemberBtn"
-											data-bs-target="#secondModal" data-bs-toggle="modal"
-											data-bs-dismiss="modal" name="member_name"
-									id="choiceMemberBtn" required readonly>
+									data-bs-target="#secondModal" data-bs-toggle="modal"
+									data-bs-dismiss="modal" name="member_name" id="choiceMemberBtn"
+									required readonly>
 							</div>
 							<div class="col-sm-4">
 								<label for="userFullname" class="form-label">&nbsp;&nbsp;</label>
@@ -817,9 +865,11 @@ SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 								<br>
 								<div class="row">
 									<div class="mb-3">
-										<label for="lot_code" class="form-label">로트 번호</label> <input
-											type="text" name="lot_code" class="form-control"
-											id="lot_code" required>
+										<label for="lot_code" class="form-label">로트 번호</label> <select
+											name="lot_code" class="form-select" id="getLotCode">
+											<option value="">a</option>
+											<option value="">b</option>
+										</select>
 									</div>
 								</div>
 								<br>

@@ -5,6 +5,7 @@ import java.util.List;
 import com.spring.domain.ClientVO;
 import com.spring.domain.PageDTO;
 import com.spring.domain.Purchase_sheetVO;
+import com.spring.domain.Purchase_sheet_DetailVO;
 import com.spring.domain.SearchVO;
 import com.spring.paging.Client_Paging;
 import com.spring.paging.Criteria;
@@ -13,7 +14,6 @@ public interface Purchase_sheetService {
 	
 	public List<Purchase_sheetVO> list();
 	public int insert(Purchase_sheetVO vo);
-	public int update(Purchase_sheetVO vo);
 	public int delete(Purchase_sheetVO vo);
 	public Purchase_sheetVO selectOne(String no);
 	
@@ -23,4 +23,8 @@ public interface Purchase_sheetService {
 	
 	/* ajax paging */
 	public PageDTO<Purchase_sheetVO> getListPage(Criteria cri);
+	
+	//상세
+	public List<Purchase_sheet_DetailVO> selectList(String no);
+	public int deleteDetail(int no);
 }

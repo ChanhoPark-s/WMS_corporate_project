@@ -1,10 +1,12 @@
 package com.spring.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.spring.domain.OrderSheetDetailVO;
 import com.spring.domain.OrderSheetVO;
 import com.spring.mapper.OrderSheetMapper;
 
@@ -39,4 +41,44 @@ public class OrderSheetServiceImpl implements OrderSheetService{
 		
 		return 1;
 	}
+
+	@Override
+	public List<OrderSheetVO> getList() {
+		
+		// 메인 레코드 가져오기
+		List<OrderSheetVO> list = mapper.selectList();
+		
+		// 각 메인 레코드에 대해 서브 상품들 이름 묶어서 ㅇㅇ외 N개 라고 출력해주기 위한 과정
+		for(OrderSheetVO vo : list) {
+			int total_price = 0;
+			int mainNo = vo.getNo();
+			List<OrderSheetDetailVO> subList = mapper.selectSubAllByMainNo(mainNo); // 수주서에 딸린 상세 품목들
+			
+			// OO 외 N개 이름 만들어 넣어주는 코드
+			if(subList.size() == 1) {
+				vo.setTemp_item_name(subList.get(0).getItem_name());
+			}else if(subList.size() > 1) {
+				
+				int subListSize = subList.size(); 
+				
+				vo.setTemp_item_name(subList.get(0).getItem_name() + " 외 " + (subListSize-1) + "개");
+			}
+			
+			// 수주금액 합계 계산하여 넣어주는 코드
+			for(OrderSheetDetailVO svo : subList) {
+				total_price += svo.getOut_price()*svo.getAmount();
+			}
+			
+			vo.setTotal_price(total_price);
+		}
+		
+		return list;
+	}
+
+	@Override
+	public List<OrderSheetDetailVO> getSubList(int mainNo) {
+		return mapper.selectSubAllByMainNo(mainNo);
+	}
+	
+	
 }

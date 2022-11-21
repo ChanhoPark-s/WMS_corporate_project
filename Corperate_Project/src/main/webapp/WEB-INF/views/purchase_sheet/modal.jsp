@@ -1,104 +1,134 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!-- JS --> 
-<script type="text/javascript">
-$(document).ready(function(){
-	$(".insert,.update").on("click",function(){
-		$(".form-control,.form-select,.cancel").val('');
-	});
-	
-	$(".insert").on("click",function(){
-		$(".modal-title").text("발주서등록");
-	});
-	
-	$(".update").on("click",function(){
-		$(".modal-title").text("발주서수정");
-	});
-});
-</script>
+
 <!-- Modal 코드 넣을 위치 -->
 <div class="modal fade" id="addOrderSheetModal" tabindex="-1">
-	<div class="modal-dialog modal-dialog-scrollable">
+	<div class="modal-dialog modal-dialog-scrollable modal-lg">
 		<div class="modal-content">
 			<div class="modal-header border-0">
-				<h5 id="modal-title">수주서 등록</h5>
+				<h5 id="modal-title">발주서 등록</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
-			<div class="modal-body">
-				<!-- form start -->
-				<form class="needs-validation" novalidate id="modalForm" action="" method="post">
-					
-					<div class="row">		
-						<div class="col-sm-3">		
-							<label for="userFullname" class="form-label">부서명</label>
-							<input type="text" id="member_dep_name" class="form-control" readonly>
-						</div>
-						<div class="col-sm-5">
-							<label for="userFullname" class="form-label">담당자명</label>
-							<input type="text" id="member_name" class="form-control" readonly>
-							<input type="hidden" name="member_no" class="form-control" readonly>		
-						</div>
-						<div class="col-sm-4">	
-							<label for="userFullname" class="form-label">&nbsp;&nbsp;</label>
-							<button type="button" class="btn btn-primary" style="display:block" data-bs-target="#choiceClientModal" data-bs-toggle="modal" data-bs-dismiss="modal" id="choiceMemberBtn">담당자 선택</button>	
-						</div>
-					</div>
-					
-					<div class="row">		
-						<div class="col-sm-3">		
-							<label for="userFullname" class="form-label">코드</label>
-							<input type="text" id="client_code" class="form-control" readonly>
-						</div>
-						<div class="col-sm-5">		
-							<label for="userFullname" class="form-label">거래처명</label>
-							<input type="text" id="client_name" class="form-control" readonly>
-							<input type="hidden" name="client_no" class="form-control" readonly>
-						</div>
-						<div class="col-sm-4">	
-							<label for="userFullname" class="form-label">&nbsp;&nbsp;</label>
-							<button type="button" class="btn btn-primary" style="display:block" data-bs-target="#choiceClientModal" data-bs-toggle="modal" data-bs-dismiss="modal" id="choiceClientBtn">거래처 선택</button>	
-						</div>
-					</div>
-					
-					<div class="row">		
-						<div class="col-sm-5">		
-							<label for="wareName" class="form-label">창고명</label>
-							<select class="form-select" id="wareName" name="wareName" required>
-			                <option selected disabled value="">선택</option>
-								<c:forEach items="${WareList }" var="ware">
-									<option value="${ware.no }">${ware.name }(${ware.code })</option>
-								</c:forEach>
-			                </select>
-						</div>
+			<!-- form start -->
+			<form class="needs-validation" novalidate id="modal1form" action="/insert.ps" method="post">
+				<div class="modal-body">
+						<!-- 컨트롤러로 넘기는 정보 -->
+						<!-- out_day -->
+						<input type="hidden" name="member_no" class="form-control" readonly>
+						<input type="hidden" name="client_no" class="form-control" readonly>
+						<!-- 품목번호 및 개수 -->
+						<!-- input type='text' name='item_no' -->
+						<!-- input type='text' name='amount' -->
 						
-						<div class="col-sm-5">
-							<label for="userFullname" class="form-label">납기일자</label>
-							<div class="row">
-								<div class="col">
-									<input type="date" name="out_day" class="form-control">
+						<div class="row">		
+							<div class="col-sm-5">
+								<label for="userFullname" class="form-label">납기일자</label>
+								<div class="row">
+									<div class="col">
+										<input type="date" name="delivery_date" class="form-control">
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>	
 						
-					<div class="row">
+						<div class="row">		
+							<div class="col-sm-3">		
+								<label for="userFullname" class="form-label">부서명</label>
+								<input type="text" id="member_dep_name" class="form-control" readonly >
+							</div>
+							<div class="col-sm-3">
+								<label for="userFullname" class="form-label">담당자명</label>
+								<input type="text" id="member_name" class="form-control" readonly required>
+							</div>
+							<div class="col-sm-4">	
+								<label for="userFullname" class="form-label">&nbsp;&nbsp;</label>
+								<button type="button" class="btn btn-primary" style="display:block" data-bs-target="#secondModal" data-bs-toggle="modal" data-bs-dismiss="modal" id="choiceMemberBtn">담당자 선택</button>	
+							</div>
+						</div>
 						
-					</div>
+						<div class="row">		
+							<div class="col-sm-3">		
+								<label for="userFullname" class="form-label">코드</label>
+								<input type="text" id="client_code" class="form-control" readonly>
+							</div>
+							<div class="col-sm-3">		
+								<label for="userFullname" class="form-label">거래처명</label>
+								<input type="text" id="client_name" class="form-control" readonly required>
+							</div>
+							<div class="col-sm-4">	
+								<label for="userFullname" class="form-label">&nbsp;&nbsp;</label>
+								<button type="button" class="btn btn-primary" style="display:block" data-bs-target="#secondModal" data-bs-toggle="modal" data-bs-dismiss="modal" id="choiceClientBtn">거래처 선택</button>	
+							</div>
+						</div>	
+						
+						<hr>
+						
+						<!-- 상품 상세추가 부분 -->
+						<div id="modalItemDetail">
+							<div class="row">		
+								<input type="hidden" name="item_no" class="form-control" readonly>
+							
+								<div class="col-sm-2">		
+									<label for="userFullname" class="form-label">품목코드</label>
+									<input type="text" class="form-control choiceItemBtn" data-bs-target="#secondModal" data-bs-toggle="modal" data-bs-dismiss="modal" readonly placeholder="품목 선택">
+									
+								</div>
+								<div class="col-sm-2">		
+									<label for="userFullname" class="form-label">품목명</label>
+									<input type="text" class="form-control" readonly required>
+								</div>
+								<div class="col-sm-2">		
+									<label for="userFullname" class="form-label">취급처</label>
+									<input type="text" class="form-control" readonly>
+								</div>
+								<div class="col-sm-2">		
+									<label for="userFullname" class="form-label">구매단가</label>
+									<input type="text" class="form-control" readonly>
+								</div>
+								<div class="col-sm-1">		
+									<label for="userFullname" class="form-label">수량</label>
+									<input type="text" name="amount" class="form-control">
+								</div>
+								<div class="col-sm-2">		
+									<label for="ware_no" class="form-label">창고명</label>
+									<select class="form-select" id="ware_no" name="ware_no">
+					                <option selected disabled value="">선택</option>
+										<c:forEach items="${WareList }" var="ware">
+											<option value="${ware.no }">${ware.name }(${ware.code })</option>
+										</c:forEach>
+					                </select>
+								</div>
+								<div class="col-sm-1">	
+									<label for="userFullname" class="form-label">&nbsp;&nbsp;</label>
+									<button type="button" class="btn btn-primary deleteItemBtn" style="display:block">삭제</button>	
+								</div>
+							</div>
+							
+						</div>
 					
-					<div class="mb-3">
-						<label for="userEmail" class="form-label">품목명</label> 
-						<input type="text" name="name" id="name" class="form-control" required>
-						<div class="invalid-feedback">User email is required.</div>
-					</div>
-					
-				</form>
-				<!-- form end -->
-			</div>
-			<div class="modal-footer border-0">
-				<button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
-				<button type="button" id="modalRegisterBtn"class="btn btn-primary px-5">등록</button>		
-			</div>
+				</div>
+				<div class="modal-footer border-0">
+					<button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
+					<button type="submit" form="modal1form" id="modalRegisterBtn" class="btn btn-primary px-5">등록</button>		
+				</div>
+			</form>
+			<!-- form end -->
 		</div>
 	</div>
 </div>
+<script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    void(function() {
+      document.querySelectorAll('.needs-validation').forEach(form => {
+        form.addEventListener('submit', event => {
+	       	alert(form.checkValidity());
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+          form.classList.add('was-validated')
+        })
+      })
+    })()
+</script>
