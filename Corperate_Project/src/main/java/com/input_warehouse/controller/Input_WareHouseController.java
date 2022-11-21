@@ -3,6 +3,8 @@ package com.input_warehouse.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.spring.domain.Input_WareHouseVO;
+import com.spring.domain.SearchVO;
+import com.spring.paging.Client_Paging;
 import com.spring.service.AreaService;
 import com.spring.service.CellService;
 import com.spring.service.Input_WareHouseService;
@@ -33,13 +37,23 @@ public class Input_WareHouseController {
 	private CellService cellservice;
 
 	@GetMapping(value="/list")
-	public void list(Model model) {
-		List<Input_WareHouseVO> lists = service.list();
+	public void list(SearchVO searchvo, HttpServletRequest request, Model model) {
+		
+		int totalCount = service.getTotalCount(searchvo); 
+		Client_Paging pageInfo = 
+				new Client_Paging
+				(searchvo.getPageNumber(),"10",totalCount,"/input_warehouse/list",
+						searchvo.getWhatColumn(),searchvo.getKeyword(),0);
+		
+		// 원래 있던거
+		model.addAttribute("pageInfo",pageInfo);
+		model.addAttribute("lists", service.getListByPaging(pageInfo));
+		model.addAttribute("searchvo",searchvo);
+		
 		model.addAttribute("warehouseLists",warehouseservice.list());
 		model.addAttribute("areaLists",areaservice.list());
 		model.addAttribute("rackLists",rackservice.list());
 		model.addAttribute("cellLists",cellservice.list());
-		model.addAttribute("lists", lists);
 	}
 	
 	@PostMapping(value="/add")

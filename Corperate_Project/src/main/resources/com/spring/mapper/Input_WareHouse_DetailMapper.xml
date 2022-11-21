@@ -2,18 +2,53 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
-<mapper namespace="com.spring.mapper.Input_WareHouse_DetailMapper">
 
-	<select id="selectAll" resultType="com.spring.domain.Input_WareHouse_DetailVO">
+<mapper
+	namespace="com.spring.mapper.Input_WareHouse_DetailMapper">
+
+	<select id="selectAll"
+		resultType="com.spring.domain.Input_WareHouse_DetailVO">
 		select * from Input_WareHouse_Detail order by no desc
 	</select>
 
 	<insert id="insert">
-		insert into Input_WareHouse_Detail(no,INPUT_WAREHOUSE_NO,PURCHASE_SHEET_DETAIL_NO,
-		STATUS,ARRIVAL_DATE,QTY,WARE_NO,AREA_NO,RACK_NO,CELL_NO,LOT_CODE,ITEM_NO) 
+		insert into
+		Input_WareHouse_Detail(no,INPUT_WAREHOUSE_NO,PURCHASE_SHEET_DETAIL_NO,
+		STATUS,QTY,WARE_NO,AREA_NO,RACK_NO,CELL_NO,LOT_CODE,ITEM_NO)
 		values(INPUT_WAREHOUSE_DATAIL_SEQ.nextval,#{input_WareHouse_No},#{purchase_Sheet_Detail_No},#{status},
-		#{arrival_Date},#{qty},#{ware_No},#{area_No},#{rack_No},#{cell_No},#{lot_Code},#{item_No})
+		#{qty},#{ware_No},#{area_No},#{rack_No},#{cell_No},#{lot_Code},#{item_No})
 	</insert>
 
+	<select id="selectSubAllByMainNo"
+		resultType="com.spring.domain.Input_WareHouse_DetailVO">
+		select iw.no, iw.input_warehouse_no, iw.qty, it.code
+		item_code, it.name item_name, iw.status
+		, iw.lot_code, w.name as ware_name, a.name as area_name, r.name as
+		rack_name, c.name as cell_name
+		from(select *
+		from input_warehouse_detail
+		where input_warehouse_no = #{mainNo}) iw inner join item it
+		on iw.item_no =
+		it.no
+		inner join (select * from warehouse) w
+		on iw.ware_no = w.no
+		inner join (select * from area) a
+		on iw.area_no =
+		a.no
+		inner join (select * from rack) r
+		on iw.rack_no = r.no
+		inner join (select * from cell) c
+		on iw.cell_no =
+		c.no
+	</select>
+
+	<select id="getLotCode" resultType="String">
+		select GENERATE_LOT(#{no})
+		from dual
+	</select>
+
+	<insert id="createLot">
+		insert into lot(no,code,item_no)
+		values(LOT_SEQ.nextval,#{lot_Code},#{item_No})
+	</insert>
 </mapper>

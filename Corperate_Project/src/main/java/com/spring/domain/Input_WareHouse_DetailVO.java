@@ -16,6 +16,12 @@ public class Input_WareHouse_DetailVO {
 	private int cell_No;
 	private String lot_Code;
 	private int item_No;
+	private String item_name;
+	private String item_code;
+	private String ware_name;
+	private String area_name;
+	private String rack_name;
+	private String cell_name;
 	
 	
 }
