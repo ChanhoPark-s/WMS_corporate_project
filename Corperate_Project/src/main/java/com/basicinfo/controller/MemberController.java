@@ -62,11 +62,11 @@ public class MemberController {
 		Client_Paging pageInfo = new Client_Paging(searchvo.getPageNumber(),"10",totalCount,"/basicinfo/member/list",searchvo.getWhatColumn(),searchvo.getKeyword(),0);
 	   
       // dept
-      List<DepartmentVO> deptList = deptService.list();
+      List<DepartmentVO> deptList = deptService.noSearchList();
       model.addAttribute("deptList", deptList);
       
       // rank
-      List<RankVO> rankList = rankService.list();
+      List<RankVO> rankList = rankService.noSearchList();
       model.addAttribute("rankList", rankList);
       
 		model.addAttribute("pageInfo",pageInfo);

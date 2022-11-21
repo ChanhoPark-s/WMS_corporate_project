@@ -16,14 +16,14 @@
                 </button>
               </div>
 			<div class="search">
-			<form name="search" action="/basicinfo/member/list" id="search">
+			<form name="search" action="/basicinfo/rank/list" id="search">
 			<table>
 			<tr>
 				<td>
 					<select id="whatColumn" name="whatColumn" class="form-select" style="width: 200px;">
 	                  <%
-	                  String[] search = {"name", "id", "email", "dep", "rank"};
-	                  String[] cate = {"이름", "아이디", "이메일", "부서", "직급"};
+	                  String[] search = {"code", "name"};
+	                  String[] cate = {"직급코드", "직급명"};
 	                  %>
 	                  <c:set value="<%=search %>" var="s"></c:set>
 	                  <c:set value="<%=cate %>" var="c"></c:set>
@@ -97,36 +97,9 @@
 				</tbody>
 			</table>
 		</div>
-		<nav aria-label="Page navigation borderless example">
-			<ul class="pagination pagination-borderless justify-content-end">
-				<li class="page-item disabled"><a
-					class="page-link d-flex align-items-center px-2" href="#"
-					tabindex="-1" aria-disabled="true" aria-label="Previous"> <svg
-							width="20" height="20" xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd"
-								d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-								clip-rule="evenodd"></path>
-                    </svg>
-				</a></li>
-				<li class="page-item active" aria-current="page"><a
-					class="page-link" href="javascript:void(0)">1</a></li>
-				<li class="page-item"><a class="page-link"
-					href="javascript:void(0)">2</a></li>
-				<li class="page-item"><a class="page-link"
-					href="javascript:void(0)">3</a></li>
-				<li class="page-item"><a
-					class="page-link d-flex align-items-center px-2"
-					href="javascript:void(0)" aria-label="Next"> <svg width="20"
-							height="20" xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd"
-								d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-								clip-rule="evenodd"></path>
-                    </svg>
-				</a></li>
-			</ul>
-		</nav>
+        <div align="center">
+			${pageInfo.pagingHtml}
+		</div>
 	</div>
 </div>
 

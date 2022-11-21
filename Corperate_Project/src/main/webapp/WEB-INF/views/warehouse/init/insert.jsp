@@ -12,7 +12,7 @@
 	<div class="card-body">
         <div class="mb-3">
           <label for="member_no" class="form-label">담당자</label>
-          <input type="text" name="name" class="form-control" id="member_no" required autofocus>
+          <input type="text" name="name" class="form-control" id="member_no" readonly="readonly" data-bs-toggle="modal" data-bs-target="#addMember" required>
           <div class="invalid-feedback">User full name is required.</div>
         </div>
 	</div>
@@ -28,7 +28,7 @@
               </svg>
               품목추가
             </button>
-            <button class="btn btn-primary d-inline-flex align-items-center gap-1" onclick="saveData()">
+            <button type="submit" form="itemForm" class="btn btn-primary d-inline-flex align-items-center gap-1">
               	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-save2" viewBox="0 0 16 16">
 				  <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v4.5h2a.5.5 0 0 1 .354.854l-2.5 2.5a.5.5 0 0 1-.708 0l-2.5-2.5A.5.5 0 0 1 5.5 6.5h2V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z"/>
 				</svg>
@@ -37,12 +37,56 @@
           </div>
         </div>
 		<div class="table-responsive">
-           <table class="table table-item"></table>
+		   <form class="needs-validation" novalidate id="itemForm">
+           		<table class="table table-item"></table>
+           </form>
          </div>
 	</div>
 </div>
 
 <!-- Modal 코드 넣을 위치 -->
+
+<!-- 담당자 검색 -->
+        <div class="modal fade" id="addMember" tabindex="-1">
+          <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+              <div class="modal-header border-0">
+                <h5 class="modal-title">담당자 검색</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="modal-footer border-0">
+					<form style="margin:auto;text-align:center;" onsubmit="return false;">
+						<div class="d-flex gap-1 me-auto flex-wrap">
+							<select id="searchWhatColumn" class="form-select" style="width: 140px;"><option value="" selected="">검색 선택</option><option value="dep">부서</option><option value="rank">직급</option><option value="name">이름</option></select>
+			              	<input type="text" id="searchKeyword" class="form-control" placeholder="입력" style="width: 200px; height: 38px;">
+							<button type="submit" class="btn btn-light" id="searchBtn"> 검색 </button>
+						</div>			
+					</form>	
+				</div>
+                <div class="table-responsive">
+	              <table class="table member-table">
+	                <thead class="table">
+	                  <tr>
+	                    <th scope="col" class="text-center">부서</th>
+	                    <th scope="col" class="text-center">직급</th>
+	                    <th scope="col" class="text-center">이름</th>
+	                    <th scope="col" class="text-center">선택</th>
+	                  </tr>
+	                </thead>
+	                <tbody></tbody>
+	              </table>
+	            </div>
+	           	<!-- 페이지내이션 -->
+				<nav aria-label="Page navigation borderless example">
+					<ul class="pagination pagination-borderless justify-content-end" id="memberPageNation">
+						<!-- 페이지내이션이 javascript 코드에 의해 그려지는 위치 -->
+					</ul>
+				</nav>
+              </div>
+            </div>
+          </div>
+        </div>
 
 <!-- 물품검색 -->
         <div class="modal fade" id="addUserModal" tabindex="-1">
@@ -77,7 +121,7 @@
 	            </div>
             	<!-- 페이지내이션 -->
 				<nav aria-label="Page navigation borderless example">
-					<ul class="pagination pagination-borderless justify-content-end" id="clientPageNation">
+					<ul class="pagination pagination-borderless justify-content-end" id="itemPageNation">
 						<!-- 페이지내이션이 javascript 코드에 의해 그려지는 위치 -->
 					</ul>
 				</nav>
@@ -88,52 +132,58 @@
         
 <!-- 창고검색 -->
         <div class="modal fade" id="searchInvenModal" tabindex="-1">
-          <div class="modal-dialog modal-dialog-scrollable">
+          <div class="modal-dialog modal-dialog-scrollable modal-xl">
             <div class="modal-content">
               <div class="modal-header border-0">
                 <h5 class="modal-title">창고검색</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-              	<div class="mb-3">
-                    <label for="warehouse" class="form-label">창고</label>
-                    <input type="text" name="warehouse" class="form-control" id="warehouse" readonly required>
-                    <div class="invalid-feedback">User full name is required.</div>
-                  </div>
-                  <div class="mb-3">
-                    <label for="area" class="form-label">구역</label>
-                    <input type="text" name="area" class="form-control" id="area" readonly>
-                    <div class="invalid-feedback">User id is required.</div>
-                  </div>
-                  <div class="mb-3">
-                    <label for="rack" class="form-label">렉</label>
-                    <input type="text" name="rack" class="form-control" id="rack" readonly>
-                    <div class="invalid-feedback">User password is required.</div>
-                  </div>
-                  <div class="mb-3">
-                    <label for="cell" class="form-label">셀</label>
-                    <input type="text" name="cell" class="form-control" id="cell" readonly>
-                    <div class="invalid-feedback">User password is required.</div>
-                  </div>
-	             	<div class="table-responsive">
-		              <table class="table warehouse-table">
-		                <thead class="table">
-		                  <tr>
-		                    <th scope="col" class="text-center">번호</th>
-		                    <th scope="col" class="text-center">코드</th>
-		                    <th scope="col" class="text-center">이름</th>
-		                    <th scope="col" class="text-center">선택</th>
-		                  </tr>
-		                </thead>
-		                <tbody class="modal-tbody"></tbody>
-		              </table>
-		            </div>
-	            	<!-- 페이지내이션 -->
-					<nav aria-label="Page navigation borderless example">
-						<ul class="pagination pagination-borderless justify-content-end" id="clientPageNation">
-							<!-- 페이지내이션이 javascript 코드에 의해 그려지는 위치 -->
-						</ul>
-					</nav>
+              	<div class="d-flex gap-3 mb-4 flex-wrap">
+	              	<div class="col">
+		              	<div class="mb-3">
+		                    <label for="warehouse" class="form-label">창고</label>
+		                    <input type="text" name="warehouse" class="form-control" id="warehouse" readonly required>
+		                    <div class="invalid-feedback">User full name is required.</div>
+		                </div>
+		                <div class="mb-3">
+		                    <label for="area" class="form-label">구역</label>
+		                    <input type="text" name="area" class="form-control" id="area" readonly>
+		                    <div class="invalid-feedback">User id is required.</div>
+		                </div>
+		                <div class="mb-3">
+		                    <label for="rack" class="form-label">렉</label>
+		                    <input type="text" name="rack" class="form-control" id="rack" readonly>
+		                    <div class="invalid-feedback">User password is required.</div>
+		                </div>
+		                <div class="mb-3">
+		                    <label for="cell" class="form-label">셀</label>
+		                    <input type="text" name="cell" class="form-control" id="cell" readonly>
+		                    <div class="invalid-feedback">User password is required.</div>
+		                </div>
+	                </div>
+		            <div class="col">
+		             	<div class="table-responsive">
+			              <table class="table warehouse-table">
+			                <thead class="table">
+			                  <tr>
+			                    <th scope="col" class="text-center col-md-2">번호</th>
+			                    <th scope="col" class="text-center col-md-2">코드</th>
+			                    <th scope="col" class="text-center col-md-4">이름</th>
+			                    <th scope="col" class="text-center col-md-2">선택</th>
+			                  </tr>
+			                </thead>
+			                <tbody class="modal-tbody"></tbody>
+			              </table>
+			            </div>
+		            	<!-- 페이지내이션 -->
+						<nav aria-label="Page navigation borderless example">
+							<ul class="pagination pagination-borderless justify-content-end" id="clientPageNation">
+								<!-- 페이지내이션이 javascript 코드에 의해 그려지는 위치 -->
+							</ul>
+						</nav>
+					</div>
+                </div>
               </div>
               <div class="modal-footer border-0">
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
@@ -148,7 +198,7 @@
 <script>
 	// 표
 	const Item = (function() {
-		const def = {
+		const defaults = {
 				tagname: 'input',
 				type: 'text',
 				class:'form-control',
@@ -167,57 +217,67 @@
 			searchWhatColumn = "",
 			searchKeyword = "";
 		
+		let pageNum2 = 1,
+			amount2 = 10,
+			searchWhatColumn2 = "",
+			searchKeyword2 = "";			
+		
 		let target;
 		
 		function Plguin(table, columns) {
 			this.table = table;
 			this.columns = columns;
+			
 			this.init();
 		}
-		Plguin.prototype.init = function () {
-			
-			this.columns = this.columns.map(obj => ({...def, ...obj}));
-			
-			// column 생성
-			makeTheadTbody.call(this);
-			
-			// row 생성
-			this.itemInput(this);
-		}
-		Plguin.prototype.itemInput = function () {
-			const body = document.querySelector('.' + this.table + ' tbody');
-			const tr = makeElement('tr');
-			this.columns.map(value => {
-				const {column, tagname, ...attr} = value; 
-				let td = makeElement('td');
-				let div = makeElement('div');
-				let input = makeElement(tagname, attr);
-				div.append(input);
-				td.append(div);
-				tr.append(td);
+		
+		Plguin.prototype = {
+				// 초기화
+				init: function () {
+					this.columns = this.columns.map(obj => ({...defaults, ...obj}));
+					// column 생성
+					drawBody.call(this);
+					// row 생성
+					this.itemInput();
+				},
+				// row 생성
+				itemInput:  function () {
+					const body = document.querySelector('.' + this.table + ' tbody');
+					const tr = makeElement('tr');
+					this.columns.map(value => {
+						const {column, tagname, ...attr} = value; 
+						let td = makeElement('td');
+						let div = makeElement('div');
+						let input = makeElement(tagname, attr);
+						div.append(input);
+						td.append(div);
+						tr.append(td);
+						
+						if(column == '품목') addItemEventListener(input);
+						if(column == '창고') addWareHouseEventListener(input);
+					});
+					let delRow = makeElement('td');
+					delRow.innerHTML =  '<button class="btn btn-light d-flex text-danger delete" onclick=item.itemDelete(this) >'
+									+ '<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">'
+							        + '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>'
+									+ '</button>';
+					tr.append(delRow);
+					body.append(tr);
+				},
 				
-				if(column == '품목') addItemEventListener(input);
-				if(column == '창고') addWareHouseEventListener(input);
-			});
-			let delRow = makeElement('td');
-			delRow.innerHTML =  '<button class="btn btn-light d-flex text-danger delete" onclick=item.itemDelete(this) >'
-							+ '<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">'
-					        + '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>'
-							+ '</button>';
-			tr.append(delRow);
-			body.append(tr);
-		}
-		Plguin.prototype.itemDelete = function(t) {
-			t.closest('tr').remove();
-		}
-		Plguin.prototype.length = function() {
-			return this.columns.length;
-		}
-		Plguin.prototype.getColumns = function() {
-			return this.columns;
+				// row 삭제
+				itemDelete: function(t) {
+					t.closest('tr').remove();
+				},
+				
+				// 생성자로 만들어진 컬럼들 리턴
+				getColumns: getColumns = function() {
+					return this.columns;
+				}
 		}
 		
-		function makeTheadTbody() {
+		// table의 head와 body를 생성
+		function drawBody() {
 			const t = document.querySelector('.' + this.table),
 				head = makeElement('thead'),
 				body = makeElement('tbody');
@@ -235,6 +295,81 @@
 			t.append(body);
 		}
 		
+		// ----------------------------------------------- 멤버 
+		
+		document.querySelector('#member_no').addEventListener('click', event => {
+			drawMember();	
+		});
+		
+		function getMemberList(paging, callback) {
+			const	
+				attr = {method: 'GET'};	
+			let
+				url = location.origin + '/basicinfo/member/pages/' + paging.pageNum + '/' + paging.amount;
+				
+			url += paging.whatColumn ? '' : '/' + paging.whatColumn;
+			url += paging.keyword ? '' : '/' + paging.keyword;
+			
+			// fetch를 이용해 품목리스트 가져옴
+			getJsonData(url, attr, (data) => {
+				callback(data);
+			});		
+		}
+		
+		function drawMember(paging) {
+			let defaultPaging = {
+					pageNum : 1,
+					amount : 10,
+					whatColumn : null,
+					keyword : null,
+			},
+			body = document.querySelector('.member-table tbody');
+			
+			const newPaging = {...defaultPaging, ...paging};
+			
+			getMemberList(newPaging, data => {
+				body.innerHTML = "";
+				data.list.forEach((value, index) => {
+					let {dep_name, rank_name, name} = value;
+					
+					let tr = document.createElement('tr');
+					
+					let td1 = document.createElement('td');
+					td1.textContent = dep_name;
+					td1.classList.add('text-center');
+					tr.append(td1);
+					
+					let td2 = document.createElement('td');
+					td2.textContent = rank_name;
+					td2.classList.add('text-center');
+					tr.append(td2);
+					
+					let td3 = document.createElement('td');
+					td3.textContent = name;
+					td3.classList.add('text-center');
+					tr.append(td3);
+					
+					let td4 = document.createElement('td');
+					td4.innerHTML = '<button type="button" class="btn btn-primary btn-sm">선택</button>';
+					td4.setAttribute('data-bs-dismiss', 'modal');
+					td4.classList.add('text-center');
+					tr.append(td4);
+					
+					td4.addEventListener('click', event => {
+						target.value = name;
+						target.setAttribute('data-value', no);
+					});
+					
+					body.append(tr);
+				});
+				/* 페이지네이션 */
+				paintPageNation(data.totalCount, data.cri, 'memberPageNation');
+			});
+		}
+		
+		// ----------------------------------------------- 멤버 끝
+		
+		// 품목을 클릭했을 경우 이벤트 리스너를 붙여줌
 		function addItemEventListener(elem) {
 			elem.addEventListener('click', (event) => {
 				target = event.target;
@@ -243,9 +378,7 @@
 		}
 		
 		function getItemList(paging, callback) {
-			const	
-				target = event.target,
-				attr = {method: 'GET'};	
+			const attr = {method: 'GET'};	
 			let
 				url = location.origin + '/basicinfo/item/pages/'+paging.pageNum + '/' + paging.amount;
 				
@@ -305,11 +438,12 @@
 					body.append(tr);
 				});
 				/* 페이지네이션 */
-				paintPageNation(data.totalCount, data.cri);
+				paintPageNation(data.totalCount, data.cri, 'itemPageNation');
 			});
 		}
 		
 		let elemEventTarget;
+		// 창고를 클릭했을 경우 이벤트 리스너를 붙여줌
 		function addWareHouseEventListener(elem) {
 			elem.addEventListener('click', elemEvent => {
 				// 클로저 땜시 분리했음
@@ -325,6 +459,7 @@
 				value.querySelector('input').setAttribute('data-value', arr[index].dataset.no);
 			});			
 		});
+		
 		warehouse.addEventListener('click', event => {
 			addItemToTable(event);
 		});
@@ -334,10 +469,10 @@
 		rack.addEventListener('click', event => {
 			addItemToTable(event, area);
 		});
-		
 		cell.addEventListener('click', event => {
 			addItemToTable(event, rack);
 		});
+		
 		function addItemToTable(event, prev) {
 			wt.innerHTML = '';
 			const target = event.target,
@@ -362,7 +497,7 @@
 					
 					const name = makeElement('td');
 					name.textContent = data.name;
-					name .classList.add('text-center');
+					name.classList.add('text-center');
 					tr.append(name);
 					
 					const btntd = makeElement('td');
@@ -381,31 +516,9 @@
 				});
 			});
 		}
-		async function getJsonData(url, attr, callback) {
-			const data = await fetch(url, attr);
-			const json = await data.json();
-			callback(json);
-		};
-		function makeElement(elem, attr, event) {
-			const e = document.createElement(elem);
-			attr && Object.keys(attr).forEach((key, index) => {
-				let value = attr[key];
-				if(key === 'class') {
-					const classes = value.split(' ');
-					classes.map(c => {
-						e.classList.add(c);
-					})
-				}
-				else {
-					e.setAttribute(key, value);
-				}
-			});
-			event && e.addEventListener(event.type, event.event);
-			return e;
-		}
 		
 		/* 거래처 선택 모달의 페이지네이션을 그리는 함수 */
-		function paintPageNation(totalCount, cri){
+		function paintPageNation(totalCount, cri, location){
 			
 			var str = ""; 
 			
@@ -479,28 +592,36 @@
 			
 			str += "</ul></div>";
 			
-			$("#clientPageNation").html(str);
+			$('#'+ location).html(str);
 		}
 		
-		/* 거래처 선택 모달의 페이지네이션에서 번호 클릭시 다시 그리는 함수 */
-		$("#clientPageNation").on("click", "li a", function(e){
+		$("#itemPageNation").on("click", "li a", function(e){
 			e.preventDefault(); // 번호를 눌러도 페이지가 이동하지 않도록 a태그 기능 무력화
 			pageNum = $(this).attr("href");
 			
 			drawItem({pageNum : pageNum});
 		});
 		
+		$("#memberPageNation").on("click", "li a", function(e){
+			e.preventDefault(); // 번호를 눌러도 페이지가 이동하지 않도록 a태그 기능 무력화
+			pageNum = $(this).attr("href");
+			drawMember({pageNum : pageNum});
+		});
+		
 		return Plguin;
 		
 	})();
+	
+	
 	const item = new Item('table', [
-		{column: '품목', name: 'item_no', class:'form-control insert', 'data-bs-toggle':"modal", 'data-bs-target':"#addUserModal", autocomplete:"off", readonly: "readonly"},
-		{column: '수량', name: 'qty', class:'form-control'},
-		{column: '창고', name: 'ware_code', class:'form-control', 'data-bs-toggle':"modal", 'data-bs-target':"#searchInvenModal", readonly: "readonly"},
+		{column: '품목', name: 'item_no', class:'form-control insert', 'data-bs-toggle':"modal", 'data-bs-target':"#addUserModal", autocomplete:"off", readonly: "readonly", required: "required"},
+		{column: '수량', name: 'qty', class:'form-control', required: "required"},
+		{column: '창고', name: 'ware_code', class:'form-control', 'data-bs-toggle':"modal", 'data-bs-target':"#searchInvenModal", readonly: "readonly", required: "required"},
 		{column: '구역', name: 'area_code', class:'form-control', readonly: "readonly"},
 		{column: '렉', name: 'rack_code', class:'form-control', readonly: "readonly"},
 		{column: '셀', name: 'cell_code', class:'form-control', readonly: "readonly"},
 	]);
+	
 	// 저장
 	function saveData() {
 		const trs = Array.from(document.querySelectorAll('.table-item tr')).slice(1),
@@ -515,6 +636,65 @@
 			lists.push(obj);
 		});
 		fetch('http://localhost:8080/warehouse/init/save', {method: 'post', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({member_no: member_no, detail: lists})});
-		window.location.reload();
+		// window.location.reload();
 	}
+	
+	// fetch를 이용한 비동기 통신
+	async function getJsonData(url, attr, callback) {
+		const data = await fetch(url, attr);
+		const json = await data.json();
+		callback(json);
+	};
+	
+	// 태그 생성
+	function makeElement(elem, attr, event) {
+		const e = document.createElement(elem);
+		attr && Object.keys(attr).forEach((key, index) => {
+			let value = attr[key];
+			if(key === 'class') {
+				const classes = value.split(' ');
+				classes.map(c => {
+					e.classList.add(c);
+				})
+			}
+			else {
+				e.setAttribute(key, value);
+			}
+		});
+		event && e.addEventListener(event.type, event.event);
+		return e;
+	}
+	
+    // 유효성 검사
+    void(function() {
+    	
+   	  const idcheck = document.querySelector('.idcheck');
+      document.querySelectorAll('.needs-validation').forEach(form => {
+        form.addEventListener('submit', event => {
+        	
+        	let a = false, b = false;
+        	const items = document.querySelectorAll('input[name="item_no"]');
+        	items.forEach(item => {
+        		item.value === '' ? item.classList.add('is-invalid') : item.classList.remove('is-invalid');
+        		a = item.value == '' && true;
+        	});
+        	
+        	const ware_code = document.querySelectorAll('input[name="ware_code"]');
+        	ware_code.forEach(item => {
+	        	item.value === '' ? item.classList.add('is-invalid') : item.classList.remove('is-invalid');
+	        	b = item.value == '' && true;
+        	});
+        	
+          if (!form.checkValidity() || a || b) {
+            event.preventDefault()
+            event.stopPropagation()
+	        form.classList.add('was-validated')
+	        return;
+          }
+          saveData();
+          event.preventDefault()
+          event.stopPropagation()
+        })
+      })
+    })()
 </script>

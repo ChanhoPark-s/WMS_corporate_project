@@ -79,7 +79,6 @@
             </div>
           </li>
           <li class="nav-item">
-<<<<<<< HEAD
             <a class="nav-link px-2 d-flex align-items-center gap-3" href="${pageContext.request.contextPath }/warehouse/init/insert">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
@@ -89,9 +88,6 @@
           </li>
           <li class="nav-item">
             <a class="nav-link px-2 d-flex align-items-center gap-3" href="${pageContext.request.contextPath }/warehouse">
-=======
-            <a class="nav-link px-2 d-flex align-items-center gap-3" href="/warehouse-detail/list">
->>>>>>> refs/remotes/origin/jhs
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
               </svg>
@@ -125,11 +121,11 @@
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
-              <span class="me-auto">발주지시관리</span>
+              <span class="me-auto">발주계약관리</span>
             </a>
             <div class="ms-5 collapse" id="request-order-collapse" data-bs-parent="#mainMenu">
               <ul class="navbar-nav">
-                <li class="nav-item"><a class="nav-link" href="/list.ps">발주지시정보</a></li>
+                <li class="nav-item"><a class="nav-link" href="/list.ps">발주정보</a></li>
               </ul>
             </div>
           </li>

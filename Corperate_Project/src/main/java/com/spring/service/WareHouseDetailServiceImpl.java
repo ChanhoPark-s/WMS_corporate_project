@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.spring.domain.PageDTO;
+import com.spring.domain.SearchVO;
 import com.spring.domain.WareHouseDetailVO;
 import com.spring.domain.WareHouseMovementVO;
 import com.spring.mapper.WareHouseDetailMapper;
+import com.spring.paging.Client_Paging;
 
 @Service
 public class WareHouseDetailServiceImpl implements WareHouseDetailService{
@@ -56,7 +58,12 @@ public class WareHouseDetailServiceImpl implements WareHouseDetailService{
 	}
 
 	@Override
-	public List<WareHouseMovementVO> itemMovement() {
-		return mapper.itemMovement();
+	public List<WareHouseMovementVO> itemMovement(Client_Paging pageInfo) {
+		return mapper.itemMovement(pageInfo);
+	}
+
+	@Override
+	public int getTotalCount(SearchVO searchvo) {
+		return mapper.getTotalCount(searchvo);
 	}
 }

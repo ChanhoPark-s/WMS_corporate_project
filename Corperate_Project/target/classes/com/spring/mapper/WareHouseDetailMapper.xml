@@ -175,6 +175,14 @@ end;
 	where h.item_no = i.no
 	and h.pr_ware_no = w1.no
 	and h.ware_no = w2.no
+	ORDER BY no desc OFFSET #{beginRow} ROWS FETCH NEXT #{pageSize} ROWS ONLY
+</select>
+<select id="getTotalCount" resultType="int">
+	select count(*)
+	from item_movement_history h, item i, warehouse w1, warehouse w2
+	where h.item_no = i.no
+	and h.pr_ware_no = w1.no
+	and h.ware_no = w2.no
 	order by 1 desc
 </select>
 </mapper>

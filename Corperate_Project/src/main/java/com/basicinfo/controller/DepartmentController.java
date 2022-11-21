@@ -1,7 +1,6 @@
 
 package com.basicinfo.controller;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +18,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.spring.domain.DepartmentVO;
 import com.spring.domain.SearchVO;
+import com.spring.paging.Client_Paging;
 import com.spring.service.DepartmentService;
 
 @Controller
@@ -37,8 +37,12 @@ public class DepartmentController {
 		if(flashMap!=null)
 			vo =(SearchVO)flashMap.get("searchvo");
 		int totalCount = service.getTotalCount(vo);
+		Client_Paging pageInfo = new Client_Paging(vo.getPageNumber(),"10",totalCount,"/basicinfo/department/list",vo.getWhatColumn(),vo.getKeyword(),0);
 		
-		model.addAttribute("voList", service.list(vo));
+		model.addAttribute("pageInfo",pageInfo);
+		model.addAttribute("totalCount",totalCount);
+		model.addAttribute("voList",service.list(pageInfo));
+		model.addAttribute("searchvo",vo);
 	}
 	
 	@PostMapping(value="/insert")

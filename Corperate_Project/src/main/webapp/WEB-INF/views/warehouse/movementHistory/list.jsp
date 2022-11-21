@@ -38,7 +38,7 @@
                 	<c:forEach items="${list }" var="item">
                 		<tr>
                 			<td>${item.no }</td>
-                			<td>${item.lot_code }</td>
+                			<td><span class="badge bg-dark">${item.lot_code }</span></td>
                 			<td>${item.item_name }</td>
                 			<td>${item.qty }</td>
                 			<td>${item.ware1 }</td>
@@ -49,29 +49,9 @@
                 </tbody>
               </table>
             </div>
-            <nav aria-label="Page navigation borderless example">
-              <ul class="pagination pagination-borderless justify-content-end">
-                <li class="page-item disabled">
-                  <a class="page-link d-flex align-items-center px-2" href="#" tabindex="-1" aria-disabled="true" aria-label="Previous">
-                    <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                    </svg>
-                  </a>
-                </li>
-                <li class="page-item active" aria-current="page">
-                  <a class="page-link" href="javascript:void(0)">1</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="javascript:void(0)">2</a></li>
-                <li class="page-item"><a class="page-link" href="javascript:void(0)">3</a></li>
-                <li class="page-item">
-                  <a class="page-link d-flex align-items-center px-2" href="javascript:void(0)" aria-label="Next">
-                    <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-                    </svg>
-                  </a>
-                </li>
-              </ul>
-            </nav>
+            <div align="center">
+				${pageInfo.pagingHtml}
+			</div>
           </div>
         </div>
         
@@ -418,7 +398,7 @@
 				 tr.append(td1);
 				 
 				 const td2 = document.createElement('td')
-				 td2.innerHTML = item.lot_code;
+				 td2.innerHTML = '<span class=\'badge bg-dark\'>'+item.lot_code+'</span>'
 				 tr.append(td2);
 				 
 				 const td3 = document.createElement('td')
@@ -430,7 +410,7 @@
 				 tr.append(td4);
 				 
 				 const td5 = document.createElement('td')
-				 td5.innerHTML = item.amount;
+				 td5.innerHTML = transformNumberDot(item.amount) + "개";
 				 tr.append(td5);
 				 
 				 const td6 = document.createElement('td')
@@ -570,8 +550,6 @@
 				obj[value.name] = value.name === 'qty'? value.value : value.dataset.no;
 			});
 			
-			console.log(obj);
-			
 			fetch('update', {method: 'post', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(obj)});
 			window.location.reload();
             event.preventDefault()
@@ -586,6 +564,10 @@
 		}
     })()
     
+    // 숫자에 컴마 찍기
+   	function transformNumberDot(number) {
+		return String(number).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	}
 
 </script>
 <!-- bottom.jsp -->

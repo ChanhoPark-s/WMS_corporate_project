@@ -3,8 +3,10 @@ package com.spring.service;
 import java.util.List;
 
 import com.spring.domain.PageDTO;
+import com.spring.domain.SearchVO;
 import com.spring.domain.WareHouseDetailVO;
 import com.spring.domain.WareHouseMovementVO;
+import com.spring.paging.Client_Paging;
 
 public interface WareHouseDetailService {
 
@@ -18,6 +20,7 @@ public interface WareHouseDetailService {
 	public WareHouseDetailVO getWare(WareHouseDetailVO vo);
 	public void update(WareHouseMovementVO vo);
 	
-	public List<WareHouseMovementVO> itemMovement();
+	public List<WareHouseMovementVO> itemMovement(Client_Paging pageInfo);
+	public int getTotalCount(SearchVO searchvo);
 
 }

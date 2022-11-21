@@ -1,5 +1,9 @@
 package com.warehouse.controller;
 
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +17,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.google.gson.Gson;
 import com.spring.domain.PageDTO;
+import com.spring.domain.SearchVO;
 import com.spring.domain.WareHouseDetailVO;
 import com.spring.domain.WareHouseMovementVO;
+import com.spring.paging.Client_Paging;
 import com.spring.service.AreaService;
 import com.spring.service.CellService;
 import com.spring.service.RackService;
@@ -47,13 +54,22 @@ public class MovemenetHistoryController {
 	private CellService cellservice;
 	
 	@GetMapping(value="/list")
-	public void list(Model model) {	
+	public void list(Model model, HttpServletRequest request, SearchVO searchvo) {	
 		model.addAttribute("warehouse", warehouseservice.list());
 		model.addAttribute("area", areaservice.list());
 		model.addAttribute("rack", rackservice.list());
 		model.addAttribute("cell", cellservice.list());
 		
-		model.addAttribute("list", warehousedetailservice.itemMovement());
+		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
+		if(flashMap!=null)
+			searchvo =(SearchVO)flashMap.get("searchvo");
+		int totalCount = warehousedetailservice.getTotalCount(searchvo);
+		Client_Paging pageInfo = new Client_Paging(searchvo.getPageNumber(),"10",totalCount,"/warehouse/movementHistory/list",searchvo.getWhatColumn(),searchvo.getKeyword(),0);
+		
+		model.addAttribute("pageInfo",pageInfo);
+		model.addAttribute("totalCount",totalCount);
+		model.addAttribute("searchvo",searchvo);
+		model.addAttribute("list", warehousedetailservice.itemMovement(pageInfo));
 	}
 	
 	@ResponseBody
@@ -70,17 +86,6 @@ public class MovemenetHistoryController {
 	
 	@PostMapping(value="/update")
 	public String update(Model model, @RequestBody WareHouseMovementVO vo) {
-		System.out.println("ware1 : " + vo.getWare1());
-		System.out.println("area1 : " + vo.getArea1());
-		System.out.println("rack1 : " + vo.getRack1());
-		System.out.println("cell1 : " + vo.getCell1());
-		
-		System.out.println("ware2 : " + vo.getWare2());
-		System.out.println("area2 : " + vo.getArea2());
-		System.out.println("rack2 : " + vo.getRack2());
-		System.out.println("cell2 : " + vo.getCell2());
-		
-		System.out.println("lot_code : " + vo.getLot_code());
 		warehousedetailservice.update(vo);
 		return null;
 	}	
