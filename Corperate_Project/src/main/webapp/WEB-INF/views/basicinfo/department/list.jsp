@@ -18,84 +18,57 @@
                   </svg>
 					부서추가
 				</button>
-				<button class="btn btn-light d-inline-flex align-items-center gap-1">
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-						fill="currentColor" aria-hidden="true">
-                    <path fill-rule="evenodd"
-							d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z"
-							clip-rule="evenodd" />
-                  </svg>
-					Export
-				</button>
-				<div class="dropdown">
-					<button
-						class="btn btn-light d-inline-flex align-items-center gap-1 dropdown-toggle no-caret"
-						type="button" data-bs-toggle="dropdown"
-						data-bs-auto-close="outside" aria-expanded="false">
-						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-							fill="currentColor" aria-hidden="true">
-                      <path fill-rule="evenodd"
-								d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z"
-								clip-rule="evenodd" />
-                    </svg>
-						Filter
-					</button>
-					<form class="dropdown-menu p-3" style="min-width: 250px">
-						<h6 class="dropdown-header p-0">Filter options</h6>
-						<hr>
-						<div class="vstack gap-3">
-							<div>
-								<label class="form-label">Role:</label> <select
-									class="dselect form-select" data-dselect-clearable="true">
-									<option value="">Choose role</option>
-									<option value="administrator">Administrator</option>
-									<option value="analyst">Analyst</option>
-									<option value="developer">Developer</option>
-									<option value="support">Support</option>
-									<option value="trial">Trial</option>
-								</select>
-							</div>
-							<div>
-								<label class="form-label">Two Step Verification:</label> <select
-									class="dselect form-select" data-dselect-clearable="true">
-									<option value="">Select option</option>
-									<option value="enabled">Enabled</option>
-									<option value="disabled">Disabled</option>
-								</select>
-							</div>
-							<button class="btn btn-primary" type="button">Apply</button>
-						</div>
-					</form>
-				</div>
+				<button class="btn btn-light d-inline-flex align-items-center gap-1" onclick="selectDelete()"><i class="fa-regular fa-trash-can fa-1.5x"></i></button>
 			</div>
-			
-			<form>
-				<input type="text" class="form-control" placeholder="Search user">
+			<div class="search">
+			<form name="search" action="/basicinfo/department/list" id="search">
+			<table>
+			<tr>
+				<td>
+					<select id="whatColumn" name="whatColumn" class="form-select" style="width: 200px;">
+	                  <%
+	                  String[] search = {"code", "name"};
+	                  String[] cate = {"부서코드", "부서명"};
+	                  %>
+	                  <c:set value="<%=search %>" var="s"></c:set>
+	                  <c:set value="<%=cate %>" var="c"></c:set>
+	                  <option value="">검색 선택</option>
+	                  	<c:forEach begin="0" end="${fn:length(s)-1 }" var="i">
+	                  		<option value="${s[i] }"<c:if test="${searchvo.whatColumn== s[i] }">selected</c:if>>${c[i] }</option>
+	                  	</c:forEach>
+	              </select>
+				</td>
+				<td>
+					<input type="text"  name="keyword" id="keyword" class="form-control" value=<c:if test="${searchvo.keyword=='null' }">""</c:if><c:if test="${searchvo.keyword!='null' }">"${searchvo.keyword }"</c:if>  placeholder="입력" style="width: 200px; height: 38px;">
+				</td>
+				<td>
+					<i class="fa-solid fa-magnifying-glass btn_search" id="searchIcon" onclick="searchForm()"></i>
+				</td>
+			</tr>	
+			</table>
 			</form>
+			</div>
 		</div>
 		<div class="table-responsive my-1">
+		   <form name="f" action="/basicinfo/department/selectDelete" method="post">
 			<table class="table align-middle">
 				<thead>
 					<tr>
 						<th scope="col">
 							<div>
-								<input class="form-check-input" type="checkbox" value="">
+								<input class="form-check-input" type="checkbox" id="allselect" name="allselect" onclick="allSelect()">
 							</div>
 						</th>
 						<th scope="col">번호</th>
 						<th scope="col">부서코드</th>
 						<th scope="col">부서명</th>
-						<th scope="col">Actions</th>
+						<th scope="col">기능</th>
 					</tr>
 				</thead>
 				<tbody>
 					<c:forEach var="vo" items="${voList}">
 						<tr class="dept-${vo.no }">
-							<td>
-								<div>
-									<input class="form-check-input" type="checkbox" value="">
-								</div>
-							</td>
+							<td><input class="form-check-input" type="checkbox" id="rowcheck" name="rowcheck" value="${vo.no }"></td>
 							<td>${vo.no}	
 							<td>${vo.code}</td>
 							<td>${vo.name}</td>
@@ -125,37 +98,11 @@
 					</c:forEach>
 				</tbody>
 			</table>
+		  </form>
 		</div>
-		<nav aria-label="Page navigation borderless example">
-			<ul class="pagination pagination-borderless justify-content-end">
-				<li class="page-item disabled"><a
-					class="page-link d-flex align-items-center px-2" href="#"
-					tabindex="-1" aria-disabled="true" aria-label="Previous"> <svg
-							width="20" height="20" xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd"
-								d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-								clip-rule="evenodd"></path>
-                    </svg>
-				</a></li>
-				<li class="page-item active" aria-current="page"><a
-					class="page-link" href="javascript:void(0)">1</a></li>
-				<li class="page-item"><a class="page-link"
-					href="javascript:void(0)">2</a></li>
-				<li class="page-item"><a class="page-link"
-					href="javascript:void(0)">3</a></li>
-				<li class="page-item"><a
-					class="page-link d-flex align-items-center px-2"
-					href="javascript:void(0)" aria-label="Next"> <svg width="20"
-							height="20" xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd"
-								d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-								clip-rule="evenodd"></path>
-                    </svg>
-				</a></li>
-			</ul>
-		</nav>
+            <div align="center">
+				${pageInfo.pagingHtml}
+			</div>
 	</div>
 </div>
 
@@ -297,4 +244,40 @@
       });
       
    })();
+   
+	/* 체크박스 */
+	function allSelect(){
+		var ac = document.f.allselect;
+		var rc = document.f.rowcheck;
+
+		if (ac.checked) {
+				for (var i = 0; i < rc.length; i++) {
+					rc[i].checked = true;
+				}
+			}
+		else {
+				for (var i = 0; i < rc.length; i++) {
+					rc[i].checked = false;
+				}
+			}
+		}
+	function selectDelete(){
+		
+		x=false;
+		var rc = document.f.rowcheck;
+		
+		for(var i=0;i<rc.length;i++){
+			if(rc[i].checked==true){
+				x=true;
+			}
+		}
+		if(!x){
+			alert("체크박스를 선택하세요");
+			return;
+		}
+		if(confirm("삭제하시겠습니까?")){
+			f.submit();
+		}
+
+	}
 </script>

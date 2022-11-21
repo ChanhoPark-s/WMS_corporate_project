@@ -1,6 +1,9 @@
 package com.basicinfo.controller;
 
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,8 +14,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.spring.domain.RankVO;
+import com.spring.domain.SearchVO;
+import com.spring.paging.Client_Paging;
 import com.spring.service.RankService;
 
 
@@ -26,10 +32,18 @@ public class RankController {
 	private RankService service;
 
 	@GetMapping(value="/list")
-	public void list(Model model) {				
+	public void list(Model model, SearchVO vo, HttpServletRequest request) {				
 		
-		List<RankVO> ranks = service.list();
-		model.addAttribute("ranks", ranks);
+		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
+		if(flashMap!=null)
+			vo =(SearchVO)flashMap.get("searchvo");
+		int totalCount = service.getTotalCount(vo);
+		Client_Paging pageInfo = new Client_Paging(vo.getPageNumber(),"10",totalCount,"/basicinfo/rank/list",vo.getWhatColumn(),vo.getKeyword(),0);
+		
+		model.addAttribute("ranks", service.list(pageInfo));
+		model.addAttribute("pageInfo",pageInfo);
+		model.addAttribute("totalCount",totalCount);
+		model.addAttribute("searchvo",vo);
 	}
 	
 	@PostMapping(value="insert")
@@ -53,7 +67,14 @@ public class RankController {
 		return "redirect:/basicinfo/rank/list";
 	}
 	
-	public List<RankVO> getRankList(Model model) {				
-		return service.list();
+	public List<RankVO> noSearchList(Model model) {				
+		return service.noSearchList();
+	}
+	
+	@PostMapping("/selectDelete")
+	public String selectDelete(HttpServletRequest request){
+		
+		service.selectDelete(request.getParameterValues("rowcheck"));
+		return "redirect:/basicinfo/rank/list";
 	}
 }

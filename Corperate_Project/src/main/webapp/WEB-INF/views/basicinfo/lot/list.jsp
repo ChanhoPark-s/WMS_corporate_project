@@ -67,7 +67,7 @@
 						</th>
 						<th scope="col">LOT 번호</th>
 						<th scope="col">상품명</th>
-						<th scope="col">삭제</th>
+						<th scope="col">기능</th>
 					</tr>
 				</thead>
 				<tbody id="table_insert">

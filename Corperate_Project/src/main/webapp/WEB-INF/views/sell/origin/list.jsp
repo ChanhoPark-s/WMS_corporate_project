@@ -25,7 +25,6 @@ SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 	
 	$(document)
 			.ready(
-
 					function() {
 						$("button[id='update_Sold']").click(function() {
 							$("h5[id='modal-title']").text("판매 수정");
@@ -36,7 +35,6 @@ SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 							$("#Sold_Submit").hide();
 							$("#Sold_Update_Submit").show();
 						});
-
 						$("button[id='insert_Sold']").click(function() {
 							$("h5[id='modal-title']").text("판매 등록");
 							
@@ -51,17 +49,14 @@ SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 							
 							$("#Sold_Update_Submit").hide();
 							$("#Sold_Submit").show();
-
 							
 						});
-
 						$("button[id='Sold_Submit']").click(
 								function() {
 									$("#sell_Detail_Insert_Area").hide();
 									$("form[id='taskForm_add']").attr('action',
 											'/sell/origin/insert').submit();
 								});
-
 						$("button[id='Sold_Update_Submit']").click(
 								function() {
 									$("form[id='taskForm']").attr(
@@ -69,22 +64,18 @@ SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 											'/sell/origin/update?no='
 													+ update_no).submit();
 								});
-
 						$("button[id='insert_Sold_Detail']").click(function() {
 							$("h5[id='modal-title2']").text("판매 상세 등록");
 							$("#Sold_Detail_Update_Submit").hide();
 							$("#Sold_Detail_Submit").show();
 							$("#sell_Detail_Insert_Area").show();
 						});
-
 						$("button[id='update_Sold_Detail']").click(function() {
 							$("h5[id='modal-title']").text("판매 상세 수정");
 							$("#Sold_Detail_Submit").hide();
 							$("#Sold_Detail_Update_Submit").show();
 						});
-
 						$("button[id='Sold_Detail_Submit']").click(function() {
-
 							$("#item_no").val($("#item_no2").val());
 							$("#amount").val($("#amount2").val());
 							$("#sell_price").val($("#sell_price2").val());
@@ -94,15 +85,11 @@ SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 							$("amount2").val("");
 							$("lot_code2").val("");
 							$("sell_price2").val("");
-
 						});
-
 						$("button[id='insert_Sold_Detaill']")
 								.click(
 										function() {
-
 											var str = "";
-
 											str += "<div id='sell_Detail_Insert_Area'>";
 											str += "<div id='detail_Insert_Area'>";
 											str += "<div class='row'>";
@@ -135,15 +122,12 @@ SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 											str += "<label for='userFullname' class='form-label'>&nbsp;&nbsp;</label>";
 											str += "<button type='button' style='float:right;' form='taskForm' class='btn btn-primary delete_detail' id='delete_detail2'>삭제</button>";
 											str += "</div></div></div><hr>";
-
 											$("#sell_Detail_Insert_Area")
 													.after(str);
-
 										});
 						$('#delete_detail').click(function() {
 							$("#sell_Detail_Insert_Area").next().remove();
 						});
-
 						$("#detail_Insert_Area")
 								.on(
 										"click",
@@ -324,35 +308,27 @@ SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 									addRowItemDetail(); // 새로 입력받을 수 있게 아래 줄을 추가하는 함수
 									
 								}
-
 							});
 	
-
 	});
-
 	function goModal2(no, order, member, daay) {
 		update_no = no;
 		order_no = order;
 		member_no = member;
 		day = daay;
 	}
-
 	function goModal(no) {
 		del_no = no;
-
 	}
-
 	function goDel() {
 		location.href = "/sell/origin/delete?no=" + del_no;
 	}
-
 	function goUpdate() {
 		location.href = "/sell/origin/update?no=" + update_no + "&order_no="
 				+ order_no + "&member_no=" + member_no + "&day=" + day;
 	}
 	
 	function paintRecord(list){
-
 		var str = "";
 		
 		if(secondModalName == "member"){
@@ -493,7 +469,6 @@ SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 	}
 	
 /*  	function paintLotRecord(list){
-
 		var str = "";
 		
 			for(var i = 0, len = list.length || 0; i < len; i++){
@@ -509,7 +484,6 @@ SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 		$("#getLotCode").html(str);
 } */
 	
-
 </script>
 
 <style>

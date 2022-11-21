@@ -192,6 +192,45 @@ public class WarehouseController {
 	}
 	
 	
+	
+	//입력수정시 코드체크
+	@ResponseBody
+	@PostMapping(value="/checkCode", produces = "application/text; charset=utf8")
+	public String codecheck(WareHouseAllAreaVO vo,@RequestParam(value="location",required = false) String location,
+			@RequestParam(value="getcode",required = false) String code) {
+		int result = 0;
+		if(location.equals("ware")) {
+			result = warehouseservice.checkCode(code);
+			if(result>0) {
+				return Integer.toString(result);
+			}else {
+				return Integer.toString(result);
+			}
+		} else if(location.equals("area")) {
+			result = areaservice.checkCode(code);
+			if(result>0) {
+				return Integer.toString(result);
+			}else {
+				return Integer.toString(result);
+			}
+		} else if(location.equals("rack")) {
+			result = rackservice.checkCode(code);
+			if(result>0) {
+				return Integer.toString(result);
+			}else {
+				return Integer.toString(result);
+			}
+		} else {
+			result = cellservice.checkCode(code);
+			if(result>0) {
+				return Integer.toString(result);
+			}else {
+				return Integer.toString(result);
+			}
+		}
+	}
+	
+	
 	//수정하기
 	@PostMapping(value="/update")
 	public String update(Model model,WareHouseAllAreaVO vo,@RequestParam(value="sendid",required = false) String id,

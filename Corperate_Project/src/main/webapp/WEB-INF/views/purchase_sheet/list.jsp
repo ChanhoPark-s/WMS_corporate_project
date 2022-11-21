@@ -202,6 +202,10 @@
     <!-- /Main footer -->
 <script type="text/javascript">
 /* 1,000 숫자표기 함수 */
+$(function(){
+	document.getElementById('purchase_info').click();
+})
+
 function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }

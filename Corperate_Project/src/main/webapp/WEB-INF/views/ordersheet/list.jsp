@@ -61,19 +61,19 @@ table td {
 			</div>
 			
 			<div class="search">
-				<form name="search" action="/basicinfo/client/list" id="search">
+				<form name="search" action="/ordersheet/list" id="search">
 					<table>
 						<tr>
 							<td>
 								<select id="whatColumn" name="whatColumn" class="form-select" style="width: 200px;">
 									<%
-									String[] search = { "member_name", "client_name", "item_name", "process"};
-									String[] cate = { "담당자", "수주처", "품목명", "진행상태"};
+									String[] search = { "member", "client", "item"};
+									String[] cate = { "담당자", "수주처", "품목명"};
 									%>
 									<c:set value="<%=search%>" var="s"></c:set>
 									<c:set value="<%=cate%>" var="c"></c:set>
 									<option>검색 선택</option>
-									<c:forEach begin="0" end="3" var="i">
+									<c:forEach begin="0" end="2" var="i">
 										<option value="${s[i] }"
 											<c:if test="${searchvo.whatColumn== s[i] }">selected</c:if>>${c[i] }</option>
 									</c:forEach>
@@ -164,34 +164,7 @@ table td {
 			</table>
 		</div>
 		<nav aria-label="Page navigation borderless example">
-			<ul class="pagination pagination-borderless justify-content-end">
-				<li class="page-item disabled"><a
-					class="page-link d-flex align-items-center px-2" href="#"
-					tabindex="-1" aria-disabled="true" aria-label="Previous"> <svg
-							width="20" height="20" xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd"
-								d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-								clip-rule="evenodd"></path>
-                    </svg>
-				</a></li>
-				<li class="page-item active" aria-current="page"><a
-					class="page-link" href="javascript:void(0)">1</a></li>
-				<li class="page-item"><a class="page-link"
-					href="javascript:void(0)">2</a></li>
-				<li class="page-item"><a class="page-link"
-					href="javascript:void(0)">3</a></li>
-				<li class="page-item"><a
-					class="page-link d-flex align-items-center px-2"
-					href="javascript:void(0)" aria-label="Next"> <svg width="20"
-							height="20" xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd"
-								d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-								clip-rule="evenodd"></path>
-                    </svg>
-				</a></li>
-			</ul>
+			${pageInfo.pagingHtml}
 		</nav>
 	</div>
 </div>
@@ -403,7 +376,7 @@ table td {
 <script type="text/javascript">
 	/* 왼쪽 카테고리창이 해당화면에 맞게 펼쳐지게 하는 코드 */
 	$(function(){ 
-		document.getElementById('basicinfo').click();
+		document.getElementById('ordersheet').click();
 	});
 </script>
 

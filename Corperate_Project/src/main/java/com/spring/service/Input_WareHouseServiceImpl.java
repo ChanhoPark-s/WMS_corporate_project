@@ -41,5 +41,4 @@ public class Input_WareHouseServiceImpl implements Input_WareHouseService{
 		}
 		return 1;
 	}
-
 }

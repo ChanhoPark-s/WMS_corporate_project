@@ -1,0 +1,33 @@
+#sidebar.navbar-dark {
+  background-color: #155E75;
+}
+#sidebar.navbar-dark .navbar-nav .nav-link:not(.active):not(:hover):not(.disabled) > svg {
+  color: rgba(255, 255, 255, 0.4);
+}
+#sidebar.navbar-dark .navbar-nav .show > .nav-link,
+#sidebar.navbar-dark .navbar-nav .nav-link.active {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 0.25rem;
+}
+#sidebar.navbar-dark .navbar-nav .navbar-nav .show > .nav-link,
+#sidebar.navbar-dark .navbar-nav .navbar-nav .nav-link.active {
+  background-color: transparent;
+}
+#sidebar.navbar-dark .navbar-nav .nav-link:not(.active):not(:hover):not(.disabled) {
+  color: rgba(255, 255, 255, 0.7);
+}
+#sidebar.navbar-dark .navbar-nav .navbar-nav .nav-link:not(.active):not(:hover):not(.disabled) {
+  color: rgba(255, 255, 255, 0.5);
+}
+#sidebar.navbar-dark .nav-label {
+  color: rgba(255, 255, 255, 0.4);
+}
+#sidebar.navbar-dark .badge:not([class^=bg-]) {
+  background-color: #facc15;
+  color: #4b5563;
+}
+#sidebar .logo > svg rect {
+  fill: #0891B2;
+}
+
+/*# sourceMappingURL=sidebar-cyan.css.map */

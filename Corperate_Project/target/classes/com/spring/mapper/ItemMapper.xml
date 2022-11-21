@@ -24,11 +24,12 @@
 	</delete>
 	
 	<select id="selectOne" resultType="com.spring.domain.ItemVO">
-		select * from item where no=#{value}
+		select it.code, cl.name client_name, cl.code client_code,cl.no client_no,it.name, it.in_price, it.out_price, it.image
+		from item it, client cl where it.client_no = cl.no and it.no =#{value}
 	</select>
 	
 	<update id="update">
-		update item set client_no=#{client_no}, code=#{code}, name=#{name}, in_price=#{in_price}, out_pirce=#{out_price}, image=#{image}
+		update item set client_no=#{client_no}, code=#{code}, name=#{name}, in_price=#{in_price}, out_price=#{out_price}, image=#{image}
 		where no=#{no}
 	</update>
 	
