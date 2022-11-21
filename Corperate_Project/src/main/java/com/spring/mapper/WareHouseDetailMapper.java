@@ -6,6 +6,7 @@ import com.spring.domain.SearchVO;
 import com.spring.domain.WareHouseDetailVO;
 import com.spring.domain.WareHouseMovementVO;
 import com.spring.paging.Client_Paging;
+import com.spring.paging.CriteriaForWareHouse;
 
 public interface WareHouseDetailMapper {
 
@@ -22,5 +23,8 @@ public interface WareHouseDetailMapper {
 	
 	public List<WareHouseMovementVO> itemMovement(Client_Paging pageInfo);
 	public int getTotalCount(SearchVO searchvo);
+	/* ajax paging */
+	public int getCountAll(CriteriaForWareHouse cri);
+	public List<WareHouseDetailVO> getListWithPaging(CriteriaForWareHouse cri);
 
 }
