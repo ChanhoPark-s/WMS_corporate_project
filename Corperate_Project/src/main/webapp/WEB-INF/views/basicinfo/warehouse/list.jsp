@@ -166,7 +166,15 @@
 				</button>
 			</div>
 		</div>
-		
+		<div class="d-flex gap-1 mb-1 flex-wrap">
+			<h3 id="clicked_location">
+				<c:choose>
+					<c:when test="${current_location eq null}">창고목록</c:when>
+					<c:when test="${current_location eq 'undefined'}">창고목록</c:when>
+					<c:otherwise>${current_location }</c:otherwise>
+				</c:choose>
+			</h3>
+		</div>
 		<div class="table-responsive my-1">
 		<form name="form">
 			<table class="table align-middle">
@@ -259,6 +267,7 @@
 				<input type="hidden" name="sendno" id="sendno">
 				<input type="hidden" name="sendid" id="sendid">
 				<input type="hidden" name="showid" id="showid">
+				<input type="hidden" name="current_location" id="current_location">
 				
 					<div class="mb-3" id="warehouselocationtitle">
 						<label for="warehouselocation" class="form-label">상위창고위치</label>
@@ -359,6 +368,7 @@
 var id;
 var no;
 var showid;
+var current_location;
 $(function(){
 	
 	/* 왼쪽 카테고리창이 해당화면에 맞게 펼쳐지게 하는 코드 */
@@ -383,6 +393,7 @@ $(function(){
 	id = "${param.id}";
 	no =  "${param.no}";
 	showid =  "${param.showid}";
+	current_location =  "${param.current_location}";
 });
 
 
@@ -392,7 +403,7 @@ function clickFunction(clicked_id){
 	id = clicked_id;
 	showid = document.getElementById(clicked_id).getAttribute('href').substring(1); //등록수정삭제시 창고-셀 사이드바 보던 화면으로 가기 위한 변수
 	no = document.getElementById(clicked_id).getAttribute('data-value');
-
+	
 	//클릭시 showid설정
 	document.getElementById('showid').value = showid;
 
@@ -408,37 +419,88 @@ function clickFunction(clicked_id){
 			var mydata = JSON.parse(data);
 			$('#tddata *').remove();
 			var tabledata = "";
-			$.each(mydata,function(i){
+			console.log("mydata.length은"+mydata.length);
+			if(mydata.length==0){
 				tabledata +=	'<tr>'+
-									'<td>'+(i+1)+'</td>'+
-									'<td>'+mydata[i].code+'</td>'+
-									'<td>'+mydata[i].name+'</td>'+
-									'<td>'+
-										'<div class="btn-group btn-group-sm" role="group">'+
-											'<button type="button" class="btn btn-light d-flex" id=update'+id+' onclick="updatefunction('+mydata[i].no+',\'' +id+ '\')">'+
-												'<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"'+
-													'fill="none" viewBox="0 0 24 24" stroke="currentColor"'+
-													'aria-hidden="true">'+
-					                    '<path stroke-linecap="round"'+
-														'stroke-linejoin="round" stroke-width="2"'+
-														'd="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />'+
-					                  '</svg>'+
-											'</button>'+
-											'<button type="button" class="btn btn-light d-flex text-danger" id=delete'+id+' onclick="deletefunction('+mydata[i].no+',\'' +id+ '\')">'+
-												'<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"'+
-													'fill="none" viewBox="0 0 24 24" stroke="currentColor"'+
-													'aria-hidden="true">'+
-					                    '<path stroke-linecap="round"'+
-														'stroke-linejoin="round" stroke-width="2"'+
-														'd="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />'+
-					                  '</svg>'+
-											'</button>'+
-										'</div>'+
-									'</td>'+									
+									'<td colspan="4">'+'현재 선택한 영역은 하위 영역이 등록되어있지 않습니다.'+'</td>'+
 								'</tr>';
-// 				rowcount = rowcount-1;
-				});
-			$("#tddata").append(tabledata);
+			}
+			else{
+				$.each(mydata,function(i){
+						tabledata +=	'<tr>'+
+											'<td>'+(i+1)+'</td>'+
+											'<td>'+mydata[i].code+'</td>'+
+											'<td>'+mydata[i].name+'</td>'+
+											'<td>'+
+												'<div class="btn-group btn-group-sm" role="group">'+
+													'<button type="button" class="btn btn-light d-flex" id=update'+id+' onclick="updatefunction('+mydata[i].no+',\'' +id+ '\')">'+
+														'<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"'+
+															'fill="none" viewBox="0 0 24 24" stroke="currentColor"'+
+															'aria-hidden="true">'+
+							                    '<path stroke-linecap="round"'+
+																'stroke-linejoin="round" stroke-width="2"'+
+																'd="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />'+
+							                  '</svg>'+
+													'</button>'+
+													'<button type="button" class="btn btn-light d-flex text-danger" id=delete'+id+' onclick="deletefunction('+mydata[i].no+',\'' +id+ '\')">'+
+														'<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"'+
+															'fill="none" viewBox="0 0 24 24" stroke="currentColor"'+
+															'aria-hidden="true">'+
+							                    '<path stroke-linecap="round"'+
+																'stroke-linejoin="round" stroke-width="2"'+
+																'd="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />'+
+							                  '</svg>'+
+													'</button>'+
+												'</div>'+
+											'</td>'+									
+										'</tr>';
+					});//each
+				}//else
+			$("#tddata").append(tabledata);	
+		},
+		error: function (request, status, error) {
+	        console.log("code: " + request.status);
+	        console.log("message: " + request.responseText);
+	        console.log("error: " + error);
+	    }
+
+	});//ajax
+	
+	
+	//클릭한 값 이름 가지고와서 우측테이블위의 현재보고있는영역을 표시
+	$.ajax({
+		url : "/basicinfo/warehouse/get-location",
+		type : "get",
+		data : ({
+			"id" : id,
+			"no" : no
+		}),
+		success : function(data){
+			var mydata = JSON.parse(data);
+			
+			console.log("id는"+id);
+			console.log("id.indexOf는"+id.indexOf("warehouse"));
+			console.log("no는"+no);
+			
+			
+			if(id.indexOf("default")>0){
+				current_location = "창고목록";				
+			}
+			else if(id.indexOf("warehouse")>0){
+				current_location = mydata.warehousename;		
+			}
+			else if(id.indexOf("area")>0){
+				current_location = mydata.warehousename+ " "+mydata.areaname;
+			}
+			else{
+				current_location = mydata.warehousename+ " "+mydata.areaname+ " "+mydata.rackname;
+			}
+			
+			//등록/수정/삭제시 보고있던 우측테이블 위 현재영역을 유지시키기위해 form hidden을 통해 넘긴다
+			document.getElementById('current_location').value = current_location;
+
+			console.log("current_location는"+current_location);
+			$("#clicked_location").html(current_location);
 				
 		},
 		error: function (request, status, error) {
@@ -454,6 +516,10 @@ function clickFunction(clicked_id){
 
 //우측에서 삭제아이콘 클릭시 해당 위치를 삭제한다
 function deletefunction(no,id){
+	
+	//등록/수정/삭제시 보고있던 우측테이블 위 현재영역을 유지시키기위해 form hidden을 통해 넘긴다
+	document.getElementById('current_location').value = current_location;
+	
 	//기본화면(창고리스트)서 등록했을시 id를 불러오지 못할시 id를 mydefault설정하여 수정함
 	if(id==''){
 		id = 'mydefault';
@@ -467,25 +533,25 @@ function deletefunction(no,id){
 	if(id.indexOf('ware')>0){
 		deletecheck = confirm('해당 구역을 정말로 삭제하시겠습니까?');
 		if(deletecheck){
-			location.href="/basicinfo/warehouse/delete?area_no="+no+"&showid="+showid+"&id="+id+"&no="+no;
+			location.href="/basicinfo/warehouse/delete?area_no="+no+"&showid="+showid+"&id="+id+"&no="+no+"&current_location="+current_location;
 		}
 	}
 	if(id.indexOf('area')>0){
 		deletecheck = confirm('해당 랙을 정말로 삭제하시겠습니까?');
 		if(deletecheck){
-			location.href="/basicinfo/warehouse/delete?rack_no="+no+"&showid="+showid+"&id="+id+"&no="+no;
+			location.href="/basicinfo/warehouse/delete?rack_no="+no+"&showid="+showid+"&id="+id+"&no="+no+"&current_location="+current_location;
 		}
 	}		
 	if(id.indexOf('rack')>0){
 		deletecheck = confirm('해당 셀을 정말로 삭제하시겠습니까?');
 		if(deletecheck){
-			location.href="/basicinfo/warehouse/delete?cell_no="+no+"&showid="+showid+"&id="+id+"&no="+no;
+			location.href="/basicinfo/warehouse/delete?cell_no="+no+"&showid="+showid+"&id="+id+"&no="+no+"&current_location="+current_location;
 		}
 	}		
 	if(id.indexOf('default')>0){
 		deletecheck = confirm('해당 창고를 정말로 삭제하시겠습니까?');
 		if(deletecheck){
-			location.href="/basicinfo/warehouse/delete?ware_no="+no+"&showid="+showid;
+			location.href="/basicinfo/warehouse/delete?ware_no="+no+"&showid="+showid+"&current_location="+current_location;
 		}
 	}		
 }
@@ -505,6 +571,10 @@ var cellname;
 
 //우측에서 수정아이콘 클릭시 해당 위치를 수정한다
 function updatefunction(no,id){
+	
+	//등록/수정/삭제시 보고있던 우측테이블 위 현재영역을 유지시키기위해 form hidden을 통해 넘긴다
+	document.getElementById('current_location').value = current_location;
+	
 	//기본화면(창고리스트)서 등록했을시 id를 불러오지 못할시 id를 mydefault설정하여 수정함
 	if(id==''){
 		id = 'mydefault';
@@ -644,6 +714,10 @@ function updatefunction(no,id){
 
 //등록 클릭시 해당영역 등록
 function insertfunction(getid){
+	
+	//등록/수정/삭제시 보고있던 우측테이블 위 현재영역을 유지시키기위해 form hidden을 통해 넘긴다
+	document.getElementById('current_location').value = current_location;
+	
 	resetmodal();
 	resetrequired();
 	$('#submit_btn').html('등록');

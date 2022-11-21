@@ -43,7 +43,8 @@ public class WarehouseController {
 	@GetMapping(value="/list")
 	public void home(Model model,@RequestParam(value="id",required = false) String id,
 			@RequestParam(value="showid",required = false) String showid,
-			@RequestParam(value="no",required = false) String no) {				
+			@RequestParam(value="no",required = false) String no,
+		@RequestParam(value="current_location",required = false) String current_location) {				
 		model.addAttribute("warehouseLists",warehouseservice.list());
 		model.addAttribute("areaLists",areaservice.list());
 		model.addAttribute("rackLists",rackservice.list());
@@ -53,6 +54,12 @@ public class WarehouseController {
 		model.addAttribute("showid",showid);
 		model.addAttribute("id",id);
 		model.addAttribute("no",no);
+		model.addAttribute("current_location",current_location);
+		
+		System.out.println("current_location는"+current_location);
+		System.out.println("showid는"+showid);
+		System.out.println("id는"+id);
+		System.out.println("no는"+no);
 		
 		//첫화면에서 showid가 설정되어있지 않기에 undefined도 if케이스 중 하나로 설정한다
 		if(showid==null || showid=="" || showid.equals("undefined")) {//최초에 창고리스트 보여준다
@@ -102,6 +109,30 @@ public class WarehouseController {
 			}
 	}
 	
+	//ajax로 현재영역의 이름을 표시하기 위한 코드
+	@ResponseBody
+	@GetMapping(value="/get-location", produces = "application/text; charset=utf8")
+	public String get_location(Model model, @RequestParam(value="id",required = false) String id,
+			@RequestParam(value="no",required = false) String no) {
+		
+		int checkno = Integer.parseInt(no);
+		if(id.contains("warehouse")) {
+			WareHouseAllAreaVO vo = warehouseservice.selectOneWareHouseByNo(checkno);
+			System.out.println(vo.getWarehousename());
+			return new Gson().toJson(vo);
+		}
+		else if(id.contains("area")) {
+			WareHouseAllAreaVO vo = areaservice.selectOneAreaByNo(checkno);
+			return new Gson().toJson(vo);
+		} else if(id.contains("rack")) {
+			WareHouseAllAreaVO vo = rackservice.selectOneRackByNo(checkno);
+			return new Gson().toJson(vo);
+		} else {//하단은 사실 들어올 일이 없다
+			WareHouseAllAreaVO vo = cellservice.selectOneCellByNo(checkno);		
+			return new Gson().toJson(vo);
+		}
+	}
+	
 	
 	//창고구역삭제
 	@GetMapping(value="/delete")
@@ -111,12 +142,14 @@ public class WarehouseController {
 			@RequestParam(value="cell_no",required = false) String cell_no,
 			@RequestParam(value="id",required = false) String id,
 			@RequestParam(value="no",required = false) String no,
-			@RequestParam(value="showid",required = false) String showid) {
+			@RequestParam(value="showid",required = false) String showid,
+			@RequestParam(value="current_location",required = false) String current_location) {
 		
 		//등록수정삭제 이후페이지에서 데이타불러오고 기존 사이드바 보기위해 보낸다
 		model.addAttribute("showid",showid);
 		model.addAttribute("id",id);
 		model.addAttribute("no",no);
+		model.addAttribute("current_location",current_location);
 		
 		if(ware_no != null) {
 			warehouseservice.deleteWareHouseByNo(ware_no);
@@ -139,12 +172,14 @@ public class WarehouseController {
 	@PostMapping(value="/insert")
 	public String insert(Model model,WareHouseAllAreaVO vo,@RequestParam(value="sendid",required = false) String id,
 			@RequestParam(value="sendno",required = false) String no,
-			@RequestParam(value="showid",required = false) String showid) {
+			@RequestParam(value="showid",required = false) String showid,
+			@RequestParam(value="current_location",required = false) String current_location) {
 		
 		//등록수정삭제 이후페이지에서 데이타불러오고 기존 사이드바 보기위해 보낸다
 		model.addAttribute("showid",showid);
 		model.addAttribute("id",id);
 		model.addAttribute("no",no);
+		model.addAttribute("current_location",current_location);
 		
 		//창고삽입위치
 		if(vo.getWarehouselocation() == "") {
@@ -235,12 +270,14 @@ public class WarehouseController {
 	@PostMapping(value="/update")
 	public String update(Model model,WareHouseAllAreaVO vo,@RequestParam(value="sendid",required = false) String id,
 			@RequestParam(value="sendno",required = false) String no,
-			@RequestParam(value="showid",required = false) String showid) {	
+			@RequestParam(value="showid",required = false) String showid,
+			@RequestParam(value="current_location",required = false) String current_location) {	
 		
 		//등록수정삭제 이후페이지에서 데이타불러오고 기존 사이드바 보기위해 보낸다
 		model.addAttribute("showid",showid);
 		model.addAttribute("id",id);
 		model.addAttribute("no",no);
+		model.addAttribute("current_location",current_location);
 		
 		//실제로 수정
 		if(id.contains("warehouse")) {
