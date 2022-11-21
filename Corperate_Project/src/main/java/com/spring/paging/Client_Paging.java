@@ -1,5 +1,7 @@
 package com.spring.paging;
 
+import java.util.ArrayList;
+
 import lombok.Data;
 
 @Data
@@ -22,11 +24,11 @@ public class Client_Paging {
 	private String whatColumn = "" ; //검색 모드(작성자, 글제목, 전체 검색은 all) 등등
 	private String keyword = "" ; //검색할 단어 
 	
+	private ArrayList<Integer> main_nos; // 상위 수주서 번호들
+	
 	public String getPagingHtml() {
 		
 		return pagingHtml;
-//		pagingHtml:
-//			&nbsp;<font color='red'>1</font>&nbsp;&nbsp;<a href='/ex/list.ab?pageNumber=2&pageSize=2&whatColumn=null&keyword=null'>2</a>&nbsp;&nbsp;<a href='/ex/list.ab?pageNumber=3&pageSize=2&whatColumn=null&keyword=null'>3</a>&nbsp;&nbsp;<a href='/ex/list.ab?pageNumber=4&pageSize=2&whatColumn=null&keyword=null'>4</a>&nbsp;&nbsp;<a href='/ex/list.ab?pageNumber=5&pageSize=2&whatColumn=null&keyword=null'>5</a>&nbsp;&nbsp;<a href='/ex/list.ab?pageNumber=6&pageSize=2&whatColumn=null&keyword=null'>6</a>&nbsp;&nbsp;<a href='/ex/list.ab?pageNumber=7&pageSize=2&whatColumn=null&keyword=null'>7</a>&nbsp;&nbsp;<a href='/ex/list.ab?pageNumber=8&pageSize=2&whatColumn=null&keyword=null'>8</a>&nbsp;&nbsp;<a href='/ex/list.ab?pageNumber=9&pageSize=2&whatColumn=null&keyword=null'>9</a>&nbsp;&nbsp;<a href='/ex/list.ab?pageNumber=10&pageSize=2&whatColumn=null&keyword=null'>10</a>&nbsp;&nbsp;<a href='/ex/list.ab?pageNumber=11&pageSize=2&whatColumn=null&keyword=null'>다음</a>&nbsp;&nbsp;<a href='/ex/list.ab?pageNumber=22&pageSize=2&whatColumn=null&keyword=null'>맨 끝</a>&nbsp;
 
 	}
 
@@ -34,6 +36,13 @@ public class Client_Paging {
 		this.pagingHtml = pagingHtml;
 	}
 
+	public void setMain_nos(ArrayList<Integer> list) {
+		this.main_nos = list;
+	}
+	
+	public ArrayList<Integer> getMain_nos(){
+		return this.main_nos;
+	}
 
 	public Client_Paging(
 			String _pageNumber, 
@@ -91,37 +100,51 @@ public class Client_Paging {
 		String result = "" ;
 		String added_param = "&whatColumn=" + whatColumn + "&keyword=" + keyword; 
 		
+		result += "<ul class='pagination pagination-borderless justify-content-end' align='center'>";
+		result += "<li class='page-item'>";
+		
 		if (this.beginPage != 1) { // 앞쪽, pageSize:한 화면에 보이는 레코드 수
-			result += "&nbsp;<a href='" + url  
-					+ "?pageNumber=" + ( 1 ) + "&pageSize=" + this.pageSize 
-					+ added_param + "'><i class='fa-solid fa-angles-left'></i></a>&nbsp;" ;
-			result += "&nbsp;<a href='" + url 
-					+ "?pageNumber=" + (this.beginPage - 1 ) + "&pageSize=" + this.pageSize 
-					+ added_param + "'><i class='fa-solid fa-chevron-left'></i></a>&nbsp;" ;
+			// 1번페이지로 이동
+			result += "<a class='page-link d-flex align-items-center px-2' href='" + url +"?pageNumber=" + ( 1 ) + "&pageSize=" + this.pageSize + added_param + "'>";
+			result += "<svg width='20' height='20' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor'>";
+			result += "<path xmlns='http://www.w3.org/2000/svg' id='svg_1' clip-rule='evenodd' d='m9.49241,5.293a1,1 0 0 1 0,1.414l-3.293,3.293l3.293,3.293a1,1 0 0 1 -1.414,1.414l-4,-4a1,1 0 0 1 0,-1.414l4,-4a1,1 0 0 1 1.414,0z' fill-rule='evenodd'/>";
+			result += "<path xmlns='http://www.w3.org/2000/svg' id='svg_2' clip-rule='evenodd' d='m15.48719,5.37988a1,1 0 0 1 0,1.414l-3.293,3.293l3.293,3.293a1,1 0 0 1 -1.414,1.414l-4,-4a1,1 0 0 1 0,-1.414l4,-4a1,1 0 0 1 1.414,0z' fill-rule='evenodd'/>";
+			result += "</svg></a></li>";
+			//이전페이지로 이동
+			result += "<li class='page-item'>";
+			result += "<a class='page-link d-flex align-items-center px-2' href='" + url + "?pageNumber=" + (this.beginPage - 1 ) + "&pageSize=" + this.pageSize + added_param + "'>";
+			result += "<svg width='20' height='20' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor'>";
+			result += "<path fill-rule='evenodd' d='M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z' clip-rule='evenodd'></path>";
+			result += "</svg>";
+			result += "</a></li>"; 		
 		}
 
 		//가운데
 		for (int i = this.beginPage; i <= this.endPage ; i++) {
-			if ( i == this.pageNumber ) {
-				result += "&nbsp;<font color='red'>" + i + "</font>&nbsp;"	;
-						
-			} else {
-				result += "&nbsp;<a href='" + url   
-						+ "?pageNumber=" + i + "&pageSize=" + this.pageSize 
-						+ added_param + "'>" + i + "</a>&nbsp;" ;
-			 	
-			}
+			var active = (this.pageNumber == i ? "active" : "");
+			result += "<li class='page-item " + active +"'>" + "<a class='page-link' href='"+url+"?pageNumber="+ i +"&pageSize=" + this.pageSize 
+					+ added_param +"'>" + i + "</a></li>";
 		}
 		//System.out.println("토탈페이지:"+this.totalPage);
+		
+		//뒤로가기
 		if ( this.endPage != this.totalPage) { // 뒤쪽
+			// 다음페이지
+			result += "<li class='page-item'>";
+			result += "<a  class='page-link d-flex align-items-center px-2' href='" + url + "?pageNumber=" + (this.endPage + 1 ) + "&pageSize=" + this.pageSize + added_param + "'>";
+			result += "<svg width='20' height='20' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor'>";
+			result += "<path fill-rule='evenodd' d='M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z' clip-rule='evenodd'></path>";
+			result += "</svg>";
+			result += "</a></li>";
 			
-			result += "&nbsp;<a href='" + url  
-					+ "?pageNumber=" + (this.endPage + 1 ) + "&pageSize=" + this.pageSize 
-					+ added_param + "'><i class='fa-solid fa-chevron-right'></i></a>&nbsp;" ;
-			
-			result += "&nbsp;<a href='" + url  
-					+ "?pageNumber=" + (this.totalPage ) + "&pageSize=" + this.pageSize 
-					+ added_param + "'><i class='fa-solid fa-angles-right'></i></a>&nbsp;" ;
+			// 맨 뒤 페이지
+			result += "<li class='page-item'>";
+			result += "<a class='page-link d-flex align-items-center px-2' href='" + url + "?pageNumber=" + (this.totalPage ) + "&pageSize=" + this.pageSize + added_param + "'>" ;
+			result += "<svg width='20' height='20' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor'>";
+			result += "<path id='svg_1' clip-rule='evenodd' d='m4.29467,14.707a1,1 0 0 1 0,-1.414l3.293,-3.293l-3.293,-3.293a1,1 0 0 1 1.414,-1.414l4,4a1,1 0 0 1 0,1.414l-4,4a1,1 0 0 1 -1.414,0z' fill-rule='evenodd'/>";
+			result += "<path id='svg_2' clip-rule='evenodd' d='m10.68001,14.87357a1,1 0 0 1 0,-1.414l3.293,-3.293l-3.293,-3.293a1,1 0 0 1 1.414,-1.414l4,4a1,1 0 0 1 0,1.414l-4,4a1,1 0 0 1 -1.414,0z' fill-rule='evenodd'/>";
+			result += "</svg>";
+			result += "</a></li>";
 		}		
 		
 		return result ;

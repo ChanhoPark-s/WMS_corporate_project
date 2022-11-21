@@ -36,12 +36,13 @@ public class ClientController {
 	
 	// getAll
 	@GetMapping(value="/list", produces = "application/text;charset=utf8")
-	public void clientlist(SearchVO searchvo,HttpServletRequest request,Model model) {				
+	public void clientlist(SearchVO searchvo, HttpServletRequest request, Model model) {				
 		
 		// redirect로 객체받기
 		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
-		if(flashMap!=null)
-			searchvo =(SearchVO)flashMap.get("searchvo");
+		if (flashMap != null)
+			searchvo = (SearchVO) flashMap.get("searchvo");
+		
 		int totalCount = service.getTotalCount(searchvo);
 		Client_Paging pageInfo = new Client_Paging(searchvo.getPageNumber(),"10",totalCount,"/basicinfo/client/list",searchvo.getWhatColumn(),searchvo.getKeyword(),0);
 		

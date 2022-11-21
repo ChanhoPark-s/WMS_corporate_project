@@ -16,7 +16,14 @@ public class ItemVO {
 	private String image;
 	private MultipartFile upload;
 	private String client_code;
-	private String get;
 	private String client_name;
+	private String get;
 	
+	public MultipartFile getUpload() {
+		return upload;
+	}
+	public void setUpload(MultipartFile upload) {
+		this.upload = upload;
+		this.image=upload.getOriginalFilename();//진짜로 이미지 들어가는곳
+	}
 }

@@ -3,15 +3,17 @@ package com.spring.service;
 import java.io.File;
 import java.util.List;
 
-import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.domain.ItemVO;
+import com.spring.domain.PageDTO;
 import com.spring.domain.SearchVO;
 import com.spring.mapper.ItemMapper;
+import com.spring.paging.Criteria;
 import com.spring.paging.Client_Paging;
 
 @Service
@@ -20,9 +22,6 @@ public class ItemServiceImpl implements ItemService{
 	@Autowired
 	private ItemMapper mapper;
 	
-	@Autowired
-	private ServletContext servletContext;
-	
 	@Override
 	public List<ItemVO> selectAll(Client_Paging pageInfo) {
 		List<ItemVO> lists=mapper.selectAll(pageInfo);
@@ -30,9 +29,9 @@ public class ItemServiceImpl implements ItemService{
 	}
 
 	@Override
-	public void insert(ItemVO vo) throws Exception {
+	public void insert(ItemVO vo, HttpServletRequest request) throws Exception {
 		
-		String uploadPath = servletContext.getRealPath("/resources/assets/img/item/");
+		String uploadPath = request.getServletContext().getRealPath("/resources/assets/img/item/");
 		System.out.println(uploadPath);
 		File file = new File(uploadPath);
 		if(!file.exists()) {
@@ -67,8 +66,8 @@ public class ItemServiceImpl implements ItemService{
 	}
 
 	@Override
-	public void update(ItemVO vo) throws Exception {
-		String deletePath = servletContext.getRealPath("/resources/assets/img/item/"); // 실제 이미지 파일이 들어있는 경로
+	public void update(ItemVO vo, HttpServletRequest request) throws Exception {
+		String deletePath = request.getServletContext().getRealPath("/resources/assets/img/item/"); // 실제 이미지 파일이 들어있는 경로
 		File deletefile = new File(deletePath + vo.getImage()); // 기존 이미지 삭제
 		
 		System.out.println("이미지 파일 경로 : " + deletePath);
@@ -81,8 +80,9 @@ public class ItemServiceImpl implements ItemService{
 		} else {
 			System.out.println("이미지 파일이 존재하지 않음");
 		}
-		
-		String uploadPath = servletContext.getRealPath("/resources/assets/img/item/");
+	
+
+		String uploadPath = request.getServletContext().getRealPath("/resources/assets/img/item/");
 		System.out.println(uploadPath);
 		File file = new File(uploadPath);
 		if(!file.exists()) {
@@ -101,6 +101,16 @@ public class ItemServiceImpl implements ItemService{
 		System.out.println("살려줘");
 		mapper.update(vo);
 	}
+	
+	@Override
+	public PageDTO<ItemVO> getListPage(Criteria cri) {
+		int totalCount = mapper.getCountAll(cri);
+		List<ItemVO> list = mapper.getListWithPaging(cri);
+		PageDTO<ItemVO> pageDTO = new PageDTO<ItemVO>(totalCount, list, cri);
+	
+		return pageDTO;
+	}
+
 	@Override
 	public int getTotalCount(SearchVO searchvo) { 
 		return mapper.getTotalCount(searchvo);
@@ -109,7 +119,4 @@ public class ItemServiceImpl implements ItemService{
 	public int code_check(String code) { 
 		return mapper.code_check(code);
 	}
-
-	
-
 }

@@ -3,7 +3,6 @@ package com.basicinfo.controller;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +36,6 @@ public class ItemController {
 	@Autowired
 	private ClientService clientService;
 	
-	@Autowired
-	ServletContext servletContext;
-	
 	//조회
 	@GetMapping(value="/list", produces = "application/text;charset=utf8")
 	public void itemlist(Model model,SearchVO searchvo,HttpServletRequest request) {	
@@ -64,8 +60,8 @@ public class ItemController {
 	
 	//등록
 	@PostMapping(value="/insert")
-	public String insert(Model model, ItemVO vo) throws Exception{
-		service.insert(vo);
+	public String insert(Model model, ItemVO vo, HttpServletRequest request) throws Exception {
+		service.insert(vo, request);
 		System.out.println("코드"+vo.getCode());
 		System.out.println("이미지"+vo.getImage());
 		System.out.println("입고가"+vo.getIn_price());
@@ -91,10 +87,10 @@ public class ItemController {
 	
 	//수정
 	@PostMapping(value="/update")
-	public String update(Model model,ItemVO vo,SearchVO searchvo,RedirectAttributes rttr, @RequestParam("no") int no) throws Exception {
+	public String update(Model model,ItemVO vo,SearchVO searchvo,RedirectAttributes rttr, @RequestParam("no") int no, HttpServletRequest request) throws Exception {
 		
 		vo.setNo(no);
-		service.update(vo);
+		service.update(vo, request);
 		rttr.addFlashAttribute("searchvo",searchvo);
 		return "redirect:/basicinfo/item/list";
 	}

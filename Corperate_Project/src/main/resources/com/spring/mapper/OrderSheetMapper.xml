@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.spring.mapper.OrderSheetMapper">
+  
+	<insert id="insertMainSheet">
+		<!-- 인자로 넘겨받은 객체의 멤버변수인 no를 자동으로 시퀀스 값으로 세팅해줌 -->
+		<selectKey keyProperty="no" order="BEFORE" resultType="int">
+			select order_sheet_seq.nextval from dual
+		</selectKey>
+	
+		insert into order_sheet
+		values(#{no}, #{member_no}, #{client_no}, sysdate, #{out_day}, 0)
+	</insert>
+	
+	<insert id="insertDetailSheet">
+		insert into order_detail
+		values(order_detail_seq.nextval, #{mainSheetNo}, #{itemNo}, #{itemAmount})
+	</insert>
+	
+	<select id="selectList" resultType="com.spring.domain.OrderSheetVO">
+		select m.no, m.name member_name, c.name client_name, m.day, m.out_day, m.status
+		from(select o.no, m.name, o.client_no, o.day, o.out_day, o.status
+		     from order_sheet o inner join member m
+		     on o.member_no = m.no) m inner join client c
+		on m.client_no = c.no
+		order by no desc
+	</select>
+	
+	<select id="selectListByPaging" resultType="com.spring.domain.OrderSheetVO">
+		select * 
+		from(
+			select m.no, m.name member_name, c.name client_name, m.day, m.out_day, m.status
+			from(select o.no, m.name, o.client_no, o.day, o.out_day, o.status
+			     from order_sheet o inner join member m
+			     on o.member_no = m.no) m inner join client c
+			on m.client_no = c.no
+		) where no > 0
+
+		<if test="whatColumn=='member' and keyword != ''"> and member_name like '%' ||  #{keyword} || '%' </if>
+		<if test="whatColumn=='client' and keyword != ''"> and client_name like '%' ||  #{keyword} || '%' </if>
+		<!-- <if test="whatColumn=='status' and keyword != ''"> and ststus = #{keyword}</if> -->
+		
+		<if test="whatColumn=='item' and keyword != ''"> 
+			and no in 
+			<foreach collection="main_nos" item="arr" open='(' close=")" separator=",">
+			#{arr}
+			</foreach>
+		</if>
+		order by no desc offset #{beginRow} rows fetch next #{pageSize} rows only
+	</select>
+	
+	<select id="selectTotalCount" resultType="int">
+		select count(*)
+        from(
+            select * 
+            from(
+                select m.no, m.name member_name, c.name client_name, m.day, m.out_day, m.status
+                from(select o.no, m.name, o.client_no, o.day, o.out_day, o.status
+                     from order_sheet o inner join member m
+                     on o.member_no = m.no) m inner join client c
+                on m.client_no = c.no
+            ) where no > 0
+            
+            <if test="whatColumn=='member' and keyword != ''"> and member_name like '%' ||  #{keyword} || '%' </if>
+            <if test="whatColumn=='client' and keyword != ''"> and client_name like '%' ||  #{keyword} || '%' </if>
+            <!-- <if test="whatColumn=='status' and keyword != ''"> and ststus = #{keyword}</if> -->
+        )
+	</select>
+	
+	<select id="selectSubAllByMainNo" resultType="com.spring.domain.OrderSheetDetailVO">
+		select od.no, od.order_no, od.amount, it.code item_code, it.name item_name, it.in_price, it.out_price  
+		from(select *
+    		 from order_detail
+    		 where order_no = #{mainNo}) od inner join item it
+		on od.item_no = it.no
+	</select>
+	
+	<select id="selectAllMainNoByItemName" resultType="int">
+		select distinct(order_no)
+		from(select od.no, od.order_no, od.amount, it.code item_code, it.name item_name, it.in_price, it.out_price  
+	    	 from order_detail od inner join item it
+	    	 on od.item_no = it.no) 
+		where item_name like '%' ||  #{keyword} || '%'
+	</select>
+</mapper>
