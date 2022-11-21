@@ -11,7 +11,7 @@
 					aria-label="Close"></button>
 			</div>
 			<!-- form start -->
-			<form class="needs-validation" novalidate id="modal1form" action="/insert.ps" method="post">
+			<form class="needs-validation" novalidate="" id="modal1form" action="/insert.ps" method="post">
 				<div class="modal-body">
 						<!-- 컨트롤러로 넘기는 정보 -->
 						<!-- out_day -->
@@ -32,14 +32,14 @@
 							</div>
 						</div>
 						
-						<div class="row">		
+						<div class="row" >		
 							<div class="col-sm-3">		
 								<label for="userFullname" class="form-label">부서명</label>
 								<input type="text" id="member_dep_name" class="form-control" readonly >
 							</div>
-							<div class="col-sm-3">
+							<div class="col-sm-3 has-validation">
 								<label for="userFullname" class="form-label">담당자명</label>
-								<input type="text" id="member_name" class="form-control" readonly required>
+								<input type="text" id="member_name" class="form-control" readonly required="">
 							</div>
 							<div class="col-sm-4">	
 								<label for="userFullname" class="form-label">&nbsp;&nbsp;</label>
@@ -58,7 +58,7 @@
 							</div>
 							<div class="col-sm-4">	
 								<label for="userFullname" class="form-label">&nbsp;&nbsp;</label>
-								<button type="button" class="btn btn-primary" style="display:block" data-bs-target="#secondModal" data-bs-toggle="modal" data-bs-dismiss="modal" id="choiceClientBtn">거래처 선택</button>	
+								<button type="submit" class="btn btn-primary" style="display:block" data-bs-target="#secondModal" data-bs-toggle="modal" data-bs-dismiss="modal" id="choiceClientBtn">거래처 선택</button>	
 							</div>
 						</div>	
 						
@@ -114,6 +114,10 @@
 				</div>
 			</form>
 			<!-- form end -->
+			
+			
+			
+			
 		</div>
 	</div>
 </div>
