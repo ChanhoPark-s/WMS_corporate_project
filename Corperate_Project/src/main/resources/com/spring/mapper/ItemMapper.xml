@@ -86,4 +86,10 @@
 		<if test="cri.whatColumn=='client_name' and cri.keyword != null"> and client_name like '%' ||  #{cri.keyword} || '%' </if>
 		
 	</select>
+	<delete id="selectDelete">
+		delete item where no in 
+		<foreach collection="array" item="arr" open='(' close=")" separator=",">
+		#{arr}
+		</foreach>
+	</delete>
 </mapper>

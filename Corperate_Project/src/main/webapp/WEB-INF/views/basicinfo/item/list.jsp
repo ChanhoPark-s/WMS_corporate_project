@@ -1,12 +1,32 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+
 <style>
-  table th {
-    text-align: center;
-  }
-  table td {
-    text-align: center;
-  }  
+table th {
+	text-align: center;
+}
+
+table td {
+	text-align: center;
+}
+
+/* 한줄 색 칠하는 기능 */
+#table1 tbody tr:hover {
+	background-color: #EAEAEA;
+}
+
+/* 검색바 */
+.btn_search {
+	cursor: pointer;
+	position: absolute;
+	right: 7px;
+	top: 50%;
+	transform: translatey(-50%);
+}
+
+#search {
+	position: relative;
+}
 </style>
 
 
@@ -27,6 +47,7 @@
                   </svg>
                   상품 등록
 				</button>
+				<button class="btn btn-light d-inline-flex align-items-center gap-1" onclick="selectDelete()"><i class="fa-regular fa-trash-can fa-1.5x"></i></button>
 			</div>
 			<form action="/basicinfo/item/list" method="get"> 
 			<table>
@@ -45,9 +66,15 @@
 			</form>
 		</div>
 		<div class="table-responsive my-1">
+			 <form name="f" action="/basicinfo/item/selectDelete" method="post">
 			<table class="table align-middle">
 				<thead>
 					<tr>
+					<th scope="col">
+							<div>
+								<input class="form-check-input" type="checkbox" id="allselect" name="allselect" onclick="allSelect()">
+							</div>
+						</th>
 						<th scope="col">번호</th>
 						<th scope="col">이미지</th>
 						<th scope="col">품목코드</th>
@@ -61,6 +88,15 @@
 				<tbody>
 					<c:forEach var="item" items="${lists}">
 					<tr>
+					<td>
+							<div>
+								<input class="form-check-input" type="checkbox" id="rowcheck" name="rowcheck" value="${item.no }">
+								<!--선택 삭제할때도 넘어가게하기 위해  -->
+								<input type="hidden" name="keyword" id="keyword3" >
+								<input type="hidden" name="whatColumn" id="whatColumn2">
+             					<input type="hidden" name="pageNumber" id="pageNumber2">
+							</div>
+						</td>
 						<td>${item.no} </td>
 						<td> <!-- 이미지 -->
 						<img src="<%=request.getContextPath()%>/resources/assets/img/item/${item.image}" width="70" height="70" loading="lazy">
@@ -95,7 +131,8 @@
 					</tr>
 				</c:forEach>
 			</tbody>
-			</table> 
+			</table>
+			</form> 
 		</div>
 		<div align="center">
 			${pageInfo.pagingHtml}
@@ -261,7 +298,7 @@
 		
 	    function insertBtn(){
 		clearModal();
-		
+		document.getElementById('no').value='123';
 		$(".modal").find("#modal-title").text("등록하기");
 		$(".modal").find("#modaladdBtn").show();
 		$(".modal").find('#modaladdBtn').text("등록");
@@ -281,7 +318,7 @@
 				$('#code').attr("class","form-control is-invalid")
 				$('#code').focus();
 				alert("품목코드가 중복되었습니다.")
-			}	
+			}	 
 			else if($("#client_code").val() ==''){
 				$('#client_code').attr("class","form-control is-invalid");
 			    $("#client_code").focus();
@@ -411,6 +448,40 @@
 		
 		function readonly(x){
 			$("#code" ).prop('readonly', x);
+		}
+		
+		function allSelect(){
+			var ac = document.f.allselect;
+			var rc = document.f.rowcheck;
+			if (ac.checked) {
+					for (var i = 0; i < rc.length; i++) {
+						rc[i].checked = true;
+					}
+				}
+			else {
+					for (var i = 0; i < rc.length; i++) {
+						rc[i].checked = false;
+					}
+				}
+			}
+		function selectDelete(){
+			
+			x=false;
+			var rc = document.f.rowcheck;
+			
+			for(var i=0;i<rc.length;i++){
+				if(rc[i].checked==true){
+					x=true;
+				}
+			}
+			if(!x){
+				alert("체크박스를 선택하세요");
+				return;
+			}
+			if(confirm("삭제하시겠습니까?")){
+				f.submit();
+			}
+
 		}
 
 		<!-- 거래처를 선택하는 두번째 모달처리 -->
