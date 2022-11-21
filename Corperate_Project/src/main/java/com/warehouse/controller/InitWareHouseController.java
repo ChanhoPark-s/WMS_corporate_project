@@ -26,6 +26,7 @@ import com.spring.domain.Init_Input_WareHouseVO;
 import com.spring.domain.ItemVO;
 import com.spring.domain.RackVO;
 import com.spring.domain.SearchVO;
+import com.spring.domain.WareHouseDetailVO;
 import com.spring.domain.WareHouseVO;
 import com.spring.paging.Client_Paging;
 import com.spring.service.AreaService;
@@ -33,6 +34,7 @@ import com.spring.service.CellService;
 import com.spring.service.Init_Input_WareHouseService;
 import com.spring.service.ItemService;
 import com.spring.service.RackService;
+import com.spring.service.WareHouseDetailService;
 import com.spring.service.WareHouseService;
 
 
@@ -49,6 +51,9 @@ public class InitWareHouseController {
 	private WareHouseService warehouseservice;
 	
 	@Autowired
+	private WareHouseDetailService warehousedetailservice;
+	
+	@Autowired
 	private AreaService areaservice;
 	
 	@Autowired
@@ -63,6 +68,10 @@ public class InitWareHouseController {
 	@GetMapping(value="/insert")
 	public void insert(Model model) {	
 		
+		model.addAttribute("warehouse", warehouseservice.list());
+		model.addAttribute("area", areaservice.list());
+		model.addAttribute("rack", rackservice.list());
+		model.addAttribute("cell", cellservice.list());
 	}
 	
 	@ResponseBody
@@ -113,6 +122,13 @@ public class InitWareHouseController {
 	public String getc(Model model, @PathVariable(value="no") int no) {
 		List<CellVO> aLists = cellservice.getListByRackNo(no);
 		return new Gson().toJson(aLists);
+	}
+	
+	// 창고 선택
+	@ResponseBody
+	@PostMapping(value="/ware/get", produces = "application/json; charset=utf-8")
+	public String getWare(Model model, @RequestBody WareHouseDetailVO vo) {
+		return new Gson().toJson(warehousedetailservice.getWare(vo));
 	}
 	
 	@ResponseBody

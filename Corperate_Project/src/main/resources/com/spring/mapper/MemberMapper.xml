@@ -110,4 +110,10 @@
 		<if test="cri.whatColumn=='rank' and cri.keyword != null"> and rank_name like '%' ||  #{cri.keyword} || '%' </if>	
 		<if test="cri.whatColumn=='name' and cri.keyword != null"> and name like '%' ||  #{cri.keyword} || '%' </if>
 	</select>
+	
+	
+	
+	<select id="example" parameterType="com.spring.domain.MemberVO" statementType="CALLABLE">
+		{call song (#{no, mode=IN, jdbcType=INTEGER}, #{no, mode=OUT, jdbcType=INTEGER})}
+	</select>
 </mapper>
