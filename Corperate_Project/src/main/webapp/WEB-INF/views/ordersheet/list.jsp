@@ -145,9 +145,9 @@ table td {
 									</button>
 									
 									<button type="button"
-										class="btn btn-light d-flex text-danger delete"
-										data-bs-toggle="modal" data-bs-target="#deleteUserModal"
-										data-no="${member.no }">
+										class="btn btn-light d-flex text-danger deleteOneBtn"
+										data-bs-toggle="modal" data-bs-target="#deleteCheckModal"
+										data-no="${vo.no }">
 										<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
 											fill="none" viewBox="0 0 24 24" stroke="currentColor"
 											aria-hidden="true">
@@ -227,10 +227,16 @@ table td {
 					aria-label="Close"></button>
 			</div>
 			<!-- form start -->
-			<form class="needs-validation" novalidate id="firstModalForm" action="/ordersheet/add" method="post">
+			<form class="needs-validation" novalidate id="firstModalForm" action="" method="post">
+				<!-- 같은 페이지로 돌아가기 위해 넘겨주는 데이터 -->
+				<input type="hidden" name="pageNumber" value="${searchvo.pageNumber}" class="form-control" readonly>
+				<input type="hidden" name="whatColumn" value="${searchvo.whatColumn}" class="form-control" readonly>
+				<input type="hidden" name="keyword" value="${searchvo.keyword}" class="form-control" readonly>
+				
 				<div class="modal-body">
 						<!-- 컨트롤러로 넘기는 정보 -->
 						<!-- out_day -->
+						<input type="hidden" name="no" class="form-control" value="0" readonly>
 						<input type="hidden" name="member_no" class="form-control" readonly>
 						<input type="hidden" name="client_no" class="form-control" readonly>
 						<!-- 품목번호 및 개수 -->
@@ -371,6 +377,35 @@ table td {
 	</div>
 </div>
 
+<!-- 삭제확인 모달 -->
+<div class="modal fade" id="deleteCheckModal" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header border-0">
+				<h5 id="modal-title">삭제여부 재확인</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<!-- form start -->
+			<form class="needs-validation" novalidate id="deleteCheckModalForm" action="/ordersheet/delete/one" method="post">
+				<div class="modal-body">
+						<input type="hidden" name="no" class="form-control" readonly>
+						정말로 삭제 하시겠습니까?
+						
+						<!-- 같은 페이지로 돌아가기 위해 넘겨주는 데이터 -->
+						<input type="hidden" name="pageNumber" value="${searchvo.pageNumber}" class="form-control" readonly>
+						<input type="hidden" name="whatColumn" value="${searchvo.whatColumn}" class="form-control" readonly>
+						<input type="hidden" name="keyword" value="${searchvo.keyword}" class="form-control" readonly>
+				</div>
+				<div class="modal-footer border-0">
+					<button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
+					<button type="button" id="modalDeleteBtn"class="btn btn-primary px-5">삭제</button>		
+				</div>
+			</form>
+			<!-- form end -->
+		</div>
+	</div>
+</div>
 
 <!-- bottom.jsp -->
 <%@include file="../common/bottom.jsp"%>
@@ -392,11 +427,14 @@ table td {
 	var amount = 10;
 	var searchWhatColumn = "";
 	var searchKeyword = "";
-	var clickedLocation; 		// 두번째 모달에서 품목 선택 후 데이터를 옮겨올 곳을 기억하기 위한 변수 
+	var clickedLocation; 		// 두번째 모달에서 품목 선택 후 데이터를 옮겨올 곳을 기억하기 위한 변수
+	var clickedBtnInMain = "";	// add or edit
 
 	/* 첫번째 모달 이 뜰 때 모달 초기화 */
 	$("#addOrderSheet").on("click", function(e){
 
+		clickedBtnInMain = "add";
+		
 		// 납기일자 초기화
 		$("input[name='out_day']").val("");
 		
@@ -799,16 +837,26 @@ table td {
 		
 		//유효성 검사 해야하는 부분
 		
+		// action 수정
+		if(clickedBtnInMain == "add"){
+			$("#firstModalForm").attr("action", "/ordersheet/add");
+		}
+		else if(clickedBtnInMain == "edit"){
+			$("#firstModalForm").attr("action", "/ordersheet/update");
+		}
 		
 		//form 전송전에 빈줄 삭제
 		var allItemCodeInputs = $("#modalItemDetail").find(".choiceItemBtn");
 		var currentRowCount = allItemCodeInputs.length; 
 		
-		if(allItemCodeInputs[currentRowCount-1].value == ""){
-			$("#modalItemDetail div[class=row]:last-child").remove();
+		console.log("currentRowCount: " + currentRowCount);
+		
+		for(var i = currentRowCount-1; i >= 0; i--){
+			console.log(allItemCodeInputs[i].value);
+			if(allItemCodeInputs[i].value == ""){
+				$("#modalItemDetail div[class=row]").eq(i).remove();
+			}	
 		}
-		
-		
 		
 		$("#firstModalForm").submit();
 	});
@@ -853,14 +901,17 @@ table td {
 						
 						$("#table2 tbody").append(str);
 					}
-	 				
 	 			}).fail(function(xhr, status, err){
 	 					alert("데이터 조회실패");
 	 			});
 		});
 		
 		/* 수정버튼이 눌렸을 때 처리 */
-		$(".editBtn").on("click", function(){
+		$(".editBtn").on("click", function(e){
+			 e.stopPropagation(); // 부모에게 이벤트가 상위 전파 안되도록 막음(버튼을 누르는데 부모인 tr에 이벤트를 걸어뒀더니 중복으로 실행되어 이걸 사용)		
+			
+			 clickedBtnInMain = "edit";
+			  
 			// 납기일자 초기화
 			$("input[name='out_day']").val("");
 			
@@ -880,14 +931,19 @@ table td {
 			
 			$("#modal-title").text("수주서 수정");
 			
+			$("#modalRegisterBtn").text("수정");
+			
 			var mainNo = $(this).parent().parent().parent().children("td").eq(0).text();
 			
-			//1. mainNo를 가지고 OrderSheetVO 1줄의 레코드를 가져온다.
+			//수정 모달의 상단을 채워넣는 코드
 			console.log("요청url : " + "/ordersheet/" + mainNo);
 			$.getJSON("/ordersheet/" + mainNo,  
 	 			function(obj){
 					console.log("obj: " + obj);
-							
+					
+					// 수주서 번호를 채워넣는 코드
+					$("input[name='no']").val(obj.no);
+					
 					// 납기일자 입력
 					$("input[name='out_day']").val(obj.out_day);
 					
@@ -905,20 +961,51 @@ table td {
 	 					alert("데이터 조회실패");
 	 			});
 			
-			/* console.log("요청url : " + "/basicinfo/member/" + mainNo);
-			$.getJSON("/basicinfo/member/" + mainNo,  
-	 			function(obj){
-					console.log("obj: " + obj);
-					alert(obj.name);					
-	 				
+			//수정 모달의 하단을 채워넣는 코드
+			console.log("요청url : " + "/ordersheet/orderdetail/" + mainNo);
+			$.getJSON("/ordersheet/orderdetail/" + mainNo,  
+	 			function(list){
+					console.log("list: " + list);
+										
+					for(var i = 0, len = list.length || 0; i < len; i++){
+						
+						addRowItemDetail();
+						
+						$("#modalItemDetail .row").eq(i).find("input").each(function(index){
+							
+							if(index == 0){
+								$(this).val(list[i].item_no);	
+							} else if(index == 1){
+								$(this).val(list[i].item_code);
+							} else if(index == 2){
+								$(this).val(list[i].item_name);
+							} else if(index == 3){
+								$(this).val(list[i].client_name);
+							}else if(index == 4){
+								$(this).val(list[i].amount);	
+							}
+						});
+					}
 	 			}).fail(function(xhr, status, err){
 	 					alert("데이터 조회실패");
-	 			}); */
+	 			});
 			
+		});
+		
+		/* 하나짜리 삭제버튼 눌렸을 때 처리 */
+		$(".deleteOneBtn").on("click", function(e){
+			 e.stopPropagation(); // 부모에게 이벤트가 상위 전파 안되도록 막음(버튼을 누르는데 부모인 tr에 이벤트를 걸어뒀더니 중복으로 실행되어 이걸 사용)		
+			 clickedBtnInMain = "delete_one";
+			 $("#deleteCheckModal input").eq(0).val($(this).data("no"));
+		});
+		
+		/* 삭제여부를 묻는 재확인 창에서 삭제 버튼을 재차 눌렀을 때 서버로 요청보내는 부분*/
+		$("#modalDeleteBtn").on("click", function(e){
+			if(clickedBtnInMain == "delete_one"){
+				$("#deleteCheckModalForm").attr("action", "/ordersheet/delete/one");
+			}
 			
-			//2. member_no로 1줄의 레코드를 요청한다.
-			
-			//3. client_no로 1줄의 레코드를 요청한다. 
+			$("#deleteCheckModalForm").submit();
 		});
 		
 	});

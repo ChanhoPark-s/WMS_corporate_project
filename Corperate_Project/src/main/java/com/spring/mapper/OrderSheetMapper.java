@@ -18,6 +18,9 @@ public interface OrderSheetMapper {
 			@Param("mainSheetNo") int mainSheetNo, 
 			@Param("itemNo") int itemNo, 
 			@Param("itemAmount") int itemAmount);
+	public int deleteOrderSheet(int no);
+	public int deleteOrderDetailSheet(int order_no);						// 상위 수주서 번호로 모든 하위 품목을 지우는 메소드
+	public int updateMainSheet(OrderSheetVO vo); 
 	
 	public List<OrderSheetVO> selectList(); 							    // 수주서를 페이징 없이 모든 레코드를 가져오는 메소드
 	public List<OrderSheetVO> selectListByPaging(Client_Paging pageInfo);	// 모든 레코드에서 검색 및 페이징 한 레코드를 가져오는 메소드
