@@ -7,38 +7,86 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.spring.domain.Input_WareHouseVO;
+import com.spring.domain.Input_WareHouse_DetailVO;
+import com.spring.domain.OrderSheetDetailVO;
+import com.spring.domain.SearchVO;
 import com.spring.mapper.Input_WareHouseMapper;
+import com.spring.mapper.Input_WareHouse_DetailMapper;
+import com.spring.paging.Client_Paging;
 
 @Service
 public class Input_WareHouseServiceImpl implements Input_WareHouseService{
 
 	@Autowired
 	private Input_WareHouseMapper mapper;
-	
+
+	@Autowired
+	private Input_WareHouse_DetailMapper detailMapper;
+
 	@Override
 	public List<Input_WareHouseVO> list() {
 		return mapper.selectAll();
 	}	
-	
+
 	@Override
 	public int insert(Input_WareHouseVO vo) {
-		if(mapper.insertMainSheet(vo) != 1) { 
-			return -1;
-		}
+		vo.setNo(mapper.selectNoFromDual());
+
+		mapper.insertMainSheet(vo);
 		ArrayList<Integer> noList = vo.getItem_no();
 		ArrayList<Integer> amountList = vo.getQTY();
-		
+
 		int len = noList.size();
 
 		for (int i = 0; i < len; i++) {
-			int mainSheetNo = vo.getNo();
-			int itemNo = noList.get(i);
-			int itemAmount = amountList.get(i);
-			
-			//if(mapper.insertDetailSheet(mainSheetNo, itemNo, itemAmount) != 1) {
-			//	return -1;
-			//}
+			Input_WareHouse_DetailVO detailVo = new Input_WareHouse_DetailVO();
+			String lot_code = detailMapper.getLotCode(noList.get(i));
+			System.out.println("lot_code"+lot_code);
+			detailVo.setItem_No(noList.get(i));
+			detailVo.setQty(amountList.get(i));
+			detailVo.setInput_WareHouse_No(vo.getNo());
+			detailVo.setPurchase_Sheet_Detail_No(i);
+			detailVo.setArrival_Date(vo.getInput_day());
+			detailVo.setWare_No(vo.getWare_no());
+			detailVo.setArea_No(vo.getArea_no());
+			detailVo.setRack_No(vo.getRack_no());
+			detailVo.setCell_No(vo.getCell_no());
+			detailVo.setLot_Code(lot_code);
+			detailVo.setStatus(0);
+			detailMapper.createLot(detailVo);
+			if(detailMapper.insert(detailVo) != 1) {
+				return -1;
+			}
 		}
 		return 1;
+	}
+
+	@Override
+	public int getTotalCount(SearchVO searchvo) {
+		return mapper.selectTotalCount(searchvo);
+	}
+
+	@Override
+	public List<Input_WareHouseVO> getListByPaging(Client_Paging pageInfo) {
+		// 메인 레코드 가져오기
+		List<Input_WareHouseVO> list = mapper.selectListByPaging(pageInfo);
+
+		// 각 메인 레코드에 대해 서브 상품들 이름 묶어서 ㅇㅇ외 N개 라고 출력해주기 위한 과정
+		for (Input_WareHouseVO vo : list) {
+			int mainNo = vo.getNo();
+			List<Input_WareHouse_DetailVO> subList = detailMapper.selectSubAllByMainNo(mainNo); // 수주서에 딸린 상세 품목들
+
+			// OO 외 N개 이름 만들어 넣어주는 코드
+			if (subList.size() == 1) {
+				vo.setTemp_item_name(subList.get(0).getItem_name());
+			} else if (subList.size() > 1) {
+
+				int subListSize = subList.size();
+
+				vo.setTemp_item_name(subList.get(0).getItem_name() + " 외 " + (subListSize - 1) + "개");
+			}
+
+		}
+		return list;
 	}
 }

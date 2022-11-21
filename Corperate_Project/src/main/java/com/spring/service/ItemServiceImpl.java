@@ -119,4 +119,10 @@ public class ItemServiceImpl implements ItemService{
 	public int code_check(String code) { 
 		return mapper.code_check(code);
 	}
+	
+	@Override
+	public int getPrice(int no) {
+		return mapper.getPrice(no);
+	}
+	
 }
