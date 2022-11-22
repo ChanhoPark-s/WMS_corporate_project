@@ -127,12 +127,12 @@
               <div class="modal-body">
                 <form class="needs-validation" novalidate id="rankForm" method="post" action="">
                   <div class="mb-3">
-                    <label for="userFullname" class="form-label">직급코드</label>
+                    <label for="userFullname" class="form-label">*직급코드</label>
                     <input type="text" name="code" class="form-control" id="userFullname" required autofocus>
                     <div class="invalid-feedback">직급코드를 입력하세요.</div>
                   </div>
                   <div class="mb-3">
-                    <label for="userEmail" class="form-label">직급이름</label>
+                    <label for="userEmail" class="form-label">*직급이름</label>
                     <input type="text" name="name" class="form-control" id="userEmail" required>
                    	<!-- 수정 했을 때 넘기기 위해 -->
 	         		<input type="hidden" name="pageNumber" id="pageNumber" value="${pageInfo.pageNumber }">

@@ -130,12 +130,12 @@
 				<!-- form start -->
 				<form class="needs-validation" novalidate id="departmentForm" action="" method="post">
 					<div class="mb-3">
-						<label for="userFullname" class="form-label">부서코드</label> 
+						<label for="userFullname" class="form-label">*부서코드</label> 
 						<input type="text" name="code" id="code" class="form-control code_check" required autofocus>
 						<div class="invalid-feedback">부서코드를 입력하세요.</div>
 					</div>
 					<div class="mb-3">
-						<label for="userEmail" class="form-label">부서명</label> 
+						<label for="userEmail" class="form-label">*부서명</label> 
 						<input type="text" name="name" id="name" class="form-control" required>
 						<input type="hidden" name="pageNumber" id="pageNumber" value="${pageInfo.pageNumber }">
 						<div class="invalid-feedback">부서명을 입력하세요.</div>
