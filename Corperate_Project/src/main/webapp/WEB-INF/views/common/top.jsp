@@ -26,6 +26,10 @@
 	max-height: 350px;
 	max-width: 300px;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> branch 'gonie' of https://github.com/ChanhoPark-s/WMS_corporate_project.git
 a {
     text-decoration: none;
 }
@@ -50,10 +54,12 @@ a {
     border-radius: 10px;
     color: white;
 }
+
 .ch1{
 flex-direction:column;
 margin-top: 5px;
 }
+
 .wrap .chat .textbox::before {
     position: absolute;
     display: block;
@@ -142,9 +148,9 @@ margin-top: 5px;
   <script src="https://kit.fontawesome.com/6363f16fdc.js" crossorigin="anonymous"></script>
   <!-- jQuery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-	<!-- 소켓 라이브러리 추가해주는 코드 -->
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.5/sockjs.min.js"></script>
-	<script type="text/javascript">
+  <!-- 소켓 라이브러리 추가해주는 코드 -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.5/sockjs.min.js"></script>
+  <script type="text/javascript">
 	var msgbtn;
 	
 	$(function(){
@@ -239,6 +245,7 @@ margin-top: 5px;
 			$('#message').val('')
 		}
 </script>
+
 </head>
 <body class="preloading">
 
@@ -314,7 +321,6 @@ margin-top: 5px;
             <div class="ms-5 collapse" id="order-contract-collapse" data-bs-parent="#mainMenu">
               <ul class="navbar-nav">
                 <li class="nav-item"><a class="nav-link" href="/ordersheet/list" >수주정보</a></li>
-                <li class="nav-item"><a class="nav-link" href="index.html" >수주별 처리현황</a></li>
               </ul>
             </div>
           </li>
