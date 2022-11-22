@@ -30,6 +30,7 @@
                     <th scope="col">품목</th>
                     <th scope="col">수량</th>
                     <th scope="col">출고 창고</th>
+                    <th scope="col"></th>
                     <th scope="col">입고 창고</th>
                     <th scope="col">이동날짜</th>
                   </tr>
@@ -40,8 +41,13 @@
                 			<td>${item.no }</td>
                 			<td><span class="badge bg-dark">${item.lot_code }</span></td>
                 			<td>${item.item_name }</td>
-                			<td>${item.qty }</td>
+                			<td><fmt:formatNumber value="${item.qty }" /> 개</td>
                 			<td>${item.ware1 }</td>
+                               <td scope="col">
+		                    	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+								  <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+								</svg>
+								</td>
                 			<td>${item.ware2 }</td>
                 			<td>${item.day }</td>
                 		</tr>
@@ -67,20 +73,20 @@
       <form class="needs-validation" novalidate name="modal1_form" id="itemmovementForm">
       <div class="d-flex flex-wrap gap-1">
 		<div class="col">		
-			<div class="row-sm-3">
+			<div class="row-sm-3 mb-3">
 				<label for="ware1" class="form-label">출고 창고</label>
 				<input type="text" name="ware1" class="form-control" required readonly>
 				<div class="invalid-feedback">출고 품목을 선택해 주세요.</div>
 			</div>
-			<div class="row-sm-3">
+			<div class="row-sm-3 mb-3">
 				<label for="area1" class="form-label">출고 구역</label>
 				<input type="text" name="area1" class="form-control" readonly="">
 			</div>
-			<div class="row-sm-3">
+			<div class="row-sm-3 mb-3">
 				<label for="rack1" class="form-label">출고 렉</label>
 				<input type="text" name="rack1" class="form-control" readonly="">
 			</div>
-			<div class="row-sm-3">
+			<div class="row-sm-3 mb-3">
 				<label for="cell1" class="form-label">출고 셀</label>
 				<input type="text" name="cell1" class="form-control" readonly="">
 			</div>
@@ -96,20 +102,20 @@
 			</div>
 		</div>
 		<div class="col">		
-			<div class="row-sm-3">
+			<div class="row-sm-3 mb-3">
 				<label for="ware2" class="form-label">입고 창고</label>
 				<input type="text" name="ware2" class="form-control" readonly required>
 				<div class="invalid-feedback">입고 창고를 선택해 주세요.</div>
 			</div>
-			<div class="row-sm-3">
+			<div class="row-sm-3 mb-3">
 				<label for="area2" class="form-label">입고 구역</label>
 				<input type="text" name="area2" class="form-control" readonly>
 			</div>
-			<div class="row-sm-3">
+			<div class="row-sm-3 mb-3">
 				<label for="rack2" class="form-label">입고 렉</label>
 				<input type="text" name="rack2" class="form-control" readonly>
 			</div>
-			<div class="row-sm-3">
+			<div class="row-sm-3 mb-3">
 				<label for="cell2" class="form-label">입고 셀</label>
 				<input type="text" name="cell2" class="form-control" readonly>
 			</div>
@@ -418,7 +424,7 @@
 						 tr.append(td4);
 						 
 						 const td5 = document.createElement('td')
-						 td5.innerHTML = transformNumberDot(item.amount) + "개";
+						 td5.innerHTML = transformNumberDot(item.amount) + " 개";
 						 tr.append(td5);
 						 
 						 const td6 = document.createElement('td')
