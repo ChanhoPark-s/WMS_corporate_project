@@ -21,18 +21,6 @@ public class RackServiceImpl implements RackService{
 	}
 
 	@Override
-	public int modify(int no) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int delete(int no) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public List<RackVO> getListByAreaNo(int no) {
 		return mapper.getListByAreaNo(no);
 	}
