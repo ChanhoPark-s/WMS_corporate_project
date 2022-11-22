@@ -15,7 +15,7 @@
 				<div class="modal-body">
 						<!-- 컨트롤러로 넘기는 정보 -->
 						<!-- out_day -->
-						<input type="hidden" name="order_no" class="form-control" readonly>
+						<!-- <input type="hidden" name="order_no" class="form-control" readonly> -->
 						<input type="hidden" name="member_no" class="form-control" readonly>
 						<input type="hidden" name="client_no" class="form-control" readonly>
 						<!-- 품목번호 및 개수 -->
@@ -68,7 +68,7 @@
 						<div id="modalItemDetail">
 							<div class="row">		
 								<input type="hidden" name="item_no" class="form-control" readonly>
-								<input type="hidden" name="detail_no" class="form-control" readonly>
+								<!-- <input type="hidden" name="detail_no" class="form-control" readonly> -->
 							
 								<div class="col-sm-2">		
 									<label for="userFullname" class="form-label">품목코드</label>
