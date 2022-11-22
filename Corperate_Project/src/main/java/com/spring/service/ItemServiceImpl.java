@@ -115,14 +115,19 @@ public class ItemServiceImpl implements ItemService{
 	public int getTotalCount(SearchVO searchvo) { 
 		return mapper.getTotalCount(searchvo);
 	}
+	
 	@Override
 	public int code_check(String code) { 
 		return mapper.code_check(code);
 	}
 	
 	@Override
+	public int selectDelete(String[] parameterValues) {
+		return mapper.selectDelete(parameterValues);
+	}
+	
+	@Override
 	public int getPrice(int no) {
 		return mapper.getPrice(no);
 	}
-	
 }

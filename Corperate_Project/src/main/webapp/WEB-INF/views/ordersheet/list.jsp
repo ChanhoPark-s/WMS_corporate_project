@@ -430,7 +430,7 @@ table td {
 <script type="text/javascript">
 	/* 왼쪽 카테고리창이 해당화면에 맞게 펼쳐지게 하는 코드 */
 	$(function(){ 
-		document.getElementById('ordersheet').click();
+		document.getElementById('basicinfo').click();
 	});
 </script>
 

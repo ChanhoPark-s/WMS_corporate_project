@@ -1,8 +1,9 @@
 package com.sell.controller;
 
 
-import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,13 +15,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.spring.domain.ItemVO;
+import com.spring.domain.SearchVO;
 import com.spring.domain.SellDetailVO;
 import com.spring.domain.SellVO;
+import com.spring.paging.Client_Paging;
+import com.spring.service.ItemService;
 import com.spring.service.SellDetailService;
 import com.spring.service.SellService;
 
-import lombok.Data;
-import lombok.Getter;
 
 @Controller
 @RequestMapping("/sell/origin/*")
@@ -33,6 +36,9 @@ public class SellController {
 	
 	@Autowired(required = false)
 	private SellDetailService sdservice;
+	
+	@Autowired(required = false)
+	private ItemService iservice;
 	
 	@GetMapping(value="/list")
 	public void list(Model model) {				
@@ -93,5 +99,16 @@ public class SellController {
 		
 		return "redirect:/sell/origin/list";
 	}
-
+	 
+	@GetMapping(value="/sellstatus")
+	public void sellstatus(SearchVO searchvo,HttpServletRequest request, Model model) {
+		int totalCount = sdservice.getTotalCount(searchvo); 
+		Client_Paging pageInfo = new Client_Paging(searchvo.getPageNumber(),"10",totalCount,"redirect:/sell/origin/sellstatus",searchvo.getWhatColumn(),searchvo.getKeyword(),0);
+		List<SellDetailVO> dlists = sdservice.selectAll(pageInfo);
+		
+		model.addAttribute("itemlist", iservice.selectAll(pageInfo));
+		model.addAttribute("dlists", sdservice.selectAll(pageInfo));
+		model.addAttribute("pageInfo",pageInfo);
+		model.addAttribute("searchvo",searchvo);
+	}
 }

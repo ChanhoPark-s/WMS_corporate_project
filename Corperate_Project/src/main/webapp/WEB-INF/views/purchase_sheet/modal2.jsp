@@ -2,9 +2,9 @@
     pageEncoding="UTF-8"%>
 
 <!-- 거래처를 선택하는 두번째 모달 -->
-<div class="modal fade" id="secondModal" tabindex="-2">
-	<div class="modal-dialog modal-dialog-scrollable modal2">
-		<div class="modal-content">
+<div class="modal fade" id="secondModal" tabindex="-2" >
+	<div class="modal-dialog modal-dialog-scrollable modal2" >
+		<div class="modal-content" style="width: 800px; right: 200px">
 			<div class="modal-header border-0">
 				<h5 id="second-modal-title">거래처 입력</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
@@ -70,7 +70,7 @@
 	$("#addOrderSheet").on("click", function(e){
 		
 		//모달크기초기화
-		$('.modal-xl').removeClass('.modal-xl');
+		//$('.modal-xl').removeClass('.modal-xl');
 		
 		//$(this).find('form')[0].reset();
 		
@@ -344,7 +344,7 @@
 				//toStringByFormatting(new Date(2021, 0, 1));
 				// 2021-01-01
 				
-				$('.modal2').attr('class','modal-xl');
+				//$('.modal2').attr('class','modal-xl');
 				
 				itemNo = new Array();
 				
@@ -371,7 +371,7 @@
 			}
 			
 			if(list.length == 0){
-				str = "<tr><td colspan='5' style='text-align:center'>검색결과가 없습니다</td></tr>";
+				str = "<tr><td colspan='7' style='text-align:center'>검색결과가 없습니다</td></tr>";
 			}
 			
 			$("#secondModalTbody").html(str);
@@ -538,9 +538,12 @@
 			
 			$.getJSON("/ordersheet/selectOrder/"+no,  
 		 			function(resdata){
-		 				console.log(resdata.order);
-		 				console.log(resdata.detail);
-		 				vo = resdata.order;
+		 				console.log("resdata.order"+resdata.order);
+		 				console.log("resdata.detailList"+resdata.detailList);
+		 				var vo = resdata.order;
+		 				
+		 				//주문서 삽입
+		 				$("input[name='order_no']").val(vo.no);
 		 				
 		 				//날짜 삽입
 		 				$("input[name='delivery_date']").val(vo.out_day);
@@ -556,26 +559,30 @@
 		 				$("#client_name").val(vo.client_name);
 		 				
 		 				//품목삽입
-		 				list = resdata.detail
-		 				for(item in list){
+		 				var orderDetail = resdata.detailList;
+		 				
+		 				
+		 				for(i=0; i<orderDetail.length; i++){
+		 					console.log(orderDetail[i]);
 		 					
 		 					var str = "<div class='row'>";
-		 					str += "<input type='hidden' name='item_no' class='form-control' value='" + item.itemNo + "' readonly>"; 
+		 					str += "<input type='hidden' name='item_no' class='form-control' value='" + orderDetail[i].itemNo + "' readonly>"; 
+		 					str += "<input type='hidden' name='detail_no' class='form-control' value='" + orderDetail[i].no + "' readonly>"; 
 		 					str += "<div class='col-sm-2'>";
 		 					str += "<label for='userFullname' class='form-label'>품목코드</label>";
-		 					str += "<input type='text' class='form-control' value='" + item.item_no + "' readonly>";
+		 					str += "<input type='text' class='form-control' value='" + orderDetail[i].item_no + "' readonly>";
 		 					str += "</div>";
 		 					str += "<div class='col-sm-2'>";
 		 					str += "<label for='userFullname' class='form-label'>품목명</label>";
-		 					str += "<input type='text' class='form-control' value='" + item.item_code + "' readonly>";
+		 					str += "<input type='text' class='form-control' value='" + orderDetail[i].item_code + "' readonly>";
 		 					str += "</div>";
 		 					str += "<div class='col-sm-2'>";
 		 					str += "<label for='userFullname' class='form-label'>취급처</label>";
-		 					str += "<input type='text' class='form-control' value='" + item.client_name + "' readonly>";
+		 					str += "<input type='text' class='form-control' value='" + orderDetail[i].client_name + "' readonly>";
 		 					str += "</div>";
 		 					str += "<div class='col-sm-2'>";
 		 					str += "<label for='userFullname' class='form-label'>구매단가</label>";
-		 					str += "<input type='text' class='form-control' readonly>";
+		 					str += "<input type='text' class='form-control' value='" + orderDetail[i].in_price + "' readonly>";
 		 					str += "</div>";
 		 					str += "<div class='col-sm-1'>";
 		 					str += "<label for='userFullname' class='form-label'>수량</label>";
@@ -596,7 +603,7 @@
 		 					str += "</div>";
 		 					str += "</div>";
 		 					
-		 					$("#modalItemDetail").append(str);
+		 					$("#modalItemDetail").prepend(str);
 		 				}
 		 				
 		 			}).fail(function(xhr, status, err){
@@ -680,6 +687,6 @@
 		
 		
 		
-		$("#firstModalForm").submit();
+		$("#modal1form").submit();
 	});
 </script>
