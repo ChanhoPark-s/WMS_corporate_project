@@ -10,10 +10,12 @@
 <style>
 table th {
 	text-align: center;
+	font-size: 14px;
 }
 
 table td {
 	text-align: center;
+	font-size: 14px;
 }
 
 /* 한줄 색 칠하는 기능 */
@@ -39,8 +41,8 @@ table td {
 <!-- 상단 -->
 <div class="card">
 	<div class="card-body">
-		<div class="d-flex gap-1 mb-4 flex-wrap">
-			<div class="d-flex gap-1 me-auto flex-wrap">
+		<div class="d-flex gap-1 mb-4 flex-wrap" style="height:38px">
+			<div class="d-flex gap-1 me-auto flex-wrap" style="height:38px">
 				<button
 					class="btn btn-primary d-inline-flex align-items-center gap-1"
 					data-bs-toggle="modal" data-bs-target="#addOrderSheetModal" id="addOrderSheet">
@@ -52,7 +54,7 @@ table td {
                   </svg>
 					수주서 추가
 				</button>
-				<button class="btn btn-primary d-inline-flex align-items-center gap-1" data-bs-toggle="modal" data-bs-target="#addUserModal">
+				<button class="btn btn-primary d-inline-flex align-items-center gap-1" id="deleteCheckModalBtn">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
 					  <path clip-rule="evenodd" d="m11,9l3,0a1,1 0 1 1 0,2l-3,0l-2,0l-3,0a1,1 0 1 1 0,-2l3,0l2,0z" clip-rule="evenodd"/>
 					</svg>
@@ -87,81 +89,92 @@ table td {
 			</div>
 		</div>
 		<div class="table-responsive my-1">
-			<table class="table align-middle" id="table1">
-				<thead>
-					<tr>
-						<th scope="col" style="display:none">수주번호</th>
-						<th scope="col">작성일자</th>
-						<th scope="col">담당자</th>
-						<th scope="col">수주처</th>
-						<th scope="col" nowrap>품목명</th>
-						<th scope="col">납기일자</th>
-						<th scope="col">주문금액합계</th>
-						<th scope="col" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="접수완료 - (발주중) - 판매완료">진행상태</th>
-						<th scope="col">기능</th>
-					</tr>
-				</thead>
-				<tbody>
-					
-					<c:forEach var="vo" items="${voList}">
+			<form name="deleteManyMainForm" action="/ordersheet/delete/many" method="post" id="deleteManyMainForm">
+				
+				<input type="hidden" name="pageNumber" value="${searchvo.pageNumber}" class="form-control" readonly>
+				<input type="hidden" name="whatColumn" value="${searchvo.whatColumn}" class="form-control" readonly>
+				<input type="hidden" name="keyword" value="${searchvo.keyword}" class="form-control" readonly>
+				
+				<table class="table align-middle" id="table1">
+					<thead>
 						<tr>
-							<td style="display:none">${vo.no}</td>
-							<td>
-								<fmt:parseDate value="${vo.day}" var="day" pattern="yyyy-MM-dd" />
-              					<fmt:formatDate value="${day}" pattern="yyyy-MM-dd" />
-              				</td>
-							<td>${vo.member_name}</td>
-							<td>${vo.client_name}</td>
-							<td>${vo.temp_item_name}</td>
-							<td>
-								<fmt:parseDate value="${vo.out_day}" var="out_day" pattern="yyyy-MM-dd" />
-	              				<fmt:formatDate value="${out_day}" pattern="yyyy-MM-dd" />
-              				</td>
-							<td><fmt:formatNumber pattern="###,###" value="${vo.total_price}" var="total_price"/>${total_price} 원</td>
-							<td>
-								<c:if test="${vo.status eq 0}">
-									<span class="badge bg-success">접수완료</span>
-								</c:if>
-								<c:if test="${vo.status eq 1}">
-									<span class="badge bg-success" style="background-color: #FFBB00 !important">발주중</span>
-								</c:if>
-								<c:if test="${vo.status eq 2}">
-									<span class="badge bg-light text-muted">판매완료</span>
-								</c:if>
-								<c:if test="${vo.status eq 3}">
-									<span class="badge bg-light text-muted">취소됨</span>
-								</c:if>
-							</td>
-							<td>
-								<div class="btn-group btn-group-sm" role="group">
-									<button type="button" class="btn btn-light d-flex">
-										<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
-											fill="none" viewBox="0 0 24 24" stroke="currentColor"
-											aria-hidden="true">
-	                            			<path stroke-linecap="round"
-												stroke-linejoin="round" stroke-width="2"
-												d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-	                          			</svg>
-									</button>
-									
-									<button type="button"
-										class="btn btn-light d-flex text-danger delete"
-										data-bs-toggle="modal" data-bs-target="#deleteUserModal"
-										data-no="${member.no }">
-										<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
-											fill="none" viewBox="0 0 24 24" stroke="currentColor"
-											aria-hidden="true">
-		                           			<path stroke-linecap="round"
-												stroke-linejoin="round" stroke-width="2"
-												d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-		                        		</svg>
-									</button>
-								</div>
-							</td>
+							<th scope="col" style="display:none">수주번호</th>
+							<th scope="col">
+		                      <div>
+		                        <input class="form-check-input" type="checkbox" name="allMainCheck" id="allMainCheck">
+		                      </div>
+	                    	</th>
+							<th scope="col">작성일자</th>
+							<th scope="col">담당자</th>
+							<th scope="col">수주처</th>
+							<th scope="col" nowrap>품목명</th>
+							<th scope="col">납기일자</th>
+							<th scope="col">주문금액합계</th>
+							<th scope="col" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="접수완료 - (발주중) - 판매완료">진행상태</th>
+							<th scope="col">기능</th>
 						</tr>
-					</c:forEach>
-				</tbody>
-			</table>
+					</thead>
+					<tbody>
+						<c:forEach var="vo" items="${voList}">
+							<tr>
+								<td style="display:none">${vo.no}</td>
+								<td>
+									<div><input class="form-check-input" type="checkbox" value="${vo.no}" name="checkedMain"></div>
+								</td>
+								<td>
+									<fmt:parseDate value="${vo.day}" var="day" pattern="yyyy-MM-dd" />
+	              					<fmt:formatDate value="${day}" pattern="yyyy-MM-dd" />
+	              				</td>
+								<td>${vo.member_name}</td>
+								<td>${vo.client_name}</td>
+								<td>${vo.temp_item_name}</td>
+								<td>
+									<fmt:parseDate value="${vo.out_day}" var="out_day" pattern="yyyy-MM-dd" />
+		              				<fmt:formatDate value="${out_day}" pattern="yyyy-MM-dd" />
+	              				</td>
+								<td><fmt:formatNumber pattern="###,###" value="${vo.total_price}" var="total_price"/>${total_price} 원</td>
+								<td>
+									<c:if test="${vo.status eq 0}">
+										<span class="badge bg-success">접수완료</span>
+									</c:if>
+									<c:if test="${vo.status eq 1}">
+										<span class="badge bg-success" style="background-color: #FFBB00 !important">발주중</span>
+									</c:if>
+									<c:if test="${vo.status eq 2}">
+										<span class="badge bg-light text-muted">판매완료</span>
+									</c:if>
+									<c:if test="${vo.status eq 3}">
+										<span class="badge bg-light text-muted">취소됨</span>
+									</c:if>
+								</td>
+								<td>
+									<div class="btn-group btn-group-sm" role="group">
+										<button type="button" class="btn btn-light d-flex editBtn" data-bs-toggle="modal" data-bs-target="#addOrderSheetModal">
+											<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
+												fill="none" viewBox="0 0 24 24" stroke="currentColor"
+												aria-hidden="true">
+		                            			<path stroke-linecap="round"
+													stroke-linejoin="round" stroke-width="2"
+													d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+		                          			</svg>
+										</button>
+										
+										<button type="button" class="btn btn-light d-flex text-danger deleteOneBtn" data-no="${vo.no }">
+											<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
+												fill="none" viewBox="0 0 24 24" stroke="currentColor"
+												aria-hidden="true">
+			                           			<path stroke-linecap="round"
+													stroke-linejoin="round" stroke-width="2"
+													d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+			                        		</svg>
+										</button>
+									</div>
+								</td>
+							</tr>
+						</c:forEach>
+					</tbody>
+				</table>
+			</form>
 		</div>
 		<nav aria-label="Page navigation borderless example">
 			${pageInfo.pagingHtml}
@@ -174,7 +187,7 @@ table td {
 <!-- 하단 -->
 <div class="card">
 	<div class="card-body">
-		<div class="d-flex gap-1 mb-4 flex-wrap">
+		<div class="d-flex gap-1 mb-4 flex-wrap" style="display:none !important">
 			<div class="d-flex gap-1 me-auto flex-wrap">
 				<button class="btn btn-primary d-inline-flex align-items-center gap-1" data-bs-toggle="modal" data-bs-target="#addUserModal">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -194,12 +207,13 @@ table td {
 			<table class="table align-middle" id="table2">
 				<thead>
 					<tr>
-						<th scope="col"><div><input class='form-check-input' type='checkbox' value=''></div></th>
 						<th scope="col" style="display:none">상세번호</th>
 						<th scope="col" style="display:none">수주서번호</th>
 						<th scope="col"></th>
+						<th scope="col" style="display:none">품목번호</th>
 						<th scope="col">품목코드</th>
 						<th scope="col">품목명</th>
+						<th scope="col">취급처</th>
 						<th scope="col">개수</th>
 						<th scope="col">단가</th>
 						<th scope="col">합계</th>
@@ -225,10 +239,16 @@ table td {
 					aria-label="Close"></button>
 			</div>
 			<!-- form start -->
-			<form class="needs-validation" novalidate id="firstModalForm" action="/ordersheet/add" method="post">
+			<form class="needs-validation" novalidate id="firstModalForm" action="" method="post">
+				<!-- 같은 페이지로 돌아가기 위해 넘겨주는 데이터 -->
+				<input type="hidden" name="pageNumber" value="${searchvo.pageNumber}" class="form-control" readonly>
+				<input type="hidden" name="whatColumn" value="${searchvo.whatColumn}" class="form-control" readonly>
+				<input type="hidden" name="keyword" value="${searchvo.keyword}" class="form-control" readonly>
+				
 				<div class="modal-body">
 						<!-- 컨트롤러로 넘기는 정보 -->
 						<!-- out_day -->
+						<input type="hidden" name="no" class="form-control" value="0" readonly>
 						<input type="hidden" name="member_no" class="form-control" readonly>
 						<input type="hidden" name="client_no" class="form-control" readonly>
 						<!-- 품목번호 및 개수 -->
@@ -238,8 +258,8 @@ table td {
 						<div class="row">		
 							<div class="col-sm-3">		
 								<label for="day" class="form-label">납기일자</label> 
-		                		<input type="date" name="out_day" class="form-control" required>
-		                		<div class="invalid-feedback">date is required.</div>
+		                		<input type="date" name="out_day" class="form-control" required onchange="calendarChangeHandler()">
+		                		<div class="invalid-feedback">납기일자를 입력해주세요</div>
 							</div>
 							<div class="col-sm-4">	
 								<label for="userFullname" class="form-label">&nbsp;&nbsp;</label>
@@ -250,6 +270,7 @@ table td {
 							<div class="col-sm-3">		
 								<label for="userFullname" class="form-label">부서명</label>
 								<input type="text" id="member_dep_name" class="form-control" readonly>
+								<div class="invalid-feedback">담당자를 입력해주세요</div>
 							</div>
 							<div class="col-sm-3">
 								<label for="userFullname" class="form-label">담당자명</label>
@@ -265,6 +286,7 @@ table td {
 							<div class="col-sm-3">		
 								<label for="userFullname" class="form-label">코드</label>
 								<input type="text" id="client_code" class="form-control" readonly>
+								<div class="invalid-feedback">거래처를 입력해주세요</div>
 							</div>
 							<div class="col-sm-3">		
 								<label for="userFullname" class="form-label">거래처명</label>
@@ -286,7 +308,7 @@ table td {
 								<div class="col-sm-3">		
 									<label for="userFullname" class="form-label">품목코드</label>
 									<input type="text" class="form-control choiceItemBtn" data-bs-target="#secondModal" data-bs-toggle="modal" data-bs-dismiss="modal" readonly>
-									
+									<div class="invalid-feedback">품목을 입력해주세요</div>
 								</div>
 								<div class="col-sm-3">		
 									<label for="userFullname" class="form-label">품목명</label>
@@ -299,6 +321,8 @@ table td {
 								<div class="col-sm-2">		
 									<label for="userFullname" class="form-label">수량</label>
 									<input type="text" name="amount" class="form-control">
+									<div class="invalid-feedback">수량을 입력해주세요</div>
+									
 								</div>
 								<div class="col-sm-2">	
 									<label for="userFullname" class="form-label">&nbsp;&nbsp;</label>
@@ -369,6 +393,36 @@ table td {
 	</div>
 </div>
 
+<!-- 삭제확인 모달 -->
+<div class="modal fade" id="deleteCheckModal" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header border-0">
+				<h5 id="modal-title">삭제여부 재확인</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<!-- form start -->
+			<form class="needs-validation" novalidate id="deleteCheckModalForm" action="/ordersheet/delete/one" method="post">
+				<div class="modal-body">
+						<input type="hidden" name="no" class="form-control" readonly>
+						정말로 삭제 하시겠습니까?
+						
+						<!-- 같은 페이지로 돌아가기 위해 넘겨주는 데이터 -->
+						<input type="hidden" name="pageNumber" value="${searchvo.pageNumber}" class="form-control" readonly>
+						<input type="hidden" name="whatColumn" value="${searchvo.whatColumn}" class="form-control" readonly>
+						<input type="hidden" name="keyword" value="${searchvo.keyword}" class="form-control" readonly>
+						
+				</div>
+				<div class="modal-footer border-0">
+					<button type="button" class="btn btn-light" data-bs-dismiss="modal" id="deleteCancleBtn">취소</button>
+					<button type="button" id="modalDeleteBtn"class="btn btn-primary px-5">삭제</button>		
+				</div>
+			</form>
+			<!-- form end -->
+		</div>
+	</div>
+</div>
 
 <!-- bottom.jsp -->
 <%@include file="../common/bottom.jsp"%>
@@ -376,7 +430,7 @@ table td {
 <script type="text/javascript">
 	/* 왼쪽 카테고리창이 해당화면에 맞게 펼쳐지게 하는 코드 */
 	$(function(){ 
-		document.getElementById('ordersheet').click();
+		document.getElementById('ordersheet').click(); 
 	});
 </script>
 
@@ -390,12 +444,13 @@ table td {
 	var amount = 10;
 	var searchWhatColumn = "";
 	var searchKeyword = "";
-	var clickedLocation; 		// 두번째 모달에서 품목 선택 후 데이터를 옮겨올 곳을 기억하기 위한 변수 
+	var clickedLocation; 		// 두번째 모달에서 품목 선택 후 데이터를 옮겨올 곳을 기억하기 위한 변수
+	var clickedBtnInMain = "";	// add or edit
 
 	/* 첫번째 모달 이 뜰 때 모달 초기화 */
 	$("#addOrderSheet").on("click", function(e){
-		
-		//$(this).find('form')[0].reset();
+
+		clickedBtnInMain = "add";
 		
 		// 납기일자 초기화
 		$("input[name='out_day']").val("");
@@ -413,6 +468,8 @@ table td {
 		// 품목 상세 정보 초기화
 		$("#modalItemDetail").empty();
 		addRowItemDetail();
+		
+		$("#modal-title").text("수주서 등록");
 	});
 	
 	/* 첫번째 모달에서 담당자 선택이 눌렸을 때 이동한 두번째 모달창에서 데이터를 요청하고 관련 화면을 그리는 부분 */
@@ -718,15 +775,23 @@ table td {
 			$("input[name='member_no']").val(memberNo);
 			$("#member_dep_name").val(memberDepName);
 			$("#member_name").val(memberName);
+			
+			// 유효성 유효처리 관련 코드
+			$("#member_dep_name").attr("class","form-control is-valid");
+			$("#member_name").attr("class","form-control is-valid");
 		}	
 		else if(secondModalName == "client"){
 			var clientNo = $('input[name=clientRadio]:checked').parent().next().text();
 			var clientCode = $('input[name=clientRadio]:checked').parent().next().next().text();
 			var clientName = $('input[name=clientRadio]:checked').parent().next().next().next().text();
-				
+			
 			$("input[name='client_no']").val(clientNo);
 			$("#client_code").val(clientCode);
-			$("#client_name").val(clientName);	
+			$("#client_name").val(clientName);
+			
+			// 유효성 유효처리 관련 코드
+			$("#client_code").attr("class","form-control is-valid");
+			$("#client_name").attr("class","form-control is-valid");
 		}
 		
 		else if(secondModalName == "item"){
@@ -746,6 +811,8 @@ table td {
 			clickedLocation.parent().next().next().find('input[type=text]').val(itemClientName);
 			
 			addRowItemDetail(); // 새로 입력받을 수 있게 아래 줄을 추가하는 함수
+			
+			clickedLocation.attr("class","form-control is-valid choiceItemBtn");
 		}
 	});
 	
@@ -757,6 +824,7 @@ table td {
 		str += "<div class='col-sm-3'>";
 		str += "<label for='userFullname' class='form-label'>품목코드</label>";
 		str += "<input type='text' class='form-control choiceItemBtn' data-bs-target='#secondModal' data-bs-toggle='modal' data-bs-dismiss='modal' readonly>";
+		str += "<div class='invalid-feedback'>품목을 입력해주세요</div>";
 		str += "</div>";
 		str += "<div class='col-sm-3'>";
 		str += "<label for='userFullname' class='form-label'>품목명</label>";
@@ -769,6 +837,7 @@ table td {
 		str += "<div class='col-sm-2'>";
 		str += "<label for='userFullname' class='form-label'>수량</label>";
 		str += "<input type='text' name='amount' class='form-control'>";
+		str += "<div class='invalid-feedback'>수량 입력요먕</div>"
 		str += "</div>";
 		str += "<div class='col-sm-2'>";
 		str += "<label for='userFullname' class='form-label'>&nbsp;&nbsp;</label>";
@@ -795,28 +864,69 @@ table td {
 	
 	$("#modalRegisterBtn").on("click", function(e){
 		
-		//유효성 검사 해야하는 부분
-		
+		// action 수정
+		if(clickedBtnInMain == "add"){
+			$("#firstModalForm").attr("action", "/ordersheet/add");
+		}
+		else if(clickedBtnInMain == "edit"){
+			$("#firstModalForm").attr("action", "/ordersheet/update");
+		}
 		
 		//form 전송전에 빈줄 삭제
 		var allItemCodeInputs = $("#modalItemDetail").find(".choiceItemBtn");
 		var currentRowCount = allItemCodeInputs.length; 
 		
-		if(allItemCodeInputs[currentRowCount-1].value == ""){
-			$("#modalItemDetail div[class=row]:last-child").remove();
+		console.log("currentRowCount: " + currentRowCount);
+		
+		for(var i = currentRowCount-1; i >= 0; i--){
+			console.log(allItemCodeInputs[i].value);
+			if(allItemCodeInputs[i].value == "" && i != 0){
+				$("#modalItemDetail div[class=row]").eq(i).remove();
+			}	
 		}
 		
+		//유효성 검사하는 부분
+		if($("input[name='out_day']").val() == ""){
+			$("input[name='out_day']").attr("class","form-control is-invalid");
+			//$("#client_code").focus();
+			return;
+	    }
 		
+		if($("#member_dep_name").val() == ""){
+	    	$("#member_dep_name").attr("class","form-control is-invalid");
+	    	$("#member_name").attr("class","form-control is-invalid");
+	    	return;
+	    }
 		
+		if($("#client_code").val() == ""){
+			$("#client_code").attr("class","form-control is-invalid");
+			$("#client_name").attr("class","form-control is-invalid");
+			return;
+		}
+		
+		//모든 요소를 돌아보고 처리해야함.
+		$("#modalItemDetail .row").eq(i).find("input").each(function(index){
+			if(index == 1 && $(this).val() == ""){
+				$(this).attr("class","form-control is-invalid choiceItemBtn");
+			}
+			return;
+		});
+		
+		if($("input[name='amount']").val() == ""){
+			$("input[name='amount']").attr("class","form-control is-invalid");	
+			return;
+		}
+		
+		//form submit
 		$("#firstModalForm").submit();
 	});
 </script>
 
-<!-- 리스트 화면에서 클릭시 아래 Detail 레코드들을 가져와 뿌려주는 코드 -->
+<!-- 메인화면 상단 동작관련 코드 -->
 <script type="text/javascript">
 	$(function(){
 		
-		/* 비동기로 하단의 상세품목을 불러와 출력해주는 부분 */
+		/* 리스트 화면에서 클릭시 아래 Detail 레코드들을 가져와 뿌려주는 코드 */
 		$("#table1 tbody tr").on("click", function(){
 			// 클릭된 수주서의 no 번호
 			var clickedMainNo = $(this).children("td")[0].innerHTML;
@@ -834,29 +944,187 @@ table td {
 						var str = "";
 						
 						str += "<tr>";
-						str += "<td><div><input class='form-check-input' type='checkbox' value=''></div></td>";
+						/* str += "<td><div><input class='form-check-input' type='checkbox' value=''></div></td>"; */
 						str += "<td style='display:none'>" + list[i].no + "</td>";
 						str += "<td style='display:none'>" + list[i].order_no + "</td>";
 						
 						str += "<td><i class='fa-solid fa-gift'></i></td>";
 						
+						str += "<td style='display:none'>" + list[i].item_no + "</td>";
 						str += "<td>" + list[i].item_code + "</td>";
 						str += "<td>" + list[i].item_name + "</td>";
-						str += "<td>" + list[i].amount + "</td>";
+						str += "<td>" + list[i].client_name + "</td>";
+						str += "<td>" + list[i].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " 개</td>";
 						str += "<td>" + list[i].out_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " 원</td>";
 						str += "<td>" + (list[i].amount * list[i].out_price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " 원</td>";
 						str += "</tr>";
 						
 						$("#table2 tbody").append(str);
 					}
-	 				
+	 			}).fail(function(xhr, status, err){
+	 					alert("데이터 조회실패");
+	 			});
+		});
+		
+		/* 수정버튼이 눌렸을 때 처리 */
+		$(".editBtn").on("click", function(e){
+			 e.stopPropagation(); // 부모에게 이벤트가 상위 전파 안되도록 막음(버튼을 누르는데 부모인 tr에 이벤트를 걸어뒀더니 중복으로 실행되어 이걸 사용)		
+			
+			 clickedBtnInMain = "edit";
+			  
+			// 납기일자 초기화
+			$("input[name='out_day']").val("");
+			
+			// 담당자 정보 초기화
+			$("input[name='member_no']").val("");
+			$("#member_dep_name").val("");
+			$("#member_name").val("");
+			
+			// 거래처 정보 초기화
+			$("input[name='client_no']").val("");
+			$("#client_code").val("");
+			$("#client_name").val("");
+			
+			// 품목 상세 정보 초기화
+			$("#modalItemDetail").empty();
+			addRowItemDetail();
+			
+			$("#modal-title").text("수주서 수정");
+			
+			$("#modalRegisterBtn").text("수정");
+			
+			var mainNo = $(this).parent().parent().parent().children("td").eq(0).text();
+			
+			//수정 모달의 상단을 채워넣는 코드
+			console.log("요청url : " + "/ordersheet/" + mainNo);
+			$.getJSON("/ordersheet/" + mainNo,  
+	 			function(obj){
+					console.log("obj: " + obj);
+					
+					// 수주서 번호를 채워넣는 코드
+					$("input[name='no']").val(obj.no);
+					
+					// 납기일자 입력
+					$("input[name='out_day']").val(obj.out_day);
+					
+					// 담당자 정보 채워넣기
+					$("input[name='member_no']").val(obj.member_no);
+					$("#member_dep_name").val(obj.dep_name);
+					$("#member_name").val(obj.member_name);
+					
+					// 거래처 정보 채워넣기
+					$("input[name='client_no']").val(obj.client_no);
+					$("#client_code").val(obj.client_code);
+					$("#client_name").val(obj.client_name);
+					
 	 			}).fail(function(xhr, status, err){
 	 					alert("데이터 조회실패");
 	 			});
 			
+			//수정 모달의 하단을 채워넣는 코드
+			console.log("요청url : " + "/ordersheet/orderdetail/" + mainNo);
+			$.getJSON("/ordersheet/orderdetail/" + mainNo,  
+	 			function(list){
+					console.log("list: " + list);
+										
+					for(var i = 0, len = list.length || 0; i < len; i++){
+						
+						addRowItemDetail();
+						
+						$("#modalItemDetail .row").eq(i).find("input").each(function(index){
+							
+							if(index == 0){
+								$(this).val(list[i].item_no);	
+							} else if(index == 1){
+								$(this).val(list[i].item_code);
+							} else if(index == 2){
+								$(this).val(list[i].item_name);
+							} else if(index == 3){
+								$(this).val(list[i].client_name);
+							}else if(index == 4){
+								$(this).val(list[i].amount);	
+							}
+						});
+					}
+	 			}).fail(function(xhr, status, err){
+	 					alert("데이터 조회실패");
+	 			});
 			
 		});
 		
+		/* 하나짜리 삭제버튼 눌렸을 때 처리 */
+		$(".deleteOneBtn").on("click", function(e){
+			e.stopPropagation(); // 부모에게 이벤트가 상위 전파 안되도록 막음(버튼을 누르는데 부모인 tr에 이벤트를 걸어뒀더니 중복으로 실행되어 이걸 사용)		
+			clickedBtnInMain = "delete_one";
+			$("#deleteCheckModal input").eq(0).val($(this).data("no"));
+			 
+			if(confirm("삭제하시겠습니까?")){
+				$("#deleteCheckModalForm").attr("action", "/ordersheet/delete/one");
+				$("#deleteCheckModalForm").submit();
+			}
+		});
+		
+		/* 상단의 체크박스 전체선택 및 해제 기능 */
+		$("#allMainCheck").on("click", function(){
+			var allcheck = document.deleteManyMainForm.allMainCheck;
+			var rowcheck = document.deleteManyMainForm.checkedMain;
+			
+			if(allcheck.checked == true){
+				for(var i = 0; i<rowcheck.length; i++){	// 전체 체크
+					rowcheck[i].checked = true;
+				}
+			}else{
+				for(var i = 0; i<rowcheck.length; i++){	// 전체 해제
+					rowcheck[i].checked = false;	
+				}	
+			}
+		});
+		
+		$("input[name='checkedMain']").on("click", function(e){
+			e.stopPropagation(); // 이벤트 상위전파 중지(tr 누르면 발생하는 이벤트랑 중첩으로 동작하는 것을 없애기 위함)
+		});
+		
+		/* 체크박스가 하나도 체크되어 있지 않았을 때 삭제가 동작하지 않도록 하는 코드 + 삭제기능실행 */
+		$("#deleteCheckModalBtn").on("click", function(e){
+			//clickedBtnInMain = "delete_many";	
+			
+			var rowcheck = document.deleteManyMainForm.checkedMain;
+			
+			var count = 0;
+			
+			for(var i = 0; i<rowcheck.length; i++){	// 전체 체크
+				if(rowcheck[i].checked == true){
+					count += 1;					
+				}
+			}
+			
+			console.log(count);
+			
+			// 다중삭제 버튼은 체크박스가 체크되어 있어야 동작을 함.
+			if(count > 0){
+				if(confirm("삭제하시겠습니까?")){
+					$("#deleteManyMainForm").submit();
+				}
+			}else{
+				alert("체크박스를 먼저 체크 후 다시 시도해주세요");
+			}
+		});
+		
+		/* 이하 등록모달폼, 수정모달폼 유효성 검사  */
+		$("#modalItemDetail").on("keyup", "input[name='amount']", function(){
+			$(this).attr("class","form-control is-valid");
+			
+			if(isNaN($(this).val())){
+				alert("수량은 숫자만 입력 가능합니다.");
+				$(this).val("");
+				$(this).focus();
+			}
+		});
 		
 	});
-</script>
+	
+	function calendarChangeHandler(){
+		$("input[name='out_day']").attr("class","form-control is-valid");
+	} 
+	
+	</script>

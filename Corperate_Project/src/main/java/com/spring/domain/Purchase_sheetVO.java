@@ -10,6 +10,7 @@ public class Purchase_sheetVO {
 	private int no;
 	private int member_no;
 	private int client_no;
+	//수주서 번호
 	private int order_no;
 	private String day;
 	private String delivery_date;
@@ -23,10 +24,12 @@ public class Purchase_sheetVO {
 	private String item_name;
 	//품목 입고가격 총합
 	private String totalPrice;
+	//품목 입고가격 총합
+	private String totalAmount;
 	
 	private ArrayList<Integer> item_no; 	// 품목번호
 	private ArrayList<Integer> amount; 	// 품목별 수주개수
 	private ArrayList<Integer> ware_no; 	// 창고번호
-	private ArrayList<Integer> order_detail_no; 	// 수주상세번호
+	private ArrayList<Integer> detail_no; 	// 수주상세번호
 	
 }

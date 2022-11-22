@@ -12,8 +12,8 @@
 	<div class="card-body">
         <div class="mb-3">
           <label for="member_no" class="form-label">담당자</label>
-          <input type="text" name="name" class="form-control" id="member_no" readonly="readonly" data-bs-toggle="modal" data-bs-target="#addMember" required>
-          <div class="invalid-feedback">User full name is required.</div>
+          <input type="text" name="member_name" class="form-control" id="member_no" readonly="readonly" data-bs-toggle="modal" data-bs-target="#addMember" required>
+          <div class="invalid-feedback">담당자를 입력하세요.</div>
         </div>
 	</div>
 </div>
@@ -58,9 +58,13 @@
                 <div class="modal-footer border-0">
 					<form style="margin:auto;text-align:center;" onsubmit="return false;">
 						<div class="d-flex gap-1 me-auto flex-wrap">
-							<select id="searchWhatColumn" class="form-select" style="width: 140px;"><option value="" selected="">검색 선택</option><option value="dep">부서</option><option value="rank">직급</option><option value="name">이름</option></select>
-			              	<input type="text" id="searchKeyword" class="form-control" placeholder="입력" style="width: 200px; height: 38px;">
-							<button type="submit" class="btn btn-light" id="searchBtn"> 검색 </button>
+							<select id="searchMemberWhatColumn" class="form-select" style="width: 140px;">
+								<option value="" selected="">검색 선택</option>
+								<option value="dep">부서</option>
+								<option value="rank">직급</option>
+								<option value="name">이름</option></select>
+			              	<input type="text" id="searchMemberKeyword" class="form-control" placeholder="입력" style="width: 200px; height: 38px;">
+							<button type="submit" class="btn btn-light" id="searchMemberBtn"> 검색 </button>
 						</div>			
 					</form>	
 				</div>
@@ -88,21 +92,21 @@
           </div>
         </div>
 
-<!-- 물품검색 -->
+<!-- 품목검색 -->
         <div class="modal fade" id="addUserModal" tabindex="-1">
           <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
               <div class="modal-header border-0">
-                <h5 class="modal-title">물품검색</h5>
+                <h5 class="modal-title">품목검색</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
                 <div class="modal-footer border-0">
 					<form style="margin:auto;text-align:center;" onsubmit="return false;">
 						<div class="d-flex gap-1 me-auto flex-wrap">
-							<select id="searchWhatColumn" class="form-select" style="width: 140px;"><option value="" selected="">검색 선택</option><option value="dep">부서</option><option value="rank">직급</option><option value="name">이름</option></select>
-			              	<input type="text" id="searchKeyword" class="form-control" placeholder="입력" style="width: 200px; height: 38px;">
-							<button type="submit" class="btn btn-light" id="searchBtn"> 검색 </button>
+							<select id="searchItemWhatColumn" class="form-select" style="width: 140px;"><option value="" selected="">검색 선택</option><option value="dep">부서</option><option value="rank">직급</option><option value="name">이름</option></select>
+			              	<input type="text" id="searchItemKeyword" class="form-control" placeholder="입력" style="width: 200px; height: 38px;">
+							<button type="submit" class="btn btn-light" id="searchItemsBtn"> 검색 </button>
 						</div>			
 					</form>	
 				</div>
@@ -130,68 +134,86 @@
           </div>
         </div>
         
-<!-- 창고검색 -->
-        <div class="modal fade" id="searchInvenModal" tabindex="-1">
-          <div class="modal-dialog modal-dialog-scrollable modal-xl">
-            <div class="modal-content">
-              <div class="modal-header border-0">
-                <h5 class="modal-title">창고검색</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-              	<div class="d-flex gap-3 mb-4 flex-wrap">
-	              	<div class="col">
-		              	<div class="mb-3">
-		                    <label for="warehouse" class="form-label">창고</label>
-		                    <input type="text" name="warehouse" class="form-control" id="warehouse" readonly required>
-		                    <div class="invalid-feedback">User full name is required.</div>
-		                </div>
-		                <div class="mb-3">
-		                    <label for="area" class="form-label">구역</label>
-		                    <input type="text" name="area" class="form-control" id="area" readonly>
-		                    <div class="invalid-feedback">User id is required.</div>
-		                </div>
-		                <div class="mb-3">
-		                    <label for="rack" class="form-label">렉</label>
-		                    <input type="text" name="rack" class="form-control" id="rack" readonly>
-		                    <div class="invalid-feedback">User password is required.</div>
-		                </div>
-		                <div class="mb-3">
-		                    <label for="cell" class="form-label">셀</label>
-		                    <input type="text" name="cell" class="form-control" id="cell" readonly>
-		                    <div class="invalid-feedback">User password is required.</div>
-		                </div>
-	                </div>
-		            <div class="col">
-		             	<div class="table-responsive">
-			              <table class="table warehouse-table">
-			                <thead class="table">
-			                  <tr>
-			                    <th scope="col" class="text-center col-md-2">번호</th>
-			                    <th scope="col" class="text-center col-md-2">코드</th>
-			                    <th scope="col" class="text-center col-md-4">이름</th>
-			                    <th scope="col" class="text-center col-md-2">선택</th>
-			                  </tr>
-			                </thead>
-			                <tbody class="modal-tbody"></tbody>
-			              </table>
-			            </div>
-		            	<!-- 페이지내이션 -->
-						<nav aria-label="Page navigation borderless example">
-							<ul class="pagination pagination-borderless justify-content-end" id="clientPageNation">
-								<!-- 페이지내이션이 javascript 코드에 의해 그려지는 위치 -->
-							</ul>
-						</nav>
-					</div>
-                </div>
-              </div>
-              <div class="modal-footer border-0">
-                <button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
-                <button type="button" form="warehouseForm" data-bs-dismiss="modal" class="btn btn-primary px-5 saveWareHouse" >저장</button>
-              </div>
-            </div>
-          </div>
-        </div>
+<!-- 창고선택 -->
+<div class="modal fade" id="searchInvenModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalToggleLabel2">입고 창고 선택</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div>
+      <div class="modal-body">
+        <div class="d-flex flex-wrap gap-1">
+		<div class="col">		
+			<ul class="navbar-nav mb-4" id="mainMenu">
+         	 <li class="nav-label px-2 small mt-3"><small>창고 선택</small></li>
+          		<c:forEach items="${warehouse }" var="w" varStatus="wi">
+          		<li class="nav-item" data-no=${w.no }>
+		            <a class="nav-link px-2 d-flex align-items-center gap-3 dropdown-toggle" data-no=${w.no } href="#area2-${wi.index }" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="dashboard-collapse">
+		              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+		                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
+		              </svg>
+		              <span class="me-auto" id="basicinfo">${w.name }</span>
+		            </a>
+		            <div class="ms-4 collapse" id="area2-${wi.index }" data-bs-parent="#mainMenu">
+		              <ul class="navbar-nav">
+				          <c:forEach items="${area }" var="a" varStatus="ai">
+				          	<c:if test="${w.no eq a.ware_no }">
+								<li class="nav-item" data-no=${a.no }>
+						            <a class="nav-link px-2 d-flex align-items-center gap-3 <c:if test="${fn:length(area) != 0 }">dropdown-toggle</c:if>" data-no=${a.no } href="#rack2-${ai.index }" data-bs-toggle="collapse" role="button" aria-expanded="true" aria-controls="dashboard-collapse">
+						              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+						                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
+						              </svg>
+						              <span class="me-auto" id="basicinfo">${a.name }</span>
+						            </a>
+						            <div class="ms-4 collapse" id="rack2-${ai.index }" data-bs-parent="#mainMenu" style="">
+						              <ul class="navbar-nav">
+						              	<c:forEach items="${rack }" var="r" varStatus="ri">
+						              		<c:if test="${a.no eq r.area_no }">
+						              			<li class="nav-item" data-no=${r.no }>
+										            <a class="nav-link px-2 d-flex align-items-center gap-3 dropdown-toggle" href="#cell2-${ri.index }" data-bs-toggle="collapse" role="button" aria-expanded="true" aria-controls="dashboard-collapse">
+										              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+										                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
+										              </svg>
+										              <span class="me-auto" id="basicinfo">${r.name }</span>
+										            </a>
+										            <div class="ms-4 collapse" id="cell2-${ri.index }" data-bs-parent="#mainMenu" style="">
+										              <ul class="navbar-nav">
+										              	<c:forEach items="${cell }" var="c">
+										              		<c:if test="${r.no eq c.rack_no }">
+										              			<li class="nav-item cell2" data-no=${c.no }>
+														            <a class="nav-link px-2 d-flex align-items-center gap-3" href="#dashboard-collapse2" data-bs-toggle="collapse" role="button" aria-expanded="true" aria-controls="dashboard-collapse">
+																		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bucket" viewBox="0 0 16 16">
+																		  <path d="M2.522 5H2a.5.5 0 0 0-.494.574l1.372 9.149A1.5 1.5 0 0 0 4.36 16h7.278a1.5 1.5 0 0 0 1.483-1.277l1.373-9.149A.5.5 0 0 0 14 5h-.522A5.5 5.5 0 0 0 2.522 5zm1.005 0a4.5 4.5 0 0 1 8.945 0H3.527zm9.892 1-1.286 8.574a.5.5 0 0 1-.494.426H4.36a.5.5 0 0 1-.494-.426L2.58 6h10.838z"/>
+																		</svg>
+														              <span class="me-auto" id="basicinfo">${c.name }</span>
+														            </a>
+														          </li>
+										              		</c:if>
+										              	</c:forEach>
+										              </ul>
+										            </div>
+										          </li>
+						              		</c:if>
+						              	</c:forEach>
+						              </ul>
+						            </div>
+						          </li>
+				          	</c:if>
+				          </c:forEach>
+		              </ul>
+		            </div>
+		          </li>
+          </c:forEach>
+        </ul>
+		</div>
+		</div>
+	 </div>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- bottom.jsp -->
 <%@include file="/WEB-INF/views/common/bottom.jsp" %>
 
@@ -203,24 +225,27 @@
 				type: 'text',
 				class:'form-control',
 		},
+		
+		// 페이징 기본설정
+		defaultPaging = {
+				pageNum : 1,
+				amount : 10,
+				whatColumn : null,
+				keyword : null,
+		},
+		
 		wt = document.querySelector('.warehouse-table tbody'),
 		warehouse = document.querySelector('#warehouse'),
 		area = document.querySelector('#area'),
 		rack = document.querySelector('#rack'),
 		cell = document.querySelector('#cell'),
-		saveWareHouse = document.querySelector('.saveWareHouse'),
-		arr = [warehouse, area, rack, cell];
+		saveWareHouse = document.querySelector('.saveWareHouse');
 		
 		/* 페이징 전역변수 */
 		let pageNum = 1,
 			amount = 10,
 			searchWhatColumn = "",
-			searchKeyword = "";
-		
-		let pageNum2 = 1,
-			amount2 = 10,
-			searchWhatColumn2 = "",
-			searchKeyword2 = "";			
+			searchKeyword = "";		
 		
 		let target;
 		
@@ -297,40 +322,41 @@
 		
 		// ----------------------------------------------- 멤버 
 		
+		// 메인 페이지의 담당자를 눌렀을 경우 해당 input을 가리킴
+		let memberTarget;
+		
+		// 담당자 검색버튼 눌렀을 경우 (1페이지로 돌아감)
+		document.querySelector('#searchMemberBtn').addEventListener('click', event => {
+			drawMember();
+		});
+		
+		// 메인 페이지의 담당자를 눌렀을 경우 (1페이지로 돌아감)
 		document.querySelector('#member_no').addEventListener('click', event => {
+			memberTarget = event.target;
 			drawMember();	
 		});
 		
+		// 검색 키워드 조회
 		function getMemberList(paging, callback) {
-			const	
-				attr = {method: 'GET'};	
-			let
-				url = location.origin + '/basicinfo/member/pages/' + paging.pageNum + '/' + paging.amount;
-				
-			url += paging.whatColumn ? '' : '/' + paging.whatColumn;
-			url += paging.keyword ? '' : '/' + paging.keyword;
+			const newPaging = {...defaultPaging, ...paging},
+				whatColumn = document.querySelector('#searchMemberWhatColumn').value,
+				keyword = document.querySelector('#searchMemberKeyword').value,
+				attr = null,
+				url = location.origin + '/basicinfo/member/pages/' + newPaging.pageNum + '/' + newPaging.amount + '/' + whatColumn + '/' + keyword;
 			
-			// fetch를 이용해 품목리스트 가져옴
+			// getJsonData 함수 내의 fetch를 이용해 품목리스트 가져옴
 			getJsonData(url, attr, (data) => {
 				callback(data);
 			});		
 		}
 		
+		// 비동기 통신을 이용해 가져온 데이터들을 토대로 테이블 작성
 		function drawMember(paging) {
-			let defaultPaging = {
-					pageNum : 1,
-					amount : 10,
-					whatColumn : null,
-					keyword : null,
-			},
 			body = document.querySelector('.member-table tbody');
-			
-			const newPaging = {...defaultPaging, ...paging};
-			
-			getMemberList(newPaging, data => {
+			getMemberList(paging, data => {
 				body.innerHTML = "";
 				data.list.forEach((value, index) => {
-					let {dep_name, rank_name, name} = value;
+					let {no, dep_name, rank_name, name} = value;
 					
 					let tr = document.createElement('tr');
 					
@@ -355,35 +381,47 @@
 					td4.classList.add('text-center');
 					tr.append(td4);
 					
+					// 담당자를 선택 시
 					td4.addEventListener('click', event => {
-						target.value = name;
-						target.setAttribute('data-value', no);
+						memberTarget.value = name;
+						memberTarget.setAttribute('data-value', no);
 					});
 					
 					body.append(tr);
 				});
-				/* 페이지네이션 */
+				
+				// 멤버의 페이지네이션을 그림
 				paintPageNation(data.totalCount, data.cri, 'memberPageNation');
 			});
 		}
 		
 		// ----------------------------------------------- 멤버 끝
 		
+		// ----------------------------------------------- 품목
+		
+		// 메인 페이지의 품목 눌렀을 경우 해당 input을 가리킴
+		let itemTarget;
+		
+		// 품목 검색버튼 눌렀을 경우 (1페이지로 돌아감)
+		document.querySelector('#searchItemsBtn').addEventListener('click', event => {
+			drawItem();
+		});
+		
 		// 품목을 클릭했을 경우 이벤트 리스너를 붙여줌
 		function addItemEventListener(elem) {
 			elem.addEventListener('click', (event) => {
-				target = event.target;
+				itemTarget = event.target;
 				drawItem();
 			})
 		}
 		
 		function getItemList(paging, callback) {
-			const attr = {method: 'GET'};	
-			let
-				url = location.origin + '/basicinfo/item/pages/'+paging.pageNum + '/' + paging.amount;
-				
-			url += paging.whatColumn ? '' : '/' + paging.whatColumn;
-			url += paging.keyword ? '' : '/' + paging.keyword;
+			
+			const newPaging = {...defaultPaging, ...paging},
+				whatColumn = document.querySelector('#searchItemWhatColumn').value,
+				keyword = document.querySelector('#searchItemKeyword').value,
+				attr = null,
+				url = location.origin + '/basicinfo/item/pages/' + newPaging.pageNum + '/' + newPaging.amount + '/' + whatColumn + '/' + keyword;
 			
 			// fetch를 이용해 품목리스트 가져옴
 			getJsonData(url, attr, (data) => {
@@ -392,17 +430,8 @@
 		}
 		
 		function drawItem(paging) {
-			let defaultPaging = {
-					pageNum : 1,
-					amount : 10,
-					whatColumn : null,
-					keyword : null,
-			},
 			body = document.querySelector('.item-table tbody');
-			
-			const newPaging = {...defaultPaging, ...paging};
-			
-			getItemList(newPaging, data => {
+			getItemList(paging, data => {
 				body.innerHTML = "";
 				data.list.forEach((value, index) => {
 					let {no, code, name} = value;
@@ -431,8 +460,8 @@
 					tr.append(td4);
 					
 					td4.addEventListener('click', event => {
-						target.value = name;
-						target.setAttribute('data-value', no);
+						itemTarget.value = name;
+						itemTarget.setAttribute('data-value', no);
 					});
 					
 					body.append(tr);
@@ -442,80 +471,56 @@
 			});
 		}
 		
-		let elemEventTarget;
-		// 창고를 클릭했을 경우 이벤트 리스너를 붙여줌
+		// ----------------------------------------------- 품목 끝
+		
+		// ----------------------------------------------- 창고
+		
+		// 왼쪽 클릭한 cell의 상세정보
+		let warehouse_cell = {},
+		arr = ['ware', 'area', 'rack', 'cell'],
+		wareTarget;
+		
 		function addWareHouseEventListener(elem) {
-			elem.addEventListener('click', elemEvent => {
-				// 클로저 땜시 분리했음
-				elemEventTarget = elemEvent.target;
-			})
+			elem.addEventListener('click', (event) => {
+				wareTarget = event.target;
+			})			
 		}
-		saveWareHouse.addEventListener('click', btnEvent => {
-			const tr = elemEventTarget.closest('tr');
-			const tds = Array.from(tr.children).slice(2, 6);
-			btnEvent.target.setAttribute('data-bs-dismiss', 'modal');
-			tds.forEach((value, index) => {
-				value.querySelector('input').value = arr[index].value;
-				value.querySelector('input').setAttribute('data-value', arr[index].dataset.no);
-			});			
-		});
 		
-		warehouse.addEventListener('click', event => {
-			addItemToTable(event);
-		});
-		area.addEventListener('click', event => {
-			addItemToTable(event, warehouse);
-		});
-		rack.addEventListener('click', event => {
-			addItemToTable(event, area);
-		});
-		cell.addEventListener('click', event => {
-			addItemToTable(event, rack);
-		});
-		
-		function addItemToTable(event, prev) {
-			wt.innerHTML = '';
-			const target = event.target,
-				no = prev && prev.dataset.no || '';
-				name = target.name,
-				url = 'http://localhost:8080/warehouse/init/' + name + '/get/' + no,
-				attr = {headers: {'Content-Type' : 'application/json; charset=utf-8'}};
+		document.querySelectorAll('.cell2').forEach(elem => {
+			elem = makeElement(elem, {'data-bs-target': '#searchInvenModal', 'data-bs-toggle': 'modal', 'data-bs-dismiss': 'modal'});
+			elem.addEventListener('click', async event => {
 				
-			getJsonData(url, attr, (data) => {
-				data.forEach( data => {
-					const tr = makeElement('tr');
+				const cell = event.target.closest('li');
+				warehouse_cell['cell_no'] = cell.dataset.no;
+				
+				const rack = cell.parentElement.closest('li');
+				warehouse_cell['rack_no'] = rack.dataset.no;
+				
+				const area = rack.parentElement.closest('li');
+				warehouse_cell['area_no'] = area.dataset.no;
+				
+				const warehouse = area.parentElement.closest('li');
+				warehouse_cell['ware_no'] = warehouse.dataset.no;
+				
+				const url = 'ware/get';
+				const attr = {
+						method: 'post',
+						headers: {'Content-Type': 'application/json; charset=utf-8'},
+						body: JSON.stringify(warehouse_cell)
+				}
+				await getJsonData(url, attr, (jsonData) => {
 					
-					const no = makeElement('td');
-					no.textContent = data.no;
-					no.classList.add('text-center');
-					tr.append(no);
-					
-					const code = makeElement('td');
-					code.textContent = data.code;
-					code.classList.add('text-center');
-					tr.append(code);
-					
-					const name = makeElement('td');
-					name.textContent = data.name;
-					name.classList.add('text-center');
-					tr.append(name);
-					
-					const btntd = makeElement('td');
-					btntd.classList.add('text-center');
-					const btn = makeElement('button', {class: 'btn btn-primary btn-sm'});
-					btn.textContent = '선택';
-					btntd.append(btn);
-					tr.append(btntd);
-					wt.append(tr);
-					
-					btn.addEventListener('click', event => {
-						const ttr = event.target.closest('tr');
-						target.value = ttr.children[2].textContent;
-						target.setAttribute('data-no', ttr.children[0].textContent);
-					});
+					const tr = wareTarget.closest('tr');
+					const tds = Array.from(tr.children).slice(2, 6);
+					tds.forEach((value, index) => {
+						value.querySelector('input').value = jsonData[arr[index] + '_name'];
+						value.querySelector('input').setAttribute('data-value',jsonData[arr[index] + '_no']);
+					});	
 				});
 			});
-		}
+		});
+			
+		// ----------------------------------------------- 창고 끝
 		
 		/* 거래처 선택 모달의 페이지네이션을 그리는 함수 */
 		function paintPageNation(totalCount, cri, location){
@@ -525,11 +530,11 @@
 			var pageCount = 5; // 한번에 보여줄 페이지번호 개수 
 			
 			//pageNum에 따른 cri.amount 단위의 시작페이지, 끝페이지를 구함
-			var endPageNum = Math.ceil(pageNum / pageCount) * pageCount;// javascript 에서 pageNum / cri.amount 결과는 그냥 0.1 
+			var endPageNum = Math.ceil(cri.pageNum / pageCount) * pageCount;// javascript 에서 pageNum / cri.amount 결과는 그냥 0.1 
 			var startPageNum = endPageNum - (pageCount-1);
 			var lastPageNum = Math.ceil(totalCount / cri.amount	);
 			
-			var isNeedFirst = pageNum > 5;
+			var isNeedFirst = cri.pageNum > 5;
 			var isNeedPrev = (startPageNum != 1);
 			var isNeedNext = false;
 			var isNeedEnd = true; 
@@ -568,7 +573,7 @@
 			
 			//가운데 숫자 출력
 			for(var i = startPageNum; i <= endPageNum; i++){
-				var active = (pageNum == i ? "active" : "");
+				var active = (cri.pageNum == i ? "active" : "");
 				str += "<li class='page-item " + active +"'>" + "<a class='page-link' href='"+ i +"'>" + i + "</a></li>";
 			}
 			
@@ -598,7 +603,6 @@
 		$("#itemPageNation").on("click", "li a", function(e){
 			e.preventDefault(); // 번호를 눌러도 페이지가 이동하지 않도록 a태그 기능 무력화
 			pageNum = $(this).attr("href");
-			
 			drawItem({pageNum : pageNum});
 		});
 		
@@ -626,7 +630,7 @@
 	function saveData() {
 		const trs = Array.from(document.querySelectorAll('.table-item tr')).slice(1),
 		columns = item.getColumns(),
-		member_no = document.querySelector('#member_no').value;
+		member_no = document.querySelector('#member_no').dataset.value;
 		lists = [];
 		trs.forEach((value, index) => {
 			let obj = {};
@@ -635,8 +639,8 @@
 			});
 			lists.push(obj);
 		});
-		fetch('http://localhost:8080/warehouse/init/save', {method: 'post', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({member_no: member_no, detail: lists})});
-		// window.location.reload();
+		fetch(window.location.origin + '/warehouse/init/save', {method: 'post', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({member_no: member_no, detail: lists})});
+		window.location.reload();
 	}
 	
 	// fetch를 이용한 비동기 통신
@@ -647,8 +651,9 @@
 	};
 	
 	// 태그 생성
-	function makeElement(elem, attr, event) {
-		const e = document.createElement(elem);
+	// 태그 생성
+   	function makeElement(elem, attr, event) {
+		const e = typeof elem === 'string' &&  document.createElement(elem) || elem;
 		attr && Object.keys(attr).forEach((key, index) => {
 			let value = attr[key];
 			if(key === 'class') {
@@ -685,7 +690,12 @@
 	        	b = item.value == '' && true;
         	});
         	
-          if (!form.checkValidity() || a || b) {
+        	let c = false;
+        	const member = document.querySelector('input[name="member_name"]');
+        	member.value === '' ? member.classList.add('is-invalid') : member.classList.remove('is-invalid');
+        	c = member.value == '' && true;
+        	
+          if (!form.checkValidity() || a || b || c) {
             event.preventDefault()
             event.stopPropagation()
 	        form.classList.add('was-validated')

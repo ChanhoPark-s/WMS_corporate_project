@@ -61,11 +61,11 @@ public class ItemController {
 	//등록
 	@PostMapping(value="/insert")
 	public String insert(Model model, ItemVO vo, HttpServletRequest request) throws Exception {
-		service.insert(vo, request);
 		System.out.println("코드"+vo.getCode());
 		System.out.println("이미지"+vo.getImage());
 		System.out.println("입고가"+vo.getIn_price());
 		System.out.println("품목"+vo.getName());
+		service.insert(vo, request);
 		return "redirect:/basicinfo/item/list";
 	}
 	
@@ -96,11 +96,18 @@ public class ItemController {
 	}
 	//중복체크
 	@ResponseBody // 값 변환을 위해 꼭 필요함
-	@PostMapping("code_check") // 아이디 중복확인을 위한 값으로 따로 매핑
+	@PostMapping("/code_check") // 아이디 중복확인을 위한 값으로 따로 매핑
 		public String code_check(@RequestParam("code") String code) throws Exception{
 			return String.valueOf(service.code_check(code));
 		}
-	
+
+	@PostMapping("/selectDelete")
+	public String selectDelete(HttpServletRequest request){
+		
+		service.selectDelete(request.getParameterValues("rowcheck"));
+		return "redirect:/basicinfo/item/list";
+	}
+
 	// 판매에서 품목 단가 불러오기
 	@ResponseBody
 	@PostMapping(value="/getPrice", produces = "application/json; charset=utf8")

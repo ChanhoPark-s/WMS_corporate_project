@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.spring.domain.ClientVO;
-import com.spring.domain.OrderSheetVO;
 import com.spring.domain.Purchase_sheetVO;
 import com.spring.domain.Purchase_sheet_DetailVO;
 import com.spring.domain.SearchVO;
@@ -18,7 +16,7 @@ public interface Purchase_sheetMapper {
 	public Purchase_sheetVO selectOne(String no);	// 발주선택
 	public int insertMainSheet(Purchase_sheetVO vo);// 발주추가
 	
-	public int delete(Purchase_sheetVO vo); 		// 발주삭제
+	public int delete(int no); 		// 발주삭제
 	
 	/* main paging */
 	public int getTotalCount(SearchVO searchvo);

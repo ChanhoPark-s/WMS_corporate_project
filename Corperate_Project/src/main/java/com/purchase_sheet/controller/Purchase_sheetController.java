@@ -37,8 +37,11 @@ import com.spring.paging.Criteria;
 import com.spring.service.ClientService;
 import com.spring.service.ItemService;
 import com.spring.service.MemberService;
+import com.spring.service.OrderSheetService;
 import com.spring.service.Purchase_sheetService;
 import com.spring.service.WareHouseService;
+
+import oracle.jdbc.driver.json.binary.OsonAbstractArray;
 
 
 @Controller
@@ -61,6 +64,9 @@ public class Purchase_sheetController {
 	@Autowired
 	private ClientService cs;
 	
+	@Autowired
+	private OrderSheetService os;
+	
 	@RequestMapping("/list.ps")
 	public void list(SearchVO searchvo,HttpServletRequest request,Model model) {
 		
@@ -82,13 +88,16 @@ public class Purchase_sheetController {
 		for(Purchase_sheetVO vo :lists) {
 			System.out.println("vo"+vo);
 			System.out.println("vo.getTotalPrice()"+ vo.getTotalPrice()); 
+			System.out.println("vo.getAmount()"+ vo.getAmount()); 
 			if(vo.getTotalPrice() != null) {
 				String[] price = vo.getTotalPrice().split(",");
+				String[] amount = vo.getTotalAmount().split(",");
 				System.out.println("price"+price);
+				System.out.println("amount"+amount);
 				int totalPrice = 0;
-				for(String x :price) {
-					System.out.println("x"+x);
-					totalPrice = Integer.parseInt(x) + totalPrice;
+				for(int i=0; i<price.length; i++) {
+					System.out.println("x"+price[i]);
+					totalPrice = (Integer.parseInt(price[i]) * Integer.parseInt(amount[i])) + totalPrice;
 					System.out.println("totalPrice"+totalPrice);
 				}
 				vo.setTotalPrice(Integer.toString(totalPrice));
@@ -113,15 +122,22 @@ public class Purchase_sheetController {
 	
 	@PostMapping("/insert.ps")
 	public String insert(Purchase_sheetVO vo) {
+		System.out.println("vo.getOrder_no():" + vo.getOrder_no());
 		System.out.println(vo.getMember_no());
 		System.out.println(vo.getClient_no());
 		System.out.println(vo.getDelivery_date());
-		System.out.println(vo.getItem_no());
+		
+		System.out.println("vo.getItem_no():" + vo.getItem_no());
 		System.out.println(vo.getAmount());
+		System.out.println(vo.getWare_no());
 		System.out.println(vo.getOrder_no());
 		
 		int cnt = ps.insert(vo);
 		System.out.println("insert 성공" + cnt);
+		
+		// 수주 상태 수정
+		os.updateStatus(vo.getOrder_no());
+		System.out.println("준비완료> 발주중 update 완료");
 		return re;
 	}
 	
@@ -136,13 +152,12 @@ public class Purchase_sheetController {
 		return new Gson().toJson(psvo);
 	}
 	
-	@ResponseBody
-	@GetMapping("/delete")
-	public String delete(Purchase_sheetVO vo) {
-		System.out.println(vo.getNo());
-		int cnt = ps.delete(vo);
+	@GetMapping("/delete.ps")
+	public String delete(int no) {
+		System.out.println(no);
+		int cnt = ps.delete(no);
 		System.out.println("cnt: " + cnt);
-		cnt = ps.deleteDetail(vo.getNo());
+		cnt = ps.deleteDetail(no);
 		System.out.println("cnt: " + cnt);
 		return re;
 	}

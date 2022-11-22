@@ -30,6 +30,7 @@
                     <th scope="col">품목</th>
                     <th scope="col">수량</th>
                     <th scope="col">출고 창고</th>
+                    <th scope="col"></th>
                     <th scope="col">입고 창고</th>
                     <th scope="col">이동날짜</th>
                   </tr>
@@ -40,8 +41,13 @@
                 			<td>${item.no }</td>
                 			<td><span class="badge bg-dark">${item.lot_code }</span></td>
                 			<td>${item.item_name }</td>
-                			<td>${item.qty }</td>
+                			<td><fmt:formatNumber value="${item.qty }" /> 개</td>
                 			<td>${item.ware1 }</td>
+                               <td scope="col">
+		                    	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+								  <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+								</svg>
+								</td>
                 			<td>${item.ware2 }</td>
                 			<td>${item.day }</td>
                 		</tr>
@@ -67,26 +73,26 @@
       <form class="needs-validation" novalidate name="modal1_form" id="itemmovementForm">
       <div class="d-flex flex-wrap gap-1">
 		<div class="col">		
-			<div class="row-sm-3">
+			<div class="row-sm-3 mb-3">
 				<label for="ware1" class="form-label">출고 창고</label>
 				<input type="text" name="ware1" class="form-control" required readonly>
 				<div class="invalid-feedback">출고 품목을 선택해 주세요.</div>
 			</div>
-			<div class="row-sm-3">
+			<div class="row-sm-3 mb-3">
 				<label for="area1" class="form-label">출고 구역</label>
 				<input type="text" name="area1" class="form-control" readonly="">
 			</div>
-			<div class="row-sm-3">
+			<div class="row-sm-3 mb-3">
 				<label for="rack1" class="form-label">출고 렉</label>
 				<input type="text" name="rack1" class="form-control" readonly="">
 			</div>
-			<div class="row-sm-3">
+			<div class="row-sm-3 mb-3">
 				<label for="cell1" class="form-label">출고 셀</label>
 				<input type="text" name="cell1" class="form-control" readonly="">
 			</div>
 			<div class="row-sm-2">	
 				<label for="userFullname" class="form-label">&nbsp;&nbsp;</label>
-				<button type="button" class="btn btn-primary" style="display:block" data-bs-target="#movementItem2" data-bs-toggle="modal" data-bs-dismiss="modal" id="choiceMemberBtn">출고 품목 선택</button>	
+				<button type="button" class="btn btn-primary" style="display:block" data-bs-target="#movementItem2" data-bs-toggle="modal" data-bs-dismiss="modal" id="outputBtn">출고 품목 선택</button>	
 			</div>
 		</div>
 		<div class="col">
@@ -96,26 +102,26 @@
 			</div>
 		</div>
 		<div class="col">		
-			<div class="row-sm-3">
+			<div class="row-sm-3 mb-3">
 				<label for="ware2" class="form-label">입고 창고</label>
 				<input type="text" name="ware2" class="form-control" readonly required>
 				<div class="invalid-feedback">입고 창고를 선택해 주세요.</div>
 			</div>
-			<div class="row-sm-3">
+			<div class="row-sm-3 mb-3">
 				<label for="area2" class="form-label">입고 구역</label>
 				<input type="text" name="area2" class="form-control" readonly>
 			</div>
-			<div class="row-sm-3">
+			<div class="row-sm-3 mb-3">
 				<label for="rack2" class="form-label">입고 렉</label>
 				<input type="text" name="rack2" class="form-control" readonly>
 			</div>
-			<div class="row-sm-3">
+			<div class="row-sm-3 mb-3">
 				<label for="cell2" class="form-label">입고 셀</label>
 				<input type="text" name="cell2" class="form-control" readonly>
 			</div>
 			<div class="row-sm-2">	
 				<label for="userFullname" class="form-label">&nbsp;&nbsp;</label>
-				<button type="button" class="btn btn-primary" style="display:block" data-bs-target="#movementItem3" data-bs-toggle="modal" data-bs-dismiss="modal">입고 창고 선택</button>	
+				<button type="button" class="btn btn-primary" style="display:block" data-bs-target="#movementItem3" data-bs-toggle="modal" data-bs-dismiss="modal" id="intputBtn">입고 창고 선택</button>	
 			</div>
 		</div>
 	 </div>
@@ -129,12 +135,16 @@
 			<label for="item_name" class="form-label">품목</label>
 			<input type="text" name="item_name" class="form-control" readonly>
 		</div>			 	
+	 	<div class="col">
+			<label for="item_name" class="form-label">재고</label>
+			<input type="text" name="haveQty" class="form-control" readonly>
+		</div>			 	
 	 </div>
 	 <br>
 	 <div class="">
 		<label for="qty" class="form-label">개수</label>
 		<input type="text" name="qty" id="qty" class="form-control" required>
-		<div class="invalid-feedback">개수를 선택해 주세요.</div>
+		<div class="invalid-feedback qty-feedback">개수를 선택해 주세요.</div>
 	 </div>
 	 </form>
 	 </div>
@@ -222,19 +232,26 @@
                   <table class="table caption-top mb-0">
                     <thead>
                       <tr>
-                        <th scope="col">이미지</th>
-                        <th scope="col">로트번호</th>
-                        <th scope="col">코드</th>
-                        <th scope="col">이름</th>
-                        <td scope="col">재고</td>
-                        <td scope="col">선택</td>
+                        <th scope="col" class="col-sm-1.5">로트번호</th>
+                        <th scope="col" class="col-sm-1">코드</th>
+                        <th scope="col" class="col-sm-2">이름</th>
+                        <td scope="col" class="col-sm-2">재고</td>
+                        <td scope="col" class="col-sm-1.5">선택</td>
                       </tr>
                     </thead>
                     <tbody class="itemTable">
-                    	
+                    	<tr>
+                    		<td colspan=6 align="center">검색결과 없음</td>
+                    	</tr>
                     </tbody>
                   </table>
                 </div>
+               <!-- 페이지내이션 -->
+			<nav aria-label="Page navigation borderless example">
+				<ul class="pagination pagination-borderless justify-content-end" id="itemPageNation">
+					<!-- 페이지내이션이 javascript 코드에 의해 그려지는 위치 -->
+				</ul>
+			</nav>
           </div>
 		</div>
 	 </div>
@@ -333,137 +350,206 @@
 
 	// 출고 품목 선택
 	(function() {
-		const searchDefault = {
-				pageNum: 1,
-				amount: 10
+		
+		// 페이징 기본설정
+		const defaultPaging = {
+				pageNum : 1,
+				amount : 10,
+				whatColumn : null,
+				keyword : null,
 		};
-		let 
-			warehouse_no = null,
-			area_no = null,
-			rack_no = null,
-			cell_no = null;
+		
+		// 왼쪽 클릭한 cell의 상세정보
+		let warehouse_cell = {};
 		
 		// 왼쪽 cell을 클릭했을 경우
 		document.querySelectorAll('.cell1').forEach(elem => {
 			elem.addEventListener('click', event => {
 				
 				const cell = event.target.closest('li');
-				cell_no = cell.dataset.no;
+				warehouse_cell['cell_no'] = cell.dataset.no;
 				
 				const rack = cell.parentElement.closest('li');
-				rack_no = rack.dataset.no;
+				warehouse_cell['rack_no'] = rack.dataset.no;
 				
 				const area = rack.parentElement.closest('li');
-				area_no = area.dataset.no;
+				warehouse_cell['area_no'] = area.dataset.no;
 				
 				const warehouse = area.parentElement.closest('li');
-				warehouse_no = warehouse.dataset.no;
+				warehouse_cell['ware_no'] = warehouse.dataset.no;
 				
-				const url = 'get';
-				const attr = {
-						method: 'post',
-						headers: {'Content-Type': 'application/json; charset=utf-8'},
-						body: JSON.stringify(clickPageNum({
-							ware_no: warehouse_no,
-							area_no: area_no,
-							rack_no: rack_no,
-							cell_no: cell_no
-						}))
-				}
-				getJsonData(url, attr);
+				drawItem();
 			});
 		});
 		
-		function clickPageNum(search) {
-			return {...searchDefault, ...search};
-		}
-		
-		async function getJsonData(url, attr) {
+		function getItemList(paging, callback) {
 			
-			const data = await fetch(url, attr);
-			const jsonData = await data.json();
-			console.log(jsonData);
-			drawItemTable(jsonData);
-		}
-		
-		function drawItemTable(jsonData) {
-			 const itemTable = document.querySelector('.itemTable');
-			 itemTable.innerHTML = "";
-			 
-			 jsonData.list.forEach(item => {
-				 const tr = document.createElement('tr');
-				 
-				 const td1 = document.createElement('td');
-				 td1.append(makeElement('img', {'src': item.image}))
-				 tr.append(td1);
-				 
-				 const td2 = document.createElement('td')
-				 td2.innerHTML = '<span class=\'badge bg-dark\'>'+item.lot_code+'</span>'
-				 tr.append(td2);
-				 
-				 const td3 = document.createElement('td')
-				 td3.innerHTML = item.code;
-				 tr.append(td3);
-				 
-				 const td4 = document.createElement('td')
-				 td4.innerHTML = item.name;
-				 tr.append(td4);
-				 
-				 const td5 = document.createElement('td')
-				 td5.innerHTML = transformNumberDot(item.amount) + "개";
-				 tr.append(td5);
-				 
-				 const td6 = document.createElement('td')
-				 const btn = makeElement('btn', {class: 'btn btn-primary', 'data-bs-target': '#movementItem', 'data-bs-toggle': 'modal', 'data-bs-dismiss': 'modal'});
-				 btn.innerHTML = '선택';
-				 td6.append(btn);
-				 tr.append(td6);
-				 
-				 // 아이템 선택 시
-				 btn.addEventListener('click', evnet => {
-					 modal1_form.ware1.value = item['ware_name'];
-					 modal1_form.ware1.setAttribute('data-no', item['ware_no'])
-					 modal1_form.area1.value = item['area_name'];
-					 modal1_form.area1.setAttribute('data-no', item['area_no'])
-					 modal1_form.rack1.value = item['rack_name'];
-					 modal1_form.rack1.setAttribute('data-no', item['rack_no'])
-					 modal1_form.cell1.value = item['cell_name'];
-					 modal1_form.cell1.setAttribute('data-no', item['cell_no'])
-					 
-					 modal1_form.lot_code.value = item['lot_code'];
-					 modal1_form.lot_code.setAttribute('data-no', item['lot_code'])
-					 modal1_form.item_name.value = item['name'];
-				 });
-				 
-				 itemTable.append(tr);
-			 });
-		}
-		
-		function makeElement(elem, attr, event) {
-			const e = document.createElement(elem);
-			attr && Object.keys(attr).forEach((key, index) => {
-				let value = attr[key];
-				if(key === 'class') {
-					const classes = value.split(' ');
-					classes.map(c => {
-						e.classList.add(c);
-					})
-				}
-				else {
-					e.setAttribute(key, value);
-				}
+			const newPaging = {...warehouse_cell, ...defaultPaging, ...paging};
+			const url = 'get';
+			const attr = {
+				method: 'post',
+				headers: {'Content-Type': 'application/json; charset=utf-8'},
+				body: JSON.stringify(newPaging)
+			}	
+			
+			getJsonData(url, attr, (data) => {
+				callback(data);
 			});
-			event && e.addEventListener(event.type, event.event);
-			return e;
 		}
+		
+		function drawItem(paging) {
+			
+			getItemList(paging, (jsonData) => {
+				 
+				const itemTable = document.querySelector('.itemTable');
+				 itemTable.innerHTML = "";
+				 
+				 if(jsonData.list.length === 0) {
+					 itemTable.innerHTML = '<tr><td colspan=6 align=center>검색결과가 없습니다.</td></tr>';
+				 }
+				 else{
+					 jsonData.list.forEach(item => {
+						 const tr = document.createElement('tr');		
+						 
+						 const td2 = document.createElement('td')
+						 td2.innerHTML = '<span class=\'badge bg-dark\'>'+item.lot_code+'</span>'
+						 tr.append(td2);
+						 
+						 const td3 = document.createElement('td')
+						 td3.innerHTML = item.code;
+						 tr.append(td3);
+						 
+						 const td4 = document.createElement('td')
+						 td4.innerHTML = item.name;
+						 tr.append(td4);
+						 
+						 const td5 = document.createElement('td')
+						 td5.innerHTML = transformNumberDot(item.amount) + " 개";
+						 tr.append(td5);
+						 
+						 const td6 = document.createElement('td')
+						 const btn = makeElement('btn', {class: 'btn btn-primary', 'data-bs-target': '#movementItem', 'data-bs-toggle': 'modal', 'data-bs-dismiss': 'modal'});
+						 btn.innerHTML = '선택';
+						 td6.append(btn);
+						 tr.append(td6);
+						 
+						 // 아이템 선택 시
+						 btn.addEventListener('click', evnet => {
+							 modal1_form.ware1.value = item['ware_name'];
+							 modal1_form.ware1.setAttribute('data-no', item['ware_no'])
+							 modal1_form.area1.value = item['area_name'];
+							 modal1_form.area1.setAttribute('data-no', item['area_no'])
+							 modal1_form.rack1.value = item['rack_name'];
+							 modal1_form.rack1.setAttribute('data-no', item['rack_no'])
+							 modal1_form.cell1.value = item['cell_name'];
+							 modal1_form.cell1.setAttribute('data-no', item['cell_no'])
+							 
+							 modal1_form.lot_code.value = item['lot_code'];
+							 modal1_form.lot_code.setAttribute('data-no', item['lot_code'])
+							 modal1_form.item_name.value = item['name'];
+							 modal1_form.haveQty.value = item['amount'];
+							 modal1_form.qty.value = item['amount'];
+						 });
+						 
+						 itemTable.append(tr);
+					 });
+				 }
+				 
+				 paintPageNation(jsonData.totalCount, jsonData.cri, 'itemPageNation')
+			});
+		}
+		
+		/* 거래처 선택 모달의 페이지네이션을 그리는 함수 */
+		function paintPageNation(totalCount, cri, location){
+			
+	    	console.log(cri);
+	    	
+			var str = ""; 
+			
+			var pageCount = 5; // 한번에 보여줄 페이지번호 개수 
+			
+			//pageNum에 따른 cri.amount 단위의 시작페이지, 끝페이지를 구함
+			var endPageNum = Math.ceil(cri.pageNum / pageCount) * pageCount;// javascript 에서 pageNum / cri.amount 결과는 그냥 0.1 
+			var startPageNum = endPageNum - (pageCount-1);
+			var lastPageNum = Math.ceil(totalCount / cri.amount	);
+			
+			var isNeedFirst = cri.pageNum > 5;
+			var isNeedPrev = (startPageNum != 1);
+			var isNeedNext = false;
+			var isNeedEnd = true; 
+			
+			//5단위의 endPageNum을 그대로 사용하면 안되는 경우 endPageNum을 다시구함 
+			if(lastPageNum <= endPageNum){
+				endPageNum = lastPageNum;
+				isNeedEnd = false;
+			}
+			
+			
+			if(endPageNum < lastPageNum){
+				isNeedNext = true;
+			}
+			
+			// str을 만듬.
+			str += "<ul class='pagination pull-right'>";
+			
+			if(isNeedFirst){
+				str += "<li class='page-item'><a class='page-link d-flex align-items-center px-2' href='" + 1 +"'>";
+				str += "<svg width='20' height='20' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor'>";
+				str += "<path xmlns='http://www.w3.org/2000/svg' id='svg_1' clip-rule='evenodd' d='m9.49241,5.293a1,1 0 0 1 0,1.414l-3.293,3.293l3.293,3.293a1,1 0 0 1 -1.414,1.414l-4,-4a1,1 0 0 1 0,-1.414l4,-4a1,1 0 0 1 1.414,0z' fill-rule='evenodd'/>";
+				str += "<path xmlns='http://www.w3.org/2000/svg' id='svg_2' clip-rule='evenodd' d='m15.48719,5.37988a1,1 0 0 1 0,1.414l-3.293,3.293l3.293,3.293a1,1 0 0 1 -1.414,1.414l-4,-4a1,1 0 0 1 0,-1.414l4,-4a1,1 0 0 1 1.414,0z' fill-rule='evenodd'/>";
+				str += "</svg>";
+				str += "</a></li>";
+			}
+			
+			//이전 버튼 출력여부에 따라 버튼 표시
+			if(isNeedPrev){
+				str += "<li class='page-item'><a class='page-link d-flex align-items-center px-2' href='" + (startPageNum-1) +"'>";
+				str += "<svg width='20' height='20' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor'>";
+				str += "<path fill-rule='evenodd' d='M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z' clip-rule='evenodd'></path>";
+				str += "</svg>";
+				str += "</a></li>"; 
+			}
+			
+			//가운데 숫자 출력
+			for(var i = startPageNum; i <= endPageNum; i++){
+				var active = (cri.pageNum == i ? "active" : "");
+				str += "<li class='page-item " + active +"'>" + "<a class='page-link' href='"+ i +"'>" + i + "</a></li>";
+			}
+			
+			//다음 버튼 출력여부에 따라 버튼 표시
+			if(isNeedNext){
+				str += "<li class='page-item'><a class='page-link d-flex align-items-center px-2' href='" + (endPageNum + 1) +"'>";
+				str += "<svg width='20' height='20' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor'>";
+				str += "<path fill-rule='evenodd' d='M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z' clip-rule='evenodd'></path>";
+				str += "</svg>";
+				str += "</a></li>";
+			}
+			
+			if(isNeedEnd){
+				str += "<li class='page-item'><a class='page-link d-flex align-items-center px-2' href='" + lastPageNum +"'>";
+				str += "<svg width='20' height='20' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor'>";
+				str += "<path id='svg_1' clip-rule='evenodd' d='m4.29467,14.707a1,1 0 0 1 0,-1.414l3.293,-3.293l-3.293,-3.293a1,1 0 0 1 1.414,-1.414l4,4a1,1 0 0 1 0,1.414l-4,4a1,1 0 0 1 -1.414,0z' fill-rule='evenodd'/>";
+				str += "<path id='svg_2' clip-rule='evenodd' d='m10.68001,14.87357a1,1 0 0 1 0,-1.414l3.293,-3.293l-3.293,-3.293a1,1 0 0 1 1.414,-1.414l4,4a1,1 0 0 1 0,1.414l-4,4a1,1 0 0 1 -1.414,0z' fill-rule='evenodd'/>";
+				str += "</svg>";
+				str += "</a></li>";
+			}
+			
+			str += "</ul></div>";
+			
+			$('#'+ location).html(str);
+		}
+		
+		$("#itemPageNation").on("click", "li a", function(e){
+			e.preventDefault(); // 번호를 눌러도 페이지가 이동하지 않도록 a태그 기능 무력화
+			pageNum = $(this).attr("href");
+			drawItem({pageNum : pageNum});
+		});
 	})();
 	
 	// 입고 창고 선택
 	(function() {
 		document.querySelectorAll('.cell2').forEach(elem => {
-			
 			elem = makeElement(elem, {'data-bs-target': '#movementItem', 'data-bs-toggle': 'modal', 'data-bs-dismiss': 'modal'});
-			
 			elem.addEventListener('click', async event => {
 				
 				const cell = event.target.closest('li');
@@ -489,56 +575,50 @@
 							cell_no: cell_no
 						})
 				}
-				const jsonData = await getJsonData(url, attr);
+				await getJsonData(url, attr, (jsonData) => {
+					modal1_form.ware2.value = jsonData['ware_name'];
+				 	modal1_form.ware2.setAttribute('data-no', jsonData['ware_no'])
+					modal1_form.area2.value = jsonData['area_name'];
+					modal1_form.area2.setAttribute('data-no', jsonData['area_no'])
+					modal1_form.rack2.value = jsonData['rack_name'];
+					modal1_form.rack2.setAttribute('data-no', jsonData['rack_no'])
+					modal1_form.cell2.value = jsonData['cell_name'];
+					modal1_form.cell2.setAttribute('data-no', jsonData['cell_no'])
+				});
 				
-				modal1_form.ware2.value = jsonData['ware_name'];
-			 	modal1_form.ware2.setAttribute('data-no', jsonData['ware_no'])
-				modal1_form.area2.value = jsonData['area_name'];
-				modal1_form.area2.setAttribute('data-no', jsonData['area_no'])
-				modal1_form.rack2.value = jsonData['rack_name'];
-				modal1_form.rack2.setAttribute('data-no', jsonData['rack_no'])
-				modal1_form.cell2.value = jsonData['cell_name'];
-				modal1_form.cell2.setAttribute('data-no', jsonData['cell_no'])
 			});
 		});
-		
-		async function getJsonData(url, attr) {
-			const data = await fetch(url, attr);
-			const jsonData = await data.json();
-			return jsonData;
-		}
-		function makeElement(elem, attr, event) {
-			const e = typeof elem === 'string' &&  document.createElement(elem) || elem;
-			attr && Object.keys(attr).forEach((key, index) => {
-				let value = attr[key];
-				if(key === 'class') {
-					const classes = value.split(' ');
-					classes.map(c => {
-						e.classList.add(c);
-					})
-				}
-				else {
-					e.setAttribute(key, value);
-				}
-			});
-			event && e.addEventListener(event.type, event.event);
-			return e;
-		}
 	})();
 	
-    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    // 유효성검사
     void(function() {
     	
       document.querySelectorAll('.needs-validation').forEach(form => {
         form.addEventListener('submit', event => {
         	
+        	// 창고 유효성 검사
         	const war1 = document.querySelector('input[name="ware1"]');
         	war1.value === '' ? war1.classList.add('is-invalid') : war1.classList.remove('is-invalid');
         	const war2 = document.querySelector('input[name="ware2"]');
         	war2.value === '' ? war2.classList.add('is-invalid') : war2.classList.remove('is-invalid');
         	
+        	// 개수 유효성 검사
+        	const cnt1 = document.querySelector('input[name="haveQty"]');
+        	const cnt2 = document.querySelector('input[name="qty"]');
+        	const qty_feedback = document.querySelector('.qty-feedback');
+        	
+        	let boolcnt = Number(cnt1.value) < Number(cnt2.value);
+        	if(boolcnt) {
+        		qty_feedback.innerHTML = '개수가 초과되었습니다.';
+        		cnt2.classList.add('is-invalid');
+        	}
+        	else {
+        		qty_feedback.innerHTML = '개수를 선택해 주세요.';
+        		cnt2.classList.remove('is-invalid')
+        	}
+        	
         	// 유효성 검사
-          	if (!form.checkValidity() || war1.value === '' || war2.value === '') {
+          	if (!form.checkValidity() || war1.value === '' || war2.value === '' || boolcnt) {
               event.preventDefault()
            	  event.stopPropagation()
 	          form.classList.add('was-validated');
@@ -556,13 +636,33 @@
          	event.stopPropagation()
         });
       });
-      
-	 	async function getJsonData(url, attr) {
-			const data = await fetch(url, attr);
-			const jsonData = await data.json();
-			return jsonData;
-		}
     })()
+    
+    // 태그 생성
+   	function makeElement(elem, attr, event) {
+		const e = typeof elem === 'string' &&  document.createElement(elem) || elem;
+		attr && Object.keys(attr).forEach((key, index) => {
+			let value = attr[key];
+			if(key === 'class') {
+				const classes = value.split(' ');
+				classes.map(c => {
+					e.classList.add(c);
+				})
+			}
+			else {
+				e.setAttribute(key, value);
+			}
+		});
+		event && e.addEventListener(event.type, event.event);
+		return e;
+	}
+    
+ 	// fetch를 이용한 비동기 통신
+ 	async function getJsonData(url, attr, callback) {
+		const data = await fetch(url, attr);
+		const jsonData = await data.json();
+		callback(jsonData);
+	}
     
     // 숫자에 컴마 찍기
    	function transformNumberDot(number) {
