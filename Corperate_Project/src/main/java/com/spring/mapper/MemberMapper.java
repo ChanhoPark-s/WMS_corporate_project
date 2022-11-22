@@ -25,6 +25,8 @@ public interface MemberMapper {			// 게시물 조회
 
 	public int check_user(MemberVO membervo);
 	
+	public MemberVO selectOneByNo(int no);
+	
 	public int idcheck(String id);
 	
 	public int getTotalCount(SearchVO searchvo);

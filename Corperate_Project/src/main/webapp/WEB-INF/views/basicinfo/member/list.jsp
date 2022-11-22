@@ -67,6 +67,14 @@ pageEncoding="UTF-8"%>
                   </tr>
                 </thead>
                 <tbody>
+	                <tr>
+	                	<td>
+	                		<!--선택 삭제할때도 넘어가게하기 위해  -->
+							<input type="hidden" name="keyword" id="keyword3" >
+							<input type="hidden" name="whatColumn" id="whatColumn2">
+	             			<input type="hidden" name="pageNumber" id="pageNumber2">
+	                	</td>
+	                </tr>
                 <c:forEach items="${requestScope.list }" var="member">
                 	<tr>
                 	<td>								<input class="form-check-input" type="checkbox" id="rowcheck" name="rowcheck" value="${member.no }"></td>
@@ -405,6 +413,10 @@ pageEncoding="UTF-8"%>
 			}
 		}
 	function selectDelete(){
+		
+		document.getElementById('keyword3').value=$('#keyword').val();
+		document.getElementById('whatColumn2').value=$('#whatColumn').val();
+		document.getElementById('pageNumber2').value=$('#pageNumber').val();
 		
 		x=false;
 		var rc = document.f.rowcheck;

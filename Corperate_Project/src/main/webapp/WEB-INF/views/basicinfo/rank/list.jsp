@@ -63,6 +63,14 @@
 					</tr>
 				</thead>
 				<tbody>
+					 	<tr>
+		                	<td>
+		                		<!--선택 삭제할때도 넘어가게하기 위해  -->
+								<input type="hidden" name="keyword" id="keyword3" >
+								<input type="hidden" name="whatColumn" id="whatColumn2">
+		             			<input type="hidden" name="pageNumber" id="pageNumber2">
+		                	</td>
+		                </tr>
 					<c:forEach var="vo" items="${ranks}">
 						<tr class="rank-${vo.no }">
 							<td>
@@ -125,9 +133,11 @@
                   <div class="mb-3">
                     <label for="userEmail" class="form-label">직급이름</label>
                     <input type="text" name="name" class="form-control" id="userEmail" required>
+                    <div class="invalid-feedback">User id is required.</div>
+                   	<!-- 수정 했을 때 넘기기 위해 -->
+	         		<input type="hidden" name="pageNumber" id="pageNumber" value="${pageInfo.pageNumber }">
                     <div class="invalid-feedback">직급이름을 입력하세요.</div>
                   </div>
-                  	<input type="hidden" name="pageNumber" id="pageNumber" value="${pageInfo.pageNumber }">
 					<!-- 수정했을때도 가게 만들기위해 -->
 					<input type="hidden" name="keyword" id="keyword2" value="${searchvo.keyword }">
 					<input type="hidden" name="whatColumn" id="whatColumn" value="${searchvo.whatColumn }">
@@ -266,6 +276,10 @@
 			}
 		}
 	function selectDelete(){
+		
+		document.getElementById('keyword3').value=$('#keyword').val();
+		document.getElementById('whatColumn2').value=$('#whatColumn').val();
+		document.getElementById('pageNumber2').value=$('#pageNumber').val();
 		
 		x=false;
 		var rc = document.f.rowcheck;

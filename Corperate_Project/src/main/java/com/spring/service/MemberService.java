@@ -15,8 +15,10 @@ public interface MemberService {
 
 
 	public void insert(MemberVO member, HttpServletRequest request) throws Exception;
-
+	
 	public List<MemberVO> list(Client_Paging pageInfo);
+  
+	public MemberVO getMemberByNo(int no);
 
 	public MemberVO get(int no);
 

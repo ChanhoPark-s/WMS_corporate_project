@@ -39,4 +39,9 @@ public class MemberRestController {
 		
 		return new ResponseEntity<>(service.getListPage(cri), HttpStatus.OK);		
 	}
+	
+	@GetMapping(value={"/{no}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<MemberVO> getMember(@PathVariable("no") int no) {
+		return new ResponseEntity<>(service.getMemberByNo(no), HttpStatus.OK);		
+	}
 }

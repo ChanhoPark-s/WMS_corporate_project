@@ -4,14 +4,14 @@
 <!-- Modal 코드 넣을 위치 -->
 <div class="modal fade" id="addOrderSheetModal" tabindex="-1">
 	<div class="modal-dialog modal-dialog-scrollable modal-lg">
-		<div class="modal-content">
+		<div class="modal-content" style="width: ">
 			<div class="modal-header border-0">
 				<h5 id="modal-title">발주서 등록</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
 			</div>
 			<!-- form start -->
-			<form class="needs-validation" novalidate id="modal1form" action="/insert.ps" method="post">
+			<form class="needs-validation" novalidate="" id="modal1form" action="/insert.ps" method="post">
 				<div class="modal-body">
 						<!-- 컨트롤러로 넘기는 정보 -->
 						<!-- out_day -->
@@ -22,24 +22,23 @@
 						<!-- input type='text' name='amount' -->
 						
 						<div class="row">		
-							<div class="col-sm-5">
+							<div class="col-sm-6">
 								<label for="userFullname" class="form-label">납기일자</label>
-								<div class="row">
-									<div class="col">
-										<input type="date" name="delivery_date" class="form-control">
-									</div>
-								</div>
+									<input type="date" name="delivery_date" class="form-control">
+							</div>
+							<div class="col-sm-3">
+								<label for="userFullname" class="form-label">&nbsp;&nbsp;</label>
+								<button type="button" class="btn btn-primary" style="display:block" data-bs-target="#secondModal" data-bs-toggle="modal" data-bs-dismiss="modal" id="choiceOrderBtn">수주서 선택</button>	
 							</div>
 						</div>
-						
-						<div class="row">		
+						<div class="row" >		
 							<div class="col-sm-3">		
 								<label for="userFullname" class="form-label">부서명</label>
 								<input type="text" id="member_dep_name" class="form-control" readonly >
 							</div>
-							<div class="col-sm-3">
+							<div class="col-sm-3 has-validation">
 								<label for="userFullname" class="form-label">담당자명</label>
-								<input type="text" id="member_name" class="form-control" readonly required>
+								<input type="text" id="member_name" class="form-control" readonly required="">
 							</div>
 							<div class="col-sm-4">	
 								<label for="userFullname" class="form-label">&nbsp;&nbsp;</label>
@@ -99,9 +98,9 @@
 										</c:forEach>
 					                </select>
 								</div>
-								<div class="col-sm-1">	
-									<label for="userFullname" class="form-label">&nbsp;&nbsp;</label>
-									<button type="button" class="btn btn-primary deleteItemBtn" style="display:block">삭제</button>	
+								<div class="col-sm-1">
+								<label for="" class="form-label">&nbsp;&nbsp;</label>	
+									<button type="button" class="btn btn-primary deleteItemBtn" style="display:block">X</button>	
 								</div>
 							</div>
 							
@@ -110,25 +109,14 @@
 				</div>
 				<div class="modal-footer border-0">
 					<button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
-					<button type="submit" form="modal1form" id="modalRegisterBtn" class="btn btn-primary px-5">등록</button>		
+					<button type="button" form="modal1form" id="modalRegisterBtn" class="btn btn-primary px-5">등록</button>		
 				</div>
 			</form>
 			<!-- form end -->
+			
+			
+			
+			
 		</div>
 	</div>
 </div>
-<script>
-    // Example starter JavaScript for disabling form submissions if there are invalid fields
-    void(function() {
-      document.querySelectorAll('.needs-validation').forEach(form => {
-        form.addEventListener('submit', event => {
-	       	alert(form.checkValidity());
-          if (!form.checkValidity()) {
-            event.preventDefault()
-            event.stopPropagation()
-          }
-          form.classList.add('was-validated')
-        })
-      })
-    })()
-</script>
