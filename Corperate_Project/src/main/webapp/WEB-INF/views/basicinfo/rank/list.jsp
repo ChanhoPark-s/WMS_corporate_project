@@ -8,16 +8,25 @@
 	<div class="card-body">
             <div class="d-flex gap-1 mb-4 flex-wrap">
               <div class="d-flex gap-1 me-auto flex-wrap">
-                <button class="btn btn-primary d-inline-flex align-items-center gap-1 insert" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                <button class="btn btn-primary d-inline-flex align-items-center gap-1 insert" data-bs-toggle="modal" data-bs-target="#addUserModal" style="height: 40px;">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                     <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
                   </svg>
                   직급등록
                 </button>
-                <button class="btn btn-light d-inline-flex align-items-center gap-1" onclick="selectDelete()"><i class="fa-regular fa-trash-can"></i></button>
+                <button class="btn btn-light d-inline-flex align-items-center gap-1" onclick="selectDelete()" style="height: 40px";>
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+					  <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
+					</svg>
+					선택삭제
+                </button>
               </div>
 			<div class="search">
 			<form name="search" action="/basicinfo/rank/list" id="search">
+            <!--선택 삭제할때도 넘어가게하기 위해  -->
+			<input type="hidden" name="keyword" id="keyword3" >
+			<input type="hidden" name="whatColumn" id="whatColumn2">
+          	<input type="hidden" name="pageNumber" id="pageNumber2">
 			<table>
 			<tr>
 				<td>
@@ -63,14 +72,6 @@
 					</tr>
 				</thead>
 				<tbody>
-					 	<tr>
-		                	<td>
-		                		<!--선택 삭제할때도 넘어가게하기 위해  -->
-								<input type="hidden" name="keyword" id="keyword3" >
-								<input type="hidden" name="whatColumn" id="whatColumn2">
-		             			<input type="hidden" name="pageNumber" id="pageNumber2">
-		                	</td>
-		                </tr>
 					<c:forEach var="vo" items="${ranks}">
 						<tr class="rank-${vo.no }">
 							<td>
@@ -92,7 +93,7 @@
 												d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
 			                          </svg>
 									</button>
-									<button type="button" class="btn btn-light d-flex text-danger delete" data-bs-toggle="modal" data-bs-target="#deleteRankModal" data-no="${vo.no }">
+									<button type="button" class="btn btn-light d-flex text-danger delete" data-no="${vo.no }">
 										<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
 											fill="none" viewBox="0 0 24 24" stroke="currentColor"
 											aria-hidden="true">
@@ -133,7 +134,6 @@
                   <div class="mb-3">
                     <label for="userEmail" class="form-label">직급이름</label>
                     <input type="text" name="name" class="form-control" id="userEmail" required>
-                    <div class="invalid-feedback">User id is required.</div>
                    	<!-- 수정 했을 때 넘기기 위해 -->
 	         		<input type="hidden" name="pageNumber" id="pageNumber" value="${pageInfo.pageNumber }">
                     <div class="invalid-feedback">직급이름을 입력하세요.</div>
@@ -151,41 +151,7 @@
           </div>
         </div>
         
-                <!-- 삭제모달 -->
-        <div class="modal fade" id="deleteRankModal" tabindex="-1">
-          <div class="modal-dialog modal-dialog-scrollable">
-            <div class="modal-content">
-              <div class="modal-header border-0">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-		        <div class="col-md-7">
-		            <h3 class="fw-black">정말 삭제하시겠습니까?</h3>
-		            <div class="modal fade" id="exampleModalLg" tabindex="-1" aria-labelledby="exampleModalLgLabel" aria-hidden="true">
-		              <div class="modal-dialog modal-lg">
-		                <div class="modal-content">
-		                  <div class="modal-header">
-		                    <h5 class="modal-title h4" id="exampleModalLgLabel">Large modal</h5>
-		                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-		                  </div>
-		                  <div class="modal-body">
-		                    ...
-		                  </div>
-		                </div>
-		              </div>
-		            </div>
-		          </div>
-          		</div>
-              <div class="modal-footer border-0">
-	              <button type="button" class="btn btn-light delete" data-bs-dismiss="modal">취소</button>
-	              <form name="delete_rank">
-	              	<button type="submit" class="btn btn-primary px-5">삭제</button>
-	              </form>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- 삭제모달 끝 -->
+<form name="delete_rank"></form>
 <script type="text/javascript">
 
 	$(function(){
@@ -247,13 +213,15 @@
 		// 직급 삭제
 		document.querySelectorAll('.delete').forEach(elem => {
 			elem.addEventListener('click', (event) => {
-				
+				if(confirm("삭제하시겠습니까?")) {
 					let target = event.target;
 					target = target.nodeName == 'BUTTON' ? target : target.nodeName == 'svg' ? target.parentElement : target.parentElement.parentElement;
 					const dataset = target.dataset;
 					const no = dataset.no;
 					
 					delete_rank.action = 'delete/' + no;
+					delete_rank.submit();
+				}
 			});
 		});
 		
