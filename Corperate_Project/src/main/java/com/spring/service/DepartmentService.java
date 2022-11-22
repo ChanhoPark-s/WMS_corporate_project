@@ -14,4 +14,5 @@ public interface DepartmentService {
 	public void delete(int no);
 	public int getTotalCount(SearchVO vo);
 	public List<DepartmentVO> noSearchList();
+	public int selectDelete(String[] parameterValues);
 }

@@ -7,74 +7,58 @@
 <!-- 상단 -->
 <div class="card">
 	<div class="card-body">
+		<!-- <div class="d-flex gap-1 mb-4 flex-wrap">
+			<form action="/sell/origin/sellstatus" method="get"> 
+			<table>
+			<tr>
+				<td><select name="whatColumn" id="whatColumn" class="dselect form-select" data-dselect-clearable="true">
+					<option value="">선택</option>
+					<option value="item_name">품목명</option>
+				</select></td>
+				<td>
+				<input type="text" class="form-control" placeholder="입력 후 Enter" name="keyword" id="keyword">
+				</td>
+			</tr>
+			</table>
+			</form>
+		</div> -->
 		<div class="table-responsive my-1">
-			<table class="table align-middle">
+			<table class="table align-middle" id="table">
 				<thead>
 				
 					<tr>
-						<th scope="col">판매번호</th>
+						<th scope="col" style="display:none">판매번호</th>
 						<th scope="col">품목명</th>
+						<th scope="col">판매수량</th>
 						<th scope="col">입고단가</th>
 						<th scope="col">출고단가</th>
-						<th scope="col">판매수량</th>
-						<th scope="col">판매일</th>
 						<th scope="col">이익</th>
 					</tr>
 				</thead>
 				<tbody>
-				<c:forEach var="status" items="${lists}">
+				<c:forEach var="status" items="${dlists}">
 					<tr>
-						<td>${status.no} </td>
-						<td>${status.item_name }</td>
-						<td><fmt:formatNumber pattern="###,###" value="${status.item_in_price}" var="in_price"/>${in_price} 원</td>
-						<td><fmt:formatNumber pattern="###,-###" value="${status.item_out_price}" var="out_price"/>${out_price} 원</td>
-						<td>${status.amount }개</td>
-						<td><fmt:formatDate pattern="yyyy-MM-dd" value="${status.sell_day }"/></td>
-						<td></td>
+					<td style="display:none">${status.no}</td>
+					<td style="display:none">${status.item_no}</td>
+					<td>${status.item_name}</td>
+					<td>${status.amount}</td>
+					<td>
+					<fmt:formatNumber pattern="###,###" value="${status.in_price}" var="in_price"/>${in_price} 원</td>
+					<td>
+					<fmt:formatNumber pattern="###,###" value="${status.out_price}" var="out_price"/>${out_price} 원</td>
+					<td><fmt:formatNumber pattern="###,###" value="${(status.out_price - status.in_price)*status.amount}" var="out_price"/>${out_price} 원</td>
 					</tr>
 				</c:forEach>
 				</tbody>
 			</table>
 		</div>
-		<nav aria-label="Page navigation borderless example">
-			<ul class="pagination pagination-borderless justify-content-end">
-				<li class="page-item disabled"><a
-					class="page-link d-flex align-items-center px-2" href="#"
-					tabindex="-1" aria-disabled="true" aria-label="Previous"> <svg
-							width="20" height="20" xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd"
-								d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-								clip-rule="evenodd"></path>
-                    </svg>
-				</a></li>
-				<li class="page-item active" aria-current="page"><a
-					class="page-link" href="javascript:void(0)">1</a></li>
-				<li class="page-item"><a class="page-link"
-					href="javascript:void(0)">2</a></li>
-				<li class="page-item"><a class="page-link"
-					href="javascript:void(0)">3</a></li>
-				<li class="page-item"><a
-					class="page-link d-flex align-items-center px-2"
-					href="javascript:void(0)" aria-label="Next"> <svg width="20"
-							height="20" xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd"
-								d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-								clip-rule="evenodd"></path>
-                    </svg>
-				</a></li>
-			</ul>
-		</nav>
+
+		<div align="center">
+			${pageInfo.pagingHtml}
+		</div>
 	</div>
 </div>
 
-<br>
-
-
-
-
-
 <!-- bottom.jsp -->
 <%@include file="../../common/bottom.jsp"%>
-
+<br>

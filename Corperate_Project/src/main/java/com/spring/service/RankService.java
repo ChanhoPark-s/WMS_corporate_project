@@ -19,4 +19,6 @@ public interface RankService {
 	public int getTotalCount(SearchVO vo);
 
 	public List<RankVO> noSearchList();
+
+	public int selectDelete(String[] parameterValues);
 }

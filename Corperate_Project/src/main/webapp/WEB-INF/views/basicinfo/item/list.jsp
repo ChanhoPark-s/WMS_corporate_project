@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
+ 
 <style>
 table th {
 	text-align: center;
@@ -70,7 +70,7 @@ table td {
 						<th scope="col">품목</th>
 						<th scope="col">입고단가</th>
 						<th scope="col">출고단가</th>
-						<th scope="col">수정/삭제</th>
+						<th scope="col">기능</th>
 					</tr>
 				</thead>
 				<tbody>

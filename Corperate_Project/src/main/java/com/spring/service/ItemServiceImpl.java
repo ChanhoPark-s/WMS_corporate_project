@@ -124,6 +124,10 @@ public class ItemServiceImpl implements ItemService{
 	@Override
 	public int selectDelete(String[] parameterValues) {
 		return mapper.selectDelete(parameterValues);
-		
+	}
+	
+	@Override
+	public int getPrice(int no) {
+		return mapper.getPrice(no);
 	}
 }

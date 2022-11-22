@@ -70,4 +70,11 @@ public class RankController {
 	public List<RankVO> noSearchList(Model model) {				
 		return service.noSearchList();
 	}
+	
+	@PostMapping("/selectDelete")
+	public String selectDelete(HttpServletRequest request){
+		
+		service.selectDelete(request.getParameterValues("rowcheck"));
+		return "redirect:/basicinfo/rank/list";
+	}
 }

@@ -44,7 +44,6 @@
           </div>
           <span id="msg"></span>
           <button type="button" class="btn btn-primary w-100" id="check_user">로그인</button>
-          <input type="button" value="home" class="btn btn-primary w-100" onclick="location.href='/home'">
           <div class="divider-text"></div>
         </form>
       </div>

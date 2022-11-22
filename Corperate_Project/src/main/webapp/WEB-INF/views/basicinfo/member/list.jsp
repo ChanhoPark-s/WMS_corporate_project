@@ -14,6 +14,7 @@ pageEncoding="UTF-8"%>
                   </svg>
                   사원등록
                 </button>
+                <button class="btn btn-light d-inline-flex align-items-center gap-1" onclick="selectDelete()"><i class="fa-regular fa-trash-can fa-1.5x"></i></button>
               </div>
        		<div class="search">
 			<form name="search" action="/basicinfo/member/list" id="search">
@@ -45,9 +46,15 @@ pageEncoding="UTF-8"%>
 			</div>
             </div>
             <div class="table-responsive my-1">
+            <form name="f" action="/basicinfo/member/selectDelete" method="post">
               <table class="table align-middle">
                 <thead>
                   <tr>
+                  	<th scope="col">
+						<div>
+							<input class="form-check-input" type="checkbox" id="allselect" name="allselect" onclick="allSelect()">
+						</div>
+					</th>
                     <th scope="col">번호</th>
                     <th scope="col">프로필사진</th>
                     <th scope="col">이름</th>
@@ -56,12 +63,13 @@ pageEncoding="UTF-8"%>
                     <th scope="col">부서</th>
                     <th scope="col">직급</th>
                     <th scope="col">최초등록일</th>
-                    <th scope="col">Actions</th>
+                    <th scope="col">기능</th>
                   </tr>
                 </thead>
                 <tbody>
                 <c:forEach items="${requestScope.list }" var="member">
                 	<tr>
+                	<td>								<input class="form-check-input" type="checkbox" id="rowcheck" name="rowcheck" value="${member.no }"></td>
                     <td>
                       <div class="d-flex align-items-center gap-3">
                         ${member.no }
@@ -129,6 +137,7 @@ pageEncoding="UTF-8"%>
                   
                 </tbody>
               </table>
+              </form>
             </div>
             <div align="center">
 				${pageInfo.pagingHtml}
@@ -388,6 +397,41 @@ pageEncoding="UTF-8"%>
     
     function searchForm(){
 		search.submit();
+	}
+	/* 체크박스 */
+	function allSelect(){
+		var ac = document.f.allselect;
+		var rc = document.f.rowcheck;
+
+		if (ac.checked) {
+				for (var i = 0; i < rc.length; i++) {
+					rc[i].checked = true;
+				}
+			}
+		else {
+				for (var i = 0; i < rc.length; i++) {
+					rc[i].checked = false;
+				}
+			}
+		}
+	function selectDelete(){
+		
+		x=false;
+		var rc = document.f.rowcheck;
+		
+		for(var i=0;i<rc.length;i++){
+			if(rc[i].checked==true){
+				x=true;
+			}
+		}
+		if(!x){
+			alert("체크박스를 선택하세요");
+			return;
+		}
+		if(confirm("삭제하시겠습니까?")){
+			f.submit();
+		}
+
 	}
   </script>
   

@@ -9,15 +9,12 @@
         <nav class="navbar navbar-expand navbar-light bg-white small shadow-sm">
           <!-- 여기부터 우측 하단부 -->
           <span class="navbar-text">
-            2021 &copy; Mimity admin
+            2022 &copy; WMS_Project
           </span>
           <!-- 여기부터 좌측 하단부 -->
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
-              <a href="javascript:void(0)" class="nav-link">About</a>
-            </li>
-            <li class="nav-item">
-              <a href="javascript:void(0)" class="nav-link">Help</a>
+              <a onclick="alert('박찬섭 과장 [010-2467-5754]')" class="nav-link">Help</a>
             </li>
           </ul>
         </nav>

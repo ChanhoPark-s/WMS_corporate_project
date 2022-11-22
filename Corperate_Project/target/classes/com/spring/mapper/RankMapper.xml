@@ -40,4 +40,11 @@
 		select * from rank
 		order by no desc
 	</select>
+	
+	<delete id="selectDelete">
+		delete rank where no in 
+		<foreach collection="array" item="arr" open='(' close=")" separator=",">
+		#{arr}
+		</foreach>
+	</delete>
 </mapper>

@@ -23,4 +23,5 @@ public interface ItemMapper {
 	/* ajax paging */
 	public List<ItemVO> getListWithPaging(@Param("cri") Criteria cri);
 	public int getCountAll(@Param("cri") Criteria cri);
+	public int getPrice(int no);
 }

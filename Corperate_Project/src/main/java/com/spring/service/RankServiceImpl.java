@@ -47,4 +47,9 @@ public class RankServiceImpl implements RankService{
 		return mapper.noSearchList();
 	}
 
+	@Override
+	public int selectDelete(String[] parameterValues) {
+		return mapper.selectDelete(parameterValues);
+	}
+
 }
