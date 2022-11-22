@@ -4,8 +4,16 @@
 <!-- top.jsp -->
 <%@include file="/WEB-INF/views/common/top.jsp" %>
 
-<style type="text/css">
+<style>
+table th {
+	text-align: center;	
+	font-size: 14px;
+}
 
+table td {
+	text-align: center;
+	font-size: 14px;
+}
 </style>
 
 <div class="card">
@@ -707,4 +715,11 @@
         })
       })
     })()
+</script>
+
+<script type="text/javascript">
+	/* 왼쪽 카테고리창이 해당화면에 맞게 펼쳐지게 하는 코드 */
+	$(function(){ 
+		document.getElementById('basicinfo').click();
+	});
 </script>

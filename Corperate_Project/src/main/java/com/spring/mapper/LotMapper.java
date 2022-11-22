@@ -12,7 +12,7 @@ import com.spring.paging.Client_Paging;
 public interface LotMapper {
 	public int getTotalCount(SearchVO searchvo);
 	public ArrayList<LotVO> GetAll(Client_Paging pageInfo);
-	public int deleteOne(String item_no);
+	public int deleteOne(String lot_no);
 	public LotVO getOne(String code);
 	public List<LotVO> getLot(int no);
 }

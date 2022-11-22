@@ -4,6 +4,18 @@
 <!-- top.jsp -->
 <%@include file="../../common/top.jsp"%>
 
+<style>
+table th {
+	text-align: center;	
+	font-size: 14px;
+}
+
+table td {
+	text-align: center;
+	font-size: 14px;
+}
+</style>
+
 <!-- Main body -->
       <div id="main-body">
 
