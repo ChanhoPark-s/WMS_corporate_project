@@ -3,6 +3,7 @@ package com.spring.mapper;
 
 import java.util.List;
 
+import com.spring.domain.SellDetailVO;
 import com.spring.domain.SellVO;
 
 public interface SellMapper {
@@ -13,6 +14,8 @@ public interface SellMapper {
 
 		public void delete(int no); 
 		
-		public void update(SellVO sell); 
+		public void update(SellVO sell);
+
+		public List<SellDetailVO> getSubList(int mainNo); 
 	
 }

@@ -92,4 +92,13 @@ public class ClientServiceImpl implements ClientService{
 		
 		return pageDTO;
 	}
+
+
+	@Override
+	public SearchVO replaceSearchvo(SearchVO searchvo) {
+		searchvo.setKeyword(searchvo.getKeyword().replace(",",""));
+		searchvo.setWhatColumn(searchvo.getWhatColumn().replace(",",""));
+		searchvo.setPageNumber(searchvo.getPageNumber().replace(",",""));
+		return searchvo;
+	}
 }

@@ -22,4 +22,9 @@ public class Input_WareHouse_DetailServiceImpl implements Input_WareHouse_Detail
 	public int insert(Input_WareHouse_DetailVO vo) {
 		return mapper.insert(vo);
 	}
+
+	@Override
+	public List<Input_WareHouse_DetailVO> getSubList(int mainNo) {
+		return mapper.selectSubAllByMainNo(mainNo);
+	}
 }

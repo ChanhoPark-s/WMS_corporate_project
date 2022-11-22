@@ -12,11 +12,11 @@
             <div class="card h-100">
               <div class="card-body navbar-light">
                 <!-- 좌측영역에넣을테이블 -->
-<div class="col-md-10">
+<div class="col-md-12">
             <h3 class="fw-black">창고정보 관리</h3>
-            <p>창고, 구역, 랙, 셀 목록</p>
+            <p>창고, 구역, 랙, 셀 목록을 클릭하여 정보확인</p>
             
-         <ul class="nav flex-column">
+         <ul class="nav flex-column" style=" height: 600px; overflow: auto">
           <li class="nav-item">
            <a href="#default-collapse1" class="nav-link px-0 dropdown-toggle d-flex align-items-center gap-3" data-bs-toggle="collapse" role="button" aria-expanded="true" aria-controls="default-collapse"
             	id="mydefault" data-value="0" onclick="clickFunction(this.id)">
@@ -27,7 +27,7 @@
            </a>
            
            <!-- 창고 -->
-           <div class="ms-5 collapse show" id="default-collapse">
+           <div class="ms-5 collapse show" id="default-collapse1">
            <!-- 상단부터 창고목록위해 추가된것으로 삭제시 좌측테이블 초기상태 -->
             <ul class="nav flex-column">
               <c:forEach items="${warehouseLists }" var="warehouseLists" varStatus="warehousestatus">
@@ -166,13 +166,21 @@
 				</button>
 			</div>
 		</div>
-		
+		<div class="d-flex gap-1 mb-1 flex-wrap">
+			<h3 id="clicked_location">
+				<c:choose>
+					<c:when test="${current_location eq null}">창고목록</c:when>
+					<c:when test="${current_location eq 'undefined'}">창고목록</c:when>
+					<c:otherwise>${current_location }</c:otherwise>
+				</c:choose>
+			</h3>
+		</div>
 		<div class="table-responsive my-1">
 		<form name="form">
 			<table class="table align-middle">
 				<thead>
 					<tr>
-						<th scope="col">일련번호</th>
+						<th scope="col">번호</th>
 						<th scope="col">코드</th>
 						<th scope="col">위치명</th>
 						<th scope="col">기능</th>
@@ -181,12 +189,12 @@
 				<tbody id="tddata">
 					<c:forEach items="${lists }" var="lists" varStatus="status">
 					<tr>
-						<td>
+						<td style="width:15%;">
 							${status.count}
 						</td>
-						<td>${lists.code }</td>
-						<td>${lists.name }</td>
-						<td>
+						<td style="width:25%;">${lists.code }</td>
+						<td style="width:45%;">${lists.name }</td>
+						<td style="width:15%;">
 							<div class="btn-group btn-group-sm" role="group">
 								<button type="button" class="btn btn-light d-flex" id="updatewarehouse" onclick="updatefunction(${lists.no},
 								<c:choose>
@@ -259,6 +267,7 @@
 				<input type="hidden" name="sendno" id="sendno">
 				<input type="hidden" name="sendid" id="sendid">
 				<input type="hidden" name="showid" id="showid">
+				<input type="hidden" name="current_location" id="current_location">
 				
 					<div class="mb-3" id="warehouselocationtitle">
 						<label for="warehouselocation" class="form-label">상위창고위치</label>
@@ -343,8 +352,8 @@
 				</form>
 			</div>
 			<div class="modal-footer border-0">
-				<button type="submit" form="taskForm" class="btn btn-primary px-5" id="submit_btn">등록</button>
 				<button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
+				<button type="submit" form="taskForm" class="btn btn-primary px-5" id="submit_btn">등록</button>
 			</div>
 		</div>
 	</div>
@@ -359,6 +368,7 @@
 var id;
 var no;
 var showid;
+var current_location;
 $(function(){
 	
 	/* 왼쪽 카테고리창이 해당화면에 맞게 펼쳐지게 하는 코드 */
@@ -383,6 +393,7 @@ $(function(){
 	id = "${param.id}";
 	no =  "${param.no}";
 	showid =  "${param.showid}";
+	current_location =  "${param.current_location}";
 });
 
 
@@ -392,7 +403,7 @@ function clickFunction(clicked_id){
 	id = clicked_id;
 	showid = document.getElementById(clicked_id).getAttribute('href').substring(1); //등록수정삭제시 창고-셀 사이드바 보던 화면으로 가기 위한 변수
 	no = document.getElementById(clicked_id).getAttribute('data-value');
-
+	
 	//클릭시 showid설정
 	document.getElementById('showid').value = showid;
 
@@ -408,37 +419,97 @@ function clickFunction(clicked_id){
 			var mydata = JSON.parse(data);
 			$('#tddata *').remove();
 			var tabledata = "";
-			$.each(mydata,function(i){
-				tabledata +=	'<tr>'+
-									'<td>'+(i+1)+'</td>'+
-									'<td>'+mydata[i].code+'</td>'+
-									'<td>'+mydata[i].name+'</td>'+
-									'<td>'+
-										'<div class="btn-group btn-group-sm" role="group">'+
-											'<button type="button" class="btn btn-light d-flex" id=update'+id+' onclick="updatefunction('+mydata[i].no+',\'' +id+ '\')">'+
-												'<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"'+
-													'fill="none" viewBox="0 0 24 24" stroke="currentColor"'+
-													'aria-hidden="true">'+
-					                    '<path stroke-linecap="round"'+
-														'stroke-linejoin="round" stroke-width="2"'+
-														'd="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />'+
-					                  '</svg>'+
-											'</button>'+
-											'<button type="button" class="btn btn-light d-flex text-danger" id=delete'+id+' onclick="deletefunction('+mydata[i].no+',\'' +id+ '\')">'+
-												'<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"'+
-													'fill="none" viewBox="0 0 24 24" stroke="currentColor"'+
-													'aria-hidden="true">'+
-					                    '<path stroke-linecap="round"'+
-														'stroke-linejoin="round" stroke-width="2"'+
-														'd="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />'+
-					                  '</svg>'+
-											'</button>'+
-										'</div>'+
-									'</td>'+									
-								'</tr>';
-// 				rowcount = rowcount-1;
-				});
-			$("#tddata").append(tabledata);
+			if(mydata.length==0){
+				if(id.indexOf('ware')>=0){
+					tabledata +=	'<tr>'+
+										'<td colspan="4">'+'현재 선택한 창고는 하위 구역이 등록되어 있지 않습니다.'+'</td>'+
+									'</tr>';
+				}else if(id.indexOf('area')>=0){
+					tabledata +=	'<tr>'+
+										'<td colspan="4">'+'현재 선택한 구역은 하위 랙이 등록되어 있지 않습니다.'+'</td>'+
+									'</tr>';
+				}else{
+					tabledata +=	'<tr>'+
+										'<td colspan="4">'+'현재 선택한 랙은 하위 셀이 등록되어 있지 않습니다.'+'</td>'+
+									'</tr>';
+				}
+			}
+			else{
+				$.each(mydata,function(i){
+						tabledata +=	'<tr>'+
+											'<td style="width:15%;">'+(i+1)+'</td>'+
+											'<td style="width:25%;">'+mydata[i].code+'</td>'+
+											'<td style="width:45%;">'+mydata[i].name+'</td>'+
+											'<td style="width:15%;">'+
+												'<div class="btn-group btn-group-sm" role="group">'+
+													'<button type="button" class="btn btn-light d-flex" id=update'+id+' onclick="updatefunction('+mydata[i].no+',\'' +id+ '\')">'+
+														'<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"'+
+															'fill="none" viewBox="0 0 24 24" stroke="currentColor"'+
+															'aria-hidden="true">'+
+							                    '<path stroke-linecap="round"'+
+																'stroke-linejoin="round" stroke-width="2"'+
+																'd="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />'+
+							                  '</svg>'+
+													'</button>'+
+													'<button type="button" class="btn btn-light d-flex text-danger" id=delete'+id+' onclick="deletefunction('+mydata[i].no+',\'' +id+ '\')">'+
+														'<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"'+
+															'fill="none" viewBox="0 0 24 24" stroke="currentColor"'+
+															'aria-hidden="true">'+
+							                    '<path stroke-linecap="round"'+
+																'stroke-linejoin="round" stroke-width="2"'+
+																'd="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />'+
+							                  '</svg>'+
+													'</button>'+
+												'</div>'+
+											'</td>'+									
+										'</tr>';
+					});//each
+				}//else
+			$("#tddata").append(tabledata);	
+		},
+		error: function (request, status, error) {
+	        console.log("code: " + request.status);
+	        console.log("message: " + request.responseText);
+	        console.log("error: " + error);
+	    }
+
+	});//ajax
+	
+	
+	//클릭한 값 이름 가지고와서 우측테이블위의 현재보고있는영역을 표시
+	$.ajax({
+		url : "/basicinfo/warehouse/get-location",
+		type : "get",
+		data : ({
+			"id" : id,
+			"no" : no
+		}),
+		success : function(data){
+			var mydata = JSON.parse(data);
+			
+// 			console.log("id는"+id);
+// 			console.log("id.indexOf는"+id.indexOf(id));
+// 			console.log("no는"+no);
+			
+			
+			if(id.indexOf("default")>0){
+				current_location = "창고목록";				
+			}
+			else if(id.indexOf("warehouse")>0){
+				current_location = mydata.warehousename;		
+			}
+			else if(id.indexOf("area")>0){
+				current_location = mydata.warehousename+ " "+mydata.areaname;
+			}
+			else{
+				current_location = mydata.warehousename+ " "+mydata.areaname+ " "+mydata.rackname;
+			}
+			
+			//등록/수정/삭제시 보고있던 우측테이블 위 현재영역을 유지시키기위해 form hidden을 통해 넘긴다
+			document.getElementById('current_location').value = current_location;
+
+// 			console.log("current_location는"+current_location);
+			$("#clicked_location").html(current_location);
 				
 		},
 		error: function (request, status, error) {
@@ -454,10 +525,13 @@ function clickFunction(clicked_id){
 
 //우측에서 삭제아이콘 클릭시 해당 위치를 삭제한다
 function deletefunction(no,id){
+	
+	//등록/수정/삭제시 보고있던 우측테이블 위 현재영역을 유지시키기위해 form hidden을 통해 넘긴다
+	document.getElementById('current_location').value = current_location;
+	
 	//기본화면(창고리스트)서 등록했을시 id를 불러오지 못할시 id를 mydefault설정하여 수정함
 	if(id==''){
 		id = 'mydefault';
-		console.log(id);
 	}
 	
 	var deletecheck;
@@ -467,37 +541,51 @@ function deletefunction(no,id){
 	if(id.indexOf('ware')>0){
 		deletecheck = confirm('해당 구역을 정말로 삭제하시겠습니까?');
 		if(deletecheck){
-			location.href="/basicinfo/warehouse/delete?area_no="+no+"&showid="+showid+"&id="+id+"&no="+no;
+			location.href="/basicinfo/warehouse/delete?area_no="+no+"&showid="+showid+"&id="+id+"&no="+no+"&current_location="+current_location;
 		}
 	}
 	if(id.indexOf('area')>0){
 		deletecheck = confirm('해당 랙을 정말로 삭제하시겠습니까?');
 		if(deletecheck){
-			location.href="/basicinfo/warehouse/delete?rack_no="+no+"&showid="+showid+"&id="+id+"&no="+no;
+			location.href="/basicinfo/warehouse/delete?rack_no="+no+"&showid="+showid+"&id="+id+"&no="+no+"&current_location="+current_location;
 		}
 	}		
 	if(id.indexOf('rack')>0){
 		deletecheck = confirm('해당 셀을 정말로 삭제하시겠습니까?');
 		if(deletecheck){
-			location.href="/basicinfo/warehouse/delete?cell_no="+no+"&showid="+showid+"&id="+id+"&no="+no;
+			location.href="/basicinfo/warehouse/delete?cell_no="+no+"&showid="+showid+"&id="+id+"&no="+no+"&current_location="+current_location;
 		}
 	}		
 	if(id.indexOf('default')>0){
 		deletecheck = confirm('해당 창고를 정말로 삭제하시겠습니까?');
 		if(deletecheck){
-			location.href="/basicinfo/warehouse/delete?ware_no="+no+"&showid="+showid;
+			location.href="/basicinfo/warehouse/delete?ware_no="+no+"&showid="+showid+"&current_location="+current_location;
 		}
 	}		
 }
 
-
+//수정할때 입력했던 데이터 가져오기위한 하단의 코드
+var warehouselocation;
+var arealocation;
+var racklocation;
+var warehousecode;
+var warehousename;
+var areacode;
+var areaname;
+var rackcode;
+var rackname;
+var cellcode;
+var cellname;
 
 //우측에서 수정아이콘 클릭시 해당 위치를 수정한다
 function updatefunction(no,id){
+	
+	//등록/수정/삭제시 보고있던 우측테이블 위 현재영역을 유지시키기위해 form hidden을 통해 넘긴다
+	document.getElementById('current_location').value = current_location;
+	
 	//기본화면(창고리스트)서 등록했을시 id를 불러오지 못할시 id를 mydefault설정하여 수정함
 	if(id==''){
 		id = 'mydefault';
-		console.log(id);
 	}
 	resetrequired();
 	
@@ -579,19 +667,7 @@ function updatefunction(no,id){
 		$('#cellname').attr('required','');
 	}
 
-	//수정할때 입력했던 데이터 가져오기위한 하단의 코드
-	var warehouselocation;
-	var arealocation;
-	var racklocation;
-	var warehousecode;
-	var warehousename;
-	var areacode;
-	var areaname;
-	var rackcode;
-	var rackname;
-	var cellcode;
-	var cellname;
-
+	
 	$.ajax({
 		url : "/basicinfo/warehouse/selectByNo",
 		type : "post",
@@ -645,6 +721,10 @@ function updatefunction(no,id){
 
 //등록 클릭시 해당영역 등록
 function insertfunction(getid){
+	
+	//등록/수정/삭제시 보고있던 우측테이블 위 현재영역을 유지시키기위해 form hidden을 통해 넘긴다
+	document.getElementById('current_location').value = current_location;
+	
 	resetmodal();
 	resetrequired();
 	$('#submit_btn').html('등록');
@@ -842,8 +922,6 @@ function resetrequired(){
 
 //코드만 중복검사
 function checkcodefunction(getcode,location){
-	console.log(getcode);
-	console.log(location);
 	$.ajax({
 		url : "/basicinfo/warehouse/checkCode",
 		type : "post",
@@ -860,6 +938,13 @@ function checkcodefunction(getcode,location){
 					$('#submit_btn').attr("disabled","disabled");
 					checkcode = false;
 					
+					//입력한 코드가 기존의 코드와 동일할경우 중복검사 통과
+					if(warehousecode == getcode){
+						document.getElementById('warehousecode').classList.remove('is-invalid');
+						document.getElementById('submit_btn').removeAttribute('disabled');
+						checkcode = true;
+					}
+					
 				} else{
 					document.getElementById('warehousecode').classList.remove('is-invalid');
 					document.getElementById('submit_btn').removeAttribute('disabled');
@@ -870,6 +955,13 @@ function checkcodefunction(getcode,location){
 					document.getElementById('areacode').classList.add('is-invalid');
 					$('#submit_btn').attr("disabled","disabled");
 					checkcode = false;
+					
+					//입력한 코드가 기존의 코드와 동일할경우 중복검사 통과
+					if(areacode == getcode){
+						document.getElementById('areacode').classList.remove('is-invalid');
+						document.getElementById('submit_btn').removeAttribute('disabled');
+						checkcode = true;
+					}
 				} else{
 					document.getElementById('areacode').classList.remove('is-invalid');
 					document.getElementById('submit_btn').removeAttribute('disabled');
@@ -880,6 +972,13 @@ function checkcodefunction(getcode,location){
 					document.getElementById('rackcode').classList.add('is-invalid');
 					$('#submit_btn').attr("disabled","disabled");
 					checkcode = false;
+					
+					//입력한 코드가 기존의 코드와 동일할경우 중복검사 통과
+					if(rackcode == getcode){
+						document.getElementById('rackcode').classList.remove('is-invalid');
+						document.getElementById('submit_btn').removeAttribute('disabled');
+						checkcode = true;
+					}
 				} else{
 					document.getElementById('rackcode').classList.remove('is-invalid');
 					document.getElementById('submit_btn').removeAttribute('disabled');
@@ -891,13 +990,19 @@ function checkcodefunction(getcode,location){
 					$('#submit_btn').attr("disabled","disabled");
 					checkcode = false;
 					
+					//입력한 코드가 기존의 코드와 동일할경우 중복검사 통과
+					if(cellcode == getcode){
+						document.getElementById('cellcode').classList.remove('is-invalid');
+						document.getElementById('submit_btn').removeAttribute('disabled');
+						checkcode = true;
+					}
+					
 				} else{
 					document.getElementById('cellcode').classList.remove('is-invalid');
 					document.getElementById('submit_btn').removeAttribute('disabled');
 					checkcode = true;
 				}
 			}
-			console.log(checkcode);
 		},
 		error: function (request, status, error) {
 	        console.log("code: " + request.status);

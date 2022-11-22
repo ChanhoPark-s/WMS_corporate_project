@@ -12,5 +12,7 @@ public class SellVO {
 	private int order_no;
 	private String day;
 	
+	private String name;
+	
 	
 }

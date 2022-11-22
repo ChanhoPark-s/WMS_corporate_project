@@ -66,9 +66,18 @@
 					</tr>
 				</thead>
 				<tbody>
+					<tr>
+						<td>
+							<input type="hidden" name="keyword" id="keyword3" >
+							<input type="hidden" name="whatColumn" id="whatColumn2">
+	             			<input type="hidden" name="pageNumber" id="pageNumber2">
+						</td>
+					</tr>
 					<c:forEach var="vo" items="${voList}">
 						<tr class="dept-${vo.no }">
-							<td><input class="form-check-input" type="checkbox" id="rowcheck" name="rowcheck" value="${vo.no }"></td>
+							<td>
+								<input class="form-check-input" type="checkbox" id="rowcheck" name="rowcheck" value="${vo.no }">
+							</td>
 							<td>${vo.no}	
 							<td>${vo.code}</td>
 							<td>${vo.name}</td>
@@ -118,23 +127,28 @@
 			</div>
 			<div class="modal-body">
 				<!-- form start -->
-				<form class="needs-validation" novalidate id="modalForm" action="" method="post">
+				<form class="needs-validation" novalidate id="departmentForm" action="" method="post">
 					<div class="mb-3">
 						<label for="userFullname" class="form-label">부서코드</label> 
 						<input type="text" name="code" id="code" class="form-control" required autofocus>
-						<div class="invalid-feedback">User full name is required.</div>
+						<div class="invalid-feedback">부서코드를 입력하세요.</div>
 					</div>
 					<div class="mb-3">
 						<label for="userEmail" class="form-label">부서명</label> 
 						<input type="text" name="name" id="name" class="form-control" required>
 						<div class="invalid-feedback">User email is required.</div>
+						<input type="hidden" name="pageNumber" id="pageNumber" value="${pageInfo.pageNumber }">
+						<div class="invalid-feedback">부서명을 입력하세요.</div>
 					</div>
+					<!-- 수정했을때도 가게 만들기위해 -->
+					<input type="hidden" name="keyword" id="keyword2" value="${searchvo.keyword }">
+					<input type="hidden" name="whatColumn" id="whatColumn" value="${searchvo.whatColumn }">
 				</form>
 				<!-- form end -->
 			</div>
 			<div class="modal-footer border-0">
 				<button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
-				<button type="submit" form="modalForm" class="btn btn-primary px-5">저장</button>
+				<button type="submit" form="departmentForm" class="btn btn-primary px-5">저장</button>
 			</div>
 		</div>
 	</div>
@@ -190,23 +204,31 @@
       
       const title = document.querySelector('.modal-title');
       const body = document.querySelector('body');
+      const form_control = document.querySelectorAll('.form-control');
       
       // 부서 등록
       document.querySelector('.insert').addEventListener('click', event => {
          title.innerHTML = '부서등록';
+         departmentForm.classList.remove('was-validated');
          
-         const form_control = document.querySelectorAll('.form-control');
          Array.from(form_control, elem => {
             elem.value = '';
+            elem.classList.remove('is-invalid');
          });
          
-         modalForm.action = 'insert';
+         departmentForm.action = 'insert';
       });
       
       // 부서 수정
       document.querySelectorAll('.update').forEach(elem => {
          elem.addEventListener('click', event => {
             title.innerHTML = '부서수정';
+            departmentForm.classList.remove('was-validated');
+            
+            Array.from(form_control, elem => {
+                elem.value = '';
+                elem.classList.remove('is-invalid');
+             });
             
             let target = event.target;
             target = target.nodeName == 'BUTTON' ? target : target.nodeName == 'svg' ? target.parentElement : target.parentElement.parentElement;
@@ -215,8 +237,8 @@
             const rankInfo = Array.from(document.querySelector('.dept-' + no).children);
             const [code, name] = rankInfo.slice(2, 4);
             
-            modalForm.code.value = code.innerHTML;
-            modalForm.name.value = name.innerHTML;
+            departmentForm.code.value = code.innerHTML;
+            departmentForm.name.value = name.innerHTML;
             
             if(!modalForm.no) {
                const input = document.createElement('input');
@@ -263,6 +285,10 @@
 		}
 	function selectDelete(){
 		
+		document.getElementById('keyword3').value=$('#keyword').val();
+		document.getElementById('whatColumn2').value=$('#whatColumn').val();
+		document.getElementById('pageNumber2').value=$('#pageNumber').val();
+		
 		x=false;
 		var rc = document.f.rowcheck;
 		
@@ -280,4 +306,20 @@
 		}
 
 	}
+	
+    // 유효성 검사
+    void(function() {
+    	
+      document.querySelectorAll('.needs-validation').forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+
+          }
+          form.classList.add('was-validated')
+     
+        })
+      })
+    })()
 </script>

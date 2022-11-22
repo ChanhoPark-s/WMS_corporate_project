@@ -17,4 +17,8 @@ public class SellDetailVO {
 	private String sell_day;
 	
 	
+	private String code;
+	private String name;
+	
+	
 }

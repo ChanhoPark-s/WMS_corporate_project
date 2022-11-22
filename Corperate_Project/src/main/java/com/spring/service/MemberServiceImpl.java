@@ -20,7 +20,6 @@ import com.spring.paging.Criteria;
 @Service // 계층 구조상 비지니스 영역을 담당하는 객체임을 표시하기 위해 사용함
 public class MemberServiceImpl implements MemberService{
 
-
    //spring 4.3 이상에서 자동 처리
    @Autowired
    private MemberMapper mapper;
@@ -29,7 +28,6 @@ public class MemberServiceImpl implements MemberService{
    public List<MemberVO> list(Client_Paging pageInfo) {
       return mapper.list(pageInfo); // 존재하지 않는 레코드를 얻으려고하면 null이 반환됨
    }
-
 
    @Override
    public void insert(MemberVO member, HttpServletRequest reqeust) throws Exception {
@@ -106,13 +104,18 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
+	public MemberVO getMemberByNo(int no) {
+		return mapper.selectOneByNo(no);
+	}
+	
+	@Override
 	public MemberVO getAllById(String id) {
 		return mapper.getAllById(id);
 	}
-
 
 	@Override
 	public int selectDelete(String[] parameterValues) {
 		return mapper.selectDelete(parameterValues);
 	}
+
 }

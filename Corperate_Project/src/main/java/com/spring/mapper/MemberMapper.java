@@ -25,6 +25,8 @@ public interface MemberMapper {			// 게시물 조회
 
 	public int check_user(MemberVO membervo);
 	
+	public MemberVO selectOneByNo(int no);
+	
 	public int idcheck(String id);
 	
 	public int getTotalCount(SearchVO searchvo);
@@ -34,6 +36,8 @@ public interface MemberMapper {			// 게시물 조회
 	public int getCountAll(@Param("cri") Criteria cri);
 
 	public MemberVO getAllById(String id);
-
 	public int selectDelete(String[] parameterValues);
+	
+	// 연습용 메서드
+	public void example(MemberVO m);
 }

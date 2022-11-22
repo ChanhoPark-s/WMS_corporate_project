@@ -20,6 +20,7 @@ public class WareHouseDetailVO implements Paging{
 	private int cell_no;
 	private String cell_name;
 	
+	
 	private int i_no;
 	private int client_no;
 	private String code;

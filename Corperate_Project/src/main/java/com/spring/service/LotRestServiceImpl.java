@@ -16,6 +16,7 @@ public class LotRestServiceImpl implements LotRestService{
 
 	@Override
 	public List<LotVO> getLot(int no) {
+		System.out.println("리스트 사이즈 : " + mapper.getLot(no).size() + "/ 아이템 넘버 :"+ no );
 		return mapper.getLot(no);
 	}
 }

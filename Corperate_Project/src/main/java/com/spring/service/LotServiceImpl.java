@@ -2,13 +2,11 @@ package com.spring.service;
 
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
+
 import com.spring.domain.LotVO;
 import com.spring.domain.SearchVO;
 import com.spring.mapper.LotMapper;

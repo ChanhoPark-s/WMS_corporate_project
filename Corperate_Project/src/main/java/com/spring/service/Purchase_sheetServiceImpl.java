@@ -68,8 +68,8 @@ public class Purchase_sheetServiceImpl implements Purchase_sheetService{
 	}
 
 	@Override
-	public int delete(Purchase_sheetVO vo) {
-		return mapper.delete(vo);
+	public int delete(int no) {
+		return mapper.delete(no);
 	}
 
 	@Override

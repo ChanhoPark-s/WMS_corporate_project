@@ -596,6 +596,9 @@
 			}
 		}
 	function selectDelete(){
+		document.getElementById('keyword3').value=$('#keyword').val();
+		document.getElementById('whatColumn2').value=$('#whatColumn').val();
+		document.getElementById('pageNumber2').value=$('#pageNumber').val();
 		
 		x=false;
 		var rc = document.f.rowcheck;

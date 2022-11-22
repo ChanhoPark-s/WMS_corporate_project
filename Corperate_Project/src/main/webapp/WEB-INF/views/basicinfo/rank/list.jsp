@@ -63,6 +63,14 @@
 					</tr>
 				</thead>
 				<tbody>
+					 	<tr>
+		                	<td>
+		                		<!--선택 삭제할때도 넘어가게하기 위해  -->
+								<input type="hidden" name="keyword" id="keyword3" >
+								<input type="hidden" name="whatColumn" id="whatColumn2">
+		             			<input type="hidden" name="pageNumber" id="pageNumber2">
+		                	</td>
+		                </tr>
 					<c:forEach var="vo" items="${ranks}">
 						<tr class="rank-${vo.no }">
 							<td>
@@ -116,22 +124,28 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                <form class="needs-validation" novalidate id="taskForm" method="post" action="">
+                <form class="needs-validation" novalidate id="rankForm" method="post" action="">
                   <div class="mb-3">
                     <label for="userFullname" class="form-label">직급코드</label>
                     <input type="text" name="code" class="form-control" id="userFullname" required autofocus>
-                    <div class="invalid-feedback">User full name is required.</div>
+                    <div class="invalid-feedback">직급코드를 입력하세요.</div>
                   </div>
                   <div class="mb-3">
                     <label for="userEmail" class="form-label">직급이름</label>
                     <input type="text" name="name" class="form-control" id="userEmail" required>
                     <div class="invalid-feedback">User id is required.</div>
+                   	<!-- 수정 했을 때 넘기기 위해 -->
+	         		<input type="hidden" name="pageNumber" id="pageNumber" value="${pageInfo.pageNumber }">
+                    <div class="invalid-feedback">직급이름을 입력하세요.</div>
                   </div>
+					<!-- 수정했을때도 가게 만들기위해 -->
+					<input type="hidden" name="keyword" id="keyword2" value="${searchvo.keyword }">
+					<input type="hidden" name="whatColumn" id="whatColumn" value="${searchvo.whatColumn }">
                 </form>
               </div>
               <div class="modal-footer border-0">
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
-                <button type="submit" form="taskForm" class="btn btn-primary px-5">저장</button>
+                <button type="submit" form="rankForm" class="btn btn-primary px-5">저장</button>
               </div>
             </div>
           </div>
@@ -183,22 +197,30 @@
 		
 		const title = document.querySelector('.modal-title');
 		const body = document.querySelector('body');
+		const form_control = document.querySelectorAll('.form-control');
 		
 		// 직급 등록
 		document.querySelector('.insert').addEventListener('click', event => {
 			title.innerHTML = '직급등록';
+			rankForm.classList.remove('was-validated');
 			
-			const form_control = document.querySelectorAll('.form-control');
 			Array.from(form_control, elem => {
 				elem.value = '';
+				elem.classList.remove('is-invalid');
 			});
 			
-			taskForm.action = 'insert';
+			rankForm.action = 'insert';
 		});
 		
 		// 직급 수정
 		document.querySelectorAll('.update').forEach(elem => {
 			elem.addEventListener('click', event => {
+				rankForm.classList.remove('was-validated');
+				
+				Array.from(form_control, elem => {
+					elem.value = '';
+					elem.classList.remove('is-invalid');
+				});
 				
 				let target = event.target;
 				target = target.nodeName == 'BUTTON' ? target : target.nodeName == 'svg' ? target.parentElement : target.parentElement.parentElement;
@@ -207,18 +229,18 @@
 				const rankInfo = Array.from(document.querySelector('.rank-' + no).children);
 				const [code, name] = rankInfo.slice(2, 4);
 				
-				taskForm.code.value = code.innerHTML;
-				taskForm.name.value = name.innerHTML;
+				rankForm.code.value = code.innerHTML;
+				rankForm.name.value = name.innerHTML;
 				
-				if(!taskForm.no) {
+				if(!rankForm.no) {
 					const input = document.createElement('input');
 					input.type = 'hidden';
 					input.name = 'no';
-					taskForm.append(input);
+					rankForm.append(input);
 				}
-				taskForm.no.value = no;
+				rankForm.no.value = no;
 				
-				taskForm.action = 'update';
+				rankForm.action = 'update';
 			});
 		})
 		
@@ -255,6 +277,10 @@
 		}
 	function selectDelete(){
 		
+		document.getElementById('keyword3').value=$('#keyword').val();
+		document.getElementById('whatColumn2').value=$('#whatColumn').val();
+		document.getElementById('pageNumber2').value=$('#pageNumber').val();
+		
 		x=false;
 		var rc = document.f.rowcheck;
 		
@@ -272,6 +298,22 @@
 		}
 
 	}
+	
+    // 유효성 검사
+    void(function() {
+    	
+      document.querySelectorAll('.needs-validation').forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+
+          }
+          form.classList.add('was-validated')
+     
+        })
+      })
+    })()
 </script>
 <!-- bottom.jsp -->
 <%@include file="../../common/bottom.jsp"%>
