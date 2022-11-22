@@ -5,10 +5,12 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.spring.domain.MemberVO;
 import com.spring.domain.OrderSheetDetailVO;
 import com.spring.domain.OrderSheetVO;
 import com.spring.domain.SearchVO;
 import com.spring.paging.Client_Paging;
+import com.spring.paging.Criteria;
 
 public interface OrderSheetMapper {
 	
@@ -25,8 +27,14 @@ public interface OrderSheetMapper {
 	
 	public ArrayList<Integer> selectAllMainNoByItemName(String keyword); // 품목 이름을 넘겨주면 이를 포함하고 있는 상위 수주서 레코드의 no 들을 반환함
 	
+	public OrderSheetVO selectOneByMainNo(int no);
+	
 	/* OrderSheetDetail */
 	public List<OrderSheetDetailVO> selectSubAllByMainNo(int mainNo);
+	
+	/* ajax paging */
+	public List<OrderSheetVO> getListWithPaging(@Param("cri") Criteria cri);
+	public int getCountAll(@Param("cri") Criteria cri);
 }
 
 

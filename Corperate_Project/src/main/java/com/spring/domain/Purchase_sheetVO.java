@@ -23,6 +23,8 @@ public class Purchase_sheetVO {
 	private String item_name;
 	//품목 입고가격 총합
 	private String totalPrice;
+	//품목 입고가격 총합
+	private String totalAmount;
 	
 	private ArrayList<Integer> item_no; 	// 품목번호
 	private ArrayList<Integer> amount; 	// 품목별 수주개수

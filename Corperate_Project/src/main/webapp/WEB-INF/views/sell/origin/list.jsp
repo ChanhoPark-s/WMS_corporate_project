@@ -8,7 +8,11 @@
 Date nowTime = new Date();
 SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 %>
-
+<style>
+#table1 tbody tr:hover {
+	background-color: #EAEAEA;
+}
+</style>
 <script type="text/javascript">
 	var del_no;
 	var update_no;
@@ -305,8 +309,6 @@ SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 				        
 				        
 				       				requestLotRecord(itemNo);
-									addRowItemDetail(); // 새로 입력받을 수 있게 아래 줄을 추가하는 함수
-									
 								}
 							});
 	
@@ -458,32 +460,78 @@ SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 	}
 	
  	function requestLotRecord(itemNo){	
-		console.log("요청url : " + "/basicinfo/lotRest/" + itemNo);
-		$.getJSON("/basicinfo/lotRest/" + itemNo , 
- 			function(resdata){
-				console.log("list: " + resdata.list);
- 				paintLotRecord(resdata.list);
+		console.log("요청url : " + "/basicinfo/lotRest/getLot/" + itemNo);
+		$.getJSON("/basicinfo/lotRest/getLot/" + itemNo , 
+ 			function(list){
+				console.log("list: " + list);
+				paintLotRecord(list);
  			}).fail(function(xhr, status, err){
  					alert("데이터 조회실패");
  			}); 
 	}
 	
-/*  	function paintLotRecord(list){
-		var str = "";
-		
-			for(var i = 0, len = list.length || 0; i < len; i++){
-				str += "<option value='";
-				str +=  list[i].code + "'>";
+   	function paintLotRecord(list){
+
+ 	 	var str = "";
+ 		if(secondModalName == "item"){
+    		for(var i = 0, len = list.length || 0; i < len; i++){
+    			str += "<option value='" + list[i].code + "'>";
 				str += list[i].code + "</option>";
 			}
-		
+    	}
+		 
 		if(list.length == 0){
-			str = "<option value="">일치하는 로트번호가 없습니다.</option>";
-		}
-		
+			str += "<option value=''>품목과 일치하는 로트번호가 없습니다.</option>";
+		} 
 		$("#getLotCode").html(str);
-} */
+	}
 	
+</script>
+
+<!-- 리스트 화면에서 클릭시 아래 Detail 레코드들을 가져와 뿌려주는 코드 -->
+<script type="text/javascript">
+	$(function(){
+		
+		/* 비동기로 하단의 상세품목을 불러와 출력해주는 부분 */
+		$("#table1 tbody tr").on("click", function(){
+			// 클릭된 수주서의 no 번호
+			var clickedMainNo = $(this).children("td")[0].innerHTML;
+			console.log("clickedMainNo: " + clickedMainNo);
+			
+			console.log("요청url : " + "/sell/origin/detail/more/" + clickedMainNo);
+			$.getJSON("/sell/origin/detail/more/" + clickedMainNo,  
+	 			function(list){
+					console.log("list: " + list);
+					
+					$("#table2 tbody").empty();
+					
+					for(var i = 0, len = list.length || 0; i < len; i++){
+						
+						var str = "";
+						 
+						str += "<tr>";
+						str += "<td style='display:none'>" + list[i].no + "</td>";
+						str += "<td style='display:none'>" + list[i].item_no + "</td>";
+						str += "<td style='text-align: center'>" + list[i].code + "</td>";
+						str += "<td style='text-align: center'>" + list[i].name + "</td>";
+						str += "<td style='text-align: center'>" + list[i].lot_code + "</td>";
+						str += "<td style='text-align: center'>" + list[i].amount + "</td>";
+						str += "<td style='text-align: center'>" + list[i].sell_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " 원</td>";
+						str += "<td style='text-align: center'>" + (list[i].amount * list[i].sell_price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " 원</td>";
+						str += "</tr>";
+						
+						$("#table2 tbody").append(str);
+					}
+	 				
+	 			}).fail(function(xhr, status, err){
+	 					alert("데이터 조회실패");
+	 			});
+			
+			
+		});
+		
+		
+	});
 </script>
 
 <style>
@@ -519,12 +567,9 @@ SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 			</div>
 		</div>
 		<div class="table-responsive my-1">
-			<table class="table align-middle">
+			<table class="table align-middle" id="table1">
 				<thead>
 					<tr>
-						<th scope="col" style="text-align: center"><input
-							class="form-check-input" type="checkbox" value=""></th>
-						<th scope="col" style="text-align: center">판매 번호</th>
 						<th scope="col" style="text-align: center">주문서 번호</th>
 						<th scope="col" style="text-align: center">담당자 번호</th>
 						<th scope="col" style="text-align: center">판매 날짜</th>
@@ -535,12 +580,10 @@ SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 
 					<c:forEach var="i" items="${lists}">
 						<tr>
-							<td style="text-align: center"><input
-								class="form-check-input" type="checkbox" value=""></td>
-							<td style="text-align: center">${i.no}</td>
+							<td style="display: none;">${i.no}</td>
 							<td style="text-align: center">${i.order_no}</td>
 							<td style="text-align: center"><span
-								class="badge bg-light text-muted">${i.member_no}</span></td>
+								class="badge bg-light text-muted">${i.name}</span></td>
 
 							<fmt:parseDate var="inputDay" value="${i.day}"
 								pattern="yyyy-MM-dd" />
@@ -655,65 +698,23 @@ SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 					</div>
 				</div>
 			</div>
-			<div class="table-responsive my-1">
+			<div class="table-responsive my-1" id="table2">
 				<table class="table align-middle">
 					<thead>
 						<tr>
-							<th scope="col" style="text-align: center">판매 상세 번호</th>
-							<th scope="col" style="text-align: center">판매 번호</th>
-							<th scope="col" style="text-align: center">품목 번호</th>
+							<!-- <th scope="col" style="text-align: center">판매 상세 번호</th>
+							<th scope="col" style="text-align: center">판매 번호</th> -->
+							<th scope="col" style="text-align: center">품목 코드</th>
+							<th scope="col" style="text-align: center">상품명</th>
+							<th scope="col" style="text-align: center">로트 번호</th>
 							<th scope="col" style="text-align: center">판매 수량</th>
 							<th scope="col" style="text-align: center">판매 단가</th>
-							<th scope="col" style="text-align: center">로트 번호</th>
-							<th scope="col" style="text-align: center">Actions</th>
+							<th scope="col" style="text-align: center">합계</th>
 						</tr>
 					</thead>
 					<tbody>
 
-						<c:forEach var="x" items="${detaillists}">
-							<tr>
 
-								<td style="text-align: center">${x.no}</td>
-								<td style="text-align: center">${x.sell_no}</td>
-								<td style="text-align: center"><span
-									class="badge bg-light text-muted">${x.item_no}</span></td>
-								<td nowrap style="text-align: center">${x.amount}</td>
-								<td nowrap style="text-align: center">${x.sell_price}</td>
-								<td nowrap style="text-align: center">${x.lot_code}</td>
-								<td style="text-align: center">
-									<!-- 수정 시작 -->
-									<div class="btn-group btn-group-sm" role="group">
-										<button type="button" class="btn btn-light d-flex"
-											data-bs-toggle="modal" id="update_Sold_Detail"
-											onclick="goModal2('${i.no}','${i.order_no}','${i.member_no}','${input}')"
-											data-bs-target="#Sold_Detail_Product_Add_Modal">
-											<svg width="17" height="17"
-												xmlns="http://www.w3.org/2000/svg" fill="none"
-												viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round"
-													stroke-linejoin="round" stroke-width="2"
-													d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                          </svg>
-										</button>
-										<!-- 수정 끝 -->
-										<!-- 삭제 시작 -->
-										<button type="button" class="btn btn-light d-flex text-danger"
-											data-bs-toggle="modal" id="delete_Sold_Detail"
-											onclick="goModal('${i.no}')"
-											data-bs-target="#delete_Sold_modal">
-											<svg width="17" height="17"
-												xmlns="http://www.w3.org/2000/svg" fill="none"
-												viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round"
-													stroke-linejoin="round" stroke-width="2"
-													d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                          </svg>
-										</button>
-										<!-- 삭제 끝 -->
-									</div>
-								</td>
-							</tr>
-						</c:forEach>
 					</tbody>
 				</table>
 			</div>
@@ -841,8 +842,6 @@ SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 									<div class="mb-3">
 										<label for="lot_code" class="form-label">로트 번호</label> <select
 											name="lot_code" class="form-select" id="getLotCode">
-											<option value="">a</option>
-											<option value="">b</option>
 										</select>
 									</div>
 								</div>

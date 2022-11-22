@@ -1,36 +1,47 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<head>
+<script src="https://kit.fontawesome.com/4d5e8e1a50.js" crossorigin="anonymous"></script>
+<script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+</head>
 <style>
-.btn_search{
-  cursor : pointer;
-  position : absolute;
-  right : 7px;
-  top : 50%;
-  transform : translatey(-50%);
+table th {
+	text-align: center;
 }
 
-#search{
-  position : relative;
+table td {
+	text-align: center;
+}
+
+/* 한줄 색 칠하는 기능 */
+#table1 tbody tr:hover {
+	background-color: #EAEAEA;
+}
+
+/* 검색바 */
+.btn_search {
+	cursor: pointer;
+	position: absolute;
+	right: 7px;
+	top: 50%;
+	transform: translatey(-50%);
+}
+
+#search {
+	position: relative;
 }
 </style>
 
+
+<!-- 상단 -->
+
 <%@include file="/WEB-INF/views/common/top.jsp" %>
-      	<!-- 
-        <nav aria-label="breadcrumb" id="main-breadcrumb">
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-            <li class="breadcrumb-item"><a href="javascript:void(0)">User</a></li>
-            <li class="breadcrumb-item active" aria-current="page">User list</li>
-          </ol>
-        </nav>
- 		-->
         <div class="card">
           <div class="card-body">
           <!-- 상단바 start -->
             <div class="d-flex gap-1 mb-4 flex-wrap">
 			<div class="d-flex gap-1 me-auto flex-wrap" style="height: 20px;">
-				<button id="" onclick=""
-					class="btn btn-primary d-inline-flex align-items-center gap-1"
+				<button class="btn btn-primary d-inline-flex align-items-center gap-1"
 					data-bs-toggle="modal" data-bs-target="#addOrderSheetModal">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
 						fill="currentColor" aria-hidden="true">
@@ -39,6 +50,16 @@
 							clip-rule="evenodd" />
                   </svg>
 					발주 등록
+				</button>
+				<button class="btn btn-primary d-inline-flex align-items-center gap-1"
+					data-bs-toggle="modal" data-bs-target="#">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+						fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd"
+							d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+							clip-rule="evenodd" />
+                  </svg>
+					수주서 조회
 				</button>
 			</div>
 			
@@ -66,7 +87,7 @@
 					<input type="text"  name="keyword" id="keyword" class="form-control" value=<c:if test="${searchvo.keyword=='null' }">""</c:if><c:if test="${searchvo.keyword!='null' }">"${searchvo.keyword }"</c:if>  placeholder="입력" style="width: 200px; height: 38px;">
 				</td>
 				<td>
-					<i class="fa-solid fa-magnifying-glass btn_search" id="searchIcon" onclick="searchForm()">검색이미지</i>
+					<i class="fa-solid fa-magnifying-glass btn_search" id="searchIcon" onclick="searchForm()"></i>
 				</td>
 			</tr>	
 			</table>
@@ -75,22 +96,17 @@
 		</div>
 		<!-- 상단바 end -->
             <div class="table-responsive my-1">
-              <table class="table align-middle">
+              <table class="table align-middle" id="table1">
                 <thead>
                   <tr>
-                    <th scope="col">
-                      <div>
-                        <input class="form-check-input" type="checkbox" value="">
-                      </div>
-                    </th>
-                    <th scope="col">발주번호</th>
-                    <th scope="col">거래처</th>
+                    <th scope="col" style="display:none">발주번호</th>
+                    <th scope="col">작성일자</th>
                     <th scope="col">담당자</th>
-                    <th scope="col">품목명</th>
-                    <th scope="col">총 구매단가</th>
-                    <th scope="col">등록일자</th>
+                    <th scope="col">거래처</th>
+                    <th scope="col" nowrap>품목명</th>
                     <th scope="col">납기일자</th>
-                    <th scope="col">상태</th>
+                    <th scope="col">총 구매단가</th>
+                    <th scope="col" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="접수완료 - (발주중) - 판매완료">진행상태</th>
                     <th scope="col">기능</th>
                   </tr>
                 </thead>
@@ -98,16 +114,15 @@
                 <!-- lists -->
                 <c:forEach var="list" items="${lists}">
                   <tr class="tr" data-no=" ${list.no }">
-                    <td>
-                      <div>
-                        <input class="form-check-input" type="checkbox" value="">
-                      </div>
-                    </td>
-                    <td>
+                    <td style="display:none">
                           ${list.no }
                     </td>
-                    <td>${list.client_name }</td>
+                    <td>
+                    <fmt:parseDate value="${list.day}" var="day" pattern="yyyy-MM-dd" />
+					<fmt:formatDate value="${day}" pattern="yyyy-MM-dd" />
+                    </td>
                     <td>${list.member_name}</td>
+                    <td>${list.client_name }</td>
                     <td>
                     <span class="badge bg-light text-muted">
                     <c:set var="item_name" value="${fn:split(list.item_name,',')}" />
@@ -116,33 +131,30 @@
                     </span>
                     </td>
                     <td>
-                    <fmt:formatNumber value="${list.totalPrice}" pattern="#,###"/>원
-                    </td>
-                    <td>
-                    <fmt:parseDate value="${list.day}" var="day" pattern="yyyy-MM-dd" />
-					<fmt:formatDate value="${day}" pattern="yyyy-MM-dd" />
-                    </td>
-                    <td>
                     <fmt:parseDate value="${list.delivery_date}" var="delivery_date" pattern="yyyy-MM-dd" />
 					<fmt:formatDate value="${delivery_date}" pattern="yyyy-MM-dd" />
                     </td>
                     <td>
+                    <fmt:formatNumber value="${list.totalPrice}" pattern="#,###"/>원
+                    </td>
+                    <td>
                     <c:choose>
-                    <c:when test="${list.status eq 0 }">발주중</c:when>
-                    <c:when test="${list.status eq 1 }">발주완료</c:when>
-                    <c:when test="${list.status eq 2 }">취소</c:when>
+                    <c:when test="${list.status eq 0 }" >
+                    <span class="badge bg-success" style="background-color: #FFBB00 !important">발주중</span>
+                    </c:when>
+                    <c:when test="${list.status eq 1 }">
+                    <span class="badge bg-light text-muted">발주완료</span>
+                    </c:when>
+                    <c:when test="${list.status eq 2 }">
+                    <span class="badge bg-light text-muted">취소됨</span>
+                    </c:when>
                     <c:otherwise>오류</c:otherwise>
                     </c:choose>
                     </td>
                     <td>
                       <div class="btn-group btn-group-sm" role="group">
-                        <!-- 수정버튼 -->
-                        <button type="button" class="btn btn-light d-flex update" data-bs-toggle="modal" data-bs-target="#addUserModal" data-no="${list.no }">
-                        <svg width="17" height="17" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                          </svg></button>
                           <!-- 삭제버튼 -->
-                        <button type="button" class="btn btn-light d-flex text-danger" data-no="${list.no }"><svg width="17" height="17" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <button type="button" class="btn btn-light d-flex text-danger delete" data-no="${list.no }"><svg width="17" height="17" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                           </svg></button>
                       </div>
@@ -167,17 +179,14 @@
               <table class="table align-middle">
                 <thead>
                   <tr>
-                    <th scope="col">
-                      <div>
-                        <input class="form-check-input" type="checkbox" value="">
-                      </div>
-                    </th>
+                    <th scope="col"></th>
                     <th scope="col">품목코드</th>
                     <th scope="col">품목명</th>
-                    <th scope="col">입고단가</th>
                     <th scope="col">발주수량</th>
+                    <th scope="col">입고단가</th>
+                    <th scope="col">합계</th>
                     <th scope="col">입고예정창고</th>
-                    <th scope="col">상태</th>
+                    <th scope="col">진행상태</th>
                   </tr>
                 </thead>
                 <tbody id="detailList">
@@ -211,13 +220,13 @@ function numberWithCommas(x) {
 }
 
 /* 발주상세 조회 */
-$('.tr').on('click',function(){
+$('.tr').find('td').not('td:last-child').on('click',function(){
 	$('#detailList *').remove();
 	$.ajax({
         url: "detailList",
         type: "get",
         data: {
-        	purchase_sheet_no : $(this).data("no")
+        	purchase_sheet_no : $(this).parent('.tr').data("no")
         },
         success: function(data){
         	console.log(data); 
@@ -240,11 +249,7 @@ $('.tr').on('click',function(){
         		}
         		
 	        		str += '<tr>'
-	        		+ '<td>'
-	        		+ 	'<div>'
-	        		+ 		'<input class="form-check-input" type="checkbox" value="">'
-	        		+ 	'</div>'
-	        		+ '</td>'
+	        		+ "<td><i class='fa-solid fa-gift'></i></td>"
 	        		+ '<td>'
 	        		+ data[i].ITEM_Code
 	                + '</td>'
@@ -252,11 +257,14 @@ $('.tr').on('click',function(){
 	                + data[i].ITEM_Name
 	                + '</td>'
 	                + '<td>'
+	                + data[i].AMOUNT
+	                + '개</td>'
+	                + '<td>'
 	                + numberWithCommas(data[i].IN_PRICE)
 	                + '원</td>'
 	                + '<td>'
-	                + data[i].AMOUNT
-	                + '개</td>'
+	                + numberWithCommas(data[i].IN_PRICE*data[i].AMOUNT)
+	                + '원</td>'
 	                + '<td>'
 	                + data[i].WARE_Name
 	                + '</td>'
@@ -283,4 +291,10 @@ $('.tr').on('click',function(){
 function searchForm(){
 	search.submit();
 }
+
+/* 삭제 */
+$('.delete').click(function(){
+	location.href='delete.ps?no='+$(this).data('no');
+	
+})
 </script> 

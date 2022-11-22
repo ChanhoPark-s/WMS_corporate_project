@@ -71,11 +71,14 @@
 	</select>
 	
 	<select id="selectSubAllByMainNo" resultType="com.spring.domain.OrderSheetDetailVO">
-		select od.no, od.order_no, od.amount, it.code item_code, it.name item_name, it.in_price, it.out_price  
-		from(select *
-    		 from order_detail
-    		 where order_no = #{mainNo}) od inner join item it
-		on od.item_no = it.no
+		select no, order_no, item_no, item_code, item_name, in_price, out_price, amount, client_no, client_code, client_name
+		from(
+			select o.no, o.order_no, i.no item_no, i.code item_code, i.name item_name,in_price, out_price, o.amount, c.no client_no, c.code client_code, c.name client_name
+			from order_detail o inner join item i
+			on o.item_no = i.no
+			inner join client c
+			on i.client_no = c.no
+		)where order_no = #{mainNo}
 	</select>
 	
 	<select id="selectAllMainNoByItemName" resultType="int">
@@ -84,5 +87,39 @@
 	    	 from order_detail od inner join item it
 	    	 on od.item_no = it.no) 
 		where item_name like '%' ||  #{keyword} || '%'
+	</select>
+	
+	<select id="selectOneByMainNo" resultType="com.spring.domain.OrderSheetVO">
+		select no, day, out_day, status, member_no, member_name, dep_no, dep_code, dep_name, client_no, client_code, client_name, rank_no, rank_code, rank_name
+		from(
+			select o.no, to_char(to_date(o.day), 'yyyy-MM-dd') day, to_char(to_date(o.out_day), 'yyyy-MM-dd') out_day, o.status, m.no member_no, m.name member_name, d.no dep_no, d.code dep_code, d.name dep_name, c.no client_no, c.code client_code, c.name client_name, r.no rank_no, r.code rank_code, r.name rank_name
+			from order_sheet o inner join member m
+			on o.member_no = m.no
+			inner join client c
+			on o.client_no = c.no
+			inner join department d
+			on m.dep_no = d.no
+			inner join rank r
+			on m.rank_no = r.no)
+		where no=#{no}
+	</select>
+	
+	<!-- 이하 ajax API 관련 SQL -->
+	<select id="getListWithPaging" resultType="com.spring.domain.OrderSheetVO">
+		<![CDATA[
+		select * from (
+	        select * from(
+		        select  rownum rn, p.no , p.day, p.OUT_DAY, p.status, c.no as client_no, c.name as client_name, m.no as Member_no, m.name as member_name
+		        from order_sheet p, Client c, Member m        
+		        where p.client_no = c.no(+) and p.member_no = m.no(+)
+		        order by no desc)
+		    where rownum <= #{cri.pageNum} * #{cri.amount}
+		)where rn > (#{cri.pageNum} - 1) * #{cri.amount}
+		]]>     
+	</select>
+	
+	<select id="getCountAll" resultType="int">
+		select count(*)
+        from order_sheet
 	</select>
 </mapper>

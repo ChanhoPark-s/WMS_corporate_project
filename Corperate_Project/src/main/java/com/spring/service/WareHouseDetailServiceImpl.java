@@ -71,20 +71,9 @@ public class WareHouseDetailServiceImpl implements WareHouseDetailService{
 	/* ajax페이징 */
 	@Override
 	public PageForWareHouseDTO<WareHouseDetailVO> getListPage(CriteriaForWareHouse cri) {
-		System.out.println(" 서비스impl에 도달 getCountAll 진입전");
-		System.out.println("cri ware_no는:"+cri.getWare_no());
-		System.out.println("cri area_no는:"+cri.getArea_no());
-		System.out.println("cri rack_no는:"+cri.getRack_no());
-		System.out.println("cri cell_no는:"+cri.getCell_no());
+
 		int totalCount = mapper.getCountAll(cri);
-		System.out.println("getCountAll 통과totalCount: "+totalCount);
-		
-		System.out.println("cri어마운트"+cri.getAmount()); 
-		System.out.println("cri페이지넘"+cri.getPageNum()); 
-		
-		
 		List<WareHouseDetailVO> list = mapper.getListWithPaging(cri); 
-		System.out.println("getListWithPaging 통과list크기는: "+list.size());
 		PageForWareHouseDTO<WareHouseDetailVO> pageDTO = new PageForWareHouseDTO<WareHouseDetailVO>(totalCount, list, cri);
 		
 		return pageDTO;

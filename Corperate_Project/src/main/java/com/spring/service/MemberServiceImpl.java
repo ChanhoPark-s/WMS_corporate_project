@@ -106,6 +106,11 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
+	public MemberVO getMemberByNo(int no) {
+		return mapper.selectOneByNo(no);
+	}
+	
+	@Override
 	public MemberVO getAllById(String id) {
 		return mapper.getAllById(id);
 	}

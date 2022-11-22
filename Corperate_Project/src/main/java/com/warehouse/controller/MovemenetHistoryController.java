@@ -55,6 +55,7 @@ public class MovemenetHistoryController {
 	
 	@GetMapping(value="/list")
 	public void list(Model model, HttpServletRequest request, SearchVO searchvo) {	
+		
 		model.addAttribute("warehouse", warehouseservice.list());
 		model.addAttribute("area", areaservice.list());
 		model.addAttribute("rack", rackservice.list());
@@ -72,12 +73,14 @@ public class MovemenetHistoryController {
 		model.addAttribute("list", warehousedetailservice.itemMovement(pageInfo));
 	}
 	
+	// 출고 품목 선택
 	@ResponseBody
 	@PostMapping(value="/get", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<PageDTO<WareHouseDetailVO>> get(Model model, @RequestBody WareHouseDetailVO vo) {
 		return new ResponseEntity<>(warehousedetailservice.getListPage(vo), HttpStatus.OK);
 	}
 	
+	// 입고 창고 선택
 	@ResponseBody
 	@PostMapping(value="/get/ware", produces = "application/json; charset=utf-8")
 	public String getWare(Model model, @RequestBody WareHouseDetailVO vo) {

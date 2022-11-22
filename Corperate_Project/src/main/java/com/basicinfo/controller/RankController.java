@@ -56,9 +56,10 @@ public class RankController {
 	}
 	
 	@PostMapping(value="update")
-	public String update(Model model, RankVO rank) {
+	public String update(Model model, RankVO rank, HttpServletRequest request, SearchVO searchvo, RedirectAttributes rttr) {
 		
 		service.update(rank);
+		rttr.addFlashAttribute("searchvo",searchvo);
 		return "redirect:list";
 	}
 	

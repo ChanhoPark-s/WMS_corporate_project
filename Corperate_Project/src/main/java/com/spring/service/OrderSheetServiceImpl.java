@@ -6,11 +6,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.spring.domain.MemberVO;
 import com.spring.domain.OrderSheetDetailVO;
 import com.spring.domain.OrderSheetVO;
+import com.spring.domain.PageDTO;
 import com.spring.domain.SearchVO;
 import com.spring.mapper.OrderSheetMapper;
 import com.spring.paging.Client_Paging;
+import com.spring.paging.Criteria;
 
 @Service
 public class OrderSheetServiceImpl implements OrderSheetService{
@@ -132,5 +135,46 @@ public class OrderSheetServiceImpl implements OrderSheetService{
 	@Override
 	public List<OrderSheetDetailVO> getSubList(int mainNo) {
 		return mapper.selectSubAllByMainNo(mainNo);
+	}
+
+	@Override
+	public OrderSheetVO selectOneByMainNo(int no) {
+		return mapper.selectOneByMainNo(no);
+	}
+	
+	//ajax paging
+	@Override
+	public PageDTO<OrderSheetVO> getListPage(Criteria cri) {
+		
+		int totalCount = mapper.getCountAll(cri);
+		List<OrderSheetVO> list = mapper.getListWithPaging(cri); 
+		
+		// 각 메인 레코드에 대해 서브 상품들 이름 묶어서 ㅇㅇ외 N개 라고 출력해주기 위한 과정
+		for(OrderSheetVO vo : list) {
+			int total_price = 0;
+			int mainNo = vo.getNo();
+			List<OrderSheetDetailVO> subList = mapper.selectSubAllByMainNo(mainNo); // 수주서에 딸린 상세 품목들
+			
+			// OO 외 N개 이름 만들어 넣어주는 코드
+			if(subList.size() == 1) {
+				vo.setTemp_item_name(subList.get(0).getItem_name());
+			}else if(subList.size() > 1) {
+				
+				int subListSize = subList.size(); 
+				
+				vo.setTemp_item_name(subList.get(0).getItem_name() + " 외 " + (subListSize-1) + "개");
+			}
+			
+			// 발주금액 합계 계산하여 넣어주는 코드
+			for(OrderSheetDetailVO svo : subList) {
+				total_price += svo.getIn_price()*svo.getAmount();
+			}
+			System.out.println("total_price"+ total_price);
+			vo.setTotal_price(total_price);
+		}
+		
+		PageDTO<OrderSheetVO> pageDTO = new PageDTO<OrderSheetVO>(totalCount, list, cri);
+		
+		return pageDTO;
 	}
 }

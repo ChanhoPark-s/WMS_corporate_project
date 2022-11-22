@@ -56,8 +56,9 @@ public class DepartmentController {
 	}
 	
 	@PostMapping(value="/update")
-	public String update(DepartmentVO vo) {				
+	public String update(DepartmentVO vo, HttpServletRequest request, SearchVO searchvo, RedirectAttributes rttr) {				
 		service.modify(vo);
+		rttr.addFlashAttribute("searchvo",searchvo);
 		return redirect;
 	}
 	

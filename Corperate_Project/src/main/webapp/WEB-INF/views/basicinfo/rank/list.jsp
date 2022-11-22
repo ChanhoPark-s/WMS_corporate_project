@@ -124,11 +124,11 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                <form class="needs-validation" novalidate id="taskForm" method="post" action="">
+                <form class="needs-validation" novalidate id="rankForm" method="post" action="">
                   <div class="mb-3">
                     <label for="userFullname" class="form-label">직급코드</label>
                     <input type="text" name="code" class="form-control" id="userFullname" required autofocus>
-                    <div class="invalid-feedback">User full name is required.</div>
+                    <div class="invalid-feedback">직급코드를 입력하세요.</div>
                   </div>
                   <div class="mb-3">
                     <label for="userEmail" class="form-label">직급이름</label>
@@ -136,12 +136,16 @@
                     <div class="invalid-feedback">User id is required.</div>
                    	<!-- 수정 했을 때 넘기기 위해 -->
 	         		<input type="hidden" name="pageNumber" id="pageNumber" value="${pageInfo.pageNumber }">
+                    <div class="invalid-feedback">직급이름을 입력하세요.</div>
                   </div>
+					<!-- 수정했을때도 가게 만들기위해 -->
+					<input type="hidden" name="keyword" id="keyword2" value="${searchvo.keyword }">
+					<input type="hidden" name="whatColumn" id="whatColumn" value="${searchvo.whatColumn }">
                 </form>
               </div>
               <div class="modal-footer border-0">
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
-                <button type="submit" form="taskForm" class="btn btn-primary px-5">저장</button>
+                <button type="submit" form="rankForm" class="btn btn-primary px-5">저장</button>
               </div>
             </div>
           </div>
@@ -203,7 +207,7 @@
 				elem.value = '';
 			});
 			
-			taskForm.action = 'insert';
+			rankForm.action = 'insert';
 		});
 		
 		// 직급 수정
@@ -217,18 +221,18 @@
 				const rankInfo = Array.from(document.querySelector('.rank-' + no).children);
 				const [code, name] = rankInfo.slice(2, 4);
 				
-				taskForm.code.value = code.innerHTML;
-				taskForm.name.value = name.innerHTML;
+				rankForm.code.value = code.innerHTML;
+				rankForm.name.value = name.innerHTML;
 				
-				if(!taskForm.no) {
+				if(!rankForm.no) {
 					const input = document.createElement('input');
 					input.type = 'hidden';
 					input.name = 'no';
-					taskForm.append(input);
+					rankForm.append(input);
 				}
-				taskForm.no.value = no;
+				rankForm.no.value = no;
 				
-				taskForm.action = 'update';
+				rankForm.action = 'update';
 			});
 		})
 		
@@ -286,6 +290,22 @@
 		}
 
 	}
+	
+    // 유효성 검사
+    void(function() {
+    	
+      document.querySelectorAll('.needs-validation').forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+
+          }
+          form.classList.add('was-validated')
+     
+        })
+      })
+    })()
 </script>
 <!-- bottom.jsp -->
 <%@include file="../../common/bottom.jsp"%>

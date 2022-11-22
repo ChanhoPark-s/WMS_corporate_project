@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 
 <!-- top.jsp -->
-<%@include file="../common/top.jsp"%>
+<%@include file="../../common/top.jsp"%>
 
 <!-- Main body -->
       <div id="main-body">
@@ -12,15 +12,14 @@
             <div class="card h-100">
               <div class="card-body navbar-light">
                 <!-- 좌측영역에넣을테이블 -->
-<div class="col-md-10">
+<div class="col-md-12">
             <h3 class="fw-black">창고별 재고현황</h3>
             <p>재고현황을 확인하고 싶은 구역을 클릭하여 재고확인</p>
             
-         <ul class="nav flex-column">
+         <ul class="nav flex-column" style=" height: 600px; overflow: auto">
           <li class="nav-item">
            <a href="#default-collapse1" class="nav-link px-0 dropdown-toggle d-flex align-items-center gap-3" data-bs-toggle="collapse" role="button" aria-expanded="true" aria-controls="default-collapse"
             	id="mydefault" data-value="0" >
-            	<!-- onclick="clickFunction(this.id)" -->
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
               </svg>
@@ -28,7 +27,7 @@
            </a>
            
            <!-- 창고 -->
-           <div class="ms-5 collapse show" id="default-collapse">
+           <div class="ms-5 collapse show" id="default-collapse1">
             <ul class="nav flex-column">
               <c:forEach items="${warehouseLists }" var="warehouseLists" varStatus="warehousestatus">
               <li class="nav-item">
@@ -128,9 +127,9 @@
 	<div class="card-body">
 	<!--  -->
 	<!--  -->
-	<div class="d-flex gap-1 mb-4 flex-wrap">
+	<div class="d-flex gap-1 mb-1 flex-wrap">
       <div class="d-flex gap-1 me-auto flex-wrap">
-      	<h4 id="clicked_location"></h4>
+
       </div>
 		<form>
 		<table>
@@ -153,23 +152,25 @@
 		</form>
 	</div>
 	<!--  -->
+	<div class="d-flex gap-1 mb-1 flex-wrap">
+		<h3 id="clicked_location"></h3>
+		</div>
 	<!--  -->
 		<div class="table-responsive my-1">
 		<form name="form">
 			<table class="table align-middle">
 				<thead>
 					<tr>
-						<th scope="col">번호</th>
-						<th scope="col">로트코드</th>
-						<th scope="col">품목사진</th>
-						<th scope="col">품목명</th>
-						<th scope="col">재고수량</th>
+						<th scope="col" style="width:15%;">번호</th>
+						<th scope="col" style="width:35%;">로트코드</th>
+						<th scope="col" style="width:35%;">품목명</th>
+						<th scope="col" style="width:15%;">재고수량</th>
 					</tr>
 				</thead>
 				<tbody id="tddata">
 					<tr>
-						<td colspan="5">
-							좌측 메뉴 바에서 재고현황을 확인하고 싶은 영역을 선택하세요
+						<td colspan="4">
+							좌측 메뉴 바에서 재고현황을 확인하고 싶은 영역을 선택하세요.
 						</td>
 					</tr>
 					
@@ -312,7 +313,7 @@
 
 
 <!-- bottom.jsp -->
-<%@include file="../common/bottom.jsp"%>
+<%@include file="../../common/bottom.jsp"%>
 <script type="text/javascript">
 var id;
 var no;
@@ -359,13 +360,7 @@ function clickFunction(clicked_id,w_no,a_no,r_no,c_no){
 	id = clicked_id;
 	showid = document.getElementById(clicked_id).getAttribute('href').substring(1); //등록수정삭제시 창고-셀 사이드바 보던 화면으로 가기 위한 변수
 	no = document.getElementById(clicked_id).getAttribute('data-value');
-	
-	//클릭시 showid설정
-	document.getElementById('showid').value = showid;
-// console.log(id);
-// console.log(showid);
-// console.log(no);
-	
+
 	//만든 영역의 위치정보를 전역변수에 저장
 	ware_no = w_no;
 	area_no = a_no;
@@ -380,54 +375,41 @@ function clickFunction(clicked_id,w_no,a_no,r_no,c_no){
 	//하단페이지번호도만들고 레코드도만듬
 	requestRecord();
 	
-	/*ajax로 each 돌려서 우측 테이블td생성*/
-// 	$.ajax({
-// 		url : "/warehouse-detail/get-data-stock",
-// 		type : "get",
-// 		data : ({
-// 			"id" : id,
-// 			"no" : no,
-// 			"ware_no" : w_no,
-// 			"area_no" : a_no,
-// 			"rack_no" : r_no,
-// 			"cell_no" : c_no
-// 		}),
-// 		success : function(data){
-			
-// 			var mydata = JSON.parse(data);
-// // console.log(mydata);
-// 			$('#tddata *').remove();
-// 			var tabledata = "";
-// 			var mydatalen = mydata.length;
+	//클릭한 값 이름 가지고와서 우측테이블위의 현재보고있는영역을 표시
+	$.ajax({
+		url : "/basicinfo/warehouse/get-location",
+		type : "get",
+		data : ({
+			"id" : id,
+			"no" : no
+		}),
+		success : function(data){
+			var mydata = JSON.parse(data);
+			if(id.indexOf("default")>0){
+				current_location = "창고목록";				
+			}
+			else if(id.indexOf("warehouse")>0){
+				current_location = mydata.warehousename;		
+			}
+			else if(id.indexOf("area")>0){
+				current_location = mydata.warehousename+ " "+mydata.areaname;
+			}
+			else if(id.indexOf("rack")>0){
+				current_location = mydata.warehousename+ " "+mydata.areaname+ " "+mydata.rackname;
+			}
+			else{
+				current_location = mydata.warehousename+ " "+mydata.areaname+ " "+mydata.rackname+ " "+mydata.cellname;
+			}
+			$("#clicked_location").html(current_location);
+				
+		},
+		error: function (request, status, error) {
+	        console.log("code: " + request.status);
+	        console.log("message: " + request.responseText);
+	        console.log("error: " + error);
+	    }
 
-			
-
-// console.log(mydatalen);
-// console.log(pageNum);
-// console.log(amount);
-// 			if(mydatalen==0){
-// 				tabledata +=	'<tr>'+
-// 									'<td colspan="5">'+'현재 선택한 영역은 재고 물품이 없습니다.'+'</td>'+
-// 								'</tr>';
-// 			}else{
-// 				$.each(mydata,function(i){
-// 						tabledata +=	'<tr>'+
-// 											'<td>'+(i+1)+'</td>'+
-// 											'<td>'+mydata[i].lot_code+'</td>'+
-// 											'<td><img width="100px" height="100px" src="${pageContext.request.contextPath }/resources/assets/img/item/'+mydata[i].image+'" ></td>'+
-// 											'<td>'+mydata[i].name+'</td>'+
-// 											'<td>'+mydata[i].amount+'</td>'+
-// 										'</tr>';
-// 				});
-// 			}//else
-// 			$("#tddata").append(tabledata);
-// 		},//success
-// 		error: function (request, status, error) {
-// 	        console.log("code: " + request.status);
-// 	        console.log("message: " + request.responseText);
-// 	        console.log("error: " + error);
-// 	    }
-// 	});//ajax
+	});//ajax
 };//clickFunction
 
 /* 두번째 모달의 페이지네이션에서 번호 클릭시 다시 그리는 함수 */
@@ -444,16 +426,15 @@ $("#PageNation").on("click", "li a", function(e){
 
 /* ajax로 레코드정보를 요청하는 부분 + 화면전환없이 레코드들을 그리는 부분 + 화면전환없이 페이지네이션을 그리는 부분 */
 function requestRecord(){
-	console.log("requestRecord의 mount"+amount)
-	$.getJSON("/warehouse-detail/pages/"+ pageNum +"/" + amount+ "/" + ware_no + "/" + area_no + "/" + rack_no + "/" + cell_no
+	$.getJSON("/warehouse/warehouse-detail/pages/"+ pageNum +"/" + amount+ "/" + ware_no + "/" + area_no + "/" + rack_no + "/" + cell_no
 			+ "/" + searchWhatColumn + "/" + searchKeyword,  
 			function(resdata){
 		console.log("requestRecord서확인한resdata.list.length는"+resdata.list.length);
-			console.log("list: " + resdata.list); 	  						// 페이지 하나의 레코드들이 담긴 객체
-			console.log("getJSON밑의 totalCount: " + resdata.totalCount); 	// 검색조건으로 뽑힌 총 레코드 수
-			console.log("getJSON밑의 cri: " + resdata.cri); 	  				// 검색에 사용된 기준정보가 담긴 객체
+// 			console.log("list: " + resdata.list); 	  						// 페이지 하나의 레코드들이 담긴 객체
+// 			console.log("getJSON밑의 totalCount: " + resdata.totalCount); 	// 검색조건으로 뽑힌 총 레코드 수
+// 			console.log("getJSON밑의 cri: " + resdata.cri); 	  				// 검색에 사용된 기준정보가 담긴 객체
 				
-				makeRecord(resdata.list); 							// 레코드들을 그리는 함수
+				makeRecord(resdata.list,resdata.totalCount, resdata.cri); 	// 레코드들을 그리는 함수
 				paintPageNation(resdata.totalCount, resdata.cri); 	// 페이지네이션을 그리는 함수
 				
 			}).fail(function(xhr, status, err){
@@ -466,23 +447,35 @@ function requestRecord(){
 
 
 /* 받아온 레코드들 만든다 */
-function makeRecord(list){
+function makeRecord(list,totalCount,cri){
 	$('#tddata *').remove();
 		var retabledata = "";
-		console.log("list.length는"+list.length);
 		if(list.length==0){
-			retabledata +=	'<tr>'+
-								'<td colspan="5">'+'현재 선택한 영역은 재고 물품이 없습니다.'+'</td>'+
-							'</tr>';
+			if(id.indexOf('ware')>=0){
+				retabledata +=	'<tr>'+
+									'<td colspan="5">'+'현재 선택한 창고는 재고 물품이 없습니다.'+'</td>'+
+								'</tr>';
+			}else if(id.indexOf('area')>=0){
+				retabledata +=	'<tr>'+
+									'<td colspan="5">'+'현재 선택한 구역은 재고 물품이 없습니다.'+'</td>'+
+								'</tr>';
+			}else if(id.indexOf('rack')>=0){
+				retabledata +=	'<tr>'+
+									'<td colspan="5">'+'현재 선택한 랙은 재고 물품이 없습니다.'+'</td>'+
+								'</tr>';
+			}else{
+				retabledata +=	'<tr>'+
+									'<td colspan="5">'+'현재 선택한 셀은 재고 물품이 없습니다.'+'</td>'+
+								'</tr>';
+			}
 		}
 		else{
 			for(var i = 0, len = list.length || 0; i < len; i++){
 				retabledata +=	'<tr>'+
-									'<td>'+list[i].no+'</td>'+
-									'<td>'+list[i].lot_code+'</td>'+
-									'<td><img width="80px" height="80px" src="${pageContext.request.contextPath }/resources/assets/img/item/'+list[i].image+'" ></td>'+
-									'<td>'+list[i].name+'</td>'+
-									'<td>'+list[i].amount+'</td>'+
+									'<td style="width:15%;">'+((totalCount-(pageNum-1)*10)-i)+'</td>'+
+									'<td style="width:35%;">'+list[i].lot_code+'</td>'+
+									'<td style="width:35%;">'+list[i].name+'</td>'+
+									'<td style="width:15%;">'+list[i].amount+'</td>'+
 								'</tr>';
 			}
 		}
@@ -576,8 +569,6 @@ $("#searchBtn").on("click", function(e){
 	e.preventDefault(); // 번호를 눌러도 페이지가 이동하지 않도록 한다
 	searchWhatColumn = $("#searchWhatColumn").val();
 	searchKeyword = $("#searchKeyword").val();
-	console.log("searchWhatColumn: " + searchWhatColumn);
-	console.log("searchKeyword: " + searchKeyword);
 	
 	if(ware_no == null){
 		alert("좌측 사이드바에서 최소 창고 이하를 클릭해야 검색 가능합니다.");

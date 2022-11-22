@@ -324,7 +324,7 @@ pageEncoding="UTF-8"%>
     	})
     	
     	async function getMemberInfo(no) {
-    		const data = await fetch('http://localhost:8080/basicinfo/member/get/' + no);
+    		const data = await fetch(location.origin + '/basicinfo/member/get/' + no);
     		const json = await data.json();
     		return json;
     	}
@@ -340,9 +340,6 @@ pageEncoding="UTF-8"%>
     			
     			const no = target.dataset.no;	
     			
-    			
-    			const search = getSearch();
-    			console.log(search.pageNumber);
         		delete_from.action = 'delete/' + no + window.location.search;
     		});
     	});
@@ -351,7 +348,7 @@ pageEncoding="UTF-8"%>
     	idcheck.addEventListener('keyup', async event => {
     		const target = event.target
     		const value = target.value || 0;
-    		const data = await fetch('http://localhost:8080/basicinfo/member/idcheck/' + value);
+    		const data = await fetch(location.origin + '/basicinfo/member/idcheck/' + value);
     		const json = await data.json();
     		
     		const feedback = document.querySelector('.id-feedback');
@@ -365,28 +362,13 @@ pageEncoding="UTF-8"%>
     			target.classList.remove('is-invalid');
     		}
     	});
-    	
-    	function getSearch() {
-    		const search = window.location.search;
-    		const pageNumber = search.match(/pageNumber=(\w*)(?=&)/) && search.match(/pageNumber=(\w*)(?=&)/)[1] || null;
-    		const pageSize = search.match(/pageSize=(\w*)(?=&)/) && search.match(/pageSize=(\w*)(?=&)/)[1] || null;
-    		const whatColumn = search.match(/whatColumn=(.*)(?=&)/) && search.match(/whatColumn=(.*)(?=&)/)[1] || null;
-    		const keyword = search.match(/keyword=(.*)/) && search.match(/keyword=(.*)/)[1] || null;
-    		
-    		return {
-    			pageNumber: pageNumber,
-    			pageSize: pageSize,
-    			whatColumn: whatColumn,
-    			keyword: keyword
-    		}
-    	}
     })();
     
     for (const el of document.querySelectorAll('.dselect')) {
       dselect(el)
     }
 
-    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    // 유효성 검사
     void(function() {
     	
    	  const idcheck = document.querySelector('.idcheck');
