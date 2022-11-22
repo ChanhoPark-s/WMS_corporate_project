@@ -63,6 +63,14 @@
 					</tr>
 				</thead>
 				<tbody>
+					 	<tr>
+		                	<td>
+		                		<!--선택 삭제할때도 넘어가게하기 위해  -->
+								<input type="hidden" name="keyword" id="keyword3" >
+								<input type="hidden" name="whatColumn" id="whatColumn2">
+		             			<input type="hidden" name="pageNumber" id="pageNumber2">
+		                	</td>
+		                </tr>
 					<c:forEach var="vo" items="${ranks}">
 						<tr class="rank-${vo.no }">
 							<td>
@@ -125,9 +133,11 @@
                   <div class="mb-3">
                     <label for="userEmail" class="form-label">직급이름</label>
                     <input type="text" name="name" class="form-control" id="userEmail" required>
+                    <div class="invalid-feedback">User id is required.</div>
+                   	<!-- 수정 했을 때 넘기기 위해 -->
+	         		<input type="hidden" name="pageNumber" id="pageNumber" value="${pageInfo.pageNumber }">
                     <div class="invalid-feedback">직급이름을 입력하세요.</div>
                   </div>
-                  	<input type="hidden" name="pageNumber" id="pageNumber" value="${pageInfo.pageNumber }">
 					<!-- 수정했을때도 가게 만들기위해 -->
 					<input type="hidden" name="keyword" id="keyword2" value="${searchvo.keyword }">
 					<input type="hidden" name="whatColumn" id="whatColumn" value="${searchvo.whatColumn }">
@@ -187,14 +197,16 @@
 		
 		const title = document.querySelector('.modal-title');
 		const body = document.querySelector('body');
+		const form_control = document.querySelectorAll('.form-control');
 		
 		// 직급 등록
 		document.querySelector('.insert').addEventListener('click', event => {
 			title.innerHTML = '직급등록';
+			rankForm.classList.remove('was-validated');
 			
-			const form_control = document.querySelectorAll('.form-control');
 			Array.from(form_control, elem => {
 				elem.value = '';
+				elem.classList.remove('is-invalid');
 			});
 			
 			rankForm.action = 'insert';
@@ -203,6 +215,12 @@
 		// 직급 수정
 		document.querySelectorAll('.update').forEach(elem => {
 			elem.addEventListener('click', event => {
+				rankForm.classList.remove('was-validated');
+				
+				Array.from(form_control, elem => {
+					elem.value = '';
+					elem.classList.remove('is-invalid');
+				});
 				
 				let target = event.target;
 				target = target.nodeName == 'BUTTON' ? target : target.nodeName == 'svg' ? target.parentElement : target.parentElement.parentElement;
@@ -258,6 +276,10 @@
 			}
 		}
 	function selectDelete(){
+		
+		document.getElementById('keyword3').value=$('#keyword').val();
+		document.getElementById('whatColumn2').value=$('#whatColumn').val();
+		document.getElementById('pageNumber2').value=$('#pageNumber').val();
 		
 		x=false;
 		var rc = document.f.rowcheck;

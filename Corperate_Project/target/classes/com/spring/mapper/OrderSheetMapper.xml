@@ -20,6 +20,22 @@
 		values(order_detail_seq.nextval, #{mainSheetNo}, #{itemNo}, #{itemAmount})
 	</insert>
 	
+	<delete id="deleteOrderSheet">
+		delete from order_sheet
+		where no = #{no}
+	</delete>
+	
+	<delete id="deleteOrderDetailSheet">
+		delete from order_detail
+		where order_no = #{order_no}
+	</delete>
+	
+	<update id="updateMainSheet">
+		update order_sheet 
+		set member_no=#{member_no}, client_no=#{client_no}, out_day=#{out_day}
+		where no=#{no} 
+	</update>
+	
 	<select id="selectList" resultType="com.spring.domain.OrderSheetVO">
 		select m.no, m.name member_name, c.name client_name, m.day, m.out_day, m.status
 		from(select o.no, m.name, o.client_no, o.day, o.out_day, o.status

@@ -92,7 +92,7 @@
 			</div>
 			<div class="row-sm-2">	
 				<label for="userFullname" class="form-label">&nbsp;&nbsp;</label>
-				<button type="button" class="btn btn-primary" style="display:block" data-bs-target="#movementItem2" data-bs-toggle="modal" data-bs-dismiss="modal" id="choiceMemberBtn">출고 품목 선택</button>	
+				<button type="button" class="btn btn-primary" style="display:block" data-bs-target="#movementItem2" data-bs-toggle="modal" data-bs-dismiss="modal" id="outputBtn">출고 품목 선택</button>	
 			</div>
 		</div>
 		<div class="col">
@@ -121,7 +121,7 @@
 			</div>
 			<div class="row-sm-2">	
 				<label for="userFullname" class="form-label">&nbsp;&nbsp;</label>
-				<button type="button" class="btn btn-primary" style="display:block" data-bs-target="#movementItem3" data-bs-toggle="modal" data-bs-dismiss="modal">입고 창고 선택</button>	
+				<button type="button" class="btn btn-primary" style="display:block" data-bs-target="#movementItem3" data-bs-toggle="modal" data-bs-dismiss="modal" id="intputBtn">입고 창고 선택</button>	
 			</div>
 		</div>
 	 </div>
@@ -405,7 +405,7 @@
 				 itemTable.innerHTML = "";
 				 
 				 if(jsonData.list.length === 0) {
-					 itemTable.innerHTML = '<tr><td colspan=6 align=center>검색결과 없음</td></tr>';
+					 itemTable.innerHTML = '<tr><td colspan=6 align=center>검색결과가 없습니다.</td></tr>';
 				 }
 				 else{
 					 jsonData.list.forEach(item => {

@@ -67,6 +67,14 @@ pageEncoding="UTF-8"%>
                   </tr>
                 </thead>
                 <tbody>
+	                <tr>
+	                	<td>
+	                		<!--선택 삭제할때도 넘어가게하기 위해  -->
+							<input type="hidden" name="keyword" id="keyword3" >
+							<input type="hidden" name="whatColumn" id="whatColumn2">
+	             			<input type="hidden" name="pageNumber" id="pageNumber2">
+	                	</td>
+	                </tr>
                 <c:forEach items="${requestScope.list }" var="member">
                 	<tr>
                 	<td>								<input class="form-check-input" type="checkbox" id="rowcheck" name="rowcheck" value="${member.no }"></td>
@@ -266,14 +274,16 @@ pageEncoding="UTF-8"%>
     (function() {
    		
     	const title = document.querySelector('.modal-title');
+    	const form_control = document.querySelectorAll('.form-control');
     	
     	// 사원등록
     	document.querySelector('.insert').addEventListener('click', event => {
     		title.innerHTML = '사원등록';
+    		taskForm.classList.remove('was-validated');
     		
-    		const form_control = document.querySelectorAll('.form-control');
     		Array.from(form_control, elem => {
     			elem.value = '';
+    			elem.classList.remove('is-invalid');
     		});
     		
     		const form_select = document.querySelectorAll('.form-select');
@@ -289,8 +299,14 @@ pageEncoding="UTF-8"%>
     		idcheck = document.querySelector('.idcheck');
     	
     	update.forEach((elem)=> {
+    		
     		elem.addEventListener('click', async (event) => {
         		title.innerHTML = '사원수정';
+        		elem.classList.remove('was-validated');
+        		
+        		Array.from(form_control, elem => {
+        			elem.classList.remove('is-invalid');
+        		});
         		
         		let target = event.target;
 				target = target.nodeName == 'BUTTON' ? target : target.nodeName == 'svg' ? target.parentElement : target.parentElement.parentElement;
@@ -397,6 +413,10 @@ pageEncoding="UTF-8"%>
 			}
 		}
 	function selectDelete(){
+		
+		document.getElementById('keyword3').value=$('#keyword').val();
+		document.getElementById('whatColumn2').value=$('#whatColumn').val();
+		document.getElementById('pageNumber2').value=$('#pageNumber').val();
 		
 		x=false;
 		var rc = document.f.rowcheck;

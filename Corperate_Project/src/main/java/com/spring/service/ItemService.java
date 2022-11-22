@@ -19,7 +19,7 @@ public interface ItemService {
 	public void update(ItemVO vo, HttpServletRequest request) throws Exception;
 	public int getTotalCount(SearchVO searchvo);
 	public int code_check(String code);
-	
+	public int selectDelete(String[] parameterValues);
 	/* ajax paging */
 	public PageDTO<ItemVO> getListPage(Criteria cri);
 
