@@ -21,18 +21,6 @@ public class AreaServiceImpl implements AreaService{
 	}
 
 	@Override
-	public int modify(int no) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int delete(int no) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public List<AreaVO> getListByWareNo(int no) {
 		return mapper.getListByWareNo(no);
 	}
@@ -55,6 +43,11 @@ public class AreaServiceImpl implements AreaService{
 	@Override
 	public int updateAreaByNo(WareHouseAllAreaVO vo) {
 		return mapper.updateAreaByNo(vo);
+	}
+
+	@Override
+	public int checkCode(String code) {
+		return mapper.checkCode(code);
 	}
 
 

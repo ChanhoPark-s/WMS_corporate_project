@@ -21,18 +21,6 @@ public class WareHouseServiceImpl implements WareHouseService{
 	}
 
 	@Override
-	public int modify(int no) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int delete(int no) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	@Override
 	public int deleteWareHouseByNo(String ware_no) {
 		return mapper.deleteWareHouseByNo(ware_no);
 	}
@@ -52,4 +40,8 @@ public class WareHouseServiceImpl implements WareHouseService{
 		return mapper.updateWareHouseByNo(vo);
 	}
 
+	@Override
+	public int checkCode(String code) {
+		return mapper.checkCode(code);
+	}
 }

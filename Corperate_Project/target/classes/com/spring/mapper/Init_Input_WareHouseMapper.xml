@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.spring.mapper.Init_Input_WareHouseMapper">
+	<insert id="inputWarehouse">
+			INSERT INTO INPUT_WAREHOUSE (NO, MEMBER_NO, PURCHASE_SHEET_NO, STATUS)
+			VALUES (INPUT_WAREHOUSE_SEQ.NEXTVAL, #{member_no }, NULL, 1)
+		   <selectKey keyProperty="no" resultType="int" order="AFTER">
+		   		SELECT INPUT_WAREHOUSE_SEQ.CURRVAL FROM DUAL
+		   </selectKey>
+	</insert>
+	
+	<insert id="inputWarehouseDetail" parameterType="java.util.List">	
+		
+		DECLARE
+			V_LOT_CODE LOT.CODE%TYPE;
+			V_ITEM_NO ITEM.NO%TYPE;
+			
+			CNT NUMBER := 0;
+		BEGIN
+			<foreach collection="list" item="item" index="index">
+			
+				IF #{index} = 0 THEN
+					V_ITEM_NO := #{item.item_no, jdbcType=INTEGER};
+					V_LOT_CODE := GENERATE_LOT(V_ITEM_NO);
+				ELSE
+					IF V_ITEM_NO != #{item.item_no, jdbcType=INTEGER} THEN
+					
+						INSERT INTO LOT 
+						VALUES (LOT_SEQ.NEXTVAL, V_LOT_CODE, V_ITEM_NO, SYSDATE);
+						
+						V_ITEM_NO := #{item.item_no, jdbcType=INTEGER};
+						V_LOT_CODE := GENERATE_LOT(V_ITEM_NO);
+					END IF;
+				END IF;
+				
+				<if test="list.size -1 == index">
+					INSERT INTO LOT 
+					VALUES (LOT_SEQ.NEXTVAL, V_LOT_CODE, V_ITEM_NO, SYSDATE);					
+				</if>
+				
+				INSERT INTO INPUT_WAREHOUSE_DETAIL (NO, INPUT_WAREHOUSE_NO, PURCHASE_SHEET_DETAIL_NO, STATUS, QTY, WARE_NO, AREA_NO, RACK_NO, CELL_NO, LOT_CODE) 
+				VALUES 
+				(INPUT_WAREHOUSE_DATAIL_SEQ.NEXTVAL, #{item.no, jdbcType=INTEGER}, NULL, 1, #{item.qty, jdbcType=INTEGER}, #{item.ware_code, jdbcType=VARCHAR}, #{item.area_code, jdbcType=VARCHAR}, #{item.rack_code, jdbcType=VARCHAR}, #{item.cell_code, jdbcType=VARCHAR}, V_LOT_CODE);
+			
+				SELECT COUNT(*) INTO CNT
+				FROM WAREHOUSE_DETAIL
+				WHERE 
+				LOT_CODE = V_LOT_CODE
+				AND WARE_NO = #{item.ware_code, jdbcType=VARCHAR}
+				AND AREA_NO = #{item.area_code, jdbcType=VARCHAR}
+				AND RACK_NO = #{item.rack_code, jdbcType=VARCHAR}
+				AND CELL_NO = #{item.cell_code, jdbcType=VARCHAR};
+				
+				CASE
+					WHEN CNT = 0 THEN
+						INSERT INTO WAREHOUSE_DETAIL (NO, LOT_CODE, AMOUNT, ORDERED_AMOUNT, ITEM_NO, WARE_NO, AREA_NO, RACK_NO, CELL_NO)
+						VALUES (WAREHOUSE_DETAIL_SEQ.NEXTVAL, V_LOT_CODE, #{item.qty, jdbcType=INTEGER}, NULL, V_ITEM_NO, #{item.ware_code, jdbcType=VARCHAR}, #{item.area_code, jdbcType=VARCHAR}, #{item.rack_code, jdbcType=VARCHAR}, #{item.cell_code, jdbcType=VARCHAR});
+					ELSE
+						UPDATE WAREHOUSE_DETAIL
+						SET amount = amount + #{item.qty, jdbcType=INTEGER}
+						WHERE LOT_CODE = V_LOT_CODE
+						AND WARE_NO = #{item.ware_code, jdbcType=VARCHAR}
+						AND AREA_NO = #{item.area_code, jdbcType=VARCHAR}
+						AND RACK_NO = #{item.rack_code, jdbcType=VARCHAR}
+						AND CELL_NO = #{item.cell_code, jdbcType=VARCHAR};
+				END CASE;
+			</foreach>
+		END;
+	</insert>
+</mapper>

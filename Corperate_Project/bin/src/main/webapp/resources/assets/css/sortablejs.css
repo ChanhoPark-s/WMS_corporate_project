@@ -1,0 +1,32 @@
+.drag-handle {
+  cursor: default;
+}
+
+.remove-handle {
+  cursor: pointer;
+}
+
+.sortable-ghost,
+.sortable-swap-highlight {
+  position: relative;
+  z-index: 2;
+}
+
+.sortable-ghost {
+  outline: 2px dashed #6b7280;
+}
+
+.sortable-swap-highlight {
+  outline: 2px dotted #6b7280;
+}
+
+.sortable-selected {
+  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.125) inset;
+}
+
+.sort-handle:not(.filtered) {
+  cursor: -webkit-grab;
+  cursor: grab;
+}
+
+/*# sourceMappingURL=sortablejs.css.map */

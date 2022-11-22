@@ -1,0 +1,394 @@
+DROP TABLE  lot ;
+
+CREATE TABLE  lot  (
+	 no 	NUMBER		NOT NULL,
+	 code 	VARCHAR2(30)		NOT NULL,
+	 item_no 	NUMBER		NOT NULL
+);
+
+DROP TABLE  order_sheet ;
+
+CREATE TABLE  order_sheet  (
+	 no 	NUMBER		NOT NULL,
+	 member_no 	NUMBER		NOT NULL,
+	 client_no 	NUMBER		NOT NULL,
+	 day 	DATE	DEFAULT sysdate	NOT NULL,
+	 out_day 	DATE		NOT NULL,
+	 status 	NUMBER	DEFAULT 0	NOT NULL
+);
+
+COMMENT ON COLUMN  order_sheet . member_no  IS 'references member(no) on delete cascade';
+
+COMMENT ON COLUMN  order_sheet . client_no  IS 'references client(no) on delete cascade';
+
+COMMENT ON COLUMN  order_sheet . status  IS '0(재고확인중, default), 1(재고확보중, 발주등록시),2(출하완료, 판매등록시), 4(취소됨, 취소시)';
+
+DROP TABLE  sell ;
+
+CREATE TABLE  sell  (
+	 no 	NUMBER		NOT NULL,
+	 member_no 	NUMBER		NOT NULL,
+	 order_no 	NUMBER		NULL,
+	 day 	DATE	DEFAULT sysdate	NOT NULL,
+	 sell_no 	NUMBER		NOT NULL
+);
+
+COMMENT ON COLUMN  sell . order_no  IS 'references order_sheet(no) on delete cascade';
+
+DROP TABLE  client ;
+
+CREATE TABLE  client  (
+	 no 	NUMBER		NOT NULL,
+	 code 	VARCHAR2(40)		NOT NULL,
+	 category 	NUMBER		NOT NULL,
+	 name 	VARCHAR2(50)		NOT NULL,
+	 owner 	VARCHAR2(50)		NOT NULL,
+	 tel 	VARCHAR2(40)		NOT NULL,
+	 fax 	VARCHAR2(40)		NULL,
+	 bank 	VARCHAR2(40)		NULL,
+	 account 	VARCHAR2(100)		NULL,
+	 zipcode 	VARCHAR2(100)		NULL,
+	 address1 	VARCHAR2(100)		NULL,
+	 address2 	VARCHAR2(100)		NULL,
+	 email 	VARCHAR(255)		NULL
+);
+
+COMMENT ON COLUMN  client . category  IS '구매처0/납품처1';
+
+DROP TABLE  member ;
+
+CREATE TABLE  member  (
+	 no 	NUMBER		NOT NULL,
+	 id 	VARCHAR2(30)		NOT NULL,
+	 pw 	VARCHAR2(50)		NOT NULL,
+	 name 	VARCHAR2(30)		NOT NULL,
+	 dep_no 	NUMBER		NOT NULL,
+	 rank_no 	NUMBER		NOT NULL,
+	 email 	VARCHAR2(50)		NOT NULL,
+	 image 	VARCHAR2(100)		NOT NULL
+);
+
+COMMENT ON COLUMN  member . dep_no  IS 'references department(no) on delete cascade';
+
+COMMENT ON COLUMN  member . rank_no  IS 'references rank(no) on delete cascade';
+
+
+------------------------------------------------------------------------
+DROP TABLE  department ;
+CREATE TABLE  department  (
+	 no 	number		NOT NULL,
+	 code 	VARCHAR2(30)		NOT NULL,
+	 name 	VARCHAR2(30)		NOT NULL
+);
+
+DROP SEQUENCE seq_department;
+CREATE SEQUENCE seq_department
+	increment by 1
+	start with 1 
+	minvalue 1
+	maxvalue 10000000
+	nocache;
+------------------------------------------------------------------------
+
+DROP TABLE  rank ;
+
+CREATE TABLE  rank  (
+	 no 	number		NOT NULL,
+	 code 	VARCHAR2(30)		NOT NULL,
+	 name 	VARCHAR2(30)		NOT NULL
+);
+
+DROP TABLE  warehouse ;
+
+CREATE TABLE  warehouse  (
+	 no 	NUMBER		NOT NULL,
+	 code 	VARCHAR2(30)		NOT NULL,
+	 name 	VARCHAR2(30)		NOT NULL
+);
+
+DROP TABLE  area ;
+
+CREATE TABLE  area  (
+	 no 	NUMBER		NOT NULL,
+	 ware_no 	NUMBER		NOT NULL,
+	 code 	VARCHAR2(30)		NOT NULL,
+	 name 	VARCHAR2(30)		NOT NULL
+);
+
+COMMENT ON COLUMN  area . ware_no  IS 'references warehouse(no) on delete cascade';
+
+DROP TABLE  purchase_sheet ;
+
+CREATE TABLE  purchase_sheet  (
+	 no 	NUMBER		NOT NULL,
+	 day 	DATE	DEFAULT sysdate	NOT NULL,
+	 delivery_date 	DATE		NULL,
+	 status 	NUMBER	DEFAULT 0	NOT NULL,
+	 order_no 	NUMBER		NULL,
+	 member_no 	NUMBER		NOT NULL,
+	 client_no 	NUMBER		NOT NULL
+);
+
+COMMENT ON COLUMN  purchase_sheet . status  IS '0:발주중(입고중), 1:발주완료(모든물품입고완료), 2:취소';
+
+DROP TABLE  rack ;
+
+CREATE TABLE  rack  (
+	 no 	NUMBER		NOT NULL,
+	 area_no 	NUMBER		NOT NULL,
+	 code 	VARCHAR2(30)		NOT NULL,
+	 name 	VARCHAR2(30)		NOT NULL
+);
+
+COMMENT ON COLUMN  rack . area_no  IS 'references area(no) on delete cascade';
+
+DROP TABLE  cell ;
+
+CREATE TABLE  cell  (
+	 no 	NUMBER		NOT NULL,
+	 rack_no 	NUMBER		NOT NULL,
+	 code 	VARCHAR2(30)		NOT NULL,
+	 name 	VARCHAR2(30)		NOT NULL
+);
+
+COMMENT ON COLUMN  cell . rack_no  IS 'references rack(no) on delete cascade';
+
+DROP TABLE  order_detail ;
+
+CREATE TABLE  order_detail  (
+	 no 	NUMBER		NOT NULL,
+	 order_no 	NUMBER		NOT NULL,
+	 item_no 	NUMBER		NOT NULL,
+	 amount 	NUMBER		NOT NULL
+);
+
+COMMENT ON COLUMN  order_detail . order_no  IS 'references order_sheet(no) on delete cascade';
+
+COMMENT ON COLUMN  order_detail . item_no  IS 'references item(no) on delete cascade';
+
+DROP TABLE  purchase_sheet_detail ;
+
+CREATE TABLE  purchase_sheet_detail  (
+	 no 	NUMBER		NOT NULL,
+	 purchase_sheet_no 	NUMBER		NOT NULL,
+	 order_detail_no 	NUMBER		NULL,
+	 amount 	NUMBER		NOT NULL,
+	 in_price 	NUMBER		NOT NULL,
+	 status 	NUMBER	DEFAULT 0	NOT NULL,
+	 item_no 	NUMBER		NOT NULL,
+	 ware_no 	NUMBER		NOT NULL
+);
+
+COMMENT ON COLUMN  purchase_sheet_detail . in_price  IS '발주할때입력되는구매단가';
+
+COMMENT ON COLUMN  purchase_sheet_detail . status  IS '0:입고예정,  1:입고완료, 2:취소 (물품에 대한)';
+
+DROP TABLE  input_warehouse_datail ;
+
+CREATE TABLE  input_warehouse_datail  (
+	 no 	NUMBER		NOT NULL,
+	 input_warehouse_no 	NUMBER		NOT NULL,
+	 purchase_sheet_detail_no 	NUMBER		NULL,
+	 status 	NUMBER		NOT NULL,
+	 arrival_date 	DATE	DEFAULT sysdate	NOT NULL,
+	 qty 	NUMBER		NOT NULL,
+	 ware_no 	NUMBER		NOT NULL,
+	 area_no 	NUMBER		NOT NULL,
+	 rack_no 	NUMBER		NOT NULL,
+	 cell_no 	NUMBER		NOT NULL,
+	 lot_no 	NUMBER		NOT NULL,
+	 item_no 	NUMBER		NOT NULL,
+	 no2 	NUMBER		NOT NULL
+);
+
+COMMENT ON COLUMN  input_warehouse_datail . input_warehouse_no  IS '입고테이블 외래키';
+
+COMMENT ON COLUMN  input_warehouse_datail . purchase_sheet_detail_no  IS 'references purchase_sheet_detail(no) on delete cascade';
+
+COMMENT ON COLUMN  input_warehouse_datail . status  IS '발주에 의한 입고/기타입고';
+
+DROP TABLE  warehouse_detail ;
+
+CREATE TABLE  warehouse_detail  (
+	 no 	NUMBER		NOT NULL,
+	 lot_no 	NUMBER		NOT NULL,
+	 amount 	NUMBER		NOT NULL,
+	 ordered_amount 	NUMBER		NULL,
+	 item_no 	NUMBER		NOT NULL,
+	 ware_no 	NUMBER		NOT NULL,
+	 area_no 	NUMBER		NOT NULL,
+	 rack_no 	NUMBER		NOT NULL,
+	 cell_no 	NUMBER		NOT NULL
+);
+
+COMMENT ON COLUMN  warehouse_detail . item_no  IS 'references item(no) on delete cascade';
+
+COMMENT ON COLUMN  warehouse_detail . ware_no  IS 'references warehouse(no) on delete cascade';
+
+COMMENT ON COLUMN  warehouse_detail . area_no  IS 'references area(no) on delete cascade';
+
+COMMENT ON COLUMN  warehouse_detail . rack_no  IS 'references rack(no) on delete cascade';
+
+COMMENT ON COLUMN  warehouse_detail . cell_no  IS 'references cell(no) on delete cascade';
+
+DROP TABLE  sell_detail ;
+
+CREATE TABLE  sell_detail  (
+	 no 	NUMBER		NOT NULL,
+	 sell_detail_no 	NUMBER		NOT NULL,
+	 item_no 	NUMBER		NOT NULL,
+	 amount 	NUMBER		NOT NULL,
+	 sell_price 	NUMBER		NOT NULL,
+	 lot_no 	NUMBER		NOT NULL,
+	 sell_no 	NUMBER		NOT NULL
+);
+
+COMMENT ON COLUMN  sell_detail . item_no  IS 'references item(no) on delete cascade';
+
+DROP TABLE  item ;
+
+CREATE TABLE  item  (
+	 no 	NUMBER		NOT NULL,
+	 client_no 	NUMBER		NOT NULL,
+	 code 	VARCHAR2(20)		NOT NULL,
+	 name 	VARCHAR2(50)		NOT NULL,
+	 in_price 	NUMBER		NOT NULL,
+	 out_price 	NUMBER		NOT NULL,
+	 image 	VARCHAR2(130)		NULL
+);
+
+COMMENT ON COLUMN  item . client_no  IS 'references client(no) on delete cascade';
+
+DROP TABLE  input_warehouse ;
+
+CREATE TABLE  input_warehouse  (
+	 no 	NUMBER		NOT NULL,
+	 member_no 	NUMBER		NOT NULL,
+	 purchase_sheet_no 	NUMBER		NULL,
+	 status 	NUMBER		NOT NULL
+);
+
+COMMENT ON COLUMN  input_warehouse . member_no  IS 'references member(no) on delete cascade';
+
+COMMENT ON COLUMN  input_warehouse . purchase_sheet_no  IS 'references purchase_sheet(no) on delete cascade';
+
+COMMENT ON COLUMN  input_warehouse . status  IS '발주에 의한 입고/기타입고';
+
+DROP TABLE  item_movement_history ;
+
+CREATE TABLE  item_movement_history  (
+	 no 	NUMBER		NOT NULL,
+	 lot_no 	NUMBER		NOT NULL,
+	 item_no 	NUMBER		NOT NULL,
+	 amount 	NUMBER		NOT NULL,
+	 day 	VARCHAR(255)		NOT NULL,
+	 pr_ware_no 	NUMBER		NOT NULL,
+	 pr_area_no 	NUMBER		NOT NULL,
+	 pr_rack_no 	NUMBER		NOT NULL,
+	 pr_cell_no 	NUMBER		NOT NULL,
+	 ware_no 	NUMBER		NOT NULL,
+	 area_no 	NUMBER		NOT NULL,
+	 rack_no 	NUMBER		NOT NULL,
+	 cell_no 	NUMBER		NOT NULL
+);
+
+COMMENT ON COLUMN  item_movement_history . item_no  IS 'references item(no) on delete cascade';
+
+COMMENT ON COLUMN  item_movement_history . day  IS 'references input_warehouse(day) on delete cascade';
+
+COMMENT ON COLUMN  item_movement_history . pr_ware_no  IS 'references warehouse(no) on delete cascade';
+
+COMMENT ON COLUMN  item_movement_history . pr_area_no  IS 'references area(no) on delete cascade';
+
+COMMENT ON COLUMN  item_movement_history . pr_rack_no  IS 'references rack(no) on delete cascade';
+
+COMMENT ON COLUMN  item_movement_history . pr_cell_no  IS 'references cell(no) on delete cascade';
+
+COMMENT ON COLUMN  item_movement_history . ware_no  IS 'references warehouse(no) on delete cascade';
+
+COMMENT ON COLUMN  item_movement_history . area_no  IS 'references area(no) on delete cascade';
+
+COMMENT ON COLUMN  item_movement_history . rack_no  IS 'references rack(no) on delete cascade';
+
+COMMENT ON COLUMN  item_movement_history . cell_no  IS 'references cell(no) on delete cascade';
+
+ALTER TABLE  lot  ADD CONSTRAINT  PK_LOT  PRIMARY KEY (
+	 no 
+);
+
+ALTER TABLE  order_sheet  ADD CONSTRAINT  PK_ORDER_SHEET  PRIMARY KEY (
+	 no 
+);
+
+ALTER TABLE  sell  ADD CONSTRAINT  PK_SELL  PRIMARY KEY (
+	 no 
+);
+
+ALTER TABLE  client  ADD CONSTRAINT  PK_CLIENT  PRIMARY KEY (
+	 no 
+);
+
+ALTER TABLE  member  ADD CONSTRAINT  PK_MEMBER  PRIMARY KEY (
+	 no 
+);
+
+ALTER TABLE  department  ADD CONSTRAINT  PK_DEPARTMENT  PRIMARY KEY (
+	 no 
+);
+
+ALTER TABLE  rank  ADD CONSTRAINT  PK_RANK  PRIMARY KEY (
+	 no 
+);
+
+ALTER TABLE  warehouse  ADD CONSTRAINT  PK_WAREHOUSE  PRIMARY KEY (
+	 no 
+);
+
+ALTER TABLE  area  ADD CONSTRAINT  PK_AREA  PRIMARY KEY (
+	 no 
+);
+
+ALTER TABLE  purchase_sheet  ADD CONSTRAINT  PK_PURCHASE_SHEET  PRIMARY KEY (
+	 no 
+);
+
+ALTER TABLE  rack  ADD CONSTRAINT  PK_RACK  PRIMARY KEY (
+	 no 
+);
+
+ALTER TABLE  cell  ADD CONSTRAINT  PK_CELL  PRIMARY KEY (
+	 no 
+);
+
+ALTER TABLE  order_detail  ADD CONSTRAINT  PK_ORDER_DETAIL  PRIMARY KEY (
+	 no 
+);
+
+ALTER TABLE  purchase_sheet_detail  ADD CONSTRAINT  PK_PURCHASE_SHEET_DETAIL  PRIMARY KEY (
+	 no 
+);
+
+ALTER TABLE  input_warehouse_datail  ADD CONSTRAINT  PK_INPUT_WAREHOUSE_DATAIL  PRIMARY KEY (
+	 no 
+);
+
+ALTER TABLE  warehouse_detail  ADD CONSTRAINT  PK_WAREHOUSE_DETAIL  PRIMARY KEY (
+	 no 
+);
+
+ALTER TABLE  sell_detail  ADD CONSTRAINT  PK_SELL_DETAIL  PRIMARY KEY (
+	 no 
+);
+
+ALTER TABLE  item  ADD CONSTRAINT  PK_ITEM  PRIMARY KEY (
+	 no 
+);
+
+ALTER TABLE  input_warehouse  ADD CONSTRAINT  PK_INPUT_WAREHOUSE  PRIMARY KEY (
+	 no 
+);
+
+ALTER TABLE  item_movement_history  ADD CONSTRAINT  PK_ITEM_MOVEMENT_HISTORY  PRIMARY KEY (
+	 no 
+);
+

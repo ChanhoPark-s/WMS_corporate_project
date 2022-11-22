@@ -1,6 +1,7 @@
 package com.basicinfo.controller;
 
 import java.text.DecimalFormat;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.spring.domain.LotVO;
 import com.spring.domain.SearchVO;
 import com.spring.paging.Client_Paging;
@@ -73,4 +76,5 @@ public class LotController {
 			
 			return new Gson().toJson(l);
 		}
+
 }

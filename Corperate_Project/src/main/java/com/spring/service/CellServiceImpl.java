@@ -21,18 +21,6 @@ public class CellServiceImpl implements CellService{
 	}
 
 	@Override
-	public int modify(int no) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int delete(int no) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public List<CellVO> getListByRackNo(int no) {
 		return mapper.getListByRackNo(no);
 	}
@@ -55,6 +43,11 @@ public class CellServiceImpl implements CellService{
 	@Override
 	public int updateCellByNo(WareHouseAllAreaVO vo) {
 		return mapper.updateCellByNo(vo);
+	}
+
+	@Override
+	public int checkCode(String code) {
+		return mapper.checkCode(code);
 	}
 
 }

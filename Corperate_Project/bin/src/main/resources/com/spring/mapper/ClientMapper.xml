@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.spring.mapper.ClientMapper">
+  
+	<select id="GetAll" resultType="com.spring.domain.ClientVO">
+		SELECT * FROM client 
+		<if test="whatColumn=='code'">where code like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='category'">where category like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='name'">where name like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='owner'">where owner like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='tel'">where tel like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='fax'">where fax like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='bank'">where bank like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='account'">where account like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='zipcode'">where zipcode like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='address1'">where address1 like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='address2'">where address2 like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='email'">where email like '%' ||  #{keyword} || '%'</if>
+		<if test="category=='발주처'">where category = '발주처'</if>
+		<if test="category=='수주처'">where category = '수주처'</if>
+		ORDER BY no desc OFFSET #{beginRow} ROWS FETCH NEXT #{pageSize} ROWS ONLY
+	</select>
+
+	<insert id="insert">
+		insert into client values(client_seq.nextval,#{code},#{category},#{name},#{owner},#{tel},#{fax},#{bank},#{account},#{zipcode},#{address1},#{address2},#{email})
+	</insert>
+	
+	<select id="selectOne" resultType="com.spring.domain.ClientVO" parameterType="string">
+		select * from client where no = #{value}
+	</select>
+	
+	<update id="update">
+		update client set code = #{code},category = #{category}, name = #{name}, owner= #{owner}, tel = #{tel}, fax = #{fax}, bank = #{bank} , account = #{account}, zipcode = #{zipcode}, address1 = #{address1}, address2 = #{address2}, email = #{email} 
+		where no = #{no}
+	</update>
+	
+	<delete id="deleteOne">
+		delete client where no = #{value}
+	</delete>
+	
+	<select id="getTotalCount" resultType="int">
+		select count(*) from client 
+		<if test="whatColumn=='code'">where code like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='category'">where category like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='name'">where name like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='owner'">where owner like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='tel'">where tel like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='fax'">where fax like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='bank'">where bank like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='account'">where account like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='zipcode'">where zipcode like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='address1'">where address1 like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='address2'">where address2 like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='email'">where email like '%' ||  #{keyword} || '%'</if>
+		<if test="category=='발주처'">where category = '발주처'</if>
+		<if test="category=='수주처'">where category = '수주처'</if>
+	</select>
+</mapper>

@@ -9,10 +9,9 @@ public interface AreaService {
 	
 	public List<AreaVO> list();
 	public int insert(WareHouseAllAreaVO vo);
-	public int modify(int no);
-	public int delete(int no);
 	public List<AreaVO> getListByWareNo(int no);
 	public int deleteAreaByNo(String area_no);
 	public WareHouseAllAreaVO selectOneAreaByNo(int no);
 	public int updateAreaByNo(WareHouseAllAreaVO vo);
+	public int checkCode(String code);
 }

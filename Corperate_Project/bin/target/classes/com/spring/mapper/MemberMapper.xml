@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.spring.mapper.MemberMapper">
+
+	<insert id="insert">
+		insert into member (no, id, pw, name, dep_no, rank_no, email, image, reg_date)
+		values (seq_member.nextval, #{id}, #{pw}, #{name}, #{dep_no}, #{rank_no}, #{email}, #{fileName}, sysdate)
+	</insert>
+	
+	<select id="list" resultType="com.spring.domain.MemberVO">
+		select m.no, m.id, m.pw, m.name, d.name as dep_name, r.name as rank_name, m.email, m.image as fileName, to_char(to_date(reg_date), 'yyyy.MM.dd') as reg_date
+		from member m
+		inner join department d
+		on m.dep_no = d.no
+		inner join rank r
+		on m.rank_no = r.no
+		order by 1 desc
+	</select>
+
+	<select id="get" resultType="com.spring.domain.MemberVO">
+		select no, id, pw, name, dep_no, rank_no, email, image as fileName, to_char(to_date(reg_date), 'yyyy.MM.dd') as reg_date 
+		from member 
+		where no = #{no}
+	</select>
+	
+	<update id="update">
+		update member set id = #{id}, pw = #{pw}, name = #{name}, email = #{email}, dep_no = #{dep_no}, rank_no = #{rank_no}
+		<if test="fileName != null">
+			, image = #{fileName}
+		</if>
+		where no = #{no}
+	</update>
+	
+	<delete id="delete">
+		delete from member where no = #{no}
+	</delete>
+</mapper>

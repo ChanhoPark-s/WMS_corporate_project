@@ -1,3 +1,4 @@
+<%@page import="com.spring.domain.MemberVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 	
@@ -5,6 +6,125 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
+
+<style>
+.box {
+    width: 45px;
+    height: 45px; 
+    border-radius: 70%;
+    z-index:5;
+    position: fixed;
+    bottom: 60px;
+    right: 50px;
+    cursor: pointer;
+}
+
+#chatModal{
+	top:52%;
+	left:82%;
+	max-height: 350px;
+	max-width: 300px;
+}
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+}
+
+.wrap {
+    background-color: #FFF;
+}
+
+.wrap .chat {
+    display: flex;
+    align-items: flex-start;
+}
+
+
+.wrap .chat .textbox {
+    position: relative;
+    display: block;
+    max-width: calc(100% - 70px);
+    padding: 8px;
+    margin-top: 7px;
+    font-size: 11px;
+    border-radius: 10px;
+    color: white;
+}
+.ch1{
+flex-direction:column;
+margin-top: 5px;
+}
+.wrap .chat .textbox::before {
+    position: absolute;
+    display: block;
+    top: 0;
+    font-size: 1.5rem;
+}
+
+.wrap .ch1 .textbox {
+	display: block;
+    margin-top: 0px;
+    margin-bottom:10px;
+    background-color: #1f2937;
+}
+
+.wrap .ch1 .textbox::before {
+	display: block;
+    left: -15px;
+    content: "◀";
+    color:#1f2937;
+}
+
+.wrap .ch2 {
+    flex-direction: row-reverse;
+}
+
+.wrap .ch2 .textbox {
+    margin-right: 20px;
+    background-color: #5457cd;
+    color: white;
+}
+
+.wrap .ch2 .textbox::before {
+    right: -15px;
+    content: "▶";
+    color: #5457cd;
+}
+#message{
+  width: 220px;
+  height: 32px;
+  font-size: 12px;
+  border: 0;
+  border-radius: 15px;
+  outline: none;
+  padding-left: 10px;
+  background-color: rgb(233, 233, 233);
+}
+
+.lnamed{
+	font-size: 4px; 
+	display: block;
+}
+
+
+.btn_search{
+  cursor : pointer;
+  position : absolute;
+  right : 7px;
+  top : 50%;
+  transform : translatey(-50%);
+}
+#search{
+  position : relative;
+}
+
+</style>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -22,17 +142,113 @@
   <link rel="stylesheet" href="/resources/assets/css/simplebar.css">
   <link rel="stylesheet" href="/resources/assets/css/style.css">
   <link rel="stylesheet" href="/resources/assets/css/sidebar-dark.css" id="sidebar-theme"> <!-- available themes: dark, light, cyan, green, indigo, red -->
-  
+  <!-- fontAwesome icon -->
+  <script src="https://kit.fontawesome.com/6363f16fdc.js" crossorigin="anonymous"></script>
   <!-- jQuery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<!-- 소켓 라이브러리 추가해주는 코드 -->
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.5/sockjs.min.js"></script>
+	<script type="text/javascript">
+	var msgbtn;
+	
+	$(function(){
+			$('.preloading').on("click",function(){
+				if(<%=(String)session.getAttribute("id")%>==null){
+					alert("로그인 세션이 만료되었습니다.");
+					location.href='/';
+				}
+			})
+		
+		$('#msgbtn').click(function(){
+			/* 모달 띄울시 투명도x */
+			$('.modal-backdrop.show').css('opacity','0');
+			/* 모달 띄어도 뒤에 클릭되게 */
+			$('.modal-backdrop').css('position','unset');
+			/* 모달 띄어도 배경 스크롤 되도록  */
+			document.body.style= 'overflow: auto';
+			
+			$("#messageArea").html("");
+			$.getJSON("/chat/getAll", 
+	 			function(c){
+					for(i=0;i<c.length;i++){
+						if(c[i].member_id!='<%=(String)session.getAttribute("id")%>'){
+							$("#messageArea").append(
+								"<div class='chat ch1'>"+
+				            	 "<div class='lnamed'>"+c[i].member_name+" "+c[i].rank_name+"</div><div class='textbox'>"+c[i].content+"</div></div>");
+						}
+						else{
+							$("#messageArea").append(
+							 "<div class='chat ch2'>"+
+					            "<div class='textbox'>"+c[i].content+"</div></div>");
+						}
+					}
+	 			}).fail(function(xhr, status, err){
+	 					alert("데이터 조회실패");
+	 			});	
+		})
+		/* 엔터가 눌리면 되게하는법 */
+		$("#chatModal").keypress(function(e){
+			
+			if(e.keyCode===13){
+				send();
+			}
+		})
+		$("#sendBtn").click(function() {
+			send();
+		});
+	})	
+		/* 웹소켓이랑 연결  */
+		let sock = new SockJS("http://52.79.144.231:8080/echo");//http://52.79.144.231:8080/echo // http://localhost:8080/echo
+		sock.onmessage = onMessage;
+		sock.onclose = onClose;
+		
+		// 메시지 전송 소켓으로 
+		function sendMessage() {
+			/* 채팅방에 보여줄때 내가 보낸건지 다른 사람이 보낸건지 확인하기 위해 id를 함께 보내준다.  */
+			sock.send($("#message").val()+"/"+'<%=(String)session.getAttribute("id")%>'+"/"+'<%=(String)session.getAttribute("name")%>');
+			$('#scroll').scrollTop($('#scroll')[0].scrollHeight);
+		}
+		// 서버로부터 메시지를 받았을 때
+		function onMessage(msg) {
+			var data = msg.data;
+			/* 아이디를 확인해서 왼쪽 오른쪽 구분해야하기 때문 */
+			var answer = data.split("/");
+			if(answer[1]!='<%=(String)session.getAttribute("id")%>'){
+				$("#messageArea").append(
+					"<div class='chat ch1'>"+
+					"<div class='lnamed'>"+answer[2]+"</div><div class='textbox'>"+answer[0]+"</div><br>");
+			}
+			else{
+				$("#messageArea").append(
+					"<div class='chat ch2'>"+
+		            "<div class='textbox'>"+answer[0]+"</div></div><br>");
+			}
+			$('#scroll').scrollTop($('#scroll')[0].scrollHeight);
+		}
+		// 서버와 연결을 끊었을 때
+		function onClose(evt) {
+			$("#messageArea").append("연결 끊김");
+	
+		}
+		
+		function send(){
+			$.ajax({
+				url : "/chat/insert ",
+				type : "post",
+				data : {  
+				content : $('#message').val()
+				}
+			})//ajax
+			sendMessage();
+			$('#message').val('')
+		}
+</script>
 </head>
-
 <body class="preloading">
 
   <!-- Wrapper -->
   <div id="wrapper" class="fixed-sidebar fixed-navbar">
     <!-- available options: fixed-sidebar, fixed-navbar, fixed-footer, mini-sidebar -->
-
     <!-- 메뉴 사이드바 파트(링크 추가시 여기 수정하세요.) -->
     <div class="offcanvas offcanvas-start navbar-dark text-nowrap" tabindex="-1" id="sidebar" aria-label="sidebar">
 
@@ -49,16 +265,6 @@
       <div class="offcanvas-body px-2 py-3 h-100" data-simplebar>
         <ul class="navbar-nav mb-4" id="mainMenu">
           <li class="nav-label px-2 small mt-3"><small>MENU</small></li>
-          
-          <li class="nav-item">
-            <a class="nav-link px-2 d-flex align-items-center gap-3" href="chat.html">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-              </svg>
-              <span>쪽지</span>
-              <span class="badge rounded-pill ms-auto">3</span>
-            </a>
-          </li>
           <li class="nav-item">
             <a class="nav-link px-2 d-flex align-items-center gap-3 dropdown-toggle" href="#dashboard-collapse" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="dashboard-collapse">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -68,18 +274,26 @@
             </a>
             <div class="ms-5 collapse" id="dashboard-collapse" data-bs-parent="#mainMenu">
               <ul class="navbar-nav">
-                <li class="nav-item" ><a class="nav-link" href="/basicinfo/member/list">사원정보</a></li>
-                <li class="nav-item"><a class="nav-link" href="/basicinfo/department/list">부서정보</a></li>
-                <li class="nav-item"><a class="nav-link" href="/basicinfo/rank/list">직급정보</a></li>
-                <li class="nav-item"><a class="nav-link" href="/basicinfo/item/list">품목정보</a></li>
-                <li class="nav-item"><a class="nav-link" href="/basicinfo/client/list">거래처정보</a></li>
-                <li class="nav-item"><a class="nav-link" href="/basicinfo/lot/list">로트정보</a></li>
-                <li class="nav-item"><a class="nav-link" href="/basicinfo/warehouse/list">창고정보</a></li>
+                <li class="nav-item" ><a class="nav-link" href="/basicinfo/member/list" id="member_info">사원정보</a></li>
+                <li class="nav-item"><a class="nav-link" href="/basicinfo/department/list" id="depart_info">부서정보</a></li>
+                <li class="nav-item"><a class="nav-link" href="/basicinfo/rank/list" id="rank_info">직급정보</a></li>
+                <li class="nav-item"><a class="nav-link" href="/basicinfo/item/list" id="item_info">품목정보</a></li>
+                <li class="nav-item"><a class="nav-link" href="/basicinfo/client/list" id="client_info">거래처정보</a></li>
+                <li class="nav-item"><a class="nav-link" href="/basicinfo/lot/list" id="lot_info">로트정보</a></li>
+                <li class="nav-item"><a class="nav-link" href="/basicinfo/warehouse/list" id="storage_info">창고정보</a></li>
               </ul>
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link px-2 d-flex align-items-center gap-3" href="calendar.html">
+            <a class="nav-link px-2 d-flex align-items-center gap-3" href="${pageContext.request.contextPath }/warehouse/init/insert">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+              </svg>
+              <span>초기재고입력</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link px-2 d-flex align-items-center gap-3" href="/warehouse/warehouse-detail/list">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
               </svg>
@@ -87,7 +301,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link px-2 d-flex align-items-center gap-3" href="calendar.html">
+            <a class="nav-link px-2 d-flex align-items-center gap-3" href="${pageContext.request.contextPath }/warehouse/movementHistory/list">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
               </svg>
@@ -103,8 +317,8 @@
             </a>
             <div class="ms-5 collapse" id="order-contract-collapse" data-bs-parent="#mainMenu">
               <ul class="navbar-nav">
-                <li class="nav-item"><a class="nav-link" href="/ordersheet/list">수주정보</a></li>
-                <li class="nav-item"><a class="nav-link" href="index.html">수주별 처리현황</a></li>
+                <li class="nav-item"><a class="nav-link" href="/ordersheet/list" >수주정보</a></li>
+                <li class="nav-item"><a class="nav-link" href="index.html" >수주별 처리현황</a></li>
               </ul>
             </div>
           </li>
@@ -113,7 +327,7 @@
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
-              <span class="me-auto">발주계약관리</span>
+              <span class="me-auto" id="purchase_info">발주계약관리</span>
             </a>
             <div class="ms-5 collapse" id="request-order-collapse" data-bs-parent="#mainMenu">
               <ul class="navbar-nav">
@@ -139,14 +353,14 @@
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="24px" height="30px" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.3" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
-              <span class="me-auto">출고처리관리</span>
+              <span class="me-auto" id="sell_info">출고처리관리</span>
             </a>
             <div class="ms-5 collapse" id="out-process-collapse" data-bs-parent="#mainMenu">
               <ul class="navbar-nav">
                 <li class="nav-item"><a class="nav-link" href="/sell/origin/list">출고정보</a></li>
               </ul>
             </div>
-          </li>
+             </li>
             <li class="nav-item">
             <a class="nav-link px-2 d-flex align-items-center gap-3" href="/sell/origin/sellstatus">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -167,125 +381,45 @@
       <div id="main-header">
         <nav class="navbar navbar-expand navbar-light bg-white gap-4">
           <ul class="navbar-nav align-items-center ms-auto">
-            <li class="nav-item dropdown">
-              <a href="#" class="nav-link dropdown-toggle no-caret" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                  <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
-                </svg>
-              </a>
-              <!-- 검색창 파트 -->
-              <div class="dropdown-menu dropdown-menu-end p-3">
-                <form><input type="text" class="form-control border-0 shadow-none px-3" placeholder="Search..." autofocus></form>
-                <div class="dropdown-divider"></div>
-                <h6 class="dropdown-header d-flex justify-content-between">
-                  Recently searched:
-                  <a href="javascript:void(0)" class="text-muted ms-5">Clear</a>
-                </h6>
-                <div class="max-h-[300px] overflow-auto">
-                  <a class="dropdown-item" href="javascript:void(0)">Calendar</a>
-                  <a class="dropdown-item" href="javascript:void(0)">Chat</a>
-                  <a class="dropdown-item" href="javascript:void(0)">Email</a>
-                  <a class="dropdown-item" href="javascript:void(0)">File manager</a>
-                  <a class="dropdown-item" href="javascript:void(0)">Forum</a>
-                  <a class="dropdown-item" href="javascript:void(0)">Invoice</a>
-                  <a class="dropdown-item" href="javascript:void(0)">Photos</a>
-                  <a class="dropdown-item" href="javascript:void(0)">Pricing</a>
-                  <a class="dropdown-item" href="javascript:void(0)">Todo</a>
-                  <a class="dropdown-item" href="javascript:void(0)">Blog</a>
-                  <a class="dropdown-item" href="javascript:void(0)">Settings</a>
-                  <a class="dropdown-item" href="javascript:void(0)">Profile</a>
-                </div>
-              </div>
-            </li>
-            <li class="nav-item dropdown">
-              <a href="#" class="nav-link dropdown-toggle no-caret" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
-                <div class="position-relative">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                    <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
-                  </svg>
-                  <span class="badge bg-danger position-absolute top-0 start-100 translate-middle p-1">
-                    <span class="visually-hidden">unread notifications</span>
-                  </span>
-                </div>
-              </a>
-              <!-- 알림창 파트 -->
-              <div class="dropdown-menu dropdown-menu-end">
-                <h6 class="dropdown-header d-flex justify-content-between">
-                  5 New notifications
-                  <a href="javascript:void(0)" class="text-muted ms-5">Clear</a>
-                </h6>
-                <div class="dropdown-divider"></div>
-                <div class="max-h-[300px] overflow-auto">
-                  <a class="dropdown-item d-flex align-items-center gap-3 py-2" href="javascript:void(0)">
-                    <svg class="text-muted" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
-                    <div class="vstack">
-                      <p class="mb-0">New customer registered</p>
-                      <small class="text-muted">5 min ago</small>
-                    </div>
-                  </a>
-                  <a class="dropdown-item d-flex align-items-center gap-3 py-2" href="javascript:void(0)">
-                    <svg class="text-muted" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                    </svg>
-                    <div class="vstack">
-                      <p class="mb-0">New order received</p>
-                      <small class="text-muted">11 min ago</small>
-                    </div>
-                  </a>
-                  <a class="dropdown-item d-flex align-items-center gap-3 py-2" href="javascript:void(0)">
-                    <svg class="text-muted" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z" />
-                    </svg>
-                    <div class="vstack">
-                      <p class="mb-0">Plugin updates available <span class="badge rounded-pill ms-1 bg-secondary align-bottom">3</span></p>
-                      <small class="text-muted">30 min ago</small>
-                    </div>
-                  </a>
-                  <a class="dropdown-item d-flex align-items-center gap-3 py-2" href="javascript:void(0)">
-                    <svg class="text-muted" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                    </svg>
-                    <div class="vstack">
-                      <p class="mb-0">Download completed</p>
-                      <small class="text-muted">35 min ago</small>
-                    </div>
-                  </a>
-                  <a class="dropdown-item d-flex align-items-center gap-3 py-2" href="javascript:void(0)">
-                    <svg class="text-muted" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-                    </svg>
-                    <div class="vstack">
-                      <p class="mb-0">Weekly usage report</p>
-                      <small class="text-muted">40 min ago</small>
-                    </div>
-                  </a>
-                </div>
-              </div>
-            </li>
             <li class="nav-item vr mx-3"></li>
             <li class="nav-item dropdown">
               <a href="#" class="nav-link dropdown-toggle no-caret py-0 pe-0" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <img src="/resources/assets/img/user/user1.svg" width="32" alt="User" class="rounded-circle" loading="lazy">
               </a>
               <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="javascript:void(0)">Profile</a></li>
-                <li><a class="dropdown-item" href="user-settings.html">Settings</a></li>
-                <li>
-                  <div class="dropdown-divider"></div>
-                </li>
-                <li><a class="dropdown-item" href="signin.html">Sign out</a></li>
+                <li><a class="dropdown-item" href="/logout">Sign out</a></li>
               </ul>
             </li>
           </ul>
         </nav>
       </div>
       <!-- /Main header -->
-
-      <!-- Main body -->
+				<img class="box" alt="chatting" id="msgbtn" src="/resources/assets/img/chat.png" data-bs-toggle="modal" data-bs-target="#chatModal">
+			<!-- Main body -->
+		
+		
+		
+		<!-- Modal 코드 넣을 위치 -->
+<!-- Add user modal -->
+<div class="modal fade" tabindex="-1" id="chatModal">
+	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+		<div class="modal-content">
+			<div class="modal-body" id="scroll">
+			<!-- 여기부터-->
+				 <div class="wrap" id="messageArea"></div>
+			<!-- 여기까지 -->
+			</div>
+			<div class="modal-footer border-0" id="footer-modal">
+				<input type="text" id="message" />
+				<img src="/resources/assets/img/send.png" width="20px;" height="20px;" id="sendBtn" style="cursor: pointer;" >
+			</div>
+		</div>
+	</div>
+</div>	
+			
+			
       <div id="main-body">
-
+      
 
           
         

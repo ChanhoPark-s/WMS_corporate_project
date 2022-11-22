@@ -26,4 +26,5 @@
 	from lot l ,item i,client c 
 	where i.no=l.item_no and c.no=i.client_no and l.code = #{value} 
 </select>
+
 </mapper>
