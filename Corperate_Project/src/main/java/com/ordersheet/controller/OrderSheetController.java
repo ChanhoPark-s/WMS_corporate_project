@@ -66,12 +66,23 @@ public class OrderSheetController {
 	}
 	
 	@PostMapping(value="/delete/one")
-	public String deleteMainAndSub(SearchVO searchvo, @RequestParam int no, RedirectAttributes rttr) {
+	public String deleteMainOneAndAllSub(SearchVO searchvo, @RequestParam int no, RedirectAttributes rttr) {
 		
 		service.deleteOrderSheet(no);
 		rttr.addFlashAttribute("searchvo",searchvo);
 		
 		return redirect;
 	}
-
+	
+	@PostMapping(value="/delete/many")
+	public String deleteMainManyAndAllSub(SearchVO searchvo, @RequestParam String[] checkedMain, RedirectAttributes rttr) {
+		
+		for(String order_no : checkedMain) {
+			service.deleteOrderSheet(Integer.parseInt(order_no));			
+		}
+		
+		rttr.addFlashAttribute("searchvo",searchvo);
+		
+		return redirect;
+	}
 }

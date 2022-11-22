@@ -15,4 +15,5 @@ public interface AreaService {
 	public int deleteAreaByNo(String area_no);
 	public WareHouseAllAreaVO selectOneAreaByNo(int no);
 	public int updateAreaByNo(WareHouseAllAreaVO vo);
+	public int checkCode(String code);
 }

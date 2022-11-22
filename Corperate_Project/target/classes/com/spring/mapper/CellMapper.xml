@@ -37,4 +37,7 @@ where no=#{no}
 	update cell set code = #{cellcode}, name = #{cellname}
 	where no = #{sendno}
 </update>
+<select id="checkCode" resultType="int">
+		select count(*) from cell where code=#{code}
+	</select>
 </mapper>

@@ -34,7 +34,7 @@
 						<th scope="col">관리자번호</th>
 						<th scope="col">발주서번호</th>
 						<th scope="col">구분</th>
-						<th scope="col">수정/삭제</th>
+						<th scope="col">기능</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -480,7 +480,7 @@
 <script type="text/javascript">
 	/* 왼쪽 카테고리창이 해당화면에 맞게 펼쳐지게 하는 코드 */
 	$(function(){ 
-		document.getElementById('basicinfo').click();
+		document.getElementById('order_info').click();
 	});
 </script>
 
@@ -1022,4 +1022,8 @@
 		document.getElementById('celllocation').value= '';
 		
 	};
+	
+	$(function(){
+		document.getElementById('input_warehouse').click();
+	})
 </script>
