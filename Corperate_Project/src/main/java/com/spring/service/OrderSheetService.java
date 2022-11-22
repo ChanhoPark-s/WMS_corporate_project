@@ -12,6 +12,8 @@ import com.spring.paging.Criteria;
 public interface OrderSheetService {
 	
 	public int addOrderSheet(OrderSheetVO vo);					// 수주서 및 품목 디테일을 동시에 DB에 추가하는 것
+	public int updateOrderSheet(OrderSheetVO vo);				// 수주서 및 품목 디테일을 동시에 DB에 수정하는 것
+	public int deleteOrderSheet(int no);						// 수주서 삭제(하위의 디테일 상품 레코드도 같이 삭제됨)
 	public List<OrderSheetVO> getList();						// 수주서 리스트를 모두 가져오는 것
 	public List<OrderSheetVO> getListByPaging(Client_Paging pageInfo); // 모든 레코드에서 페이징 한 레코드를 가져오는 메소드
 	public int getTotalCount(SearchVO searchvo);

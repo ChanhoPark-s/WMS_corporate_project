@@ -29,14 +29,14 @@ public class OrderSheetServiceImpl implements OrderSheetService{
 			return -1;
 		}
 				
-		ArrayList<Integer> noList = vo.getItem_no();
+		ArrayList<Integer> itemNoList = vo.getItem_no();
 		ArrayList<Integer> amountList = vo.getAmount();
 		
-		int len = noList.size();
+		int len = itemNoList.size();
 
 		for (int i = 0; i < len; i++) {
 			int mainSheetNo = vo.getNo();
-			int itemNo = noList.get(i);
+			int itemNo = itemNoList.get(i);
 			int itemAmount = amountList.get(i);
 			
 			if(mapper.insertDetailSheet(mainSheetNo, itemNo, itemAmount) != 1) {
@@ -46,7 +46,49 @@ public class OrderSheetServiceImpl implements OrderSheetService{
 		
 		return 1;
 	}
+	
+	@Override
+	public int updateOrderSheet(OrderSheetVO vo) {
+		mapper.updateMainSheet(vo);
+		
+		// 하위품목 전부 삭제
+		mapper.deleteOrderDetailSheet(vo.getNo());
+		
+		
+		// 하위품목 재삽입
+		ArrayList<Integer> itemNoList = vo.getItem_no();
+		ArrayList<Integer> amountList = vo.getAmount();
+		
+		int len = itemNoList.size();
+		
+		System.out.println("len: " + len);
+		
+		for (int i = 0; i < len; i++) {
+			int mainSheetNo = vo.getNo();
+			int itemNo = itemNoList.get(i);
+			int itemAmount = amountList.get(i);
+			
+			mapper.insertDetailSheet(mainSheetNo, itemNo, itemAmount);
+		}
+		
+		return 1;
+	}
 
+	@Override
+	public int deleteOrderSheet(int no) {
+		int r1 = -1;
+		int r2 = -1;
+		
+		r1 = mapper.deleteOrderSheet(no);			// main 행 삭제
+		r2 = mapper.deleteOrderDetailSheet(no);		// sub 품목들 삭제
+		
+		if(r1 >= 0 && r2 >= 0) {
+			return 1;
+		}else {
+			return -1;
+		}
+	}	
+	
 	@Override
 	public List<OrderSheetVO> getList() {
 		
@@ -141,7 +183,7 @@ public class OrderSheetServiceImpl implements OrderSheetService{
 	public OrderSheetVO selectOneByMainNo(int no) {
 		return mapper.selectOneByMainNo(no);
 	}
-	
+
 	//ajax paging
 	@Override
 	public PageDTO<OrderSheetVO> getListPage(Criteria cri) {

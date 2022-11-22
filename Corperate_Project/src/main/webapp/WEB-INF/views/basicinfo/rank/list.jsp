@@ -197,14 +197,16 @@
 		
 		const title = document.querySelector('.modal-title');
 		const body = document.querySelector('body');
+		const form_control = document.querySelectorAll('.form-control');
 		
 		// 직급 등록
 		document.querySelector('.insert').addEventListener('click', event => {
 			title.innerHTML = '직급등록';
+			rankForm.classList.remove('was-validated');
 			
-			const form_control = document.querySelectorAll('.form-control');
 			Array.from(form_control, elem => {
 				elem.value = '';
+				elem.classList.remove('is-invalid');
 			});
 			
 			rankForm.action = 'insert';
@@ -213,6 +215,12 @@
 		// 직급 수정
 		document.querySelectorAll('.update').forEach(elem => {
 			elem.addEventListener('click', event => {
+				rankForm.classList.remove('was-validated');
+				
+				Array.from(form_control, elem => {
+					elem.value = '';
+					elem.classList.remove('is-invalid');
+				});
 				
 				let target = event.target;
 				target = target.nodeName == 'BUTTON' ? target : target.nodeName == 'svg' ? target.parentElement : target.parentElement.parentElement;

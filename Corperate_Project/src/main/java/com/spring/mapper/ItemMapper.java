@@ -18,6 +18,7 @@ public interface ItemMapper {
 	public void update(ItemVO vo);
 	public int getTotalCount(SearchVO searchvo);
 	public int code_check(String code); 
+	public int selectDelete(String[] parameterValues);
 	
 	/* ajax paging */
 	public List<ItemVO> getListWithPaging(@Param("cri") Criteria cri);
