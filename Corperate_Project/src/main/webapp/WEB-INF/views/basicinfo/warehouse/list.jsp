@@ -180,10 +180,10 @@
 			<table class="table align-middle">
 				<thead>
 					<tr>
-						<th scope="col">번호</th>
-						<th scope="col">코드</th>
-						<th scope="col">위치명</th>
-						<th scope="col">기능</th>
+						<th scope="col" style="width:15%;">번호</th>
+						<th scope="col" style="width:25%;">코드</th>
+						<th scope="col" style="width:45%;">위치명</th>
+						<th scope="col" style="width:15%;">기능</th>
 					</tr>
 				</thead>
 				<tbody id="tddata">
