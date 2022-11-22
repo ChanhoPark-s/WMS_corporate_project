@@ -561,7 +561,6 @@
 		 				//품목삽입
 		 				var orderDetail = resdata.detailList;
 		 				
-		 				
 		 				for(i=0; i<orderDetail.length; i++){
 		 					console.log(orderDetail[i]);
 		 					
