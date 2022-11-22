@@ -22,14 +22,15 @@
 						<!-- input type='text' name='amount' -->
 						
 						<div class="row">		
-							<div class="col-sm-3">
+							<div class="col-sm-6">
 								<label for="userFullname" class="form-label">납기일자</label>
 									<input type="date" name="delivery_date" class="form-control">
 							</div>
 							<div class="col-sm-3">
-								<label for="userFullname" class="form-label"></label>
+								<label for="userFullname" class="form-label">&nbsp;&nbsp;</label>
 								<button type="button" class="btn btn-primary" style="display:block" data-bs-target="#secondModal" data-bs-toggle="modal" data-bs-dismiss="modal" id="choiceOrderBtn">수주서 선택</button>	
 							</div>
+						</div>
 						<div class="row" >		
 							<div class="col-sm-3">		
 								<label for="userFullname" class="form-label">부서명</label>
