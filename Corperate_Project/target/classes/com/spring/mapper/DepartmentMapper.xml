@@ -37,4 +37,11 @@
 	<delete id="delete">
 		delete from department where no = #{no}
 	</delete>
+	
+	<delete id="selectDelete">
+		delete department where no in 
+		<foreach collection="array" item="arr" open='(' close=")" separator=",">
+		#{arr}
+		</foreach>
+	</delete>
 </mapper>

@@ -129,12 +129,16 @@
 			<label for="item_name" class="form-label">품목</label>
 			<input type="text" name="item_name" class="form-control" readonly>
 		</div>			 	
+	 	<div class="col">
+			<label for="item_name" class="form-label">재고</label>
+			<input type="text" name="haveQty" class="form-control" readonly>
+		</div>			 	
 	 </div>
 	 <br>
 	 <div class="">
 		<label for="qty" class="form-label">개수</label>
 		<input type="text" name="qty" id="qty" class="form-control" required>
-		<div class="invalid-feedback">개수를 선택해 주세요.</div>
+		<div class="invalid-feedback qty-feedback">개수를 선택해 주세요.</div>
 	 </div>
 	 </form>
 	 </div>
@@ -222,7 +226,6 @@
                   <table class="table caption-top mb-0">
                     <thead>
                       <tr>
-                        <th scope="col" class="col-sm-2">이미지</th>
                         <th scope="col" class="col-sm-1.5">로트번호</th>
                         <th scope="col" class="col-sm-1">코드</th>
                         <th scope="col" class="col-sm-2">이름</th>
@@ -400,11 +403,7 @@
 				 }
 				 else{
 					 jsonData.list.forEach(item => {
-						 const tr = document.createElement('tr');
-						 
-						 const td1 = document.createElement('td');
-						 td1.append(makeElement('img', {'src': item.image}))
-						 tr.append(td1);
+						 const tr = document.createElement('tr');		
 						 
 						 const td2 = document.createElement('td')
 						 td2.innerHTML = '<span class=\'badge bg-dark\'>'+item.lot_code+'</span>'
@@ -442,6 +441,8 @@
 							 modal1_form.lot_code.value = item['lot_code'];
 							 modal1_form.lot_code.setAttribute('data-no', item['lot_code'])
 							 modal1_form.item_name.value = item['name'];
+							 modal1_form.haveQty.value = item['amount'];
+							 modal1_form.qty.value = item['amount'];
 						 });
 						 
 						 itemTable.append(tr);
@@ -583,19 +584,35 @@
 		});
 	})();
 	
-    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    // 유효성검사
     void(function() {
     	
       document.querySelectorAll('.needs-validation').forEach(form => {
         form.addEventListener('submit', event => {
         	
+        	// 창고 유효성 검사
         	const war1 = document.querySelector('input[name="ware1"]');
         	war1.value === '' ? war1.classList.add('is-invalid') : war1.classList.remove('is-invalid');
         	const war2 = document.querySelector('input[name="ware2"]');
         	war2.value === '' ? war2.classList.add('is-invalid') : war2.classList.remove('is-invalid');
         	
+        	// 개수 유효성 검사
+        	const cnt1 = document.querySelector('input[name="haveQty"]');
+        	const cnt2 = document.querySelector('input[name="qty"]');
+        	const qty_feedback = document.querySelector('.qty-feedback');
+        	
+        	let boolcnt = Number(cnt1.value) < Number(cnt2.value);
+        	if(boolcnt) {
+        		qty_feedback.innerHTML = '개수가 초과되었습니다.';
+        		cnt2.classList.add('is-invalid');
+        	}
+        	else {
+        		qty_feedback.innerHTML = '개수를 선택해 주세요.';
+        		cnt2.classList.remove('is-invalid')
+        	}
+        	
         	// 유효성 검사
-          	if (!form.checkValidity() || war1.value === '' || war2.value === '') {
+          	if (!form.checkValidity() || war1.value === '' || war2.value === '' || boolcnt) {
               event.preventDefault()
            	  event.stopPropagation()
 	          form.classList.add('was-validated');

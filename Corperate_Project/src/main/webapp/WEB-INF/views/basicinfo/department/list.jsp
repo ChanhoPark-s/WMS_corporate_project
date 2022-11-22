@@ -18,6 +18,7 @@
                   </svg>
 					부서추가
 				</button>
+				<button class="btn btn-light d-inline-flex align-items-center gap-1" onclick="selectDelete()"><i class="fa-regular fa-trash-can fa-1.5x"></i></button>
 			</div>
 			<div class="search">
 			<form name="search" action="/basicinfo/department/list" id="search">
@@ -49,18 +50,25 @@
 			</div>
 		</div>
 		<div class="table-responsive my-1">
+		   <form name="f" action="/basicinfo/department/selectDelete" method="post">
 			<table class="table align-middle">
 				<thead>
 					<tr>
+						<th scope="col">
+							<div>
+								<input class="form-check-input" type="checkbox" id="allselect" name="allselect" onclick="allSelect()">
+							</div>
+						</th>
 						<th scope="col">번호</th>
 						<th scope="col">부서코드</th>
 						<th scope="col">부서명</th>
-						<th scope="col">Actions</th>
+						<th scope="col">기능</th>
 					</tr>
 				</thead>
 				<tbody>
 					<c:forEach var="vo" items="${voList}">
 						<tr class="dept-${vo.no }">
+							<td><input class="form-check-input" type="checkbox" id="rowcheck" name="rowcheck" value="${vo.no }"></td>
 							<td>${vo.no}	
 							<td>${vo.code}</td>
 							<td>${vo.name}</td>
@@ -90,6 +98,7 @@
 					</c:forEach>
 				</tbody>
 			</table>
+		  </form>
 		</div>
             <div align="center">
 				${pageInfo.pagingHtml}
@@ -109,23 +118,27 @@
 			</div>
 			<div class="modal-body">
 				<!-- form start -->
-				<form class="needs-validation" novalidate id="modalForm" action="" method="post">
+				<form class="needs-validation" novalidate id="departmentForm" action="" method="post">
 					<div class="mb-3">
 						<label for="userFullname" class="form-label">부서코드</label> 
 						<input type="text" name="code" id="code" class="form-control" required autofocus>
-						<div class="invalid-feedback">User full name is required.</div>
+						<div class="invalid-feedback">부서코드를 입력하세요.</div>
 					</div>
 					<div class="mb-3">
 						<label for="userEmail" class="form-label">부서명</label> 
 						<input type="text" name="name" id="name" class="form-control" required>
-						<div class="invalid-feedback">User email is required.</div>
+						<div class="invalid-feedback">부서명을 입력하세요.</div>
 					</div>
+					<input type="hidden" name="pageNumber" id="pageNumber" value="${pageInfo.pageNumber }">
+					<!-- 수정했을때도 가게 만들기위해 -->
+					<input type="hidden" name="keyword" id="keyword2" value="${searchvo.keyword }">
+					<input type="hidden" name="whatColumn" id="whatColumn" value="${searchvo.whatColumn }">
 				</form>
 				<!-- form end -->
 			</div>
 			<div class="modal-footer border-0">
 				<button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
-				<button type="submit" form="modalForm" class="btn btn-primary px-5">저장</button>
+				<button type="submit" form="departmentForm" class="btn btn-primary px-5">저장</button>
 			</div>
 		</div>
 	</div>
@@ -191,7 +204,7 @@
             elem.value = '';
          });
          
-         modalForm.action = 'insert';
+         departmentForm.action = 'insert';
       });
       
       // 부서 수정
@@ -206,8 +219,8 @@
             const rankInfo = Array.from(document.querySelector('.dept-' + no).children);
             const [code, name] = rankInfo.slice(2, 4);
             
-            modalForm.code.value = code.innerHTML;
-            modalForm.name.value = name.innerHTML;
+            departmentForm.code.value = code.innerHTML;
+            departmentForm.name.value = name.innerHTML;
             
             if(!modalForm.no) {
                const input = document.createElement('input');
@@ -235,4 +248,56 @@
       });
       
    })();
+   
+	/* 체크박스 */
+	function allSelect(){
+		var ac = document.f.allselect;
+		var rc = document.f.rowcheck;
+
+		if (ac.checked) {
+				for (var i = 0; i < rc.length; i++) {
+					rc[i].checked = true;
+				}
+			}
+		else {
+				for (var i = 0; i < rc.length; i++) {
+					rc[i].checked = false;
+				}
+			}
+		}
+	function selectDelete(){
+		
+		x=false;
+		var rc = document.f.rowcheck;
+		
+		for(var i=0;i<rc.length;i++){
+			if(rc[i].checked==true){
+				x=true;
+			}
+		}
+		if(!x){
+			alert("체크박스를 선택하세요");
+			return;
+		}
+		if(confirm("삭제하시겠습니까?")){
+			f.submit();
+		}
+
+	}
+	
+    // 유효성 검사
+    void(function() {
+    	
+      document.querySelectorAll('.needs-validation').forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+
+          }
+          form.classList.add('was-validated')
+     
+        })
+      })
+    })()
 </script>

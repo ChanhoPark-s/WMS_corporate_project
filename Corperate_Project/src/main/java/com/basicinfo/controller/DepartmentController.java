@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.spring.domain.DepartmentVO;
@@ -30,6 +31,8 @@ public class DepartmentController {
 	@Autowired
 	private DepartmentService service;
 
+	private final String redirect = "redirect:/basicinfo/department/list";
+	
 	@GetMapping(value="/list")
 	public void list(Model model, SearchVO vo, HttpServletRequest request) {
 		
@@ -48,18 +51,26 @@ public class DepartmentController {
 	@PostMapping(value="/insert")
 	public String insert(DepartmentVO vo) {	
 		service.add(vo);
-		return "redirect:/basicinfo/department/list";
+		return redirect;
 	}
 	
 	@PostMapping(value="/update")
-	public String update(DepartmentVO vo) {				
+	public String update(DepartmentVO vo, HttpServletRequest request, SearchVO searchvo, RedirectAttributes rttr) {				
 		service.modify(vo);
-		return "redirect:/basicinfo/department/list";
+		rttr.addFlashAttribute("searchvo",searchvo);
+		return redirect;
 	}
 	
 	@GetMapping(value="/delete/{no}")
 	public String delete(DepartmentVO vo, @PathVariable(value="no") int no) {				
 		service.delete(no);
-		return "redirect:/basicinfo/department/list";
+		return redirect;
+	}
+	
+	@PostMapping("/selectDelete")
+	public String selectDelete(HttpServletRequest request){
+		
+		service.selectDelete(request.getParameterValues("rowcheck"));
+		return redirect;
 	}
 }

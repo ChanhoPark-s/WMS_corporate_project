@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.spring.domain.RankVO;
@@ -54,9 +55,10 @@ public class RankController {
 	}
 	
 	@PostMapping(value="update")
-	public String update(Model model, RankVO rank) {
+	public String update(Model model, RankVO rank, HttpServletRequest request, SearchVO searchvo, RedirectAttributes rttr) {
 		
 		service.update(rank);
+		rttr.addFlashAttribute("searchvo",searchvo);
 		return "redirect:list";
 	}
 	
@@ -69,5 +71,12 @@ public class RankController {
 	
 	public List<RankVO> noSearchList(Model model) {				
 		return service.noSearchList();
+	}
+	
+	@PostMapping("/selectDelete")
+	public String selectDelete(HttpServletRequest request){
+		
+		service.selectDelete(request.getParameterValues("rowcheck"));
+		return "redirect:/basicinfo/rank/list";
 	}
 }

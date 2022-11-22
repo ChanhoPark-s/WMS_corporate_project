@@ -14,6 +14,7 @@
                   </svg>
                   직급등록
                 </button>
+                <button class="btn btn-light d-inline-flex align-items-center gap-1" onclick="selectDelete()"><i class="fa-regular fa-trash-can"></i></button>
               </div>
 			<div class="search">
 			<form name="search" action="/basicinfo/rank/list" id="search">
@@ -34,6 +35,7 @@
 	              </select>
 				</td>
 				<td>
+				
 					<input type="text"  name="keyword" id="keyword" class="form-control" value=<c:if test="${searchvo.keyword=='null' }">""</c:if><c:if test="${searchvo.keyword!='null' }">"${searchvo.keyword }"</c:if>  placeholder="입력" style="width: 200px; height: 38px;">
 				</td>
 				<td>
@@ -45,18 +47,19 @@
 			</div>
             </div>
 		<div class="table-responsive my-1">
+		 <form name="f" action="/basicinfo/rank/selectDelete" method="post">
 			<table class="table align-middle">
 				<thead>
 					<tr>
 						<th scope="col">
 							<div>
-								<input class="form-check-input" type="checkbox" value="">
+								<input class="form-check-input" type="checkbox" id="allselect" name="allselect" onclick="allSelect()">
 							</div>
 						</th>
 						<th scope="col">번호</th>
 						<th scope="col">직급코드</th>
 						<th scope="col">직급명</th>
-						<th scope="col">Actions</th>
+						<th scope="col">기능</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -64,7 +67,7 @@
 						<tr class="rank-${vo.no }">
 							<td>
 								<div>
-									<input class="form-check-input" type="checkbox" value="">
+									<input class="form-check-input" type="checkbox"  id="rowcheck" name="rowcheck" value="${vo.no }">
 								</div>
 							</td>
 							<td>${vo.no}</td>
@@ -96,6 +99,7 @@
 					</c:forEach>
 				</tbody>
 			</table>
+			</form>
 		</div>
         <div align="center">
 			${pageInfo.pagingHtml}
@@ -112,22 +116,26 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                <form class="needs-validation" novalidate id="taskForm" method="post" action="">
+                <form class="needs-validation" novalidate id="rankForm" method="post" action="">
                   <div class="mb-3">
                     <label for="userFullname" class="form-label">직급코드</label>
                     <input type="text" name="code" class="form-control" id="userFullname" required autofocus>
-                    <div class="invalid-feedback">User full name is required.</div>
+                    <div class="invalid-feedback">직급코드를 입력하세요.</div>
                   </div>
                   <div class="mb-3">
                     <label for="userEmail" class="form-label">직급이름</label>
                     <input type="text" name="name" class="form-control" id="userEmail" required>
-                    <div class="invalid-feedback">User id is required.</div>
+                    <div class="invalid-feedback">직급이름을 입력하세요.</div>
                   </div>
+                  	<input type="hidden" name="pageNumber" id="pageNumber" value="${pageInfo.pageNumber }">
+					<!-- 수정했을때도 가게 만들기위해 -->
+					<input type="hidden" name="keyword" id="keyword2" value="${searchvo.keyword }">
+					<input type="hidden" name="whatColumn" id="whatColumn" value="${searchvo.whatColumn }">
                 </form>
               </div>
               <div class="modal-footer border-0">
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
-                <button type="submit" form="taskForm" class="btn btn-primary px-5">저장</button>
+                <button type="submit" form="rankForm" class="btn btn-primary px-5">저장</button>
               </div>
             </div>
           </div>
@@ -189,7 +197,7 @@
 				elem.value = '';
 			});
 			
-			taskForm.action = 'insert';
+			rankForm.action = 'insert';
 		});
 		
 		// 직급 수정
@@ -203,18 +211,18 @@
 				const rankInfo = Array.from(document.querySelector('.rank-' + no).children);
 				const [code, name] = rankInfo.slice(2, 4);
 				
-				taskForm.code.value = code.innerHTML;
-				taskForm.name.value = name.innerHTML;
+				rankForm.code.value = code.innerHTML;
+				rankForm.name.value = name.innerHTML;
 				
-				if(!taskForm.no) {
+				if(!rankForm.no) {
 					const input = document.createElement('input');
 					input.type = 'hidden';
 					input.name = 'no';
-					taskForm.append(input);
+					rankForm.append(input);
 				}
-				taskForm.no.value = no;
+				rankForm.no.value = no;
 				
-				taskForm.action = 'update';
+				rankForm.action = 'update';
 			});
 		})
 		
@@ -232,6 +240,58 @@
 		});
 		
 	})();
+	
+	/* 체크박스 */
+	function allSelect(){
+		var ac = document.f.allselect;
+		var rc = document.f.rowcheck;
+
+		if (ac.checked) {
+				for (var i = 0; i < rc.length; i++) {
+					rc[i].checked = true;
+				}
+			}
+		else {
+				for (var i = 0; i < rc.length; i++) {
+					rc[i].checked = false;
+				}
+			}
+		}
+	function selectDelete(){
+		
+		x=false;
+		var rc = document.f.rowcheck;
+		
+		for(var i=0;i<rc.length;i++){
+			if(rc[i].checked==true){
+				x=true;
+			}
+		}
+		if(!x){
+			alert("체크박스를 선택하세요");
+			return;
+		}
+		if(confirm("삭제하시겠습니까?")){
+			f.submit();
+		}
+
+	}
+	
+    // 유효성 검사
+    void(function() {
+    	
+      document.querySelectorAll('.needs-validation').forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+
+          }
+          form.classList.add('was-validated')
+     
+        })
+      })
+    })()
 </script>
 <!-- bottom.jsp -->
 <%@include file="../../common/bottom.jsp"%>

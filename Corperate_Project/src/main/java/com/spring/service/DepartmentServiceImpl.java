@@ -45,4 +45,9 @@ public class DepartmentServiceImpl implements DepartmentService{
 	public int getTotalCount(SearchVO vo) {
 		return mapper.getTotalCount(vo);
 	}
+
+	@Override
+	public int selectDelete(String[] parameterValues) {
+		return mapper.selectDelete(parameterValues);
+	}
 }

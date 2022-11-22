@@ -12,8 +12,8 @@
 	<div class="card-body">
         <div class="mb-3">
           <label for="member_no" class="form-label">담당자</label>
-          <input type="text" name="name" class="form-control" id="member_no" readonly="readonly" data-bs-toggle="modal" data-bs-target="#addMember" required>
-          <div class="invalid-feedback">User full name is required.</div>
+          <input type="text" name="member_name" class="form-control" id="member_no" readonly="readonly" data-bs-toggle="modal" data-bs-target="#addMember" required>
+          <div class="invalid-feedback">담당자를 입력하세요.</div>
         </div>
 	</div>
 </div>
@@ -530,11 +530,11 @@
 			var pageCount = 5; // 한번에 보여줄 페이지번호 개수 
 			
 			//pageNum에 따른 cri.amount 단위의 시작페이지, 끝페이지를 구함
-			var endPageNum = Math.ceil(pageNum / pageCount) * pageCount;// javascript 에서 pageNum / cri.amount 결과는 그냥 0.1 
+			var endPageNum = Math.ceil(cri.pageNum / pageCount) * pageCount;// javascript 에서 pageNum / cri.amount 결과는 그냥 0.1 
 			var startPageNum = endPageNum - (pageCount-1);
 			var lastPageNum = Math.ceil(totalCount / cri.amount	);
 			
-			var isNeedFirst = pageNum > 5;
+			var isNeedFirst = cri.pageNum > 5;
 			var isNeedPrev = (startPageNum != 1);
 			var isNeedNext = false;
 			var isNeedEnd = true; 
@@ -573,7 +573,7 @@
 			
 			//가운데 숫자 출력
 			for(var i = startPageNum; i <= endPageNum; i++){
-				var active = (pageNum == i ? "active" : "");
+				var active = (cri.pageNum == i ? "active" : "");
 				str += "<li class='page-item " + active +"'>" + "<a class='page-link' href='"+ i +"'>" + i + "</a></li>";
 			}
 			
@@ -690,7 +690,12 @@
 	        	b = item.value == '' && true;
         	});
         	
-          if (!form.checkValidity() || a || b) {
+        	let c = false;
+        	const member = document.querySelector('input[name="member_name"]');
+        	member.value === '' ? member.classList.add('is-invalid') : member.classList.remove('is-invalid');
+        	c = member.value == '' && true;
+        	
+          if (!form.checkValidity() || a || b || c) {
             event.preventDefault()
             event.stopPropagation()
 	        form.classList.add('was-validated')

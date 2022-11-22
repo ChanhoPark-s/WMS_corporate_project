@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.spring.mapper.ChatMapper">
+	<select id="getAllContent" resultType="com.spring.domain.ChatVO">
+		select c.no,c.member_id,c.member_name,r.name rank_name,c.content,c.day from chat c, member m,rank r where c.member_id=m.id and m.rank_no = r.no order by day	
+	</select>	
+	
+	<insert id="insertChat">
+		insert into chat values(chat_seq.nextval,#{member_id},#{member_name},#{content},sysdate)
+	</insert>
+</mapper>

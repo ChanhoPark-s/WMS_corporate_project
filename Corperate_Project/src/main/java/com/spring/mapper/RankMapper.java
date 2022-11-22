@@ -20,5 +20,7 @@ public interface RankMapper {
 	public int getTotalCount(SearchVO vo);
 
 	public List<RankVO> noSearchList();
+
+	public int selectDelete(String[] parameterValues);
 	
 }
