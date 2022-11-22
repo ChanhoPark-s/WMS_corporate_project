@@ -22,16 +22,14 @@
 						<!-- input type='text' name='amount' -->
 						
 						<div class="row">		
-							<div class="col-sm-5">
+							<div class="col-sm-3">
 								<label for="userFullname" class="form-label">납기일자</label>
-								<div class="row">
-									<div class="col">
-										<input type="date" name="delivery_date" class="form-control">
-									</div>
-								</div>
+									<input type="date" name="delivery_date" class="form-control">
 							</div>
-						</div>
-						
+							<div class="col-sm-3">
+								<label for="userFullname" class="form-label"></label>
+								<button type="button" class="btn btn-primary" style="display:block" data-bs-target="#secondModal" data-bs-toggle="modal" data-bs-dismiss="modal" id="choiceOrderBtn">수주서 선택</button>	
+							</div>
 						<div class="row" >		
 							<div class="col-sm-3">		
 								<label for="userFullname" class="form-label">부서명</label>
@@ -121,18 +119,3 @@
 		</div>
 	</div>
 </div>
-<script>
-    // Example starter JavaScript for disabling form submissions if there are invalid fields
-    void(function() {
-      document.querySelectorAll('.needs-validation').forEach(form => {
-        form.addEventListener('submit', event => {
-	       	alert(form.checkValidity());
-          if (!form.checkValidity()) {
-            event.preventDefault()
-            event.stopPropagation()
-          }
-          form.classList.add('was-validated')
-        })
-      })
-    })()
-</script>

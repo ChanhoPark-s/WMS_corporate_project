@@ -82,13 +82,16 @@ public class Purchase_sheetController {
 		for(Purchase_sheetVO vo :lists) {
 			System.out.println("vo"+vo);
 			System.out.println("vo.getTotalPrice()"+ vo.getTotalPrice()); 
+			System.out.println("vo.getAmount()"+ vo.getAmount()); 
 			if(vo.getTotalPrice() != null) {
 				String[] price = vo.getTotalPrice().split(",");
+				String[] amount = vo.getTotalAmount().split(",");
 				System.out.println("price"+price);
+				System.out.println("amount"+amount);
 				int totalPrice = 0;
-				for(String x :price) {
-					System.out.println("x"+x);
-					totalPrice = Integer.parseInt(x) + totalPrice;
+				for(int i=0; i<price.length; i++) {
+					System.out.println("x"+price[i]);
+					totalPrice = (Integer.parseInt(price[i]) * Integer.parseInt(amount[i])) + totalPrice;
 					System.out.println("totalPrice"+totalPrice);
 				}
 				vo.setTotalPrice(Integer.toString(totalPrice));

@@ -3,7 +3,7 @@
 
 <!-- 거래처를 선택하는 두번째 모달 -->
 <div class="modal fade" id="secondModal" tabindex="-2">
-	<div class="modal-dialog modal-dialog-scrollable">
+	<div class="modal-dialog modal-dialog-scrollable modal2">
 		<div class="modal-content">
 			<div class="modal-header border-0">
 				<h5 id="second-modal-title">거래처 입력</h5>
@@ -73,6 +73,9 @@
 	/* 첫번째 모달 이 뜰 때 모달 초기화 */
 	$("#addOrderSheet").on("click", function(e){
 		
+		//모달크기초기화
+		$('.modal-xl').removeClass('.modal-xl');
+		
 		//$(this).find('form')[0].reset();
 		
 		// 납기일자 초기화
@@ -92,6 +95,23 @@
 		$("#modalItemDetail").empty();
 		addRowItemDetail();
 	});
+	
+	//날짜함수
+	function leftPad(value) {
+	    if (value >= 10) {
+	        return value;
+	    }
+
+	    return `0${value}`;
+	}
+
+	function toStringByFormatting(source, delimiter = '-') {
+	    const year = source.getFullYear();
+	    const month = leftPad(source.getMonth() + 1);
+	    const day = leftPad(source.getDate());
+
+	    return [year, month, day].join(delimiter);
+	}
 	
 	/* 첫번째 모달에서 담당자 선택이 눌렸을 때 이동한 두번째 모달창에서 데이터를 요청하고 관련 화면을 그리는 부분 */
 	$("#choiceMemberBtn").on("click", function(e){
@@ -214,11 +234,59 @@
 		requestClientRecord();
 	});
 	
+	/* 첫번째 모달에서 수주서 선택이 눌렸을 때 이동한 두번째 모달창에서 데이터를 요청하고 관련 화면을 그리는 부분 */
+	$("#choiceOrderBtn").on("click", function(e){
+		
+		pageNum = 1;
+		
+		// 두번째 모달에서 그려내야할 정보를 지정
+		secondModalName = "order";
+		console.log("secondModalName: " + secondModalName);
+		
+		// 두번째 모달의 제목을 지정
+		$("#second-modal-title").text("수주서 선택");
+		
+		// 두번째 모달의 select의 option을 그려내는 코드
+		var str = "";
+		str += "<option value='' selected>검색 선택</option>";
+		str += "<option value='member'>담당자</option>";
+		str += "<option value='client'>수주처</option>";
+		str += "<option value='item'>품목명</option>";
+		$("#searchWhatColumn").html(str);
+		
+		// 초기화 코드
+		$("#searchKeyword").val("");
+		searchWhatColumn = "";
+		searchKeyword = "";
+		
+		// 두번째 모달의 테이블의 th를 그려내는 코드
+		var str = "";
+		str += "<tr>";
+		str += "<th scope='col'></th>";
+		str += "<th scope='col'>작성일자</th>";
+		str += "<th scope='col'>담당자</th>";
+		str += "<th scope='col'>수주처</th>";
+		str += "<th scope='col'>품목명</th>";
+		str += "<th scope='col'>납기일자</th>";
+		str += "<th scope='col'>주문금액합계</th>";
+		str += "</tr>";
+		$("#secondModalThead").html(str);
+		
+		// 두번째 모달의 테이블의 레코드를 그려내는 코드
+		requestClientRecord();
+	});
+	
 	
 	/* ajax로 두번째 모달에서 보여줄 레코드정보를 요청하는 부분 + 화면전환없이 레코드들을 그리는 부분 + 화면전환없이 페이지네이션을 그리는 부분 */
 	function requestClientRecord(){
 		console.log("요청url : " + "/basicinfo/" + secondModalName + "/pages/"+ pageNum +"/" + amount + "/" + searchWhatColumn + "/" + searchKeyword)
-		$.getJSON("/basicinfo/" + secondModalName + "/pages/"+ pageNum +"/" + amount + "/" + searchWhatColumn + "/" + searchKeyword,  
+		//요청url
+		url = "/basicinfo/";
+		if (secondModalName == "order"){
+			url = "/ordersheet/";
+		}
+		
+		$.getJSON(url + secondModalName + "/pages/"+ pageNum +"/" + amount + "/" + searchWhatColumn + "/" + searchKeyword,  
  			function(resdata){
 				console.log("list: " + resdata.list); 	  			// 1페이지 레코드들이 담긴 객체
  				console.log("totalCount: " + resdata.totalCount); 	// 검색조건으로 뽑힌 총 레코드 수
@@ -271,6 +339,38 @@
 					str += "<td>" + list[i].client_name +"</td>";
 					str += "<td>" + numberWithCommas(list[i].in_price) +"원</td>";
 					str += "</tr>";
+				}
+			}
+			
+			else if(secondModalName == "order"){
+				
+
+				//toStringByFormatting(new Date(2021, 0, 1));
+				// 2021-01-01
+				
+				$('.modal2').attr('class','modal-xl');
+				
+				itemNo = new Array();
+				
+				for(var i = 0, len = list.length || 0; i < len; i++){
+					
+					
+					str += "<tr>";
+					str += "<td><input class='form-check-input' type='radio' name='clientRadio'></td>";
+					str += "<td style='display:none'>" + list[i].no +"</td>";
+					str += "<td>";
+					str += toStringByFormatting(new Date(list[i].day));
+					str += "</td>";
+					str += "<td>" + list[i].member_name +"</td>";
+					str += "<td>" + list[i].client_name +"</td>";
+					str += "<td>" + list[i].temp_item_name + "</td>";
+					str += "<td>" ;
+					str += toStringByFormatting(new Date(list[i].out_day));
+					str += "</td>";
+					str += "<td>" + numberWithCommas(list[i].total_price) +"원</td>";
+					str += "</tr>";
+					
+					
 				}
 			}
 			
@@ -430,6 +530,86 @@
 			
 			addRowItemDetail(); // 새로 입력받을 수 있게 아래 줄을 추가하는 함수
 		}
+		
+		else if(secondModalName == "order"){
+			
+			//모달창 크기 초기화
+			
+			//수주서번호
+			no = $('input[name=clientRadio]:checked').parent().next().text();
+			
+			//품목
+			
+			$.getJSON("/ordersheet/selectOrder/"+no,  
+		 			function(resdata){
+		 				console.log(resdata.order);
+		 				console.log(resdata.detail);
+		 				vo = resdata.order;
+		 				
+		 				//날짜 삽입
+		 				$("input[name='delivery_date']").val(vo.out_day);
+		 				
+		 				//담당자 삽입
+		 				$("input[name='member_no']").val(vo.member_no);
+		 				$("#member_dep_name").val(vo.dep_name);
+		 				$("#member_name").val(vo.member_name);
+		 				
+		 				//거래처 삽입
+		 				$("input[name='client_no']").val(vo.client_no);
+		 				$("#client_code").val(vo.client_code);
+		 				$("#client_name").val(vo.client_name);
+		 				
+		 				//품목삽입
+		 				list = resdata.detail
+		 				for(item in list){
+		 					
+		 					var str = "<div class='row'>";
+		 					str += "<input type='hidden' name='item_no' class='form-control' value='" + item.itemNo + "' readonly>"; 
+		 					str += "<div class='col-sm-2'>";
+		 					str += "<label for='userFullname' class='form-label'>품목코드</label>";
+		 					str += "<input type='text' class='form-control' value='" + item.item_no + "' readonly>";
+		 					str += "</div>";
+		 					str += "<div class='col-sm-2'>";
+		 					str += "<label for='userFullname' class='form-label'>품목명</label>";
+		 					str += "<input type='text' class='form-control' value='" + item.item_code + "' readonly>";
+		 					str += "</div>";
+		 					str += "<div class='col-sm-2'>";
+		 					str += "<label for='userFullname' class='form-label'>취급처</label>";
+		 					str += "<input type='text' class='form-control' value='" + item.client_name + "' readonly>";
+		 					str += "</div>";
+		 					str += "<div class='col-sm-2'>";
+		 					str += "<label for='userFullname' class='form-label'>구매단가</label>";
+		 					str += "<input type='text' class='form-control' readonly>";
+		 					str += "</div>";
+		 					str += "<div class='col-sm-1'>";
+		 					str += "<label for='userFullname' class='form-label'>수량</label>";
+		 					str += "<input type='text' name='amount' class='form-control'>";
+		 					str += "</div>";
+		 					str += '<div class="col-sm-2">';
+		 					str += '<label for="ware_no" class="form-label">창고명</label>';
+		 					str += '<select class="form-select" id="ware_no" name="ware_no">';
+		 					str += '<option selected disabled value="">선택</option>';
+		 					str += '<c:forEach items="${WareList }" var="ware">';
+		 					str += '<option value="${ware.no }">${ware.name }(${ware.code })</option>';
+		 					str += '</c:forEach>';
+		 					str += '</select>';
+		 					str += '</div>';
+		 					str += "<div class='col-sm-1'>";
+		 					str += "<label for='userFullname' class='form-label'>&nbsp;&nbsp;</label>";
+		 					str += "<button type='button' class='btn btn-primary deleteItemBtn' style='display:block'>X</button>";
+		 					str += "</div>";
+		 					str += "</div>";
+		 					
+		 					$("#modalItemDetail").append(str);
+		 				}
+		 				
+		 			}).fail(function(xhr, status, err){
+		 					alert("데이터 조회실패");
+		 			});	
+			
+			
+			
+		}
 	});
 	
 	/* 새로 입력받을 수 있게 아래 줄을 추가하는 부분 */
@@ -489,7 +669,7 @@
 		$(this).parent().parent().remove();
 	});
 	
-/* 	$("#modalRegisterBtn").on("click", function(e){
+	$("#modalRegisterBtn").on("click", function(e){
 		
 		//유효성 검사 해야하는 부분
 		
@@ -505,5 +685,5 @@
 		
 		
 		$("#firstModalForm").submit();
-	}); */
+	});
 </script>

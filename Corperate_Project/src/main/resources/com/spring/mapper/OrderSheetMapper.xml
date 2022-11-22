@@ -103,4 +103,23 @@
 			on m.rank_no = r.no)
 		where no=#{no}
 	</select>
+	
+	<!-- 이하 ajax API 관련 SQL -->
+	<select id="getListWithPaging" resultType="com.spring.domain.OrderSheetVO">
+		<![CDATA[
+		select * from (
+	        select * from(
+		        select  rownum rn, p.no , p.day, p.OUT_DAY, p.status, c.no as client_no, c.name as client_name, m.no as Member_no, m.name as member_name
+		        from order_sheet p, Client c, Member m        
+		        where p.client_no = c.no(+) and p.member_no = m.no(+)
+		        order by no desc)
+		    where rownum <= #{cri.pageNum} * #{cri.amount}
+		)where rn > (#{cri.pageNum} - 1) * #{cri.amount}
+		]]>     
+	</select>
+	
+	<select id="getCountAll" resultType="int">
+		select count(*)
+        from order_sheet
+	</select>
 </mapper>

@@ -31,4 +31,13 @@ public class OrderSheetVO {
 	private String temp_item_name;		// 수주서 출력시 ㅇㅇ 외 4개 출력을 하기 위한 변수
 	private ArrayList<Integer> item_no; // 품목번호
 	private ArrayList<Integer> amount; 	// 품목별 수주개수
+	
+//ajax페이징 sql위한 변수
+	
+	private String itemNo;			// 번호 ex) 1, 2, 3
+	private String item_Code;			// 코드 ex) 12, 34, A1
+	private String itme_client_no;			// 하나 ex) 한화, 삼성, 엘쥐
+	private String in_price;			// 가격 ex) 1000, 2000, 3000
+	private String totalAmount;			// 수량 ex) 1, 2, 3
+	
 }

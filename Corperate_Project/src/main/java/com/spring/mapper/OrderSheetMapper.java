@@ -5,10 +5,12 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.spring.domain.MemberVO;
 import com.spring.domain.OrderSheetDetailVO;
 import com.spring.domain.OrderSheetVO;
 import com.spring.domain.SearchVO;
 import com.spring.paging.Client_Paging;
+import com.spring.paging.Criteria;
 
 public interface OrderSheetMapper {
 	
@@ -29,6 +31,10 @@ public interface OrderSheetMapper {
 	
 	/* OrderSheetDetail */
 	public List<OrderSheetDetailVO> selectSubAllByMainNo(int mainNo);
+	
+	/* ajax paging */
+	public List<OrderSheetVO> getListWithPaging(@Param("cri") Criteria cri);
+	public int getCountAll(@Param("cri") Criteria cri);
 }
 
 
