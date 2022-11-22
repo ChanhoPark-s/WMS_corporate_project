@@ -116,11 +116,14 @@ public class Purchase_sheetController {
 	
 	@PostMapping("/insert.ps")
 	public String insert(Purchase_sheetVO vo) {
+		System.out.println("vo.getOrder_no():" + vo.getOrder_no());
 		System.out.println(vo.getMember_no());
 		System.out.println(vo.getClient_no());
 		System.out.println(vo.getDelivery_date());
-		System.out.println(vo.getItem_no());
+		
+		System.out.println("vo.getItem_no():" + vo.getItem_no());
 		System.out.println(vo.getAmount());
+		System.out.println(vo.getWare_no());
 		System.out.println(vo.getOrder_no());
 		
 		int cnt = ps.insert(vo);
