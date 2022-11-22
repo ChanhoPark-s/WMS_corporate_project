@@ -34,7 +34,7 @@ public class Purchase_sheetServiceImpl implements Purchase_sheetService{
 		
 		ArrayList<Integer> noList = vo.getItem_no();
 		ArrayList<Integer> amountList = vo.getAmount();
-		ArrayList<Integer> orderDetailList = vo.getOrder_detail_no();
+		ArrayList<Integer> orderDetailList = vo.getDetail_no();
 		ArrayList<Integer> wareList = vo.getWare_no();
 		
 		int len = noList.size();

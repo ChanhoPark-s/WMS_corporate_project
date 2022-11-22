@@ -26,10 +26,6 @@
 	max-height: 350px;
 	max-width: 300px;
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> branch 'gonie' of https://github.com/ChanhoPark-s/WMS_corporate_project.git
 a {
     text-decoration: none;
 }
@@ -417,7 +413,7 @@ margin-top: 5px;
 			</div>
 		</div>
 	</div>
-</div>	
+</div>
 			
 			
       <div id="main-body">

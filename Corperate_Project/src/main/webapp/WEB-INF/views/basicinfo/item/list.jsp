@@ -140,7 +140,7 @@ table td {
 			</div>
 			<div class="modal-body">
 				<form class="needs-validation" novalidate id="modalForm" name="modalForm" action="" enctype="multipart/form-data" method="post" >
-				<input type="hidden"id="no" name="no">
+				<input type="hidden"id="no" name="no" value="2">
 					<div>
                 <label for="image" class="form-label">이미지</label> 
                 <input class="form-control" type="file" id="upload" name="upload">

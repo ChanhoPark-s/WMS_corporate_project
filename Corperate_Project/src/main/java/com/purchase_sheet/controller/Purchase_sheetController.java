@@ -37,8 +37,11 @@ import com.spring.paging.Criteria;
 import com.spring.service.ClientService;
 import com.spring.service.ItemService;
 import com.spring.service.MemberService;
+import com.spring.service.OrderSheetService;
 import com.spring.service.Purchase_sheetService;
 import com.spring.service.WareHouseService;
+
+import oracle.jdbc.driver.json.binary.OsonAbstractArray;
 
 
 @Controller
@@ -60,6 +63,9 @@ public class Purchase_sheetController {
 	
 	@Autowired
 	private ClientService cs;
+	
+	@Autowired
+	private OrderSheetService os;
 	
 	@RequestMapping("/list.ps")
 	public void list(SearchVO searchvo,HttpServletRequest request,Model model) {
@@ -116,15 +122,22 @@ public class Purchase_sheetController {
 	
 	@PostMapping("/insert.ps")
 	public String insert(Purchase_sheetVO vo) {
+		System.out.println("vo.getOrder_no():" + vo.getOrder_no());
 		System.out.println(vo.getMember_no());
 		System.out.println(vo.getClient_no());
 		System.out.println(vo.getDelivery_date());
-		System.out.println(vo.getItem_no());
+		
+		System.out.println("vo.getItem_no():" + vo.getItem_no());
 		System.out.println(vo.getAmount());
+		System.out.println(vo.getWare_no());
 		System.out.println(vo.getOrder_no());
 		
 		int cnt = ps.insert(vo);
 		System.out.println("insert 성공" + cnt);
+		
+		// 수주 상태 수정
+		os.updateStatus(vo.getOrder_no());
+		System.out.println("준비완료> 발주중 update 완료");
 		return re;
 	}
 	

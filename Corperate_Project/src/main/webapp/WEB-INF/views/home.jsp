@@ -111,7 +111,7 @@ path.color1 {
                   <div class="card-body">
                     <div class="row">
                       <div class="col-6">
-                        <h3 class="fw-black mb-2">매출액</h3>
+                        <h4 class="fw-black mb-2">매출액</h4>
                         <p class="small text-secondary mb-1"></p>
                         <h4 class="mb-3">
                         	<fmt:formatNumber var="sm" value="${sell_Money }" pattern="#,###" />
@@ -189,20 +189,10 @@ path.color1 {
             <div class="card h-100">
               <div class="card-header border-bottom-0 d-flex justify-content-between">
                 <div>
-                   <h3 class="fw-black mb-2">수주 금액</h3>
+                   <h4 class="fw-black mb-2">수주 금액</h4>
                   <small class="text-secondary">목표 : 1,000,000$</small>
                 </div>
                 <div class="dropdown">
-                  <button class="btn text-secondary p-0 dropdown-toggle no-caret" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
-                    </svg>
-                  </button>
-                  <ul class="dropdown-menu dropdown-menu-end">
-                    <li><button class="dropdown-item" type="button">Last 28 days</button></li>
-                    <li><button class="dropdown-item" type="button">Last month</button></li>
-                    <li><button class="dropdown-item" type="button">Last year</button></li>
-                  </ul>
                 </div>
               </div>
               <div class="card-body">
@@ -216,12 +206,7 @@ path.color1 {
           <div class="col-12 col-md-6 col-lg-4">
             <div class="card h-100">
               <div class="card-header border-bottom-0 d-flex justify-content-between">
-                <h6 class="mb-0">Goal Overview</h6>
-                <button class="btn text-secondary p-0" type="button">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path>
-                  </svg>
-                </button>
+                <h4 class="fw-black mb-2">목표량</h4>
               </div>
               <div class="card-body">
                 <div id="goal" style="min-height: 184.383px;"><div id="apexchartsjb67pg88" class="apexcharts-canvas apexchartsjb67pg88 apexcharts-theme-light" style="width: 406px; height: 184.383px;"><svg id="SvgjsSvg1795" width="406" height="184.38333333333333" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev" class="apexcharts-svg" xmlns:data="ApexChartsNS" transform="translate(0, 0)" style="background: transparent;"><g id="SvgjsG1797" class="apexcharts-inner apexcharts-graphical" transform="translate(93.5, -10)"><defs id="SvgjsDefs1796"><clipPath id="gridRectMaskjb67pg88"><rect id="SvgjsRect1799" width="227" height="245" x="-3" y="-1" rx="0" ry="0" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fff"></rect></clipPath><clipPath id="forecastMaskjb67pg88"></clipPath><clipPath id="nonForecastMaskjb67pg88"></clipPath><clipPath id="gridRectMarkerMaskjb67pg88"><rect id="SvgjsRect1800" width="225" height="247" x="-2" y="-2" rx="0" ry="0" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fff"></rect></clipPath></defs><g id="SvgjsG1801" class="apexcharts-radialbar"><g id="SvgjsG1802"><g id="SvgjsG1803" class="apexcharts-tracks"><g id="SvgjsG1804" class="apexcharts-radialbar-track apexcharts-track" rel="1"><path id="apexcharts-radialbarTrack-0" d="M 67.12823170731704 185.62210629703168 A 86.74353658536586 86.74353658536586 0 1 1 153.87176829268293 185.62210629703168" fill="none" fill-opacity="1" stroke="rgba(229,231,235,0.85)" stroke-opacity="1" stroke-linecap="round" stroke-width="6.506334146341463" stroke-dasharray="0" class="apexcharts-radialbar-area" data:pathOrig="M 67.12823170731704 185.62210629703168 A 86.74353658536586 86.74353658536586 0 1 1 153.87176829268293 185.62210629703168"></path></g></g><g id="SvgjsG1806"><g id="SvgjsG1810" class="apexcharts-series apexcharts-radial-series" seriesName="seriesx1" rel="1" data:realIndex="0"><path id="SvgjsPath1811" d="M 67.12823170731704 185.62210629703168 A 86.74353658536586 86.74353658536586 0 1 1 196.17557970735362 124.0696787414294" fill="none" fill-opacity="0.85" stroke="rgba(22,163,74,0.85)" stroke-opacity="1" stroke-linecap="round" stroke-width="6.707560975609756" stroke-dasharray="0" class="apexcharts-radialbar-area apexcharts-radialbar-slice-0" data:angle="249" data:value="83" index="0" j="0" data:pathOrig="M 67.12823170731704 185.62210629703168 A 86.74353658536586 86.74353658536586 0 1 1 196.17557970735362 124.0696787414294"></path></g><circle id="SvgjsCircle1807" r="78.49036951219513" cx="110.5" cy="110.5" class="apexcharts-radialbar-hollow" fill="transparent"></circle><g id="SvgjsG1808" class="apexcharts-datalabels-group" transform="translate(0, 0) scale(1)" style="opacity: 1;"><text id="SvgjsText1809" font-family="Helvetica, Arial, sans-serif" x="110.5" y="126.5" text-anchor="middle" dominant-baseline="auto" font-size="2rem" font-weight="400" fill="#373d3f" class="apexcharts-text apexcharts-datalabel-value" style="font-family: Helvetica, Arial, sans-serif;">83%</text></g></g></g></g><line id="SvgjsLine1812" x1="0" y1="0" x2="221" y2="0" stroke="#b6b6b6" stroke-dasharray="0" stroke-width="1" stroke-linecap="butt" class="apexcharts-ycrosshairs"></line><line id="SvgjsLine1813" x1="0" y1="0" x2="221" y2="0" stroke-dasharray="0" stroke-width="0" stroke-linecap="butt" class="apexcharts-ycrosshairs-hidden"></line></g><g id="SvgjsG1798" class="apexcharts-annotations"></g></svg><div class="apexcharts-legend"></div></div></div>
@@ -336,8 +321,8 @@ $('#donut').data('donut'),
 );
 
 function drawDonutChart(element, percent, width, height, text_y) {
-width = typeof width !== 'undefined' ? width : 290;
-height = typeof height !== 'undefined' ? height : 290;
+width = typeof width !== 'undefined' ? width : 130;
+height = typeof height !== 'undefined' ? height : 130;
 text_y = typeof text_y !== 'undefined' ? text_y : "-.10em";
 
 var dataset = {
@@ -428,7 +413,7 @@ $(function() {
 	    slide: false,
 	    animationCallback: function(x, y) {
 	      _this.updateChart((1 - x) * 100);
-	      $('#' + elementId).find('.value').text(Math.round((1 - x) * 100));
+	      $('#' + elementId).find('.value').text(Math.round((1 - x) * 100)+"%");
 	    }
 	  });
 	};
