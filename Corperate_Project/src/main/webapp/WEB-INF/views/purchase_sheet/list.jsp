@@ -51,19 +51,7 @@ table td {
                   </svg>
 					발주 등록
 				</button>
-				<button class="btn btn-primary d-inline-flex align-items-center gap-1"
-					data-bs-toggle="modal" data-bs-target="#">
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-						fill="currentColor" aria-hidden="true">
-                    <path fill-rule="evenodd"
-							d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-							clip-rule="evenodd" />
-                  </svg>
-					수주서 조회
-				</button>
 			</div>
-			
-			
 			
 			<div class="search">
 			<form name="search" action="/list.ps" id="search">
