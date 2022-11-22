@@ -138,4 +138,14 @@
 		select count(*)
         from order_sheet
 	</select>
+	
+	<!-- 수주상태 준비완료>발주중 -->
+	<update id="updateStatus">
+		update ORDER_SHEET
+		set status = 1
+		where no = #{order_no} 
+		and status = 0
+	</update>
+
+	
 </mapper>

@@ -38,6 +38,9 @@ public interface OrderSheetMapper {
 	/* ajax paging */
 	public List<OrderSheetVO> getListWithPaging(@Param("cri") Criteria cri);
 	public int getCountAll(@Param("cri") Criteria cri);
+	
+	//수주상태 준비완료 > 발주중
+	public void updateStatus(int order_no);
 }
 
 
