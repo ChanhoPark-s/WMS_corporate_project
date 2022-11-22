@@ -17,7 +17,7 @@ table td {
 </style>
 
 <div class="card">
-0	<div class="card-body">
+	<div class="card-body">
 		<div class="d-flex gap-1 mb-4 flex-wrap">
 		
 			<div class="d-flex gap-1 me-auto flex-wrap">
