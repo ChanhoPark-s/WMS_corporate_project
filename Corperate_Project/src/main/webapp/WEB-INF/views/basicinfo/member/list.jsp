@@ -266,14 +266,16 @@ pageEncoding="UTF-8"%>
     (function() {
    		
     	const title = document.querySelector('.modal-title');
+    	const form_control = document.querySelectorAll('.form-control');
     	
     	// 사원등록
     	document.querySelector('.insert').addEventListener('click', event => {
     		title.innerHTML = '사원등록';
+    		taskForm.classList.remove('was-validated');
     		
-    		const form_control = document.querySelectorAll('.form-control');
     		Array.from(form_control, elem => {
     			elem.value = '';
+    			elem.classList.remove('is-invalid');
     		});
     		
     		const form_select = document.querySelectorAll('.form-select');
@@ -289,8 +291,14 @@ pageEncoding="UTF-8"%>
     		idcheck = document.querySelector('.idcheck');
     	
     	update.forEach((elem)=> {
+    		
     		elem.addEventListener('click', async (event) => {
         		title.innerHTML = '사원수정';
+        		elem.classList.remove('was-validated');
+        		
+        		Array.from(form_control, elem => {
+        			elem.classList.remove('is-invalid');
+        		});
         		
         		let target = event.target;
 				target = target.nodeName == 'BUTTON' ? target : target.nodeName == 'svg' ? target.parentElement : target.parentElement.parentElement;
