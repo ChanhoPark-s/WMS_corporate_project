@@ -55,7 +55,7 @@
 						<th scope="col">품목</th>
 						<th scope="col">입고단가</th>
 						<th scope="col">출고단가</th>
-						<th scope="col">수정/삭제</th>
+						<th scope="col">기능</th>
 					</tr>
 				</thead>
 				<tbody>

@@ -519,3 +519,19 @@ insert into client values(client_seq.nextval,'P'||client_seq.nextval,'발주처'
 insert into client values(client_seq.nextval,'P'||client_seq.nextval,'발주처','고려제강','최은서','010-1345-7653','02-1348-8463','씨티은행','1346-6515559-90','13456','서울 서대문구 한강대로 32','5단지','hgudka1@naver.com');
 
 commit;
+drop table chat;
+create table chat (
+no number,
+member_id varchar2(400),
+member_name varchar2(400),
+content varchar2(500),
+day date);
+
+CREATE SEQUENCE chat_seq
+	increment by 1
+	start with 1 
+	minvalue 1
+	maxvalue 10000000
+	nocache;
+    
+commit;

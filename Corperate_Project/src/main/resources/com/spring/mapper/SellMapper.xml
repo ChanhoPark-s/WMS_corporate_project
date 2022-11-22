@@ -2,16 +2,37 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
+
 <mapper namespace="com.spring.mapper.SellMapper">
 
 	<insert id="insert">
-		insert into sell values(sell_seq.nextval,#{member_no},#{order_no},#{day})
+		insert into sell
+		values(sell_seq.nextval,#{member_no},#{order_no},#{day})
 	</insert>
-	
-		<select id="read" resultType="com.spring.domain.SellVO">
-		select * from sell order by no desc
-	</select>
-	
 
+	<select id="read" resultType="com.spring.domain.SellVO">
+		select se.no, se.day, se.order_no, me.name name
+from(select * from sell) se inner join member me
+on se.member_no = me.no order by no desc
+	</select>
+
+	<delete id="delete">
+		delete sell where no = #{no}
+	</delete>
+
+	<update id="update">
+		update sell set member_no = #{member_no}, order_no =
+		#{order_no}, day =
+		#{day} where no = #{no}
+	</update>
+
+
+	<select id="getSubList" resultType="com.spring.domain.SellDetailVO">
+		select sn.no, sn.sell_no, sn.amount, sn.sell_price, sn.lot_code, sn.item_no,
+		it.code code, it.name name
+		from(select *
+		from sell_detail
+		where sell_no = #{mainNo}) sn inner join item it
+		on sn.item_no = it.no
+	</select>
 </mapper>

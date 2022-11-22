@@ -4,21 +4,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-<style>
-.btn_search{
-  cursor : pointer;
-  position : absolute;
-  right : 7px;
-  top : 50%;
-  transform : translatey(-50%);
-}
-#search{
-  position : relative;
-}
-</style>
-
-
-
 <!-- top.jsp -->
 <%@include file="../../common/top.jsp"%>
 
@@ -94,7 +79,7 @@
 						<th scope="col">대표자명</th>
 						<th scope="col">전화번호</th>
 						<th scope="col">주소</th>
-						<th scope="col">수정&nbsp; / &nbsp; 삭제</th>
+						<th scope="col">기능</th>
 					</tr>
 				</thead>
 				<tbody id="table_insert">
@@ -285,6 +270,8 @@
 		clearModal();
 		/* readonly attr 삭제 */
 		readonly(false);
+		
+		document.getElementById('no').value='123';
 		
 		modal.find("#modal-title").text("거래처 등록");
 		modal.find('#okaybtn').show();

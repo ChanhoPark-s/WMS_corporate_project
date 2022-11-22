@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.spring.domain.WareHouseAllAreaVO;
+import com.spring.domain.WareHouseMovementVO;
 import com.spring.domain.WareHouseVO;
 import com.spring.mapper.WareHouseMapper;
 
@@ -56,5 +57,4 @@ public class WareHouseServiceImpl implements WareHouseService{
 	public int checkCode(String code) {
 		return mapper.checkCode(code);
 	}
-
 }
