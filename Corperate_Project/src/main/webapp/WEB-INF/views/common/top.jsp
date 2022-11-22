@@ -196,7 +196,7 @@ margin-top: 5px;
 		});
 	})	
 		/* 웹소켓이랑 연결  */
-		let sock = new SockJS("http://52.79.144.231:8080/echo");//http://52.79.144.231:8080/echo // http://localhost:8080/echo
+		let sock = new SockJS("http://localhost:8080/echo");//http://52.79.144.231:8080/echo // http://localhost:8080/echo
 		sock.onmessage = onMessage;
 		sock.onclose = onClose;
 		

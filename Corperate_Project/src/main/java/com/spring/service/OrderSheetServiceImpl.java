@@ -219,4 +219,10 @@ public class OrderSheetServiceImpl implements OrderSheetService{
 		
 		return pageDTO;
 	}
+
+	@Override
+	public void updateStatus(int order_no) {
+		mapper.updateStatus(order_no);
+		
+	}
 }
