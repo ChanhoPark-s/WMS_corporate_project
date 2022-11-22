@@ -19,7 +19,7 @@
          <ul class="nav flex-column" style=" height: 600px; overflow: auto">
           <li class="nav-item">
            <a href="#default-collapse1" class="nav-link px-0 dropdown-toggle d-flex align-items-center gap-3" data-bs-toggle="collapse" role="button" aria-expanded="true" aria-controls="default-collapse"
-            	id="mydefault" data-value="0" >
+            	id="mydefault" data-value="0" onclick="clickFunction(this.id,0,0,0,0)">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
               </svg>
@@ -330,6 +330,8 @@ var amount = 10;
 var searchWhatColumn = "";
 var searchKeyword = "";
 
+console.log("전역변수id:"+id);
+console.log("전역변수no:"+no);
 $(function(){
 	
 	/* 왼쪽 창고-셀 사이드바가 등록/수정/삭제이후 보던 목차가펼쳐지게 하는 코드 */
@@ -360,7 +362,9 @@ function clickFunction(clicked_id,w_no,a_no,r_no,c_no){
 	id = clicked_id;
 	showid = document.getElementById(clicked_id).getAttribute('href').substring(1); //등록수정삭제시 창고-셀 사이드바 보던 화면으로 가기 위한 변수
 	no = document.getElementById(clicked_id).getAttribute('data-value');
-
+	
+	console.log("클릭펑션id:"+id);
+	console.log("클릭펑션no:"+no);
 	//만든 영역의 위치정보를 전역변수에 저장
 	ware_no = w_no;
 	area_no = a_no;
@@ -386,7 +390,7 @@ function clickFunction(clicked_id,w_no,a_no,r_no,c_no){
 		success : function(data){
 			var mydata = JSON.parse(data);
 			if(id.indexOf("default")>0){
-				current_location = "창고목록";				
+				current_location = "모든 재고 현황";				
 			}
 			else if(id.indexOf("warehouse")>0){
 				current_location = mydata.warehousename;		
@@ -412,7 +416,7 @@ function clickFunction(clicked_id,w_no,a_no,r_no,c_no){
 	});//ajax
 };//clickFunction
 
-/* 두번째 모달의 페이지네이션에서 번호 클릭시 다시 그리는 함수 */
+/* 페이지네이션에서 번호 클릭시 다시 그리는 함수 */
 $("#PageNation").on("click", "li a", function(e){
 	e.preventDefault(); // 번호를 눌러도 페이지가 이동하지 않도록 a태그 기능 무력화
 	pageNum = $(this).attr("href");
@@ -585,5 +589,10 @@ $("#searchBtn").on("click", function(e){
 	document.getElementById('page-link1').click();
 });
 
+
+//시작시
+// $(function(){
+// 	requestRecord();
+// }
 
 </script>
