@@ -12,7 +12,7 @@ select
 from
     warehouse_detail wd, item i
 where
-    wd.item_no = i.no(+)
+    wd.item_no = i.no
     and wd.ware_no = #{ware_no}
 </select>
 <select id="selectStockByAreaNo" resultType="com.spring.domain.WareHouseDetailVO" parameterType="com.spring.domain.WareHouseDetailVO">
@@ -23,7 +23,7 @@ select
 from
     warehouse_detail wd, item i
 where
-    wd.item_no = i.no(+)
+    wd.item_no = i.no
     and wd.ware_no = #{ware_no}
     and wd.area_no = #{area_no}
 </select>
@@ -35,7 +35,7 @@ select
 from
     warehouse_detail wd, item i
 where
-    wd.item_no = i.no(+)
+    wd.item_no = i.no
 	and wd.ware_no = #{ware_no}
     and wd.area_no = #{area_no}
     and wd.rack_no = #{rack_no}
@@ -48,7 +48,7 @@ select
 from
     warehouse_detail wd, item i
 where
-    wd.item_no = i.no(+)
+    wd.item_no = i.no
 	and wd.ware_no = #{ware_no}
     and wd.area_no = #{area_no}
     and wd.rack_no = #{rack_no}

@@ -472,7 +472,7 @@ function makeRecord(list,totalCount,cri){
 		else{
 			for(var i = 0, len = list.length || 0; i < len; i++){
 				retabledata +=	'<tr>'+
-									'<td style="width:15%;">'+((totalCount-(pageNum-1)*10)-i)+'</td>'+
+									'<td style="width:15%;">'+(((pageNum-1)*10)+(i+1))+'</td>'+
 									'<td style="width:35%;">'+list[i].lot_code+'</td>'+
 									'<td style="width:35%;">'+list[i].name+'</td>'+
 									'<td style="width:15%;">'+list[i].amount+'</td>'+
