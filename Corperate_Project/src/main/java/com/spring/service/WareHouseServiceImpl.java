@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.spring.domain.WareHouseAllAreaVO;
-import com.spring.domain.WareHouseMovementVO;
 import com.spring.domain.WareHouseVO;
 import com.spring.mapper.WareHouseMapper;
 
@@ -21,18 +20,6 @@ public class WareHouseServiceImpl implements WareHouseService{
 		return mapper.selectAll();
 	}
 
-	@Override
-	public int modify(int no) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int delete(int no) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
 	@Override
 	public int deleteWareHouseByNo(String ware_no) {
 		return mapper.deleteWareHouseByNo(ware_no);

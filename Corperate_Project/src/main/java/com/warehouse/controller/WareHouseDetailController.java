@@ -1,4 +1,4 @@
-package com.warehousedetail.controller;
+package com.warehouse.controller;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ import com.spring.service.WareHouseDetailService;
 import com.spring.service.WareHouseService;
 
 @Controller
-@RequestMapping("/warehouse-detail/*")
+@RequestMapping("/warehouse/warehouse-detail/*")
 public class WareHouseDetailController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(WareHouseDetailController.class);
@@ -65,23 +65,14 @@ public class WareHouseDetailController {
 			@RequestParam(value="area_no",required = false) int area_no,
 			@RequestParam(value="rack_no",required = false) int rack_no,
 			@RequestParam(value="cell_no",required = false) int cell_no) {
-		
-		System.out.println("id는"+id);
-		System.out.println("no는"+no);
-		System.out.println("ware_no는"+ware_no);
-		System.out.println("area_no는"+area_no);
-		System.out.println("rack_no는"+rack_no);
-		System.out.println("cell_no는"+cell_no);
+
 		
 		WareHouseDetailVO vo = new WareHouseDetailVO();
 		vo.setWare_no(ware_no);
 		vo.setArea_no(area_no);
 		vo.setRack_no(rack_no);
 		vo.setCell_no(cell_no);
-		
-		System.out.println("vo서다시가져온창고넘버:"+vo.getWare_no());
-		System.out.println("ajax통한컨트롤러진입");
-		
+
 		if(id.contains("warehouse")) {
 			List<WareHouseDetailVO> lists = warehousedetailservice.selectStockByWareNo(vo);
 			return new Gson().toJson(lists);
@@ -96,8 +87,7 @@ public class WareHouseDetailController {
 			return new Gson().toJson(lists);
 		}
 	}
-	
-	//testURL : http://localhost:8080/basicinfo/client/pages/1/10/owner/이재용
+
 		@ResponseBody
 		@GetMapping(
 				value={"/pages/{pageNum}/{amount}/{ware_no}/{area_no}/{rack_no}/{cell_no}",
@@ -114,11 +104,8 @@ public class WareHouseDetailController {
 				@PathVariable(value="whatColumn", required = false) String whatColumn,
 				@PathVariable(value="keyword", required = false) String keyword) {				
 			
-			System.out.println(pageNum + " " + amount + " " + whatColumn + " " + keyword+" "+ware_no+" "+area_no+" "+rack_no+" "+cell_no);
-			System.out.println("페이징처리위한컨트롤러진입");
 			
 			CriteriaForWareHouse cri = new CriteriaForWareHouse(pageNum, amount, whatColumn, keyword,ware_no,area_no,rack_no,cell_no);
-			System.out.println("cri생성자다음서본 cri amount"+cri.getAmount()); 
 			return new ResponseEntity<>(warehousedetailservice.getListPage(cri), HttpStatus.OK);		
 		}
 }

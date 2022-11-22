@@ -199,7 +199,6 @@ public class WarehouseController {
 		}
 		
 		return "redirect:/basicinfo/warehouse/list";
-//		return "redirect:/basicinfo/warehouse/list?showid="+showid;
 	}
 	
 	

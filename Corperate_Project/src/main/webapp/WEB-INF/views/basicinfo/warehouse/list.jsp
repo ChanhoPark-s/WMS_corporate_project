@@ -14,7 +14,7 @@
                 <!-- 좌측영역에넣을테이블 -->
 <div class="col-md-12">
             <h3 class="fw-black">창고정보 관리</h3>
-            <p>창고, 구역, 랙, 셀 목록</p>
+            <p>창고, 구역, 랙, 셀 목록을 클릭하여 정보확인</p>
             
          <ul class="nav flex-column" style=" height: 600px; overflow: auto">
           <li class="nav-item">
@@ -180,7 +180,7 @@
 			<table class="table align-middle">
 				<thead>
 					<tr>
-						<th scope="col">일련번호</th>
+						<th scope="col">번호</th>
 						<th scope="col">코드</th>
 						<th scope="col">위치명</th>
 						<th scope="col">기능</th>
@@ -189,12 +189,12 @@
 				<tbody id="tddata">
 					<c:forEach items="${lists }" var="lists" varStatus="status">
 					<tr>
-						<td>
+						<td style="width:15%;">
 							${status.count}
 						</td>
-						<td>${lists.code }</td>
-						<td>${lists.name }</td>
-						<td>
+						<td style="width:25%;">${lists.code }</td>
+						<td style="width:45%;">${lists.name }</td>
+						<td style="width:15%;">
 							<div class="btn-group btn-group-sm" role="group">
 								<button type="button" class="btn btn-light d-flex" id="updatewarehouse" onclick="updatefunction(${lists.no},
 								<c:choose>
@@ -419,19 +419,28 @@ function clickFunction(clicked_id){
 			var mydata = JSON.parse(data);
 			$('#tddata *').remove();
 			var tabledata = "";
-			console.log("mydata.length은"+mydata.length);
 			if(mydata.length==0){
-				tabledata +=	'<tr>'+
-									'<td colspan="4">'+'현재 선택한 영역은 하위 영역이 등록되어 있지 않습니다.'+'</td>'+
-								'</tr>';
+				if(id.indexOf('ware')>=0){
+					tabledata +=	'<tr>'+
+										'<td colspan="4">'+'현재 선택한 창고는 하위 구역이 등록되어 있지 않습니다.'+'</td>'+
+									'</tr>';
+				}else if(id.indexOf('area')>=0){
+					tabledata +=	'<tr>'+
+										'<td colspan="4">'+'현재 선택한 구역은 하위 랙이 등록되어 있지 않습니다.'+'</td>'+
+									'</tr>';
+				}else{
+					tabledata +=	'<tr>'+
+										'<td colspan="4">'+'현재 선택한 랙은 하위 셀이 등록되어 있지 않습니다.'+'</td>'+
+									'</tr>';
+				}
 			}
 			else{
 				$.each(mydata,function(i){
 						tabledata +=	'<tr>'+
-											'<td>'+(i+1)+'</td>'+
-											'<td>'+mydata[i].code+'</td>'+
-											'<td>'+mydata[i].name+'</td>'+
-											'<td>'+
+											'<td style="width:15%;">'+(i+1)+'</td>'+
+											'<td style="width:25%;">'+mydata[i].code+'</td>'+
+											'<td style="width:45%;">'+mydata[i].name+'</td>'+
+											'<td style="width:15%;">'+
 												'<div class="btn-group btn-group-sm" role="group">'+
 													'<button type="button" class="btn btn-light d-flex" id=update'+id+' onclick="updatefunction('+mydata[i].no+',\'' +id+ '\')">'+
 														'<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"'+
@@ -478,9 +487,9 @@ function clickFunction(clicked_id){
 		success : function(data){
 			var mydata = JSON.parse(data);
 			
-			console.log("id는"+id);
-			console.log("id.indexOf는"+id.indexOf("warehouse"));
-			console.log("no는"+no);
+// 			console.log("id는"+id);
+// 			console.log("id.indexOf는"+id.indexOf(id));
+// 			console.log("no는"+no);
 			
 			
 			if(id.indexOf("default")>0){
@@ -499,7 +508,7 @@ function clickFunction(clicked_id){
 			//등록/수정/삭제시 보고있던 우측테이블 위 현재영역을 유지시키기위해 form hidden을 통해 넘긴다
 			document.getElementById('current_location').value = current_location;
 
-			console.log("current_location는"+current_location);
+// 			console.log("current_location는"+current_location);
 			$("#clicked_location").html(current_location);
 				
 		},
@@ -523,7 +532,6 @@ function deletefunction(no,id){
 	//기본화면(창고리스트)서 등록했을시 id를 불러오지 못할시 id를 mydefault설정하여 수정함
 	if(id==''){
 		id = 'mydefault';
-		console.log(id);
 	}
 	
 	var deletecheck;
@@ -578,7 +586,6 @@ function updatefunction(no,id){
 	//기본화면(창고리스트)서 등록했을시 id를 불러오지 못할시 id를 mydefault설정하여 수정함
 	if(id==''){
 		id = 'mydefault';
-		console.log(id);
 	}
 	resetrequired();
 	
@@ -915,8 +922,6 @@ function resetrequired(){
 
 //코드만 중복검사
 function checkcodefunction(getcode,location){
-	console.log(getcode);
-	console.log(location);
 	$.ajax({
 		url : "/basicinfo/warehouse/checkCode",
 		type : "post",
@@ -998,7 +1003,6 @@ function checkcodefunction(getcode,location){
 					checkcode = true;
 				}
 			}
-			console.log(checkcode);
 		},
 		error: function (request, status, error) {
 	        console.log("code: " + request.status);

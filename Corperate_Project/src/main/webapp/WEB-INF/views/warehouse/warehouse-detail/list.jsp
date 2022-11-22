@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 
 <!-- top.jsp -->
-<%@include file="../common/top.jsp"%>
+<%@include file="../../common/top.jsp"%>
 
 <!-- Main body -->
       <div id="main-body">
@@ -161,10 +161,10 @@
 			<table class="table align-middle">
 				<thead>
 					<tr>
-						<th scope="col">번호</th>
-						<th scope="col">로트코드</th>
-						<th scope="col">품목명</th>
-						<th scope="col">재고수량</th>
+						<th scope="col" style="width:15%;">번호</th>
+						<th scope="col" style="width:35%;">로트코드</th>
+						<th scope="col" style="width:35%;">품목명</th>
+						<th scope="col" style="width:15%;">재고수량</th>
 					</tr>
 				</thead>
 				<tbody id="tddata">
@@ -313,7 +313,7 @@
 
 
 <!-- bottom.jsp -->
-<%@include file="../common/bottom.jsp"%>
+<%@include file="../../common/bottom.jsp"%>
 <script type="text/javascript">
 var id;
 var no;
@@ -426,14 +426,13 @@ $("#PageNation").on("click", "li a", function(e){
 
 /* ajax로 레코드정보를 요청하는 부분 + 화면전환없이 레코드들을 그리는 부분 + 화면전환없이 페이지네이션을 그리는 부분 */
 function requestRecord(){
-	console.log("requestRecord의 mount"+amount)
-	$.getJSON("/warehouse-detail/pages/"+ pageNum +"/" + amount+ "/" + ware_no + "/" + area_no + "/" + rack_no + "/" + cell_no
+	$.getJSON("/warehouse/warehouse-detail/pages/"+ pageNum +"/" + amount+ "/" + ware_no + "/" + area_no + "/" + rack_no + "/" + cell_no
 			+ "/" + searchWhatColumn + "/" + searchKeyword,  
 			function(resdata){
 		console.log("requestRecord서확인한resdata.list.length는"+resdata.list.length);
-			console.log("list: " + resdata.list); 	  						// 페이지 하나의 레코드들이 담긴 객체
-			console.log("getJSON밑의 totalCount: " + resdata.totalCount); 	// 검색조건으로 뽑힌 총 레코드 수
-			console.log("getJSON밑의 cri: " + resdata.cri); 	  				// 검색에 사용된 기준정보가 담긴 객체
+// 			console.log("list: " + resdata.list); 	  						// 페이지 하나의 레코드들이 담긴 객체
+// 			console.log("getJSON밑의 totalCount: " + resdata.totalCount); 	// 검색조건으로 뽑힌 총 레코드 수
+// 			console.log("getJSON밑의 cri: " + resdata.cri); 	  				// 검색에 사용된 기준정보가 담긴 객체
 				
 				makeRecord(resdata.list,resdata.totalCount, resdata.cri); 	// 레코드들을 그리는 함수
 				paintPageNation(resdata.totalCount, resdata.cri); 	// 페이지네이션을 그리는 함수
@@ -451,19 +450,32 @@ function requestRecord(){
 function makeRecord(list,totalCount,cri){
 	$('#tddata *').remove();
 		var retabledata = "";
-		console.log("list.length는"+list.length);
 		if(list.length==0){
-			retabledata +=	'<tr>'+
-								'<td colspan="5">'+'현재 선택한 영역은 재고 물품이 없습니다.'+'</td>'+
-							'</tr>';
+			if(id.indexOf('ware')>=0){
+				retabledata +=	'<tr>'+
+									'<td colspan="5">'+'현재 선택한 창고는 재고 물품이 없습니다.'+'</td>'+
+								'</tr>';
+			}else if(id.indexOf('area')>=0){
+				retabledata +=	'<tr>'+
+									'<td colspan="5">'+'현재 선택한 구역은 재고 물품이 없습니다.'+'</td>'+
+								'</tr>';
+			}else if(id.indexOf('rack')>=0){
+				retabledata +=	'<tr>'+
+									'<td colspan="5">'+'현재 선택한 랙은 재고 물품이 없습니다.'+'</td>'+
+								'</tr>';
+			}else{
+				retabledata +=	'<tr>'+
+									'<td colspan="5">'+'현재 선택한 셀은 재고 물품이 없습니다.'+'</td>'+
+								'</tr>';
+			}
 		}
 		else{
 			for(var i = 0, len = list.length || 0; i < len; i++){
 				retabledata +=	'<tr>'+
-									'<td>'+((totalCount-(pageNum-1)*10)-i)+'</td>'+
-									'<td>'+list[i].lot_code+'</td>'+
-									'<td>'+list[i].name+'</td>'+
-									'<td>'+list[i].amount+'</td>'+
+									'<td style="width:15%;">'+((totalCount-(pageNum-1)*10)-i)+'</td>'+
+									'<td style="width:35%;">'+list[i].lot_code+'</td>'+
+									'<td style="width:35%;">'+list[i].name+'</td>'+
+									'<td style="width:15%;">'+list[i].amount+'</td>'+
 								'</tr>';
 			}
 		}
@@ -557,8 +569,6 @@ $("#searchBtn").on("click", function(e){
 	e.preventDefault(); // 번호를 눌러도 페이지가 이동하지 않도록 한다
 	searchWhatColumn = $("#searchWhatColumn").val();
 	searchKeyword = $("#searchKeyword").val();
-	console.log("searchWhatColumn: " + searchWhatColumn);
-	console.log("searchKeyword: " + searchKeyword);
 	
 	if(ware_no == null){
 		alert("좌측 사이드바에서 최소 창고 이하를 클릭해야 검색 가능합니다.");
