@@ -68,7 +68,7 @@ pageEncoding="UTF-8"%>
                 </thead>
                 <tbody>
 	                <tr>
-	                	<td>
+	                	<td style="display:none">
 	                		<!--선택 삭제할때도 넘어가게하기 위해  -->
 							<input type="hidden" name="keyword" id="keyword3" >
 							<input type="hidden" name="whatColumn" id="whatColumn2">

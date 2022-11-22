@@ -67,7 +67,7 @@
 				</thead>
 				<tbody>
 					<tr>
-						<td>
+						<td style="display:none">
 							<input type="hidden" name="keyword" id="keyword3" >
 							<input type="hidden" name="whatColumn" id="whatColumn2">
 	             			<input type="hidden" name="pageNumber" id="pageNumber2">
