@@ -32,6 +32,7 @@ import com.spring.domain.Purchase_sheetVO;
 import com.spring.domain.Purchase_sheet_DetailVO;
 import com.spring.domain.SearchVO;
 import com.spring.domain.WareHouseVO;
+import com.spring.mapper.Purchase_sheetMapper;
 import com.spring.paging.Client_Paging;
 import com.spring.paging.Criteria;
 import com.spring.service.ClientService;
@@ -67,9 +68,12 @@ public class Purchase_sheetController {
 	@Autowired
 	private OrderSheetService os;
 	
+	
 	@RequestMapping("/list.ps")
 	public void list(SearchVO searchvo,HttpServletRequest request,Model model) {
 		
+		//날짜에 따른 상태:취소됨
+		ps.update();
 		
 		//창고조회
 		List<WareHouseVO> WareList = ws.list();
@@ -136,8 +140,11 @@ public class Purchase_sheetController {
 		System.out.println("insert 성공" + cnt);
 		
 		// 수주 상태 수정
-		os.updateStatus(vo.getOrder_no());
-		System.out.println("준비완료> 발주중 update 완료");
+		if(vo.getOrder_no() != null) {
+			os.updateStatus(vo.getOrder_no());
+			System.out.println("준비완료> 발주중 update 완료");
+		}
+		
 		return re;
 	}
 	

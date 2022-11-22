@@ -16,6 +16,8 @@ public interface Purchase_sheetMapper {
 	public Purchase_sheetVO selectOne(String no);	// 발주선택
 	public int insertMainSheet(Purchase_sheetVO vo);// 발주추가
 	
+	public void update(); 		// 발주수정
+	
 	public int delete(int no); 		// 발주삭제
 	
 	/* main paging */
@@ -31,7 +33,7 @@ public interface Purchase_sheetMapper {
 			@Param("mainSheetNo") int mainSheetNo, 
 			@Param("itemNo") int itemNo, 
 			@Param("itemAmount") int itemAmount,
-			@Param("orderDetailNo") int orderDetailNo,
+			@Param("orderDetailNo") String orderDetailNo,
 			@Param("wareNo") int wareNo
 			);	//상세추가
 	
