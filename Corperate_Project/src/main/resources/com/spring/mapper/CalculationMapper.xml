@@ -17,4 +17,17 @@
 		<if test="string=='purchase'"> sum(i.out_price*p.amount) from purchase_sheet_detail p, item i where p.item_no=i.no </if>
 		<if test="string=='sell'"> sum(i.out_price*s.amount) from sell_detail s,item i where s.item_no=i.no</if>
 	</select>
+	
+	<select id="getCountClient" resultType="int">
+		select count(*) from client where
+		<if test="string=='수주처'">category='수주처'</if>
+		<if test="string=='발주처'">category='발주처'</if>
+	</select>
+	<select id="getCountMember" resultType="int">
+		select count(*) from member
+	</select>
+	<select id="getCountItem" resultType="int">
+		select count(*) from item
+	</select>
+	
 </mapper>
