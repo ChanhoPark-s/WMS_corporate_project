@@ -24,5 +24,4 @@ public class CalculationImpl implements CalculationService{
 		return mapper.getTotalMoney(string);
 	}
 	
-
 }
