@@ -280,7 +280,7 @@ path.color1 {
           <div class="col-12 col-md-6 col-lg-4">
             <div class="card h-100">
               <div class="card-header border-bottom-0 d-flex justify-content-between">
-                <h6 class="fw-black mb-2">영업이익률</h6>
+                <h6 class="fw-black mb-2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="전체 매출 중 순이익 비중">영업이익률</h6>
               </div>
               <div class="card-body">
               <!--목표  -->

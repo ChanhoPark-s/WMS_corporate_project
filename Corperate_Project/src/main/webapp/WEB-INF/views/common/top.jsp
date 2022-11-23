@@ -282,11 +282,11 @@ margin-top: 5px;
             </a>
             <div class="ms-5 collapse" id="dashboard-collapse" data-bs-parent="#mainMenu">
               <ul class="navbar-nav">
+              	<li class="nav-item"><a class="nav-link" href="/basicinfo/department/list" id="depart_info">부서정보</a></li>
+              	<li class="nav-item"><a class="nav-link" href="/basicinfo/rank/list" id="rank_info">직급정보</a></li>
                 <li class="nav-item" ><a class="nav-link" href="/basicinfo/member/list" id="member_info">사원정보</a></li>
-                <li class="nav-item"><a class="nav-link" href="/basicinfo/department/list" id="depart_info">부서정보</a></li>
-                <li class="nav-item"><a class="nav-link" href="/basicinfo/rank/list" id="rank_info">직급정보</a></li>
-                <li class="nav-item"><a class="nav-link" href="/basicinfo/item/list" id="item_info">품목정보</a></li>
                 <li class="nav-item"><a class="nav-link" href="/basicinfo/client/list" id="client_info">거래처정보</a></li>
+                <li class="nav-item"><a class="nav-link" href="/basicinfo/item/list" id="item_info">품목정보</a></li>
                 <li class="nav-item"><a class="nav-link" href="/basicinfo/lot/list" id="lot_info">로트정보</a></li>
                 <li class="nav-item"><a class="nav-link" href="/basicinfo/warehouse/list" id="storage_info">창고정보</a></li>
                 <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath }/warehouse/init/insert" id="init_warehouse_item_info">초기재고입력</a></li>
