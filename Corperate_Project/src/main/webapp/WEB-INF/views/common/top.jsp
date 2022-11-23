@@ -9,6 +9,15 @@
 
 
 <style>
+table th {
+	text-align: left;
+	font-size: 14px;
+}
+
+table td {
+	text-align: left;
+	font-size: 14px;
+}
 .box {
     width: 45px;
     height: 45px; 

@@ -181,7 +181,7 @@ path.color1 {
             <div class="card h-100">
               <div class="card-body">
                     <div class="d-sm-flex justify-content-between align-items-center">
-                      <h3 class="mb-sm-0">공지사항</h3>
+                      <h3 class="mb-sm-0" style="font-size:20px">공지사항</h3>
                     <button id="insertBtn" onclick="insertBtn()"class="btn btn-light d-inline-flex align-items-center gap-"
 					data-bs-toggle="modal" data-bs-target="#BoardModal">
 					<i class="fa-solid fa-plus"></i>
@@ -230,7 +230,7 @@ path.color1 {
           <div class="col-12 col-md-6 col-lg-4">
             <div class="card h-100">
               <div class="card-header border-bottom-0 d-flex justify-content-between">
-                <h6 class="fw-black mb-2">수주 금액</h6>
+                <h6 class="fw-black mb-2">수주잔고</h6>
               </div>
               <div class="card-body">
               <!--목표  -->
@@ -275,7 +275,7 @@ path.color1 {
           <div class="col-12 col-md-6 col-lg-4">
             <div class="card h-100">
               <div class="card-header border-bottom-0 d-flex justify-content-between">
-                <h6 class="fw-black mb-2">이익</h6>
+                <h6 class="fw-black mb-2">영업이익</h6>
               </div>
               <div class="card-body">
               <!--목표  -->
@@ -328,28 +328,28 @@ path.color1 {
                   <div class="mx-2">
                     <h6 class="mb-0">발주처</h6>
                   </div>
-                  <span class="ms-auto text-success">+ ${buyClinetCount}</span>
+                  <span class="ms-auto text-success"> ${buyClinetCount}</span>
                 </div>
                 <div class="d-flex align-items-center mt-3">
                  <i class="fa-solid fa-money-bill-transfer"></i>
                   <div class="mx-2">
                     <h6 class="mb-0">수주처</h6>
                   </div>
-                  <span class="ms-auto text-success">+ ${sellClientCount }</span>
+                  <span class="ms-auto text-success"> ${sellClientCount }</span>
                 </div>
                 <div class="d-flex align-items-center mt-3">
                 <i class="fa-solid fa-user"></i>
                   <div class="mx-2">
                     <h6 class="mb-0">사원</h6>
                   </div>
-                  <span class="ms-auto text-success">+ ${memberCount }</span>
+                  <span class="ms-auto text-success"> ${memberCount }</span>
                 </div>
                 <div class="d-flex align-items-center mt-3">
                 <i class="fa-solid fa-gift"></i>
                   <div class="mx-2">
                     <h6 class="mb-0">취급 품목</h6>
                   </div>
-                  <span class="ms-auto text-success">+ ${itemCount }</span>
+                  <span class="ms-auto text-success"> ${itemCount }</span>
                 </div>
               </div>
             </div>
