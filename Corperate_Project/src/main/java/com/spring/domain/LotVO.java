@@ -5,8 +5,9 @@ import lombok.Data;
 @Data
 public class LotVO {
 	private int no;
-	private String code; // Lot코드
+	private String code; //Lot코드
 	private int item_no; //상품번호
+	private String item_code; //상품코드
 	
 	// item 테이블
 	private String item_name; // 아이템명

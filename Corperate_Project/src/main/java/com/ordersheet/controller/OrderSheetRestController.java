@@ -83,6 +83,7 @@ public class OrderSheetRestController {
 			osdv.setItem_no(osdv.getItem_no());
 			osdv.setItem_code(osdv.getItem_code());
 			osdv.setItem_name(osdv.getItem_name());
+			osdv.setAmount(osdv.getAmount());
 			
 			//물품 거래처 조회
 			ClientVO osdvCv = cs.selectOne(Integer.toString(osdv.getClient_no()));

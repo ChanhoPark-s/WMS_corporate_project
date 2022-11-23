@@ -8,11 +8,13 @@
 
 <style>
 table th {
-	text-align: center;
+	text-align: center;	
+	font-size: 14px;
 }
 
 table td {
 	text-align: center;
+	font-size: 14px;
 }
 
 /* 한줄 색 칠하는 기능 */
@@ -36,8 +38,8 @@ table td {
 <!-- 상단 -->
 <div class="card">
 	<div class="card-body">
-		<div class="d-flex gap-1 mb-4 flex-wrap">
-			<div class="d-flex gap-1 me-auto flex-wrap">
+		<div class="d-flex gap-1 mb-4 flex-wrap" style="height:38px">
+			<div class="d-flex gap-1 me-auto flex-wrap" style="height:38px">
 				<button
 					class="btn btn-primary d-inline-flex align-items-center gap-1"
 					data-bs-toggle="modal" data-bs-target="#addOrderSheetModal">

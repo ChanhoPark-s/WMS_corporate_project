@@ -565,15 +565,15 @@
 		 					console.log(orderDetail[i]);
 		 					
 		 					var str = "<div class='row'>";
-		 					str += "<input type='hidden' name='item_no' class='form-control' value='" + orderDetail[i].itemNo + "' readonly>"; 
+		 					str += "<input type='hidden' name='item_no' class='form-control' value='" + orderDetail[i].item_no + "' readonly>"; 
 		 					str += "<input type='hidden' name='detail_no' class='form-control' value='" + orderDetail[i].no + "' readonly>"; 
 		 					str += "<div class='col-sm-2'>";
 		 					str += "<label for='userFullname' class='form-label'>품목코드</label>";
-		 					str += "<input type='text' class='form-control' value='" + orderDetail[i].item_no + "' readonly>";
+		 					str += "<input type='text' class='form-control' value='" + orderDetail[i].item_code + "' readonly>";
 		 					str += "</div>";
 		 					str += "<div class='col-sm-2'>";
 		 					str += "<label for='userFullname' class='form-label'>품목명</label>";
-		 					str += "<input type='text' class='form-control' value='" + orderDetail[i].item_code + "' readonly>";
+		 					str += "<input type='text' class='form-control' value='" + orderDetail[i].item_name + "' readonly>";
 		 					str += "</div>";
 		 					str += "<div class='col-sm-2'>";
 		 					str += "<label for='userFullname' class='form-label'>취급처</label>";
@@ -585,7 +585,7 @@
 		 					str += "</div>";
 		 					str += "<div class='col-sm-1'>";
 		 					str += "<label for='userFullname' class='form-label'>수량</label>";
-		 					str += "<input type='text' name='amount' class='form-control'>";
+		 					str += "<input type='text' name='amount' value='" + orderDetail[i].amount + "' class='form-control'>";
 		 					str += "</div>";
 		 					str += '<div class="col-sm-2">';
 		 					str += '<label for="ware_no" class="form-label">창고명</label>';

@@ -9,6 +9,19 @@
     height: 80px;
 }
 </style>
+
+<style>
+table th {
+	text-align: center;	
+	font-size: 14px;
+}
+
+table td {
+	text-align: center;
+	font-size: 14px;
+}
+</style>
+
 <div class="card">
           <div class="card-body">
             <div class="d-flex gap-1 mb-4 flex-wrap">
@@ -39,7 +52,7 @@
                 	<c:forEach items="${list }" var="item">
                 		<tr>
                 			<td>${item.no }</td>
-                			<td><span class="badge bg-dark">${item.lot_code }</span></td>
+                			<td><span>${item.lot_code }</span></td>
                 			<td>${item.item_name }</td>
                 			<td><fmt:formatNumber value="${item.qty }" /> 개</td>
                 			<td>${item.ware1 }</td>
