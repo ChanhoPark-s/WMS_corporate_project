@@ -1,5 +1,6 @@
 package com.ordersheet.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,12 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.domain.ClientVO;
+import com.spring.domain.ItemDTO;
 import com.spring.domain.MemberVO;
 import com.spring.domain.OrderSheetDetailVO;
 import com.spring.domain.OrderSheetVO;
 import com.spring.domain.PageDTO;
 import com.spring.paging.Criteria;
 import com.spring.service.ClientService;
+import com.spring.service.LotRestService;
 import com.spring.service.MemberService;
 import com.spring.service.OrderSheetService;
 
@@ -36,6 +39,9 @@ public class OrderSheetRestController {
 	
 	@Autowired 
 	private MemberService ms;
+	
+	@Autowired
+	private LotRestService ls;
 	
 			
 	//testURL : http://localhost:8080/ordersheet/orderdetail/11
@@ -77,6 +83,8 @@ public class OrderSheetRestController {
 		
 		//수주 디테일 조회
 		List<OrderSheetDetailVO> list = service.getSubList(no);
+		List<String> lot_lists;
+		List<ItemDTO> itemDTOlist = new ArrayList<ItemDTO>(); 
 		
 		for(OrderSheetDetailVO osdv : list) {
 			osdv.setNo(osdv.getNo());
@@ -88,6 +96,11 @@ public class OrderSheetRestController {
 			//물품 거래처 조회
 			ClientVO osdvCv = cs.selectOne(Integer.toString(osdv.getClient_no()));
 			osdv.setClient_name(osdvCv.getName());
+			
+			
+			lot_lists = ls.getLot(osdv.getItem_no());
+			
+			itemDTOlist.add(new ItemDTO(osdv,lot_lists));
 			
 		}
 		
@@ -124,6 +137,7 @@ public class OrderSheetRestController {
 		
 		map.put("detailList", list);
 		map.put("order", vo);
+		map.put("itemDTOlist", itemDTOlist);
 		
 		
 		return new ResponseEntity<>(map, HttpStatus.OK);		

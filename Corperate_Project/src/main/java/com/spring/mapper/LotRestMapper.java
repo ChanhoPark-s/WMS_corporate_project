@@ -6,6 +6,6 @@ import com.spring.domain.LotVO;
 
 public interface LotRestMapper {
 
-	public List<LotVO> getLot(int no);
+	public List<String> getLot(String no);
 
 }

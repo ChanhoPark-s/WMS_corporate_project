@@ -6,7 +6,7 @@
 <mapper namespace="com.spring.mapper.SellDetailMapper">
 
 	<insert id="insert">
-		insert into sell_detail values(sell_detail_seq.nextval,#{item_no},#{amount},#{sell_price},#{lot_code},sell_seq.currval)
+		insert into sell_detail values(sell_detail_seq.nextval,#{itemNo},#{itemAmount},#{itemPrice},#{lot_code},sell_seq.currval,#{order_sheet_no})
 	</insert>
 
 	<select id="read" resultType="com.spring.domain.SellDetailVO">

@@ -21,6 +21,7 @@ import com.spring.domain.SellDetailVO;
 import com.spring.domain.SellVO;
 import com.spring.paging.Client_Paging;
 import com.spring.service.ItemService;
+import com.spring.service.OrderSheetService;
 import com.spring.service.SellDetailService;
 import com.spring.service.SellService;
 
@@ -39,6 +40,9 @@ public class SellController {
 	
 	@Autowired(required = false)
 	private ItemService iservice;
+	
+	//@Autowired(required = false)
+	//private OrderSheetService osservice;
 	
 	@GetMapping(value="/list")
 	public void list(Model model) {				
@@ -65,7 +69,7 @@ public class SellController {
 //			System.out.println(memlists.get(i));
 //		}
 		
-		System.out.println(sell.getOrder_no());
+
 		System.out.println(sell.getDay());
 		service.insert(sell);
 		System.out.println("selldetail 판매상세번호:"+selldetail.getNo());
@@ -75,7 +79,10 @@ public class SellController {
 		System.out.println("selldetail 로트코드:"+selldetail.getLot_code());
 		System.out.println("selldetail 판매번호:"+selldetail.getSell_no());
 		sdservice.insert(selldetail);
+
 		
+		// 판매 등록 시, 수주서 상태 변경
+		// osservice.updateStatusToSold(sell.getOrder_no()); 
 		return "redirect:/sell/origin/list";
 	}
 	
@@ -93,7 +100,7 @@ public class SellController {
 	@PostMapping(value="/update")
 	public String updateSold(Model model, SellVO sell) {
 		
-		System.out.println(sell.getNo()+"/"+sell.getOrder_no()+"/"+sell.getMember_no()+"/"+sell.getDay());
+		System.out.println(sell.getNo()+"/"+sell.getMember_no()+"/"+sell.getDay());
 		
 		service.update(sell);
 		

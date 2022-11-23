@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.domain.SellDetailVO;
+import com.spring.domain.SellVO;
 import com.spring.service.SellService;
 
 @RestController
@@ -23,7 +24,8 @@ public class SellRestController {
 				
 		//testURL : http://localhost:8080/ordersheet/orderdetail/11
 		@GetMapping(value={"/more/{mainNo}"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-		public ResponseEntity<List<SellDetailVO>> clientlist(@PathVariable("mainNo") int mainNo) {				
+		public ResponseEntity<List<SellVO>> clientlist(@PathVariable("mainNo") int mainNo) {	
+			System.out.println("mainNo : " + mainNo);
 			return new ResponseEntity<>(service.getSubList(mainNo), HttpStatus.OK);		
 		}
 

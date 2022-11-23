@@ -19,8 +19,18 @@ public class SellDetailServiceImpl implements SellDetailService{
 	@Override
 	public void insert(SellDetailVO selldetail) {
 		
-		mapper.insert(selldetail); // 존재하지 않는 레코드를 얻으려고하면 null이 반환됨
-	}
+		
+		int len = selldetail.getItem_no().size();
+
+		for (int i = 0; i < len; i++) {
+			int itemNo = selldetail.getItem_no().get(i);
+			int itemAmount = selldetail.getAmount().get(i);
+			int itemPrice = selldetail.getSell_price().get(i);
+			String lot_code = selldetail.getLot_code().get(i);
+			mapper.insert(itemNo,itemAmount,itemPrice,lot_code,selldetail.getOrder_sheet_no());
+			}
+		}
+		
 	
 	@Override
 	public List<SellDetailVO> read() {

@@ -225,4 +225,10 @@ public class OrderSheetServiceImpl implements OrderSheetService{
 		mapper.updateStatus(order_no);
 		
 	}
+	
+	@Override
+	public void updateStatusToSold(int order_no) {
+		mapper.updateStatusToSold(order_no);
+		
+	}
 }

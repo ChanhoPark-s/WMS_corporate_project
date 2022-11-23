@@ -146,6 +146,13 @@
 		where no = #{order_no} 
 		and status = 0
 	</update>
+	
+	<!-- 수주상태 준비완료,발주중 > 판매완료 -->
+	<update id="updateStatusToSold">
+		update ORDER_SHEET
+		set status = 2
+		where no = #{order_no}
+	</update>
 
 	
 </mapper>

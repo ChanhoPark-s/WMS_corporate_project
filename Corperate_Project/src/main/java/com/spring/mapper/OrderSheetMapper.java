@@ -41,6 +41,9 @@ public interface OrderSheetMapper {
 	
 	//수주상태 준비완료 > 발주중
 	public void updateStatus(int order_no);
+	
+	//판매 완료시, 발주중 상태에서 판매 완료 상태로 변경
+	public void updateStatusToSold(int order_no);
 }
 
 
