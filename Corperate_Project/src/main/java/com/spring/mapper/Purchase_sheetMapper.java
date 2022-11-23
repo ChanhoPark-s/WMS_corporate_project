@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.spring.domain.OrderSheetDetailVO;
 import com.spring.domain.Purchase_sheetVO;
 import com.spring.domain.Purchase_sheet_DetailVO;
 import com.spring.domain.SearchVO;
@@ -38,6 +39,8 @@ public interface Purchase_sheetMapper {
 	public List<Purchase_sheet_DetailVO> selectList(String purchase_sheet_no);// 상세조회
 	
 	public int deleteDetail(int no);
+	public List<OrderSheetDetailVO> selectSubAllByMainNo(int mainNo);
+	public Purchase_sheetVO selectOneByMainNo(int no);
 	
 	
 }
