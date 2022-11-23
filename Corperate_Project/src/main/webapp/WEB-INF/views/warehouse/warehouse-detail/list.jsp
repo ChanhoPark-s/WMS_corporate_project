@@ -23,7 +23,7 @@
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
               </svg>
-              창고목록
+              전체 재고 현황
            </a>
            
            <!-- 창고 -->
@@ -153,7 +153,7 @@
 	</div>
 	<!--  -->
 	<div class="d-flex gap-1 mb-1 flex-wrap">
-		<h3 id="clicked_location"></h3>
+		<h3 id="clicked_location">모든 재고 현황</h3>
 		</div>
 	<!--  -->
 		<div class="table-responsive my-1">
@@ -161,15 +161,19 @@
 			<table class="table align-middle">
 				<thead>
 					<tr>
-						<th scope="col" style="width:15%;">번호</th>
-						<th scope="col" style="width:35%;">로트코드</th>
-						<th scope="col" style="width:35%;">품목명</th>
-						<th scope="col" style="width:15%;">재고수량</th>
+						<th scope="col" style="width:5%;">번호</th>
+						<th scope="col" style="width:20%;">로트코드</th>
+						<th scope="col" style="width:25%;">품목명</th>
+						<th scope="col" style="width:10%;">재고수량</th>
+						<th scope="col" style="width:10%;">창고위치</th>
+						<th scope="col" style="width:10%;">구역위치</th>
+						<th scope="col" style="width:10%;">랙위치</th>
+						<th scope="col" style="width:10%;">셀위치</th>
 					</tr>
 				</thead>
 				<tbody id="tddata">
 					<tr>
-						<td colspan="4">
+						<td colspan="8">
 							좌측 메뉴 바에서 재고현황을 확인하고 싶은 영역을 선택하세요.
 						</td>
 					</tr>
@@ -201,115 +205,6 @@
         </div>
       </div>
       <!-- /Main body -->
-
-
-<!-- Modal 코드 넣을 위치 -->
-<!-- Add user modal -->
-<div class="modal fade" id="MyModal" tabindex="-1">
-	<div class="modal-dialog modal-dialog-scrollable">
-		<div class="modal-content">
-			<div class="modal-header border-0">
-				<h5 class="modal-title" id="modaltitle">창고 등록</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal"
-					aria-label="Close"></button>
-			</div>
-			<div class="modal-body">
-				<form class="needs-validation" id="taskForm" action="" method="post">
-				<input type="hidden" name="sendno" id="sendno">
-				<input type="hidden" name="sendid" id="sendid">
-				<input type="hidden" name="showid" id="showid">
-				
-					<div class="mb-3" id="warehouselocationtitle">
-						<label for="warehouselocation" class="form-label">상위창고위치</label>
-						<select class="dselect form-select" name="warehouselocation" id="warehouselocation" required onchange="change1()">
-							<option value="">창고위치를 선택하세요</option>
-				            <c:forEach items="${warehouseLists}" var="warehouseLists">
-				              <option value="${warehouseLists.no}">${warehouseLists.name}</option>
-				            </c:forEach>
-			            </select>
-						<div class="invalid-feedback">User full name is required.</div>
-					</div>
-					<div class="mb-3" id="arealocationtitle">
-						<label for="arealocation" class="form-label">상위구역위치</label>
-						<select class="dselect form-select" name="arealocation" id="arealocation" required onchange="change2()">
-							<option value="">구역위치를 선택하세요</option>
-				            <c:forEach items="${areaLists}" var="areaLists">
-				              <option value="${areaLists.no}">${areaLists.name}</option>
-				            </c:forEach>
-			            </select>
-						<div class="invalid-feedback">User email is required.</div>
-					</div>
-					<div class="mb-3" id="racklocationtitle">
-						<label for="racklocation" class="form-label">상위랙위치</label>
-						<select class="dselect form-select" name="racklocation" id="racklocation" required>
-							<option value="">랙위치를 선택하세요</option>
-				            <c:forEach items="${rackLists}" var="rackLists">
-				              <option value="${rackLists.no}">${rackLists.name}</option>
-				            </c:forEach>
-			            </select>
-						<div class="invalid-feedback">User email is required.</div>
-					</div>
-					
-					
-					<div class="mb-3" id="warehousecodetitle">
-						<label for="warehousecode" class="form-label" >창고코드</label> <input
-							type="text" name="warehousecode" class="form-control" id="warehousecode"
-							required>
-						<div class="invalid-feedback">이미 사용중인 창고코드입니다</div>
-					</div>
-					<div class="mb-3" id="warehousenametitle">
-						<label for="warehousename" class="form-label">창고명</label> <input
-							type="text" name="warehousename" class="form-control" id="warehousename"
-							required >
-						<div class="invalid-feedback">User email is required.</div>
-					</div>
-					<div class="mb-3" id="areacodetitle">
-						<label for="areacode" class="form-label">구역코드</label> <input
-							type="text" name="areacode" class="form-control" id="areacode"
-							required >
-						<div class="invalid-feedback">이미 사용중인 구역코드입니다</div>
-					</div>
-					<div class="mb-3" id="areanametitle">
-						<label for="areaname" class="form-label">구역명</label> <input
-							type="text" name="areaname" class="form-control" id="areaname"
-							required >
-						<div class="invalid-feedback">User email is required.</div>
-					</div>
-					<div class="mb-3" id="rackcodetitle">
-						<label for="rackcode" class="form-label">랙코드</label> <input
-							type="text" name="rackcode" class="form-control" id="rackcode"
-							required >
-						<div class="invalid-feedback">이미 사용중인 랙코드입니다</div>
-					</div>
-					<div class="mb-3" id="racknametitle">
-						<label for="rackname" class="form-label">랙명</label> <input
-							type="text" name="rackname" class="form-control" id="rackname"
-							required >
-						<div class="invalid-feedback">User email is required.</div>
-					</div>
-					<div class="mb-3" id="cellcodetitle">
-						<label for="cellcode" class="form-label">셀코드</label> <input
-							type="text" name="cellcode" class="form-control" id="cellcode"
-							required >
-						<div class="invalid-feedback">이미 사용중인 셀코드입니다</div>
-					</div>
-					<div class="mb-3" id="cellnametitle">
-						<label for="cellname" class="form-label">셀명</label> <input
-							type="text" name="cellname" class="form-control" id="cellname"
-							required >
-						<div class="invalid-feedback">User email is required.</div>
-					</div>
-				</form>
-			</div>
-			<div class="modal-footer border-0">
-				<button type="submit" form="taskForm" class="btn btn-primary px-5" id="submit_btn">등록</button>
-				<button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
-			</div>
-		</div>
-	</div>
-</div>
-<!-- 모달끝 -->
-
 
 
 <!-- bottom.jsp -->
@@ -457,29 +352,33 @@ function makeRecord(list,totalCount,cri){
 		if(list.length==0){
 			if(id.indexOf('ware')>=0){
 				retabledata +=	'<tr>'+
-									'<td colspan="5">'+'현재 선택한 창고는 재고 물품이 없습니다.'+'</td>'+
+									'<td colspan="8">'+'현재 선택한 창고는 재고 물품이 없습니다.'+'</td>'+
 								'</tr>';
 			}else if(id.indexOf('area')>=0){
 				retabledata +=	'<tr>'+
-									'<td colspan="5">'+'현재 선택한 구역은 재고 물품이 없습니다.'+'</td>'+
+									'<td colspan="8">'+'현재 선택한 구역은 재고 물품이 없습니다.'+'</td>'+
 								'</tr>';
 			}else if(id.indexOf('rack')>=0){
 				retabledata +=	'<tr>'+
-									'<td colspan="5">'+'현재 선택한 랙은 재고 물품이 없습니다.'+'</td>'+
+									'<td colspan="8">'+'현재 선택한 랙은 재고 물품이 없습니다.'+'</td>'+
 								'</tr>';
 			}else{
 				retabledata +=	'<tr>'+
-									'<td colspan="5">'+'현재 선택한 셀은 재고 물품이 없습니다.'+'</td>'+
+									'<td colspan="8">'+'현재 선택한 셀은 재고 물품이 없습니다.'+'</td>'+
 								'</tr>';
 			}
 		}
 		else{
 			for(var i = 0, len = list.length || 0; i < len; i++){
 				retabledata +=	'<tr>'+
-									'<td style="width:15%;">'+(((pageNum-1)*10)+(i+1))+'</td>'+
-									'<td style="width:35%;">'+list[i].lot_code+'</td>'+
-									'<td style="width:35%;">'+list[i].name+'</td>'+
-									'<td style="width:15%;">'+list[i].amount+'</td>'+
+									'<td >'+(((pageNum-1)*10)+(i+1))+'</td>'+
+									'<td >'+list[i].lot_code+'</td>'+
+									'<td >'+list[i].name+'</td>'+
+									'<td >'+list[i].amount+'</td>'+
+									'<td >'+list[i].ware_name+'</td>'+
+									'<td >'+list[i].area_name+'</td>'+
+									'<td >'+list[i].rack_name+'</td>'+
+									'<td >'+list[i].cell_name+'</td>'+
 								'</tr>';
 			}
 		}
@@ -590,9 +489,14 @@ $("#searchBtn").on("click", function(e){
 });
 
 
-//시작시
-// $(function(){
-// 	requestRecord();
-// }
+//시작시 보여줄 전체 재고현황
+$(document).ready(function(){
+	id = "mydefault";
+	ware_no = 0;
+	area_no = 0;
+	rack_no = 0;
+	cell_no = 0;
+	requestRecord();
+});
 
 </script>

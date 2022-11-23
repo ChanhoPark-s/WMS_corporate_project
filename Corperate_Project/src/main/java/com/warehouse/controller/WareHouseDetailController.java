@@ -105,11 +105,13 @@ public class WareHouseDetailController {
 				@PathVariable(value="whatColumn", required = false) String whatColumn,
 				@PathVariable(value="keyword", required = false) String keyword) {				
 			
+			//초기화면에서 전체재고현황 보여주기위한 if문
 			if(ware_no==0 && area_no==0 && rack_no==0 && cell_no==0) {
 				CriteriaForWareHouse cri = new CriteriaForWareHouse(pageNum, amount, whatColumn, keyword,ware_no,area_no,rack_no,cell_no);
 				return new ResponseEntity<>(warehousedetailservice.getAllListPage(cri), HttpStatus.OK);		
 			}
 			CriteriaForWareHouse cri = new CriteriaForWareHouse(pageNum, amount, whatColumn, keyword,ware_no,area_no,rack_no,cell_no);
+			
 			return new ResponseEntity<>(warehousedetailservice.getListPage(cri), HttpStatus.OK);		
 		}
 }
