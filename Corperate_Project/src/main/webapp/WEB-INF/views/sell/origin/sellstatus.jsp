@@ -29,9 +29,9 @@
 					<tr>
 						<th scope="col" style="display:none">판매번호</th>
 						<th scope="col">품목명</th>
-						<th scope="col">판매수량</th>
 						<th scope="col">입고단가</th>
 						<th scope="col">출고단가</th>
+						<th scope="col">판매수량</th>
 						<th scope="col">이익</th>
 					</tr>
 				</thead>
@@ -41,11 +41,11 @@
 					<td style="display:none">${status.no}</td>
 					<td style="display:none">${status.item_no}</td>
 					<td>${status.item_name}</td>
-					<td>${status.amount}</td>
 					<td>
 					<fmt:formatNumber pattern="###,###" value="${status.in_price}" var="in_price"/>${in_price} 원</td>
 					<td>
 					<fmt:formatNumber pattern="###,###" value="${status.out_price}" var="out_price"/>${out_price} 원</td>
+					<td>${status.amount}</td>
 					<td><fmt:formatNumber pattern="###,###" value="${(status.out_price - status.in_price)*status.amount}" var="out_price"/>${out_price} 원</td>
 					</tr>
 				</c:forEach>
