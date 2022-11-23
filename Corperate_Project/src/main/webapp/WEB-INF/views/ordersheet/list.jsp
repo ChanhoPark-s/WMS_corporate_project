@@ -1,11 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<head>
+<script src="https://kit.fontawesome.com/4d5e8e1a50.js" crossorigin="anonymous"></script>
+<script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+</head>
 
 <!-- top.jsp -->
 <%@include file="../common/top.jsp"%>
 
-<!-- fontawsome -->
-<script src="https://kit.fontawesome.com/75769dc150.js" crossorigin="anonymous"></script>
 
 <style>
 table th {
@@ -110,7 +112,7 @@ table td {
 							<th scope="col" nowrap>품목명</th>
 							<th scope="col">납기일자</th>
 							<th scope="col">주문금액합계</th>
-							<th scope="col" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="접수완료 - (발주중) - 판매완료">진행상태</th>
+							<th scope="col" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="접수완료 - (발주중) - 판매완료">진행상태</th>
 							<th scope="col">기능</th>
 						</tr>
 					</thead>
@@ -184,7 +186,7 @@ table td {
 
 <br>
 
-<!-- 하단 -->
+<!-- 하단 첫번째 -->
 <div class="card">
 	<div class="card-body">
 		<div class="d-flex gap-1 mb-4 flex-wrap" style="display:none !important">
@@ -214,8 +216,62 @@ table td {
 						<th scope="col">품목코드</th>
 						<th scope="col">품목명</th>
 						<th scope="col">취급처</th>
-						<th scope="col">개수</th>
-						<th scope="col">단가</th>
+						<th scope="col">수주수량</th>
+						<th scope="col">판매단가</th>
+						<th scope="col">합계</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td colspan="8">상세품목을 보길 원하신다면 수주서를 클릭하세요
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<br>
+
+<!-- 하단 두번째 -->
+<div class="card">
+	<div class="card-body">
+		<div class="d-flex gap-1 mb-4 flex-wrap" style="height:38px">
+			<div class="d-flex gap-1 me-auto flex-wrap" style="height:38px">
+				<button class="btn btn-primary d-inline-flex align-items-center gap-1" data-ordersheetno="" id="setSellCompleteStatus">
+					판매완료 처리
+				</button> 
+			</div>
+		</div>
+		<div class="d-flex gap-1 mb-4 flex-wrap" style="display:none !important">
+			<div class="d-flex gap-1 me-auto flex-wrap">
+				<button class="btn btn-primary d-inline-flex align-items-center gap-1" data-bs-toggle="modal" data-bs-target="#addUserModal">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    	<path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+                  	</svg>
+					품목 추가
+				</button>
+				<button class="btn btn-primary d-inline-flex align-items-center gap-1" data-bs-toggle="modal" data-bs-target="#addUserModal">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+					  <path clip-rule="evenodd" d="m11,9l3,0a1,1 0 1 1 0,2l-3,0l-2,0l-3,0a1,1 0 1 1 0,-2l3,0l2,0z" clip-rule="evenodd"/>
+					</svg>
+					선택 삭제
+				</button>
+			</div>
+		</div>
+		<div class="table-responsive my-1">
+			<table class="table align-middle" id="table3">
+				<thead>
+					<tr>
+						<th scope="col" style="display:none">상세번호</th>
+						<th scope="col" style="display:none">수주서번호</th>
+						<th scope="col"></th>
+						<th scope="col" style="display:none">품목번호</th>
+						<th scope="col">품목코드</th>
+						<th scope="col">품목명</th>
+						<th scope="col">로트번호</th>
+						<th scope="col">판매수량</th>
+						<th scope="col">판매단가</th>
 						<th scope="col">합계</th>
 					</tr>
 				</thead>
@@ -924,12 +980,15 @@ table td {
 
 <!-- 메인화면 상단 동작관련 코드 -->
 <script type="text/javascript">
+
+	var clickedMainNo = "" ; //클릭된 수주서 번호  
+
 	$(function(){
 		
 		/* 리스트 화면에서 클릭시 아래 Detail 레코드들을 가져와 뿌려주는 코드 */
 		$("#table1 tbody tr").on("click", function(){
 			// 클릭된 수주서의 no 번호
-			var clickedMainNo = $(this).children("td")[0].innerHTML;
+			clickedMainNo = $(this).children("td")[0].innerHTML;
 			console.log("clickedMainNo: " + clickedMainNo);
 			
 			console.log("요청url : " + "/ordersheet/orderdetail/" + clickedMainNo);
@@ -964,6 +1023,55 @@ table td {
 	 			}).fail(function(xhr, status, err){
 	 					alert("데이터 조회실패");
 	 			});
+		});
+		
+		/* 리스트 화면에서 클릭시 아래 판매완료 Detail 레코드들을 가져와 뿌려주는 코드 */
+		$("#table1 tbody tr").on("click", function(){
+			// 클릭된 수주서의 no 번호
+			clickedMainNo = $(this).children("td")[0].innerHTML;
+			console.log("clickedMainNo: " + clickedMainNo);
+			
+			console.log("요청url : " + "/sell/origin/detail/more/ordersheetbase/" + clickedMainNo);
+			$.getJSON("/sell/origin/detail/more/ordersheetbase/" + clickedMainNo,  
+	 			function(list){
+					console.log("list: " + list);
+					
+					$("#table3 tbody").empty();
+					
+					for(var i = 0, len = list.length || 0; i < len; i++){
+						
+						var str = "";
+						
+						str += "<tr>";
+						/* str += "<td><div><input class='form-check-input' type='checkbox' value=''></div></td>"; */
+						str += "<td style='display:none'>" + "</td>";
+						str += "<td style='display:none'>" + "</td>";
+						
+						str += "<td><i class='fa-solid fa-gift'></i></td>";
+						
+						str += "<td style='display:none'>" + list[i].item_no + "</td>";
+						str += "<td>" + list[i].code + "</td>";
+						str += "<td>" + list[i].name + "</td>";
+						str += "<td>" + list[i].lot_code + "</td>";
+						str += "<td>" + list[i].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " 개</td>";
+						str += "<td>" + list[i].sell_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " 원</td>";
+						str += "<td>" + (list[i].amount * list[i].sell_price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " 원</td>";
+						str += "</tr>";
+						
+						$("#table3 tbody").append(str);
+					}
+	 			}).fail(function(xhr, status, err){
+	 					alert("데이터 조회실패");
+	 			});
+		});
+		
+		/* 판매완료 처리 눌렸을 때 처리 */
+		$("#setSellCompleteStatus").on("click", function(){
+			
+			if(clickedMainNo != ""){
+				location.href = "/ordersheet/statuschange?ordersheetno=" + clickedMainNo + " &status=2";
+			}
+			
 		});
 		
 		/* 수정버튼이 눌렸을 때 처리 */
@@ -1126,5 +1234,6 @@ table td {
 	function calendarChangeHandler(){
 		$("input[name='out_day']").attr("class","form-control is-valid");
 	} 
+	
 	
 	</script>

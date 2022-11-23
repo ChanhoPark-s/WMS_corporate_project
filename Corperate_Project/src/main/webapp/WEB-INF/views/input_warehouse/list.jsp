@@ -154,16 +154,16 @@ table td {
 			<table class="table align-middle"  id="table2">
 				<thead>
 					<tr>
-						<th scope="col"><div><input class='form-check-input' type='checkbox' value=''></div></th>
 						<th scope="col" style="display:none">상세번호</th>
 						<th scope="col" style="display:none">입고번호</th>
 						<th>발주서번호</th>
+						<th>로트코드</th>
+						<th>품목코드</th>
 						<th>품목명</th>
 						<th>창고</th>
 						<th>구역</th>
 						<th>랙</th>
 						<th>셀</th>
-						<th>로트코드</th>
 						<th>입고량</th>
 					</tr>
 				</thead>
@@ -1196,18 +1196,18 @@ table td {
 						var str = "";
 						
 						str += "<tr>";
-						str += "<td><div><input class='form-check-input' type='checkbox' value=''></div></td>";
 						str += "<td style='display:none'>" + list[i].no + "</td>";
 						str += "<td style='display:none'>" + list[i].input_WareHouse_No + "</td>";
 						
 						
 						str += "<td>" + list[i].purchase_Sheet_No + "</td>";
+						str += "<td>" + list[i].lot_Code + "</td>";
+						str += "<td>" + list[i].item_code + "</td>";
 						str += "<td>" + list[i].item_name + "</td>";
 						str += "<td>" + list[i].ware_name + "</td>";
 						str += "<td>" + list[i].area_name + "</td>";
 						str += "<td>" + list[i].rack_name + "</td>";
 						str += "<td>" + list[i].cell_name + "</td>";
-						str += "<td>" + list[i].lot_Code + "</td>";
 						str += "<td>" + list[i].qty + "</td>";
 						str += "</tr>";
 						

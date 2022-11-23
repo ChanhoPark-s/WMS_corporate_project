@@ -187,11 +187,20 @@ end;
 </select>
 <select id="getTotalCount" resultType="int">
 	select count(*)
-	from item_movement_history h, item i, warehouse w1, warehouse w2
+	from item_movement_history h, item i, 
+    warehouse w1, warehouse w2,
+    area a1, area a2,
+    rack r1, rack r2,
+    cell c1, cell c2
 	where h.item_no = i.no
 	and h.pr_ware_no = w1.no
-	and h.ware_no = w2.no
-	order by 1 desc
+    and h.ware_no = w2.no
+    and h.pr_area_no = a1.no
+    and h.area_no = a2.no
+    and h.pr_rack_no = r1.no
+    and h.rack_no = r2.no
+    and h.pr_cell_no = c1.no
+    and h.cell_no = c2.no
 </select>
 
 <!-- 이하 ajax API 관련 SQL -->
