@@ -30,4 +30,49 @@
 		select count(*) from item
 	</select>
 	
+	
+	<select id="getTotalSellMoney" resultType="int">
+		select total_sell
+		from(
+		select sum(a) total_sell, sum(b) total_original, sum(a)-sum(b) benefit, (sum(a)-sum(b))/sum(a)*100 benefitpercent
+		from(
+		select sd.no, sd.sell_price, it.in_price, sd.amount, it.name, sd.sell_price * sd.amount a, it.in_price * sd.amount b
+		from sell_detail sd inner join item it
+		on sd.item_no = it.no
+		))
+	</select>
+	
+	<select id="getTotalSellOriginalMoney" resultType="int">
+		select total_original
+		from(
+		select sum(a) total_sell, sum(b) total_original, sum(a)-sum(b) benefit, (sum(a)-sum(b))/sum(a)*100 benefitpercent
+		from(
+		select sd.no, sd.sell_price, it.in_price, sd.amount, it.name, sd.sell_price * sd.amount a, it.in_price * sd.amount b
+		from sell_detail sd inner join item it
+		on sd.item_no = it.no
+		))
+	</select>
+	
+	<select id="getTotalBenefitMoney" resultType="int">
+		select benefit
+		from(
+		select sum(a) total_sell, sum(b) total_original, sum(a)-sum(b) benefit, (sum(a)-sum(b))/sum(a)*100 benefitpercent
+		from(
+		select sd.no, sd.sell_price, it.in_price, sd.amount, it.name, sd.sell_price * sd.amount a, it.in_price * sd.amount b
+		from sell_detail sd inner join item it
+		on sd.item_no = it.no
+		))
+	</select>
+	
+	<select id="getTotalBenefitPercent" resultType="int">
+		select benefitpercent
+		from(
+		select sum(a) total_sell, sum(b) total_original, sum(a)-sum(b) benefit, (sum(a)-sum(b))/sum(a)*100 benefitpercent
+		from(
+		select sd.no, sd.sell_price, it.in_price, sd.amount, it.name, sd.sell_price * sd.amount a, it.in_price * sd.amount b
+		from sell_detail sd inner join item it
+		on sd.item_no = it.no
+		))
+	</select>
+	
 </mapper>

@@ -230,7 +230,7 @@ path.color1 {
           <div class="col-12 col-md-6 col-lg-4">
             <div class="card h-100">
               <div class="card-header border-bottom-0 d-flex justify-content-between">
-                <h6 class="fw-black mb-2">수주잔고</h6>
+                <h6 class="fw-black mb-2">수주잔고 목표 달성률</h6>
               </div>
               <div class="card-body">
               <!--목표  -->
@@ -258,10 +258,15 @@ path.color1 {
               </div>
               <div class="card-footer p-0">
                 <div class="row text-center mx-0">
-                  <div >
+                  <div class="col-6 border-end py-1">
                     <small class="text-secondary">수주금액</small>
                     <fmt:formatNumber var="omm" value="${order_Money }" pattern="#,###" />
                     <h6>${omm}</h6>
+                  </div>
+                  <div class="col-6 py-1">
+                    <small class="text-secondary">목표</small>
+                    <fmt:formatNumber var="ttemp" value="1000000000" pattern="#,###" />
+                    <h6>${ttemp}</h6>
                   </div>
                 </div>
               </div>
@@ -275,7 +280,7 @@ path.color1 {
           <div class="col-12 col-md-6 col-lg-4">
             <div class="card h-100">
               <div class="card-header border-bottom-0 d-flex justify-content-between">
-                <h6 class="fw-black mb-2">영업이익</h6>
+                <h6 class="fw-black mb-2">영업이익률</h6>
               </div>
               <div class="card-body">
               <!--목표  -->
@@ -287,9 +292,9 @@ path.color1 {
 				          a 15.9155 15.9155 0 0 1 0 31.831
 				          a 15.9155 15.9155 0 0 1 0 -31.831"
 				      />
-				      <fmt:formatNumber var="ee" type="number" maxFractionDigits="0"  value="${(sell_Money-purchase_Money)/sell_Money*100}" />
+				      <fmt:formatNumber var="ee" type="number" maxFractionDigits="0"  value="${(total_sell_money-total_sell_original)/total_sell_money*100}" />
 				      <path class="circle"
-				        stroke-dasharray="${(sell_Money-purchase_Money)/sell_Money*100  }, 10000"
+				        stroke-dasharray="${(total_sell_money-total_sell_original)/total_sell_money*100  }, 10000"
 				        d="M18 2.0845
 				          a 15.9155 15.9155 0 0 1 0 31.831
 				          a 15.9155 15.9155 0 0 1 0 -31.831"
@@ -304,8 +309,8 @@ path.color1 {
               <div class="card-footer p-0">
                 <div class="row text-center mx-0">
                   <div class="col-6 border-end py-1">
-                    <small class="text-secondary">매입액</small>
-                    <fmt:formatNumber var="pm" value="${purchase_Money }" pattern="#,###" />
+                    <small class="text-secondary">순이익금</small>
+                    <fmt:formatNumber var="pm" value="${total_sell_benefit_money }" pattern="#,###" />
                     <h6>${pm}</h6>
                   </div>
                   <div class="col-6 py-1">
