@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  
+<!-- 연결될 인터페이스를 지정 -->
+<mapper namespace="com.spring.mapper.DepartmentMapper">
+
+	<select id="selectAll" resultType="com.spring.domain.DepartmentVO">
+		select * from department
+		<if test="whatColumn=='code'">where code like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='name'">where name like '%' ||  #{keyword} || '%'</if>
+		ORDER BY no desc OFFSET #{beginRow} ROWS FETCH NEXT #{pageSize} ROWS ONLY
+	</select>
+	
+	<select id="noSearchList" resultType="com.spring.domain.DepartmentVO">
+		select * from department
+		order by no
+	</select>
+	
+	<select id="getTotalCount" resultType="int">
+		select count(*) from department
+		<if test="whatColumn=='code'">where code like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='name'">where name like '%' ||  #{keyword} || '%'</if>
+		order by no desc
+	</select>
+
+	<insert id="insert">
+		insert into department values(seq_department.nextval, #{code}, #{name})
+	</insert>
+	
+	<update id="update">
+		update department set code=#{code}, name=#{name} where no=#{no}
+	</update>
+
+	<delete id="delete">
+		delete from department where no = #{no}
+	</delete>
+	
+	<delete id="selectDelete">
+		delete department where no in 
+		<foreach collection="array" item="arr" open='(' close=")" separator=",">
+		#{arr}
+		</foreach>
+	</delete>
+</mapper>

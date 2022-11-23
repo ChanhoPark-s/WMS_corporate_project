@@ -44,8 +44,6 @@ public class MemberServiceImpl implements MemberService{
 
    @Override
    public void update(MemberVO member, HttpServletRequest request) throws Exception {
-
-
       updateProfile(member, request);
       mapper.update(member);
    }

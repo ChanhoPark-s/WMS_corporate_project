@@ -66,13 +66,14 @@ public class WareHouseDetailController {
 			@RequestParam(value="rack_no",required = false) int rack_no,
 			@RequestParam(value="cell_no",required = false) int cell_no) {
 
-		
 		WareHouseDetailVO vo = new WareHouseDetailVO();
 		vo.setWare_no(ware_no);
 		vo.setArea_no(area_no);
 		vo.setRack_no(rack_no);
 		vo.setCell_no(cell_no);
 
+		System.out.println("창get-data-stock의 id"+id);
+		System.out.println("창get-data-stock의 no"+no);
 		if(id.contains("warehouse")) {
 			List<WareHouseDetailVO> lists = warehousedetailservice.selectStockByWareNo(vo);
 			return new Gson().toJson(lists);
@@ -104,8 +105,13 @@ public class WareHouseDetailController {
 				@PathVariable(value="whatColumn", required = false) String whatColumn,
 				@PathVariable(value="keyword", required = false) String keyword) {				
 			
-			
+			//초기화면에서 전체재고현황 보여주기위한 if문
+			if(ware_no==0 && area_no==0 && rack_no==0 && cell_no==0) {
+				CriteriaForWareHouse cri = new CriteriaForWareHouse(pageNum, amount, whatColumn, keyword,ware_no,area_no,rack_no,cell_no);
+				return new ResponseEntity<>(warehousedetailservice.getAllListPage(cri), HttpStatus.OK);		
+			}
 			CriteriaForWareHouse cri = new CriteriaForWareHouse(pageNum, amount, whatColumn, keyword,ware_no,area_no,rack_no,cell_no);
+			
 			return new ResponseEntity<>(warehousedetailservice.getListPage(cri), HttpStatus.OK);		
 		}
 }

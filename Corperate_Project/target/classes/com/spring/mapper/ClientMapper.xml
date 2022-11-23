@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.spring.mapper.ClientMapper">
+  
+	<select id="getAllClient" resultType="com.spring.domain.ClientVO">
+		select * from client order by no desc
+	</select>  
+  
+	<select id="GetAll" resultType="com.spring.domain.ClientVO">
+		SELECT * FROM client 
+		<if test="whatColumn=='code'">where code like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='category'">where category like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='name'">where name like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='owner'">where owner like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='tel'">where tel like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='fax'">where fax like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='bank'">where bank like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='account'">where account like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='zipcode'">where zipcode like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='address1'">where address1 like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='address2'">where address2 like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='email'">where email like '%' ||  #{keyword} || '%'</if>
+		ORDER BY no desc OFFSET #{beginRow} ROWS FETCH NEXT #{pageSize} ROWS ONLY
+	</select>
+
+	<insert id="insert">
+		insert into client values(client_seq.nextval,#{code},#{category},#{name},#{owner},#{tel},#{fax},#{bank},#{account},#{zipcode},#{address1},#{address2},#{email},#{business})
+	</insert>
+	
+	<select id="selectOne" resultType="com.spring.domain.ClientVO" parameterType="string">
+		select * from client where no = #{value}
+	</select>
+	
+	<update id="update">
+		update client set code = #{code},category = #{category}, name = #{name}, owner= #{owner}, tel = #{tel}, fax = #{fax}, bank = #{bank} , account = #{account}, zipcode = #{zipcode}, address1 = #{address1}, address2 = #{address2}, email = #{email},Business = #{business}
+		where no = #{no}
+	</update>
+	
+	<delete id="deleteOne">
+		delete client where no = #{value}
+	</delete>
+	
+	<select id="getTotalCount" resultType="int">
+		select count(*) from client 
+		<if test="whatColumn=='code'">where code like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='category'">where category like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='name'">where name like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='owner'">where owner like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='tel'">where tel like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='fax'">where fax like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='bank'">where bank like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='account'">where account like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='zipcode'">where zipcode like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='address1'">where address1 like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='address2'">where address2 like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='email'">where email like '%' ||  #{keyword} || '%'</if>
+	</select>
+	
+	
+	<select id="checkCode" resultType="int">
+		select count(*) from client where code=#{code}
+	</select>
+	
+	<delete id="selectDelete">
+		delete client where no in 
+		<foreach collection="array" item="arr" open='(' close=")" separator=",">
+		#{arr}
+		</foreach>
+	</delete>
+	
+	<select id="selectByCode" resultType="com.spring.domain.ClientVO">
+		select * from client where code = #{value}
+	</select>
+	
+	<!-- 이하 ajax API 관련 SQL -->
+	<select id="getListWithPaging" resultType="com.spring.domain.ClientVO">
+		<![CDATA[
+		select no, code, category, name, owner, tel, fax, bank, account, zipcode, address1, address2, email
+		from(
+		    select rownum rn, no, code, category, name, owner, tel, fax, bank, account, zipcode, address1, address2, email
+		    from client
+		    where rownum <= #{cri.pageNum} * #{cri.amount}
+		]]>    
+		
+		    <if test="cri.whatColumn=='code' and cri.keyword != null"> and code like '%' ||  #{cri.keyword} || '%' </if>
+		    <if test="cri.whatColumn=='name' and cri.keyword != null"> and name like '%' ||  #{cri.keyword} || '%' </if>
+		    <if test="cri.whatColumn=='owner' and cri.keyword != null"> and owner like '%' ||  #{cri.keyword} || '%' </if>
+		    
+		<![CDATA[    
+			order by no
+		)where rn > (#{cri.pageNum} - 1) * #{cri.amount}
+		]]>
+	</select>
+	
+	<select id="getCountAll" resultType="int">
+		select count(*)
+		from client
+		where no > 0
+		
+		<if test="cri.whatColumn=='code' and cri.keyword != null"> and code like '%' ||  #{cri.keyword} || '%' </if>
+		<if test="cri.whatColumn=='name' and cri.keyword != null"> and name like '%' ||  #{cri.keyword} || '%' </if>	
+		<if test="cri.whatColumn=='owner' and cri.keyword != null"> and owner like '%' ||  #{cri.keyword} || '%' </if>
+	</select>
+	
+</mapper>

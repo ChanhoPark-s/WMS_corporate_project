@@ -30,7 +30,7 @@ table td {
 	<div class="card-body">
 		<div class="d-flex gap-1 mb-4 flex-wrap">
           <div class="d-flex gap-1 me-auto flex-wrap">
-            <button class="btn btn-primary d-inline-flex align-items-center gap-1" onclick="item.itemInput()">
+            <button class="btn btn-secondary d-inline-flex align-items-center gap-1" onclick="item.itemInput()">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                 <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
               </svg>
@@ -384,7 +384,7 @@ table td {
 					tr.append(td3);
 					
 					let td4 = document.createElement('td');
-					td4.innerHTML = '<button type="button" class="btn btn-primary btn-sm">선택</button>';
+					td4.innerHTML = '<button type="button" class="btn btn-dark btn-sm">선택</button>';
 					td4.setAttribute('data-bs-dismiss', 'modal');
 					td4.classList.add('text-center');
 					tr.append(td4);
@@ -462,7 +462,7 @@ table td {
 					tr.append(td3);
 					
 					let td4 = document.createElement('td');
-					td4.innerHTML = '<button type="button" class="btn btn-primary btn-sm">선택</button>';
+					td4.innerHTML = '<button type="button" class="btn btn-dark btn-sm">선택</button>';
 					td4.setAttribute('data-bs-dismiss', 'modal');
 					td4.classList.add('text-center');
 					tr.append(td4);
@@ -608,13 +608,13 @@ table td {
 			$('#'+ location).html(str);
 		}
 		
-		$("#itemPageNation").on("click", "li a", function(e){
+		$("#itemPageNation").on("click", "li a.page-link", function(e){
 			e.preventDefault(); // 번호를 눌러도 페이지가 이동하지 않도록 a태그 기능 무력화
 			pageNum = $(this).attr("href");
 			drawItem({pageNum : pageNum});
 		});
 		
-		$("#memberPageNation").on("click", "li a", function(e){
+		$("#memberPageNation").on("click", "li a.page-link", function(e){
 			e.preventDefault(); // 번호를 눌러도 페이지가 이동하지 않도록 a태그 기능 무력화
 			pageNum = $(this).attr("href");
 			drawMember({pageNum : pageNum});

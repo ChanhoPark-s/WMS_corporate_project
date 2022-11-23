@@ -136,43 +136,27 @@ table td {
 		<!-- 우측테이블상단의 버튼/검색 -->
 		<div class="d-flex gap-1 mb-4 flex-wrap">
 			<div class="d-flex gap-1 me-auto flex-wrap">
-				<button class="btn btn-primary d-inline-flex align-items-center gap-1"  onclick="insertfunction('default')"
-					data-bs-toggle="modal" data-bs-target="#MyModal">
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-						fill="currentColor" aria-hidden="true">
-                    <path fill-rule="evenodd"
-							d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-							clip-rule="evenodd" />
+				<button class="btn btn-primary d-inline-flex align-items-center gap-1"  onclick="insertfunction('default')" data-bs-toggle="modal" data-bs-target="#MyModal">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
                   </svg>
 					창고 등록
 				</button>
-				<button class="btn btn-primary d-inline-flex align-items-center gap-1"  onclick="insertfunction('ware')"
-					data-bs-toggle="modal" data-bs-target="#MyModal">
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-						fill="currentColor" aria-hidden="true">
-                    <path fill-rule="evenodd"
-							d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-							clip-rule="evenodd" />
+				<button class="btn btn-primary d-inline-flex align-items-center gap-1"  onclick="insertfunction('ware')" data-bs-toggle="modal" data-bs-target="#MyModal">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
                   </svg>
 					구역 등록
 				</button>
-				<button class="btn btn-primary d-inline-flex align-items-center gap-1"  onclick="insertfunction('area')"
-					data-bs-toggle="modal" data-bs-target="#MyModal">
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-						fill="currentColor" aria-hidden="true">
-                    <path fill-rule="evenodd"
-							d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-							clip-rule="evenodd" />
+				<button class="btn btn-primary d-inline-flex align-items-center gap-1"  onclick="insertfunction('area')" data-bs-toggle="modal" data-bs-target="#MyModal">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
                   </svg>
 					랙 등록
 				</button>
-				<button class="btn btn-primary d-inline-flex align-items-center gap-1"  onclick="insertfunction('rack')"
-					data-bs-toggle="modal" data-bs-target="#MyModal">
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-						fill="currentColor" aria-hidden="true">
-                    <path fill-rule="evenodd"
-							d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-							clip-rule="evenodd" />
+				<button class="btn btn-primary d-inline-flex align-items-center gap-1"  onclick="insertfunction('rack')" data-bs-toggle="modal" data-bs-target="#MyModal">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
                   </svg>
 					셀 등록
 				</button>
@@ -192,10 +176,10 @@ table td {
 			<table class="table align-middle">
 				<thead>
 					<tr>
-						<th scope="col">번호</th>
-						<th scope="col">코드</th>
-						<th scope="col">위치명</th>
-						<th scope="col">기능</th>
+						<th scope="col" style="width:15%;">번호</th>
+						<th scope="col" style="width:25%;">코드</th>
+						<th scope="col" style="width:45%;">위치명</th>
+						<th scope="col" style="width:15%;">기능</th>
 					</tr>
 				</thead>
 				<tbody id="tddata">
@@ -214,12 +198,8 @@ table td {
 									<c:otherwise>'${param.id }'</c:otherwise>
 								</c:choose>
 								)">
-									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
-										fill="none" viewBox="0 0 24 24" stroke="currentColor"
-										aria-hidden="true">
-                            <path stroke-linecap="round"
-											stroke-linejoin="round" stroke-width="2"
-											d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                           </svg>
 								</button>
 								<button type="button" class="btn btn-light d-flex text-danger" onclick="deletefunction(${lists.no},
@@ -231,9 +211,7 @@ table td {
 									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
 										fill="none" viewBox="0 0 24 24" stroke="currentColor"
 										aria-hidden="true">
-                            <path stroke-linecap="round"
-											stroke-linejoin="round" stroke-width="2"
-											d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                           </svg>
 								</button>
 							</div>
@@ -289,7 +267,6 @@ table td {
 				              <option value="${warehouseLists.no}">${warehouseLists.name}</option>
 				            </c:forEach>
 			            </select>
-						<div class="invalid-feedback">User full name is required.</div>
 					</div>
 					<div class="mb-3" id="arealocationtitle">
 						<label for="arealocation" class="form-label">상위구역위치</label>
@@ -299,7 +276,6 @@ table td {
 				              <option value="${areaLists.no}">${areaLists.name}</option>
 				            </c:forEach>
 			            </select>
-						<div class="invalid-feedback">User email is required.</div>
 					</div>
 					<div class="mb-3" id="racklocationtitle">
 						<label for="racklocation" class="form-label">상위랙위치</label>
@@ -309,57 +285,44 @@ table td {
 				              <option value="${rackLists.no}">${rackLists.name}</option>
 				            </c:forEach>
 			            </select>
-						<div class="invalid-feedback">User email is required.</div>
 					</div>
 					
 					
 					<div class="mb-3" id="warehousecodetitle">
-						<label for="warehousecode" class="form-label" >창고코드</label> <input
-							type="text" name="warehousecode" class="form-control" id="warehousecode"
-							required>
+						<label for="warehousecode" class="form-label" >창고코드</label>
+						<input type="text" name="warehousecode" class="form-control" id="warehousecode" required>
 						<div class="invalid-feedback">이미 사용중인 창고코드입니다</div>
 					</div>
 					<div class="mb-3" id="warehousenametitle">
-						<label for="warehousename" class="form-label">창고명</label> <input
-							type="text" name="warehousename" class="form-control" id="warehousename"
-							required >
-						<div class="invalid-feedback">User email is required.</div>
+						<label for="warehousename" class="form-label">창고명</label>
+						<input type="text" name="warehousename" class="form-control" id="warehousename" required>
 					</div>
 					<div class="mb-3" id="areacodetitle">
-						<label for="areacode" class="form-label">구역코드</label> <input
-							type="text" name="areacode" class="form-control" id="areacode"
-							required >
+						<label for="areacode" class="form-label">구역코드</label>
+						<input type="text" name="areacode" class="form-control" id="areacode" required>
 						<div class="invalid-feedback">이미 사용중인 구역코드입니다</div>
 					</div>
 					<div class="mb-3" id="areanametitle">
-						<label for="areaname" class="form-label">구역명</label> <input
-							type="text" name="areaname" class="form-control" id="areaname"
-							required >
-						<div class="invalid-feedback">User email is required.</div>
+						<label for="areaname" class="form-label">구역명</label>
+						<input type="text" name="areaname" class="form-control" id="areaname" required>
 					</div>
 					<div class="mb-3" id="rackcodetitle">
-						<label for="rackcode" class="form-label">랙코드</label> <input
-							type="text" name="rackcode" class="form-control" id="rackcode"
-							required >
+						<label for="rackcode" class="form-label">랙코드</label>
+						<input type="text" name="rackcode" class="form-control" id="rackcode" required>
 						<div class="invalid-feedback">이미 사용중인 랙코드입니다</div>
 					</div>
 					<div class="mb-3" id="racknametitle">
-						<label for="rackname" class="form-label">랙명</label> <input
-							type="text" name="rackname" class="form-control" id="rackname"
-							required >
-						<div class="invalid-feedback">User email is required.</div>
+						<label for="rackname" class="form-label">랙명</label>
+						<input type="text" name="rackname" class="form-control" id="rackname" required>
 					</div>
 					<div class="mb-3" id="cellcodetitle">
-						<label for="cellcode" class="form-label">셀코드</label> <input
-							type="text" name="cellcode" class="form-control" id="cellcode"
-							required >
+						<label for="cellcode" class="form-label">셀코드</label>
+						<input type="text" name="cellcode" class="form-control" id="cellcode" required>
 						<div class="invalid-feedback">이미 사용중인 셀코드입니다</div>
 					</div>
 					<div class="mb-3" id="cellnametitle">
-						<label for="cellname" class="form-label">셀명</label> <input
-							type="text" name="cellname" class="form-control" id="cellname"
-							required >
-						<div class="invalid-feedback">User email is required.</div>
+						<label for="cellname" class="form-label">셀명</label>
+						<input type="text" name="cellname" class="form-control" id="cellname" required>
 					</div>
 				</form>
 			</div>
