@@ -169,6 +169,12 @@
 		where no = #{order_no} 
 		and status = 0
 	</update>
+	
+	<update id="updateStatusOrderSheet">
+	update ORDER_SHEET
+	set status = #{status}
+	where no = #{ordersheetno}
+	</update>
 
 	
 </mapper>
