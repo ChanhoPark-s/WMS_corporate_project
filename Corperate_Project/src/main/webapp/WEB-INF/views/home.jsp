@@ -71,33 +71,34 @@ path.color1 {
 }
 
 
-/* 목표  */
+/* 이익 */
 .flex-wrapper {
-  display: flex;
+  display:flex;
   flex-flow: row nowrap;
+  margin-left: 32%;
 }
 
 .single-chart {
-  width: 33%;
+  width: 50%;
   justify-content: space-around ;
 }
 
 .circular-chart {
   display: block;
   margin: 10px auto;
-  max-width: 250px;
-  max-height: 250px;
+  max-width: 300px;
+  max-height: 300px;
 }
 
 .circle-bg {
   fill: none;
   stroke: #eee;
-  stroke-width: 3.8;
+  stroke-width: 2.8;
 }
 
 .circle {
   fill: none;
-  stroke-width: 2.8;
+  stroke-width: 4;
   stroke-linecap: round;
   animation: progress 1s ease-out forwards;
 }
@@ -255,7 +256,7 @@ path.color1 {
               </div>
               <div class="card-body">
               <!--목표  -->
-              <div class="flex-wrapper" style="margin-left: 160px;">
+              <div class="flex-wrapper">
 				  <div class="single-chart">
 				    <svg viewBox="0 0 36 36" class="circular-chart orange">
 				      <path class="circle-bg"
