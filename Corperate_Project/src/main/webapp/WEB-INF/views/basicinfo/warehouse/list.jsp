@@ -4,6 +4,18 @@
 <!-- top.jsp -->
 <%@include file="../../common/top.jsp"%>
 
+<style>
+table th {
+	text-align: center;	
+	font-size: 14px;
+}
+
+table td {
+	text-align: center;
+	font-size: 14px;
+}
+</style>
+
 <!-- Main body -->
       <div id="main-body">
 
@@ -77,7 +89,7 @@
 		                          <c:forEach items="${cellLists }" var="cellLists" varStatus="cellstatus">
 		                          <c:if test="${rackLists.no eq cellLists.rack_no }">
 		                          <li class="nav-item m-2">
-		                             ●&nbsp;&nbsp;&nbsp;${cellLists.name }
+		                             -&nbsp;&nbsp;&nbsp;${cellLists.name }
 		                          </li>
 		                          </c:if>
 		                          </c:forEach> <!-- cell -->
@@ -151,7 +163,7 @@
 			</div>
 		</div>
 		<div class="d-flex gap-1 mb-1 flex-wrap">
-			<h3 id="clicked_location">
+			<h3 id="clicked_location" style="font-size:20px">
 				<c:choose>
 					<c:when test="${current_location eq null}">창고목록</c:when>
 					<c:when test="${current_location eq 'undefined'}">창고목록</c:when>
