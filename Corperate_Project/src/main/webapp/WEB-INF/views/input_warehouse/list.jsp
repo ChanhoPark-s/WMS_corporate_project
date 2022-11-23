@@ -90,7 +90,7 @@ table td {
 					<tr>
 						<th scope="col">번호</th>
 						<th scope="col">담당자</th>
-						<th scope="col">입고처</th>
+						<th scope="col">발주처</th>
 						<th scope="col" nowrap>품목명</th>
 						<th scope="col">구분</th>
 						<th scope="col">입고일</th>
