@@ -600,7 +600,7 @@
 		 					str += "</div>";
 		 					str += '<div class="col-sm-2">';
 		 					str += '<label for="ware_no" class="form-label">창고명</label>';
-		 					str += '<select class="form-select" id="ware_no" name="ware_no">';
+		 					str += '<select class="form-select selectware" id="ware_no" name="ware_no">';
 		 					str += '<option selected disabled value="">선택</option>';
 		 					str += '<c:forEach items="${WareList }" var="ware">';
 		 					str += '<option value="${ware.no }">${ware.name }(${ware.code })</option>';
@@ -652,7 +652,7 @@
 		str += "</div>";
 		str += '<div class="col-sm-2">';
 		str += '<label for="ware_no" class="form-label">창고명</label>';
-		str += '<select class="form-select" id="ware_no" name="ware_no">';
+		str += '<select class="form-select selectware" id="ware_no" name="ware_no" >';
 		str += '<option selected disabled value="">선택</option>';
 		str += '<c:forEach items="${WareList }" var="ware">';
 		str += '<option value="${ware.no }">${ware.name }(${ware.code })</option>';
@@ -746,16 +746,19 @@
 		//체크박스 창고관련 유효성검사
 		for(var i = 0; i<$("#modalItemDetail .row").length; i++){
 			$("#modalItemDetail .row").eq(i).find("select").each(function(index){
-				$("select[name='ware_no']").attr("class","form-control is-invalid");	
-				isValid = false;		
+				//alert();
+				if($(this).val() == null){
+					$(this).attr("class","form-control is-invalid selectware");
+					isValid = false;
+				}		
 			});
 		}
 		
-		if($("#ware_no option:selected").val() == "" ){
+		/* if($("#ware_no option:selected").val() == "" ){
 			$("select[name='ware_no']").attr("class","form-control is-invalid");	
 			isValid = false;
 		}
-		
+		 */
 		if(isValid == false){
 			return;
 		}
@@ -780,7 +783,9 @@
 	} 
 	
 	//창고 유효성
-	function wareChangeHandler(){
-		$("select[name='ware_no']").attr("class","form-control is-valid");
-	} 
+	
+	$("#modalItemDetail").on("change", ".selectware", function(){
+		$(this).attr("class","form-control is-valid selectware");
+	});
+		
 </script>

@@ -31,4 +31,5 @@ public interface Purchase_sheetService {
 	public int deleteDetail(int no);
 	public Purchase_sheetVO selectOneByMainNo(int no);
 	public List<OrderSheetDetailVO> getSubList(int no);
+	public void updateStatus(int no);
 }

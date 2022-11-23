@@ -21,6 +21,7 @@ public interface Purchase_sheetMapper {
 	
 	public int delete(int no); 		// 발주삭제
 	
+	public void updateStatus(int no);	//입고완료시 상태변화 
 	/* main paging */
 	public int getTotalCount(SearchVO searchvo);
 	public List<Purchase_sheetVO> GetAll(Client_Paging pageInfo);
@@ -30,6 +31,8 @@ public interface Purchase_sheetMapper {
 	public int getCountAll(@Param("cri") Criteria cri);
 	
 	//디테일
+	public void updateDetailStatus(int no);
+	
 	public int insertDetailSheet(
 			@Param("mainSheetNo") int mainSheetNo, 
 			@Param("itemNo") int itemNo, 
@@ -43,6 +46,7 @@ public interface Purchase_sheetMapper {
 	public int deleteDetail(int no);
 	public List<OrderSheetDetailVO> selectSubAllByMainNo(int mainNo);
 	public Purchase_sheetVO selectOneByMainNo(int no);
+	
 	
 	
 }
