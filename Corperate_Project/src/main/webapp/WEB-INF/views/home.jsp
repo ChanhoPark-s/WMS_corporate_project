@@ -40,7 +40,7 @@ path.color1 {
 
 /* 도넛2 */
 
-#donut-slider {
+/* #donut-slider {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -68,7 +68,7 @@ path.color1 {
   font-weight: bold;
   line-height: 100px;
   text-align: center;
-}
+} */
 
 
 /* 이익 */
@@ -89,6 +89,12 @@ path.color1 {
   max-width: 300px;
   max-height: 300px;
 }
+.circular-chart2 {
+  display: block;
+  margin: 10px auto;
+  max-width: 300px;
+  max-height: 300px;
+}
 
 .circle-bg {
   fill: none;
@@ -102,14 +108,29 @@ path.color1 {
   stroke-linecap: round;
   animation: progress 1s ease-out forwards;
 }
+.circle2 {
+  fill: none;
+  stroke-width: 4;
+  stroke-linecap: round;
+  animation: progress 1s ease-out forwards;
+}
 
 
 .circular-chart.orange .circle {
   stroke: #fbd438;
 }
+.circular-chart2.blue .circle2{
+	stroke:#7d7af3;
+}
 
 
 .percentage {
+  fill: #666;
+  font-family: sans-serif;
+  font-size: 0.5em;
+  text-anchor: middle;
+}
+.percentage2 {
   fill: #666;
   font-family: sans-serif;
   font-size: 0.5em;
@@ -231,24 +252,56 @@ path.color1 {
               </div>
             </div>
           </div>
+          
+          
+          
+          
+          <!-- 여기부터 하나 -->
           <div class="col-12 col-md-6 col-lg-4">
             <div class="card h-100">
               <div class="card-header border-bottom-0 d-flex justify-content-between">
-                <div>
-                   <h6 class="fw-black mb-2">수주 금액</h6>
-                  <small class="text-secondary">목표 : 1,000,000$</small>
-                </div>
-                <div class="dropdown">
-                </div>
+                <h6 class="fw-black mb-2">수주 금액</h6>
               </div>
               <div class="card-body">
-              	 	<div id="donut-slider">
-				    	<div class="value"></div>
-				    	<div class="handle"></div>
-				 	</div>
+              <!--목표  -->
+              <div class="flex-wrapper">
+				  <div class="single-chart">
+				    <svg viewBox="0 0 36 36" class="circular-chart2 blue">
+				      <path class="circle-bg"
+				        d="M18 2.0845
+				          a 15.9155 15.9155 0 0 1 0 31.831
+				          a 15.9155 15.9155 0 0 1 0 -31.831"
+				      />
+				      <fmt:formatNumber var="om" type="number" maxFractionDigits="0"  value="${order_Money/10000000 }" />
+				      <path class="circle2"
+				        stroke-dasharray="${order_Money/10000000  }, 10000"
+				        d="M18 2.0845
+				          a 15.9155 15.9155 0 0 1 0 31.831
+				          a 15.9155 15.9155 0 0 1 0 -31.831"
+				      />
+				      <text x="18" y="20.35" class="percentage2">${om }%</text>
+				    </svg>
+				  </div>
+			   </div>	  
+              
+              
+              </div>
+              <div class="card-footer p-0">
+                <div class="row text-center mx-0">
+                  <div >
+                    <small class="text-secondary">수주금액</small>
+                    <fmt:formatNumber var="omm" value="${order_Money }" pattern="#,###" />
+                    <h6>${omm}</h6>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+          <!--여기까지  -->
+          
+          
+          
+          
           <div class="col-12 col-md-6 col-lg-4">
             <div class="card h-100">
               <div class="card-header border-bottom-0 d-flex justify-content-between">
