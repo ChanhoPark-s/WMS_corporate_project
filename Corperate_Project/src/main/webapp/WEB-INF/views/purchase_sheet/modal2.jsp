@@ -692,7 +692,7 @@
 		$('.choiceItemBtn:last-child').attr('data-bs-dismiss','modal');	
 		
 		//form 전송전에 빈줄 삭제
-		var allItemCodeInputs = $("#modalItemDetail").find(".choiceItemBtn");
+		var allItemCodeInputs = $("#modalItemDetail").find("input[name='item_no']");
 		var currentRowCount = allItemCodeInputs.length; 
 		
 		console.log("currentRowCount: " + currentRowCount);
@@ -704,40 +704,59 @@
 			}	
 		}
 		
+		var isValid = true;
+		
 		//유효성 검사하는 부분
 		if($("input[name='delivery_date']").val() == ""){
 			$("input[name='delivery_date']").attr("class","form-control is-invalid");
 			//$("#client_code").focus();
-			return;
+			isValid = false;
 	    }
 		
 		if($("#member_dep_name").val() == ""){
 	    	$("#member_dep_name").attr("class","form-control is-invalid");
 	    	$("#member_name").attr("class","form-control is-invalid");
-	    	return;
+	    	isValid = false;
 	    }
 		
 		if($("#client_code").val() == ""){
 			$("#client_code").attr("class","form-control is-invalid");
 			$("#client_name").attr("class","form-control is-invalid");
-			return;
+			isValid = false;
 		}
 		
 		//모든 요소를 돌아보고 처리해야함.
 		$("#modalItemDetail .row").find("input").each(function(index){
 			if(index == 1 && $(this).val() == ""){
 				$(this).attr("class","form-control is-invalid choiceItemBtn");
+				isValid = false;
 			}
-			return;
 		});
 		
-		if($("input[name='amount']").val() == ""){
-			$("input[name='amount']").attr("class","form-control is-invalid");	
-			return;
+		//수량관련 유효성검사		
+		for(var i = 0; i<$("#modalItemDetail .row").length; i++){
+			$("#modalItemDetail .row").eq(i).find("input").each(function(index){
+				if(index == 5 && $(this).val() == ""){
+					$(this).attr("class","form-control is-invalid");
+					isValid = false;
+				}
+			});
+		}
+		
+		//체크박스 창고관련 유효성검사
+		for(var i = 0; i<$("#modalItemDetail .row").length; i++){
+			$("#modalItemDetail .row").eq(i).find("select").each(function(index){
+				$("select[name='ware_no']").attr("class","form-control is-invalid");	
+				isValid = false;		
+			});
 		}
 		
 		if($("#ware_no option:selected").val() == "" ){
 			$("select[name='ware_no']").attr("class","form-control is-invalid");	
+			isValid = false;
+		}
+		
+		if(isValid == false){
 			return;
 		}
 		

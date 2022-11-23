@@ -974,7 +974,7 @@ table td {
 		for(var i = 0; i<$("#modalItemDetail .row").length; i++){
 			$("#modalItemDetail .row").eq(i).find("input").each(function(index){
 				if(index == 4 && $(this).val() == ""){
-					$(this).attr("class","form-control is-invalid choiceItemBtn");
+					$(this).attr("class","form-control is-invalid");
 					isValid = false;
 				}
 			});
