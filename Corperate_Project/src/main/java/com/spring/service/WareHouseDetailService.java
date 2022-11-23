@@ -28,6 +28,7 @@ public interface WareHouseDetailService {
 
 	/* ajax paging */
 	public PageForWareHouseDTO<WareHouseDetailVO> getListPage(CriteriaForWareHouse cri);
+	public PageForWareHouseDTO<WareHouseDetailVO> getAllListPage(CriteriaForWareHouse cri);
 
 
 }

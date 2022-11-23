@@ -17,7 +17,17 @@
 }
 </style>
 
+<style>
+table th {
+	text-align: center;	
+	font-size: 14px;
+}
 
+table td {
+	text-align: center;
+	font-size: 14px;
+}
+</style>
 
 <!-- top.jsp -->
 <%@include file="../../common/top.jsp"%>
@@ -25,6 +35,9 @@
 <div class="card" >
 	<div class="card-body">
 		<div class="d-flex gap-1 mb-4 flex-wrap">
+			<div class="d-flex gap-1 me-auto flex-wrap">
+				
+			</div>
 			<div class="search" >
 			<form name="search" action="/basicinfo/lot/list" id="search">
 			<table>
@@ -49,7 +62,6 @@
 				<td>
 					<i class="fa-solid fa-magnifying-glass btn_search" id="searchIcon" onclick="searchForm()"></i>
 				</td>
-				<td><button class="btn btn-light d-inline-flex align-items-center gap-1" onclick="selectDelete()"><i class="fa-regular fa-trash-can fa-1.5x" style="height: 20px;"></i></button></td>
 			</tr>	
 			</table>
 				</form>
@@ -60,12 +72,15 @@
 			<table class="table align-middle">
 				<thead>
 					<tr>
+						<!-- 
 						<th scope="col">
 							<div>
 								<input class="form-check-input" type="checkbox" name="allselect" onclick="allSelect()" value="">
 							</div>
-						</th>
-						<th scope="col">LOT 번호</th>
+						</th> 
+						-->
+						<th scope="col" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="입고일(8) | 품목번호 | 순번(3) &nbsp&nbsp&nbsp 입고와 동시에 생성됨">LOT 번호</th>
+						<th scope="col">상품코드</th>
 						<th scope="col">상품명</th>
 						<th scope="col">기능</th>
 					</tr>
@@ -79,6 +94,7 @@
 					</c:if>
 					<c:forEach var="item" items="${list }">
 					<tr>
+						<%-- 
 						<td>
 							<div>
 								<input class="form-check-input" type="checkbox" name="rowcheck" value="${item.no }">
@@ -86,8 +102,10 @@
 								<input type="hidden" name="whatColumn" id="whatColumn2">
              					<input type="hidden" name="pageNumber" id="pageNumber2">
 							</div>
-						</td>
+						</td> 
+						--%>
 						<td onclick="detail('${item.code}')" data-bs-toggle="modal" data-bs-target="#ClientModal" style="cursor: pointer;">${item.code }</td>
+						<td>${item.item_code }</td>
 						<td>${item.item_name }</td>
 						<td>
 							<div class="btn-group btn-group-sm" role="group">
@@ -167,7 +185,7 @@
 	})
 	
 	/* 삭제 버튼 눌렀을 때  */
-	function deleteClient(item_no){
+	function deleteClient(item_no){		
 		var whatColumn = $('select option:selected').val();
 		var keyword = $('#keyword').val();
 		var pageNumber = $('#pageNumber').val();
@@ -240,7 +258,7 @@
 					document.getElementById('in_price').value=pd.formattedIn_price;
 					document.getElementById('out_price').value=pd.formattedOut_price;
 					document.getElementById('client_tel').value=pd.client_tel;
-					$('#image').attr("src","${pageContext.request.contextPath}/resources/assets/itemimg/"+pd.image);
+					$('#image').attr("src","${pageContext.request.contextPath}/resources/assets/img/item/"+pd.image);
 					// /assets/itemimg
 				}//success 
 		});//ajax 
