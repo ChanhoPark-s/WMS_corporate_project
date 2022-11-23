@@ -252,7 +252,7 @@ table td {
 							<div class="col-sm-2">		
 								<label for="userFullname" class="form-label">창고명</label>
 								<input type="text" id="ware_name" class="form-control" readonly>
-								<div class="invalid-feedback">창고를 입력해주세요.</div>
+								<div class="invalid-feedback">창고 입력 요망</div>
 							</div>
 							<div class="col-sm-2">		
 								<label for="userFullname" class="form-label">구역명</label>
@@ -296,7 +296,7 @@ table td {
 								<div class="col-sm-2">		
 									<label for="userFullname" class="form-label">수량</label>
 									<input type="text" name="QTY" class="form-control"  onkeyup="qtyChangeHandler()">
-									<div class="invalid-feedback">수량을 입력해주세요.</div>
+									<div class="invalid-feedback">수량 입력요망</div>
 								</div>
 								<div class="col-sm-2">	
 									<label for="userFullname" class="form-label">&nbsp;&nbsp;</label>
