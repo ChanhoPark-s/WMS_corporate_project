@@ -2,6 +2,7 @@ package com.sell.controller;
 
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.spring.domain.ItemVO;
 import com.spring.domain.SearchVO;
@@ -102,10 +104,12 @@ public class SellController {
 	 
 	@GetMapping(value="/sellstatus")
 	public void sellstatus(SearchVO searchvo,HttpServletRequest request, Model model) {
+		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
+		if(flashMap!=null)
+			searchvo =(SearchVO)flashMap.get("searchvo");
 		int totalCount = sdservice.getTotalCount(searchvo); 
 		Client_Paging pageInfo = new Client_Paging(searchvo.getPageNumber(),"10",totalCount,"redirect:/sell/origin/sellstatus",searchvo.getWhatColumn(),searchvo.getKeyword(),0);
-		List<SellDetailVO> dlists = sdservice.selectAll(pageInfo);
-		
+		System.out.println("토탈"+totalCount);
 		model.addAttribute("itemlist", iservice.selectAll(pageInfo));
 		model.addAttribute("dlists", sdservice.selectAll(pageInfo));
 		model.addAttribute("pageInfo",pageInfo);

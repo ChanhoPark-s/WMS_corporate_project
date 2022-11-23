@@ -20,5 +20,8 @@ public class Purchase_sheet_DetailVO {
 	private String ITEM_Code;
 	//창고이름
 	private String WARE_Name;
+	//합계
+	private int total_Price;
+	
 	
 }
