@@ -6,9 +6,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.spring.domain.SearchVO;
 import com.spring.domain.SellDetailVO;
 import com.spring.domain.SellVO;
 import com.spring.mapper.SellMapper;
+import com.spring.paging.Client_Paging;
 
 @Service
 public class SellServiceImpl implements SellService{

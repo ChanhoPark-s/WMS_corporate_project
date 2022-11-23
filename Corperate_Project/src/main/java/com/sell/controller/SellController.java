@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.spring.domain.ItemVO;
+import com.spring.domain.Purchase_sheetVO;
 import com.spring.domain.SearchVO;
 import com.spring.domain.SellDetailVO;
 import com.spring.domain.SellVO;
@@ -41,14 +42,15 @@ public class SellController {
 	private ItemService iservice;
 	
 	@GetMapping(value="/list")
-	public void list(Model model) {				
+	public void list(SearchVO searchvo,Model model) {				
 		
 		List<SellVO> lists = service.read();
+		
+		
 		List<SellDetailVO> detaillists = sdservice.read();
 		model.addAttribute("lists", lists);
+		model.addAttribute("searchvo", searchvo);
 		model.addAttribute("detaillists", detaillists);
-		System.out.println("리스트의 개수: " + lists.size());
-		logger.info("/sell/origin/list.jsp 반환");
 		
 		//return "list"; //요청 url과 반환해줄 jsp 파일의 이름이 일치하면 해당 함수는 void 타입이어도 된다. views/basicinfo/department/list.jsp 가 반환됨
 	}

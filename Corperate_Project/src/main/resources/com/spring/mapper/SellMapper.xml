@@ -35,4 +35,5 @@ on se.member_no = me.no order by no desc
 		where sell_no = #{mainNo}) sn inner join item it
 		on sn.item_no = it.no
 	</select>
+	
 </mapper>
