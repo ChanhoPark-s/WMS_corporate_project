@@ -73,8 +73,8 @@ public class Input_WareHouseServiceImpl implements Input_WareHouseService{
 	@Override
 	public List<Input_WareHouseVO> getListByPaging(Client_Paging pageInfo) {
 		
-		if(pageInfo.getWhatColumn() != null && pageInfo.getWhatColumn().equals("item")) {
-			ArrayList<Integer> main_nos = mapper.selectAllMainNoByItemName(pageInfo.getKeyword());
+		if(pageInfo.getWhatColumn() != null && (pageInfo.getWhatColumn().equals("item") ||pageInfo.getWhatColumn().equals("lot_code"))) {
+			ArrayList<Integer> main_nos = mapper.selectAllMainNoByItemName(pageInfo);
 			pageInfo.setMain_nos(main_nos);
 		}
 		// 메인 레코드 가져오기
