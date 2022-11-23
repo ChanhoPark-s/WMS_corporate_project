@@ -52,4 +52,9 @@
 		values(LOT_SEQ.nextval,#{lot_Code},#{item_No})
 	</insert>
 	
+	<insert id="inputWarehouseDetail">
+		insert into warehouse_detail(no,lot_code,amount,ordered_amount,item_no,ware_no,area_no,rack_no,cell_no) 
+		values(WAREHOUSE_DETAIL_SEQ.nextval,#{lot_Code},#{qty},0,#{item_No},#{ware_No},#{area_No},#{rack_No},#{cell_No})
+	</insert>
+	
 </mapper>

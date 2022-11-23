@@ -53,7 +53,10 @@ public class Input_WareHouseServiceImpl implements Input_WareHouseService{
 			detailVo.setCell_No(vo.getCell_no());
 			detailVo.setLot_Code(lot_code);
 			detailVo.setStatus(vo.getStatus());
+			
 			detailMapper.createLot(detailVo);
+			
+			detailMapper.inputWarehouseDetail(detailVo); 
 			if(detailMapper.insert(detailVo) != 1) {
 				return -1;
 			}
