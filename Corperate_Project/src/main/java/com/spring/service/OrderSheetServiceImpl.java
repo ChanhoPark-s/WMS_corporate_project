@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.spring.domain.MemberVO;
 import com.spring.domain.OrderSheetDetailVO;
 import com.spring.domain.OrderSheetVO;
 import com.spring.domain.PageDTO;
@@ -188,6 +187,14 @@ public class OrderSheetServiceImpl implements OrderSheetService{
 	@Override
 	public PageDTO<OrderSheetVO> getListPage(Criteria cri) {
 		
+		// 검색이 item 이름으로 들어온 경우는 따로 처리
+		if(cri.getWhatColumn() != null && cri.getWhatColumn().equals("item")) {
+			ArrayList<Integer> main_nos = mapper.selectAllMainNoByItemName(cri.getKeyword());
+			cri.setMain_nos(main_nos);
+			System.out.println("cri.getMain_nos()"+ cri.getMain_nos());
+		}
+		
+		// 메인 레코드 가져오기
 		int totalCount = mapper.getCountAll(cri);
 		List<OrderSheetVO> list = mapper.getListWithPaging(cri); 
 		
@@ -221,7 +228,7 @@ public class OrderSheetServiceImpl implements OrderSheetService{
 	}
 
 	@Override
-	public void updateStatus(int order_no) {
+	public void updateStatus(String order_no) {
 		mapper.updateStatus(order_no);
 		
 	}
