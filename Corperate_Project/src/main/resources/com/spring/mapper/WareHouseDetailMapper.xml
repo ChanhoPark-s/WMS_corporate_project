@@ -12,7 +12,7 @@ select
 from
     warehouse_detail wd, item i
 where
-    wd.item_no = i.no(+)
+    wd.item_no = i.no
     and wd.ware_no = #{ware_no}
 </select>
 <select id="selectStockByAreaNo" resultType="com.spring.domain.WareHouseDetailVO" parameterType="com.spring.domain.WareHouseDetailVO">
@@ -23,7 +23,7 @@ select
 from
     warehouse_detail wd, item i
 where
-    wd.item_no = i.no(+)
+    wd.item_no = i.no
     and wd.ware_no = #{ware_no}
     and wd.area_no = #{area_no}
 </select>
@@ -35,7 +35,7 @@ select
 from
     warehouse_detail wd, item i
 where
-    wd.item_no = i.no(+)
+    wd.item_no = i.no
 	and wd.ware_no = #{ware_no}
     and wd.area_no = #{area_no}
     and wd.rack_no = #{rack_no}
@@ -48,7 +48,7 @@ select
 from
     warehouse_detail wd, item i
 where
-    wd.item_no = i.no(+)
+    wd.item_no = i.no
 	and wd.ware_no = #{ware_no}
     and wd.area_no = #{area_no}
     and wd.rack_no = #{rack_no}
@@ -140,7 +140,7 @@ begin
             amount = amount + #{qty, jdbcType=INTEGER}
         where
             ware_no = #{ware2, jdbcType=INTEGER}
-            and area_no = #{rack2, jdbcType=INTEGER}
+            and area_no = #{area2, jdbcType=INTEGER}
             and rack_no = #{rack2, jdbcType=INTEGER}
             and cell_no = #{cell2, jdbcType=INTEGER}
             and lot_code = #{lot_code, jdbcType=VARCHAR};
@@ -154,7 +154,7 @@ begin
         amount = amount - #{qty, jdbcType=INTEGER}
     where
         ware_no = #{ware1, jdbcType=INTEGER}
-        and area_no = #{rack1, jdbcType=INTEGER}
+        and area_no = #{area1, jdbcType=INTEGER}
         and rack_no = #{rack1, jdbcType=INTEGER}
         and cell_no = #{cell1, jdbcType=INTEGER}
         and lot_code = #{lot_code, jdbcType=VARCHAR};
@@ -162,17 +162,27 @@ begin
     
     -- 아이템 이동 히스토리
     insert into item_movement_history
-    values (item_movement_history_seq.nextval, #{lot_code, jdbcType=VARCHAR}, v_item_no, #{qty, jdbcType=INTEGER}, sysdate, #{rack1, jdbcType=INTEGER}, #{rack1, jdbcType=INTEGER}, #{rack1, jdbcType=INTEGER}, #{cell1, jdbcType=INTEGER},
-    #{ware2, jdbcType=INTEGER}, #{rack2, jdbcType=INTEGER}, #{rack2, jdbcType=INTEGER}, #{cell2, jdbcType=INTEGER});
+    values (item_movement_history_seq.nextval, #{lot_code, jdbcType=VARCHAR}, v_item_no, #{qty, jdbcType=INTEGER}, sysdate, #{ware1, jdbcType=INTEGER}, #{area1, jdbcType=INTEGER}, #{rack1, jdbcType=INTEGER}, #{cell1, jdbcType=INTEGER},
+    #{ware2, jdbcType=INTEGER}, #{area2, jdbcType=INTEGER}, #{rack2, jdbcType=INTEGER}, #{cell2, jdbcType=INTEGER});
     
 end;
 </select>
 <select id="itemMovement" resultType="com.spring.domain.WareHouseMovementVO">
-	select h.no, h.lot_no lot_code, i.name item_name, h.amount qty, w1.name ware1, w2.name ware2, h.day
-	from item_movement_history h, item i, warehouse w1, warehouse w2
+	select h.no, h.lot_no lot_code, i.name item_name, h.amount qty, w1.name ware1, w2.name ware2, a1.name area1, a2.name area2, r1.name rack1, r2.name rack2, c1.name cell1, c2.name cell2, h.day
+	from item_movement_history h, item i, 
+    warehouse w1, warehouse w2,
+    area a1, area a2,
+    rack r1, rack r2,
+    cell c1, cell c2
 	where h.item_no = i.no
 	and h.pr_ware_no = w1.no
-	and h.ware_no = w2.no
+    and h.ware_no = w2.no
+    and h.pr_area_no = a1.no
+    and h.area_no = a2.no
+    and h.pr_rack_no = r1.no
+    and h.rack_no = r2.no
+    and h.pr_cell_no = c1.no
+    and h.cell_no = c2.no
 	ORDER BY no desc OFFSET #{beginRow} ROWS FETCH NEXT #{pageSize} ROWS ONLY
 </select>
 <select id="getTotalCount" resultType="int">
@@ -189,17 +199,23 @@ end;
 		<![CDATA[
 		select
 		    no, lot_code, amount, ordered_amount, item_no,
+		    ware_name, area_name, rack_name, cell_name,
 		    ware_no, area_no, rack_no, cell_no,
 		    i_no, code, name, in_price, out_price, image
 		from(
 		    select
 			    rownum rn, wd.no, wd.lot_code, wd.amount, wd.ordered_amount, wd.item_no,
 			    wd.ware_no, wd.area_no, wd.rack_no, wd.cell_no,
+			    w.name ware_name, a.name area_name, r.name rack_name, c.name cell_name,
 			    i.no i_no, i.code, i.name, i.in_price, i.out_price, i.image
 		    from
-		    	warehouse_detail wd, item i
+		    	warehouse_detail wd, item i, warehouse w, area a, rack r, cell c
 		    where
-		    	wd.item_no = i.no(+)
+		    	wd.item_no = i.no
+		    	and wd.ware_no = w.no
+                and wd.area_no = a.no
+                and wd.rack_no = r.no
+                and wd.cell_no = c.no
                 and wd.ware_no = #{ware_no}
                 and rownum <= #{pageNum} * #{amount}
 		]]>
@@ -207,10 +223,10 @@ end;
 		        <if test="rack_no != 0">and wd.rack_no = #{rack_no}</if>
 		        <if test="cell_no != 0">and wd.cell_no = #{cell_no}</if>
 			    <if test="whatColumn=='lot_code' and keyword != null"> and lot_code like '%' ||  #{keyword} || '%' </if>
-			    <if test="whatColumn=='item_name' and keyword != null"> and name like '%' ||  #{keyword} || '%' </if>
+			    <if test="whatColumn=='item_name' and keyword != null"> and i.name like '%' ||  #{keyword} || '%' </if>
 		    
 		<![CDATA[    
-			order by no
+			order by ware_no, area_no, rack_no, cell_no
 			)
 		where rn > (#{pageNum} - 1) * #{amount}
 		]]>
@@ -223,19 +239,82 @@ end;
 		    (select
 		        wd.no, wd.lot_code, wd.amount, wd.ordered_amount, wd.item_no,
 		        wd.ware_no, wd.area_no, wd.rack_no, wd.cell_no,
+		        w.name ware_name, a.name area_name, r.name rack_name, c.name cell_name,
 		        i.no i_no, i.code, i.name, i.in_price, i.out_price, i.image
 		    from
-		        warehouse_detail wd, item i
+		        warehouse_detail wd, item i, warehouse w, area a, rack r, cell c
 		    where
-		        wd.item_no = i.no(+)
+		        wd.item_no = i.no
+		        and wd.ware_no = w.no
+                and wd.area_no = a.no
+                and wd.rack_no = r.no
+                and wd.cell_no = c.no
 		        and wd.ware_no = #{ware_no}
 		        <if test="area_no != 0">and wd.area_no = #{area_no}</if>
 		        <if test="rack_no != 0">and wd.rack_no = #{rack_no}</if>
 		        <if test="cell_no != 0">and wd.cell_no = #{cell_no}</if>
 		        
 				<if test="whatColumn=='lot_code' and keyword != null"> and lot_code like '%' ||  #{keyword} || '%' </if>
-				<if test="whatColumn=='item_name' and keyword != null"> and name like '%' ||  #{keyword} || '%' </if>
+				<if test="whatColumn=='item_name' and keyword != null"> and i.name like '%' ||  #{keyword} || '%' </if>
 		    )
 		where no>0
+	</select>
+	
+	<!-- 이하 모든 WareHouseDetail가져오기위한코드 -->
+	<select id="getCountWareHouseDetailAll" resultType="int">
+		select
+		    count(*)
+		from
+		    (select
+		        wd.no, wd.lot_code, wd.amount, wd.ordered_amount, wd.item_no,
+		        wd.ware_no, wd.area_no, wd.rack_no, wd.cell_no,
+		        w.name ware_name, a.name area_name, r.name rack_name, c.name cell_name,
+		        i.no i_no, i.code, i.name, i.in_price, i.out_price, i.image
+		    from
+		        warehouse_detail wd, item i, warehouse w, area a, rack r, cell c
+		    where
+		        wd.item_no = i.no
+		        and wd.ware_no = w.no
+			    and wd.area_no = a.no
+			    and wd.rack_no = r.no
+			    and wd.cell_no = c.no
+		        
+				<if test="whatColumn=='lot_code' and keyword != null"> and lot_code like '%' ||  #{keyword} || '%' </if>
+				<if test="whatColumn=='item_name' and keyword != null"> and i.name like '%' ||  #{keyword} || '%' </if>
+		    )
+		where no>0
+	</select>
+	
+	<select id="getWareHouseDetailAllListWithPaging" resultType="com.spring.domain.WareHouseDetailVO">
+		<![CDATA[
+		select
+		    no, lot_code, amount, ordered_amount, item_no,
+		    ware_name, area_name, rack_name, cell_name,
+		    ware_no, area_no, rack_no, cell_no,
+		    i_no, code, name, in_price, out_price, image
+		from(
+		    select
+		        rownum rn, wd.no, wd.lot_code, wd.amount, wd.ordered_amount, wd.item_no,
+		        wd.ware_no, wd.area_no, wd.rack_no, wd.cell_no,
+		        w.name ware_name, a.name area_name, r.name rack_name, c.name cell_name,
+		        i.no i_no, i.code, i.name, i.in_price, i.out_price, i.image
+		    from
+		        warehouse_detail wd, item i, warehouse w, area a, rack r, cell c
+		    where
+		        wd.item_no = i.no
+		        and wd.ware_no = w.no
+			    and wd.area_no = a.no
+			    and wd.rack_no = r.no
+			    and wd.cell_no = c.no
+                and rownum <= #{pageNum} * #{amount}
+		]]>
+			    <if test="whatColumn=='lot_code' and keyword != null"> and lot_code like '%' ||  #{keyword} || '%' </if>
+			    <if test="whatColumn=='item_name' and keyword != null"> and i.name like '%' ||  #{keyword} || '%' </if>
+		    
+		<![CDATA[    
+			order by ware_no, area_no, rack_no, cell_no
+			)
+		where rn > (#{pageNum} - 1) * #{amount}
+		]]>
 	</select>
 </mapper>

@@ -37,7 +37,6 @@ public class Input_WareHouseServiceImpl implements Input_WareHouseService{
 		ArrayList<Integer> amountList = vo.getQTY();
 
 		int len = noList.size();
-
 		for (int i = 0; i < len; i++) {
 			Input_WareHouse_DetailVO detailVo = new Input_WareHouse_DetailVO();
 			String lot_code = detailMapper.getLotCode(noList.get(i));
@@ -45,14 +44,14 @@ public class Input_WareHouseServiceImpl implements Input_WareHouseService{
 			detailVo.setItem_No(noList.get(i));
 			detailVo.setQty(amountList.get(i));
 			detailVo.setInput_WareHouse_No(vo.getNo());
-			detailVo.setPurchase_Sheet_Detail_No(i);
+			detailVo.setPurchase_Sheet_No(vo.getPurchase_Sheet_No());
 			detailVo.setArrival_Date(vo.getInput_day());
 			detailVo.setWare_No(vo.getWare_no());
 			detailVo.setArea_No(vo.getArea_no());
 			detailVo.setRack_No(vo.getRack_no());
 			detailVo.setCell_No(vo.getCell_no());
 			detailVo.setLot_Code(lot_code);
-			detailVo.setStatus(0);
+			detailVo.setStatus(vo.getStatus());
 			detailMapper.createLot(detailVo);
 			if(detailMapper.insert(detailVo) != 1) {
 				return -1;

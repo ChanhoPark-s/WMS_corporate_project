@@ -11,7 +11,7 @@
 
 	<insert id="insertMainSheet">
 		insert into input_warehouse
-		values(#{no}, #{member_no}, 0, 0, #{client_no}, #{input_day})
+		values(#{no}, #{member_no}, #{status}, #{client_no}, #{input_day})
 	</insert>
 	
 	<select id="selectNoFromDual" resultType="int">

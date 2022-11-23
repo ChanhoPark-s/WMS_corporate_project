@@ -3,6 +3,7 @@ package com.spring.service;
 import java.util.List;
 
 import com.spring.domain.ClientVO;
+import com.spring.domain.OrderSheetDetailVO;
 import com.spring.domain.PageDTO;
 import com.spring.domain.Purchase_sheetVO;
 import com.spring.domain.Purchase_sheet_DetailVO;
@@ -28,4 +29,6 @@ public interface Purchase_sheetService {
 	//상세
 	public List<Purchase_sheet_DetailVO> selectList(String no);
 	public int deleteDetail(int no);
+	public Purchase_sheetVO selectOneByMainNo(int no);
+	public List<OrderSheetDetailVO> getSubList(int no);
 }

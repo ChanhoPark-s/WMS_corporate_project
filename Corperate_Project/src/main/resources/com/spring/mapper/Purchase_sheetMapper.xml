@@ -92,46 +92,44 @@
 	<!-- 이하 ajax API 관련 SQL -->
 	<select id="getListWithPaging" resultType="com.spring.domain.Purchase_sheetVO">
 		<![CDATA[
-		select * 
-		from(
-		    select rownum rn, no, id, pw, name, dep_name, rank_name, email, image, reg_date
-		    from (select m.no, m.id, m.pw, m.name, m.dep dep_name, r.name rank_name, m.email, m.image, m.reg_date
-		          from(
-		                select m.no, m.id, m.pw, m.name, d.name dep, m.rank_no, m.email, m.image, m.reg_date
-		                from member m inner join department d
-		                on m.dep_no = d.no
-		          ) m inner join rank r
-		    on m.rank_no = r.no)
-		where rownum <= #{cri.pageNum} * #{cri.amount}
-		]]>    
-		
-		    <if test="cri.whatColumn=='code' and cri.keyword != null"> and code like '%' ||  #{cri.keyword} || '%' </if>
-		    <if test="cri.whatColumn=='name' and cri.keyword != null"> and name like '%' ||  #{cri.keyword} || '%' </if>
-		    <if test="cri.whatColumn=='owner' and cri.keyword != null"> and owner like '%' ||  #{cri.keyword} || '%' </if>
-		    
-		<![CDATA[    
-			order by no
+		select * from (
+	        select * from(
+		        select  rownum rn, p.no , p.day, c.no as client_no, c.name as client_name, m.no as Member_no, m.name as member_name
+		        from purchase_sheet p, Client c, Member m        
+		        where p.client_no = c.no(+) and p.member_no = m.no(+)
+		        order by no desc)
+		    where rownum <= #{cri.pageNum} * #{cri.amount}
 		)where rn > (#{cri.pageNum} - 1) * #{cri.amount}
-		]]>
+		]]>  
+	</select>
+	
+	<select id="selectSubAllByMainNo" resultType="com.spring.domain.OrderSheetDetailVO">
+		select no, PURCHASE_SHEET_NO, amount, item_no, item_code, item_name, in_price, out_price, client_no, client_code, client_name
+		from(
+			select p.no, p.PURCHASE_SHEET_NO, p.amount, i.no item_no, i.code item_code, i.name item_name,in_price, out_price, c.no client_no, c.code client_code, c.name client_name
+			from PURCHASE_SHEET_DETAIL p inner join item i
+			on p.item_no = i.no
+			inner join client c
+			on i.client_no = c.no
+		)where PURCHASE_SHEET_NO = #{mainNo}
+	</select>
+	
+	<select id="selectOneByMainNo" resultType="com.spring.domain.Purchase_sheetVO">
+		select no, day, status, member_no, member_name, dep_no, dep_code, dep_name, client_no, client_code, client_name
+		from(
+			select o.no, to_char(to_date(o.DELIVERY_DATE), 'yyyy-MM-dd') day, o.status, m.no member_no, m.name member_name, d.no dep_no, d.code dep_code, d.name dep_name, c.no client_no, c.code client_code, c.name client_name
+			from purchase_sheet o inner join member m
+			on o.member_no = m.no
+			inner join client c
+			on o.client_no = c.no
+			inner join department d
+			on m.dep_no = d.no)
+		where no=#{no}
 	</select>
 	
 	<select id="getCountAll" resultType="int">
 		select count(*)
-		from(
-		    select rownum rn, no, id, pw, name, dep_name, rank_name, email, image, reg_date
-		    from (select m.no, m.id, m.pw, m.name, m.dep dep_name, r.name rank_name, m.email, m.image, m.reg_date
-		          from(
-		                select m.no, m.id, m.pw, m.name, d.name dep, m.rank_no, m.email, m.image, m.reg_date
-		                from member m inner join department d
-		                on m.dep_no = d.no
-		          ) m inner join rank r
-		    on m.rank_no = r.no)
-		) where no > 0
-		<!-- where no > 0 and category='수주처' -->
-		
-		<if test="cri.whatColumn=='code' and cri.keyword != null"> and code like '%' ||  #{cri.keyword} || '%' </if>
-		<if test="cri.whatColumn=='name' and cri.keyword != null"> and name like '%' ||  #{cri.keyword} || '%' </if>	
-		<if test="cri.whatColumn=='owner' and cri.keyword != null"> and owner like '%' ||  #{cri.keyword} || '%' </if>
+        from purchase_sheet
 	</select>
 	
 	<!-- 디테일 -->
@@ -151,5 +149,6 @@
 	<update id="deleteDetail">
 		update Purchase_sheet_Detail set status=2 where Purchase_sheet_no=#{no} and status=0
 	</update>
+	
 
 </mapper>

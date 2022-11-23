@@ -54,27 +54,27 @@ public class LotController {
 		model.addAttribute("searchVo",searchVo);
 	}
 	
-	
-	
-	//delete one
-		@GetMapping("/delete")
-		public String delete(SearchVO searchVo,RedirectAttributes rttr) {
-			
-			service.deleteOne(searchVo.getItem_no());
-			rttr.addFlashAttribute("searchVo",searchVo);
-			
-			return redirect;
-		}
-		//select
-		@ResponseBody
-		@PostMapping(value="/selectOne",produces = "application/text;charset=utf8")
-		public String selectOne(@RequestParam("code") String code) {
-			
-			LotVO l= service.getOne(code);
-			l.setFormattedIn_price(decFormat.format(l.getIn_price()));
-			l.setFormattedOut_price(decFormat.format(l.getOut_price()));
-			
-			return new Gson().toJson(l);
-		}
+	// delete one
+	@GetMapping("/delete")
+	public String delete(SearchVO searchVo, RedirectAttributes rttr) {
+
+		service.deleteOne(searchVo.getItem_no());
+		
+		//rttr.addFlashAttribute("searchVo", searchVo); 이거 있으면 오류나서 제거.
+
+		return redirect;
+	}
+
+	// select
+	@ResponseBody
+	@PostMapping(value = "/selectOne", produces = "application/text;charset=utf8")
+	public String selectOne(@RequestParam("code") String code) {
+
+		LotVO l = service.getOne(code);
+		l.setFormattedIn_price(decFormat.format(l.getIn_price()));
+		l.setFormattedOut_price(decFormat.format(l.getOut_price()));
+
+		return new Gson().toJson(l);
+	}
 
 }

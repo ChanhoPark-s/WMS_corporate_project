@@ -26,5 +26,7 @@ public interface WareHouseDetailMapper {
 	/* ajax paging */
 	public int getCountAll(CriteriaForWareHouse cri);
 	public List<WareHouseDetailVO> getListWithPaging(CriteriaForWareHouse cri);
+	public int getCountWareHouseDetailAll(CriteriaForWareHouse cri);
+	public List<WareHouseDetailVO> getWareHouseDetailAllListWithPaging(CriteriaForWareHouse cri);
 
 }
