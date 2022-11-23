@@ -205,7 +205,7 @@ table td {
 						<div class="row">		
 							<div class="col-sm-3">		
 								<label for="day" class="form-label">입고일자</label> 
-		                		<input type="date" name="input_day" class="form-control" required>
+		                		<input type="date" name="input_day" class="form-control" required onchange="calendarChangeHandler()">
 		                		<div class="invalid-feedback">입고일자를 입력해주세요.</div>
 							</div>
 							<div class="col-sm-4">	
@@ -295,7 +295,7 @@ table td {
 								</div>
 								<div class="col-sm-2">		
 									<label for="userFullname" class="form-label">수량</label>
-									<input type="text" name="QTY" class="form-control">
+									<input type="text" name="QTY" class="form-control"  onkeyup="qtyChangeHandler()">
 									<div class="invalid-feedback">수량을 입력해주세요.</div>
 								</div>
 								<div class="col-sm-2">	
@@ -894,6 +894,9 @@ table td {
 		$("input[name='rack_no']").val(rack[0]);
 		$("input[name='cell_no']").val(cell[0]);
 		console.log($("input[name='cell_no']").val());
+		$("#ware_name").attr("class","form-control is-valid");
+
+		
 	});
 	/* 두번째 모달에서 첫번째 모달로 데이터를 옮기는 코드 */
 	$("#delivery_data").on("click", function(e){
@@ -909,6 +912,8 @@ table td {
 			$("input[name='member_no']").val(memberNo);
 			$("#member_dep_name").val(memberDepName);
 			$("#member_name").val(memberName);
+			$("#member_dep_name").attr("class","form-control is-valid");
+			$("#member_name").attr("class","form-control is-valid");
 		}	
 		else if(secondModalName == "client"){
 			var clientNo = $('input[name=clientRadio]:checked').parent().next().text();
@@ -918,6 +923,9 @@ table td {
 			$("input[name='client_no']").val(clientNo);
 			$("#client_code").val(clientCode);
 			$("#client_name").val(clientName);	
+			$("#client_code").attr("class","form-control is-valid");
+			$("#client_name").attr("class","form-control is-valid");
+
 		}
 		
 		else if(secondModalName == "item"){
@@ -935,7 +943,9 @@ table td {
 			clickedLocation.val(itemCode);
 			clickedLocation.parent().next().find('input[type=text]').val(itemName);
 			clickedLocation.parent().next().next().find('input[type=text]').val(itemClientName);
-			
+
+			clickedLocation.attr("class","form-control is-valid choiceItemBtn");
+
 			addRowItemDetail(); // 새로 입력받을 수 있게 아래 줄을 추가하는 함수
 		}
 		else if(secondModalName == "order"){
@@ -964,11 +974,14 @@ table td {
 		 				$("input[name='member_no']").val(vo.member_no);
 		 				$("#member_dep_name").val(vo.dep_name);
 		 				$("#member_name").val(vo.member_name);
-		 				
+		 				$("#member_name").attr("class","form-control is-valid");
+		 				$("#member_dep_name").attr("class","form-control is-valid");
 		 				//거래처 삽입
 		 				$("input[name='client_no']").val(vo.client_no);
 		 				$("#client_code").val(vo.client_code);
 		 				$("#client_name").val(vo.client_name);
+		 				$("#client_code").attr("class","form-control is-valid");
+		 				$("#client_name").attr("class","form-control is-valid");
 		 				
 		 				//품목삽입
 		 				var orderDetail = resdata.detailList;
@@ -1272,7 +1285,6 @@ table td {
 		}
 		if($("#ware_name").val() == ""){
 			$("#ware_name").attr("class","form-control is-invalid");
-			$("#ware_name").attr("class","form-control is-invalid");
 			return;
 		}
 		
@@ -1292,4 +1304,11 @@ table td {
 		//form submit
 		$("#firstModalForm").submit();
 	});
+	
+	function calendarChangeHandler(){
+		$("input[name='input_day']").attr("class","form-control is-valid");
+	}
+	function qtyChangeHandler(){
+		$("input[name='QTY']").attr("class","form-control is-valid");
+	} 
 </script>
