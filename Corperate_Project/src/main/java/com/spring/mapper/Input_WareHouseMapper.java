@@ -15,7 +15,7 @@ public interface Input_WareHouseMapper {
 	public int selectNoFromDual();
 	public int selectTotalCount(SearchVO searchvo);
 	public List<Input_WareHouseVO> selectListByPaging(Client_Paging pageInfo);
-	public ArrayList<Integer> selectAllMainNoByItemName(String keyword);
+	public ArrayList<Integer> selectAllMainNoByItemName(Client_Paging pageInfo);
 	public int deleteInputWarehouse(int no);
 	public int deleteInputWarehouseDetail(int no);
 }

@@ -60,13 +60,13 @@ table td {
 							<td>
 								<select id="whatColumn" name="whatColumn" class="form-select" style="width: 200px;">
 									<%
-									String[] search = { "member", "client", "item"};
-									String[] cate = { "담당자", "수주처", "품목명"};
+									String[] search = { "member", "client", "item", "lot_code"};
+									String[] cate = { "담당자", "수주처", "품목명", "로트코드"};
 									%>
 									<c:set value="<%=search%>" var="s"></c:set>
 									<c:set value="<%=cate%>" var="c"></c:set>
 									<option>검색 선택</option>
-									<c:forEach begin="0" end="2" var="i">
+									<c:forEach begin="0" end="3" var="i">
 										<option value="${s[i] }"
 											<c:if test="${searchvo.whatColumn== s[i] }">selected</c:if>>${c[i] }</option>
 									</c:forEach>
