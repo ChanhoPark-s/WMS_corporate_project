@@ -67,6 +67,7 @@ public class Purchase_sheetController {
 		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
 		if(flashMap!=null)
 			searchvo =(SearchVO)flashMap.get("searchvo");
+		
 		int totalCount = ps.getTotalCount(searchvo);
 		
 		//페이지넘버, 페이지당 행갯수, 총레코드수, 위치, 검색명, 검색어, ?

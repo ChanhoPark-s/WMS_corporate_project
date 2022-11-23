@@ -27,7 +27,7 @@
 				order by p.no desc)
 		<if test="whatColumn=='client_name'">where client_name like '%' ||  #{keyword} || '%'</if>
 		<if test="whatColumn=='member_name'">where member_name like '%' ||  #{keyword} || '%'</if>
-		<if test="whatColumn=='item_name'">where item_name like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='item_name'">where item_name like '%' ||  #{keyword} || '%' or item_name like '%%'</if>
 	</select>
 	
 	<!-- 발주서조회(페이징) -->
@@ -43,7 +43,7 @@
 				order by p.no desc)
 		<if test="whatColumn=='client_name'">where client_name like '%' ||  #{keyword} || '%'</if>
 		<if test="whatColumn=='member_name'">where member_name like '%' ||  #{keyword} || '%'</if>
-		<if test="whatColumn=='item_name'">where item_name like '%' ||  #{keyword} || '%'</if>
+		<if test="whatColumn=='item_name'">where item_name like '%' ||  #{keyword} || '%' or item_name like '%%'</if>
 		GROUP BY no,member_no, client_no, order_no, day, delivery_date, status, client_name, member_name
 		ORDER BY status,no desc OFFSET #{beginRow} ROWS FETCH NEXT #{pageSize} ROWS ONLY
 	</select>  
