@@ -976,7 +976,7 @@ table td {
 		for(var i = 0; i<$("#modalItemDetail .row").length; i++){
 			$("#modalItemDetail .row").eq(i).find("input").each(function(index){
 				if(index == 4 && $(this).val() == ""){
-					$(this).attr("class","form-control is-invalid choiceItemBtn");
+					$(this).attr("class","form-control is-invalid");
 					isValid = false;
 				}
 			});
@@ -1026,6 +1026,12 @@ table td {
 						else{
 							result = list[i].amount-list[i].current_amount;
 						}
+						str2 = "";
+						if(result != 0){
+							str2 = "<td style='color:red;'>" + result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "개</td>";
+						}else{
+							str2 = "<td>" + result + "개</td>";
+						}
 						
 						str += "<tr>";
 						/* str += "<td><div><input class='form-check-input' type='checkbox' value=''></div></td>"; */
@@ -1040,7 +1046,7 @@ table td {
 						str += "<td>" + list[i].client_name + "</td>";
 						str += "<td>" + list[i].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " 개</td>";
 						str += "<td>" + list[i].current_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " 개</td>";
-						str += "<td style='color:red;'>" + result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " 개</td>";
+						str += str2;
 						str += "<td>" + list[i].out_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " 원</td>";
 						str += "<td>" + (list[i].amount * list[i].out_price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " 원</td>";
 						str += "</tr>";

@@ -135,12 +135,21 @@ table td {
 											str += "<div class='mb-3'>";
 											str += "<label for='userFullname' class='form-label'>&nbsp;&nbsp;</label>";
 											str += "<button type='button' style='float:right;' form='taskForm' class='btn btn-primary delete_detail' id='delete_detail2'>삭제</button>";
-											str += "</div></div></div><hr>";
+											str += "</div></div></div>";
 											$("#sell_Detail_Insert_Area")
 													.after(str);
 										});
-						$('#delete_detail').click(function() {
-							$("#sell_Detail_Insert_Area").next().remove();
+						$("#sell_Detail_Insert_Area").on("click", ".deleteItemBtn", function(e){
+							
+							var currentRowCount = $("#sell_Detail_Insert_Area").find("div[class=row]").length;
+						
+							// 마지막 한줄은 살아있어야 하므로 삭제하지는 않고 값 초기화
+							if( currentRowCount == 1){ 
+								$(this).parent().parent().find("input[type=text]").val("");	
+								return;	
+							}
+							
+							$(this).parent().parent().remove();
 						});
 						$("#detail_Insert_Area")
 								.on(
@@ -192,16 +201,16 @@ table td {
 						});
 				
 	
-						 $("#detail_Insert_Area").on("click", "#choiceItemBtn",function(e){
+						 $("#sell_Detail_Insert_Area").on("click", "#choiceItemBtn",function(e){
 							
-						
+						alert(secondModalName);
+							secondModalName = "item";
 							pageNum = 1;
 							
 							clickedLocation = $(this); // 품목입력을 위해 누른 input 의 위치 저장
 							console.log("clickedLocation: " + clickedLocation);
 							
 							// 두번째 모달에서 그려내야할 정보를 지정
-							secondModalName = "item";
 							console.log("secondModalName: " + secondModalName);
 								
 							// 두번째 모달의 제목을 지정
@@ -268,7 +277,7 @@ table td {
 									$("input[name='member_no']").val(memberNo);
 									$("#choiceMemberBtn").val(memberName);
 									
-									
+									secondModalName="";
 								}	
 								
 								else if(secondModalName == "item"){
@@ -284,6 +293,7 @@ table td {
 									
 									clickedLocation.parent().parent().find('input[name=item_no]').val(itemNo);
 									$("input[name='item_code']").val(itemCode);
+									$("input[name='item_name']").val(itemName);
 									
 									
 									var form = {'itemNo':itemNo};
@@ -320,10 +330,169 @@ table td {
 				        
 				       				requestLotRecord(itemNo);
 								}
+								
+								else if(secondModalName == "order"){
+									
+									//모달창 크기 초기화
+									
+									//수주서번호
+									no = $('input[name=clientRadio]:checked').parent().next().text();
+									
+									//품목
+									
+									$.getJSON("/ordersheet/selectOrder/"+no,  
+								 			function(resdata){
+								 				console.log("resdata.order"+resdata.order);
+								 				console.log("resdata.detailList"+resdata.detailList);
+								 				var vo = resdata.order;
+								 				
+								 				//주문서 삽입
+								 				$("input[name='order_sheet_no']").val(vo.no);
+								 				
+								 				//담당자 삽입
+								 				$("input[name='member_no']").val(vo.member_no);
+								 				$("input[name='member_name']").val(vo.member_name);
+								 				
+								 				//품목삽입
+								 				var orderDetail = resdata.detailList;
+								 				
+								 				var itemDTOlist = resdata.itemDTOlist;
+								 					
+								 				alert(itemDTOlist);
+								 				
+								 				
+							 					//console.log("요청url : " + "/basicinfo/lotRest/getLot/" + orderDetail[i].item_no);
+								 			    //console.log(orderDetail[i]);
+
+								 				for(var i=0; i<orderDetail.length; i++){
+								 					
+								 					//for(var x = 0; x < itemDTOlist.length;x++){
+								 						
+								 		
+									 					var str= "";
+									 					
+									 					str += "<div class='row'>";
+									 					str += "<input type='hidden' name='item_no' value='"+orderDetail[i].item_no+"' class='form-control' readonly>";
+									 					str += "<div class='mb-3' style='width: 150px;'>";
+									 					str += "<label for='userFullname' class='form-label'>품목코드</label>";
+									 					str += "<input type='text' class='form-control choiceItemBtn' value='"+orderDetail[i].item_code+"' name='item_code' readonly>";
+									 					str += "</div><div class='mb-3' style='width: 150px;'>";
+									 					str += "<label for='userFullname' class='form-label'>상품명</label>";
+									 					str += "<input type='text' name='item_name' value='"+orderDetail[i].item_name+"' class='form-control' readonly></div>";
+									 					str += "<div class='mb-3' style='width: 150px;'>";
+									 					str += "<label for='userFullname' class='form-label'>&nbsp;&nbsp;</label>";
+									 					str += "<button type='button' class='btn btn-primary' style='display: block' data-bs-target='#secondModal' data-bs-toggle='modal' data-bs-dismiss='modal' id='choiceItemBtn'>품목 선택</button>";
+									 					str += "</div> <div class='mb-3' style='width: 150px;'>";
+									 					str += "<label for='amount' class='form-label'>판매 수량</label>";
+									 					str += "<input type='text' class='form-control' id='amount' name='amount' value='"+orderDetail[i].amount+"' placeholder='판매수량'>";
+									 					str += "</div><div class='mb-3' style='width: 150px;'>";
+									 					str += "<label for='sell_price' class='form-label'>판매 단가</label>";
+									 					str += "<input type='text' class='form-control' id='sell_price' name='sell_price' value='"+orderDetail[i].out_price+"' placeholder='판매단가' readonly>";
+									 					str += "</div> <div class='mb-3' style='width: 250px;'>";
+									 					str += "<label for='lot_code' class='form-label'>로트 번호</label>";
+									 					str += "<select name='lot_code' class='form-select' id='getLotCode'>";
+									 					
+									 					for (var j=0; j < itemDTOlist[i].lotList.length; j++ ){
+										 					str += "<option value='" + itemDTOlist[i].lotList[j] + "'>";
+								 							str += itemDTOlist[i].lotList[j] + "</option>";
+									 					}	
+									 					if(itemDTOlist.length == 0){
+								 							str += "<option value=''>품목과 일치하는 로트번호가 없습니다.</option>";
+								 						}
+									 					/* $.getJSON("/basicinfo/lotRest/getLot/" + orderDetail[i].item_no , 
+									 			 			function(list){
+									 							console.log("list: " + list);
+									 						 	var str = "";
+									 				    		for(var j = 0, len = list.length || 0; j < len; j++){
+									 				    			str += "<option value='" + list[j].code + "'>";
+									 								str += list[j].code + "</option>";
+									 							}
+									 						if(list.length == 0){
+									 							str += "<option value=''>품목과 일치하는 로트번호가 없습니다.</option>";
+									 						}
+									 						
+									 						$('#getLotCode').html(str);
+									 			 			}).fail(function(xhr, status, err){
+									 			 					alert("데이터 조회실패");
+									 			 			});  */
+		
+									 					str += "</select>";
+									 					str += "</div> <div class='mb-3'style='width: 50px;'>";
+									 					str += "<label for='userFullname' class='form-label'>&nbsp;&nbsp;</label>";
+									 					str += "<button type='button' class='btn btn-primary deleteItemBtn' style='display: block'>X</button>";
+									 					str += "</div></div>";
+									 					
+														$("#sell_Detail_Insert_Area").prepend(str);
+								 					//}
+								 				}
+									});
+								}
+							
 								secondModalName = ""; 
+							});
+							$("#choiceOrderBtn").on("click", function(e){
+								
+								pageNum = 1;
+								
+								// 두번째 모달에서 그려내야할 정보를 지정
+								secondModalName = "order";
+								console.log("secondModalName: " + secondModalName);
+								
+								// 두번째 모달의 제목을 지정
+								$("#second-modal-title").text("수주서 선택");
+								
+								// 두번째 모달의 select의 option을 그려내는 코드
+								var str = "";
+								str += "<option value='' selected>검색 선택</option>";
+								str += "<option value='member'>담당자</option>";
+								str += "<option value='client'>수주처</option>";
+								str += "<option value='item'>품목명</option>";
+								$("#searchWhatColumn").html(str);
+								
+								// 초기화 코드
+								$("#searchKeyword").val("");
+								searchWhatColumn = "";
+								searchKeyword = "";
+								
+								// 두번째 모달의 테이블의 th를 그려내는 코드
+								var str = "";
+								str += "<tr>";
+								str += "<th scope='col'></th>";
+								str += "<th scope='col'>작성일자</th>";
+								str += "<th scope='col'>담당자</th>";
+								str += "<th scope='col'>수주처</th>";
+								str += "<th scope='col'>품목명</th>";
+								str += "<th scope='col'>납기일자</th>";
+								str += "<th scope='col'>주문금액합계</th>";
+								str += "</tr>";
+								$("#secondModalThead").html(str);
+								
+								
+								// 두번째 모달의 테이블의 레코드를 그려내는 코드
+								requestClientRecord2();
 							});
 	
 	});
+	function requestClientRecord2(){
+		console.log("요청url : " + "/basicinfo/" + secondModalName + "/pages/"+ pageNum +"/" + amount + "/" + searchWhatColumn + "/" + searchKeyword)
+		//요청url
+		url = "/basicinfo/";
+		if (secondModalName == "order"){
+			url = "/ordersheet/";
+		}
+		
+		$.getJSON(url + secondModalName + "/pages/"+ pageNum +"/" + amount + "/" + searchWhatColumn + "/" + searchKeyword,  
+ 			function(resdata){
+				console.log("list: " + resdata.list); 	  			// 1페이지 레코드들이 담긴 객체
+ 				console.log("totalCount: " + resdata.totalCount); 	// 검색조건으로 뽑힌 총 레코드 수
+ 				console.log("cri: " + resdata.cri); 	  			// 검색에 사용된 기준정보가 담긴 객체
+ 				
+ 				paintRecord(resdata.list); 							// 레코드들을 그리는 함수
+ 				
+ 			}).fail(function(xhr, status, err){
+ 					alert("데이터 조회실패");
+ 			});	
+	}
 	function goModal2(no, order, member, daay) {
 		update_no = no;
 		order_no = order;
@@ -356,7 +525,37 @@ table td {
 			}
 		}
 		
-		
+		else if(secondModalName == "order"){
+			
+
+			//toStringByFormatting(new Date(2021, 0, 1));
+			// 2021-01-01
+			
+			//$('.modal2').attr('class','modal-xl');
+			
+			itemNo = new Array();
+			
+			for(var i = 0, len = list.length || 0; i < len; i++){
+				
+				
+				str += "<tr>";
+				str += "<td><input class='form-check-input' type='radio' name='clientRadio'></td>";
+				str += "<td style='display:none'>" + list[i].no +"</td>";
+				str += "<td>";
+				str += toStringByFormatting(new Date(list[i].day));
+				str += "</td>";
+				str += "<td>" + list[i].member_name +"</td>";
+				str += "<td>" + list[i].client_name +"</td>";
+				str += "<td>" + list[i].temp_item_name + "</td>";
+				str += "<td>" ;
+				str += toStringByFormatting(new Date(list[i].out_day));
+				str += "</td>";
+				str += "<td>" + numberWithCommas(list[i].total_price) +"원</td>";
+				str += "</tr>";
+				
+				
+			}
+		}
 		else if(secondModalName == "item"){
 			for(var i = 0, len = list.length || 0; i < len; i++){
 				str += "<tr>";
@@ -475,26 +674,39 @@ table td {
 		$.getJSON("/basicinfo/lotRest/getLot/" + itemNo , 
  			function(list){
 				console.log("list: " + list);
-				paintLotRecord(list);
+			 	var str = "";
+	    		for(var i = 0, len = list.length || 0; i < len; i++){
+	    			str += "<option value='" + list[i] + "'>";
+					str += list[i] + "</option>";
+				}
+			if(list.length == 0){
+				str += "<option value=''>품목과 일치하는 로트번호가 없습니다.</option>";
+			}
+			
+			$("#getLotCode").html(str);
  			}).fail(function(xhr, status, err){
  					alert("데이터 조회실패");
  			}); 
 	}
 	
-   	function paintLotRecord(list){
+	function toStringByFormatting(source, delimiter = '-') {
+	    const year = source.getFullYear();
+	    const month = leftPad(source.getMonth() + 1);
+	    const day = leftPad(source.getDate());
 
- 	 	var str = "";
- 		if(secondModalName == "item"){
-    		for(var i = 0, len = list.length || 0; i < len; i++){
-    			str += "<option value='" + list[i].code + "'>";
-				str += list[i].code + "</option>";
-			}
-    	}
-		 
-		if(list.length == 0){
-			str += "<option value=''>품목과 일치하는 로트번호가 없습니다.</option>";
-		} 
-		$("#getLotCode").html(str);
+	    return [year, month, day].join(delimiter);
+	}
+	
+	//날짜함수
+	function leftPad(value) {
+	    if (value >= 10) {
+	        return value;
+	    }
+
+	    return `0${value}`;
+	}
+	function numberWithCommas(x) {
+	    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}
 	
 </script>
@@ -505,6 +717,7 @@ table td {
 		
 		/* 비동기로 하단의 상세품목을 불러와 출력해주는 부분 */
 		$("#table1 tbody tr").on("click", function(){
+			
 			// 클릭된 수주서의 no 번호
 			var clickedMainNo = $(this).children("td")[0].innerHTML;
 			console.log("clickedMainNo: " + clickedMainNo);
@@ -512,14 +725,14 @@ table td {
 			console.log("요청url : " + "/sell/origin/detail/more/" + clickedMainNo);
 			$.getJSON("/sell/origin/detail/more/" + clickedMainNo,  
 	 			function(list){
+
 					console.log("list: " + list);
-					
 					$("#table2 tbody").empty();
 					
 					for(var i = 0, len = list.length || 0; i < len; i++){
 						
 						var str = "";
-						 
+						 alert( list[i].code);
 						str += "<tr>";
 						str += "<td style='display:none'>" + list[i].no + "</td>";
 						str += "<td style='display:none'>" + list[i].item_no + "</td>";
@@ -553,8 +766,12 @@ table td {
 <div class="main-body">
 	<div class="card">
 		<div class="card-body">
-			<div class="d-flex gap-1 mb-4 flex-wrap" style="height:38px">
-				<div class="d-flex gap-1 me-auto flex-wrap" style="height:38px">
+			<div class="d-flex gap-1 mb-4 flex-wrap">
+				<form>
+					<input type="text" class="form-control"
+						placeholder="Sold Product Search">
+				</form>
+				<div class="d-flex gap-1 me-auto flex-wrap">
 					<button
 						class="btn btn-primary d-inline-flex align-items-center gap-1"
 						data-bs-toggle="modal" data-bs-target="#Sold_Product_Add_Modal"
@@ -565,8 +782,11 @@ table td {
 								d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
 								clip-rule="evenodd"></path>
                   </svg>
-						출고 등록
+						등록
 					</button>
+
+
+
 				</div>
 				
 				<div class="search" >
@@ -597,9 +817,6 @@ table td {
 				</table>
 					</form>
 			</div>
-			</div>
-			
-			
 		</div>
 		<div class="table-responsive my-1">
 			<table class="table align-middle" id="table1">
@@ -622,7 +839,6 @@ table td {
 							<td style="text-align: center">${i.name}</td>
 							<td style="text-align: center">${i.temp_item_name}</td>
 							<td style="text-align: center">${i.client_name}</td>
-							
 							<fmt:parseDate var="inputDay" value="${i.day}"
 								pattern="yyyy-MM-dd" />
 							<fmt:formatDate value="${inputDay}" var="input"
@@ -633,7 +849,7 @@ table td {
 								<div class="btn-group btn-group-sm" role="group">
 									<button type="button" class="btn btn-light d-flex"
 										data-bs-toggle="modal" id="update_Sold"
-										onclick="goModal2('${i.no}','${i.order_no}','${i.member_no}','${input}')"
+										onclick="goModal2('${i.no}','${i.member_no}','${input}')"
 										data-bs-target="#Sold_Product_Add_Modal">
 										<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
 											fill="none" viewBox="0 0 24 24" stroke="currentColor"
@@ -670,11 +886,10 @@ table td {
 		</nav>
 	</div>
 	<br>
-	<!-- sell-Detail 영역 -->
 	<div class="card">
 		<div class="card-body">
-			<div class="card-body">
-			</div>
+			sell-Detail 영역
+			<div class="card-body"></div>
 			<div class="table-responsive my-1" id="table2">
 				<table class="table align-middle">
 					<thead>
@@ -695,13 +910,45 @@ table td {
 					</tbody>
 				</table>
 			</div>
+			<nav aria-label="Page navigation borderless example">
+				<ul class="pagination pagination-borderless justify-content-end">
+					<li class="page-item disabled"><a
+						class="page-link d-flex align-items-center px-2" href="#"
+						tabindex="-1" aria-disabled="true" aria-label="Previous"> <svg
+								width="20" height="20" xmlns="http://www.w3.org/2000/svg"
+								viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd"
+									d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+									clip-rule="evenodd"></path>
+                    </svg>
+					</a></li>
+					<li class="page-item active" aria-current="page"><a
+						class="page-link" href="javascript:void(0)">1</a></li>
+					<li class="page-item"><a class="page-link"
+						href="javascript:void(0)">2</a></li>
+					<li class="page-item"><a class="page-link"
+						href="javascript:void(0)">3</a></li>
+					<li class="page-item"><a
+						class="page-link d-flex align-items-center px-2"
+						href="javascript:void(0)" aria-label="Next"> <svg width="20"
+								height="20" xmlns="http://www.w3.org/2000/svg"
+								viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd"
+									d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+									clip-rule="evenodd"></path>
+                    </svg>
+					</a></li>
+				</ul>
+			</nav>
+
+
 		</div>
 	</div>
 	<!-- Modal Begin (Sell)-->
 	<div class="modal fade" id="Sold_Product_Add_Modal" tabindex="-1"
 		style="display: none;" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-scrollable">
-			<div class="modal-content">
+			<div class="modal-content" style="width: 1100px; right: 300px;">
 				<div class="modal-header border-0">
 					<h5 class="modal-title" id="modal-title"></h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"
@@ -713,89 +960,75 @@ table td {
 						<div class="row">
 							<input type="hidden" name="member_no" class="form-control"
 								readonly>
-							<div class="mb-3">
-								<label for="order_no" class="form-label">주문서번호</label> <input
-									type="text" name="order_no" class="form-control" id="order_no"
-									autofocus required>
+							<div class="col-sm-3">
+								<button type="button" class="btn btn-primary"
+									style="display: block; width: 150;"
+									data-bs-target="#secondModal" data-bs-toggle="modal"
+									data-bs-dismiss="modal" id="choiceOrderBtn">수주서 선택</button>
+								<input type="hidden" name="order_sheet_no">
 							</div>
 						</div>
+						<br>
 						<div class="row">
-							<div class="mb-3">
+							<div class="mb-3" style="width: 50%">
 								<label for="member_no" class="form-label">담당자 이름</label> <input
 									type="text" class="form-control choiceMemberBtn"
 									data-bs-target="#secondModal" data-bs-toggle="modal"
 									data-bs-dismiss="modal" name="member_name" id="choiceMemberBtn"
 									required readonly>
 							</div>
-							<!-- <div class="col-sm-4">
-								<label for="userFullname" class="form-label">&nbsp;&nbsp;</label>
-								<button type="button" class="btn btn-primary"
-									style="display: block" data-bs-target="#secondModal"
-									data-bs-toggle="modal" data-bs-dismiss="modal"
-									id="choiceMemberBtn">담당자 선택</button>
-							</div> -->
 						</div>
 						<div class="row">
-							<div class="mb-3">
+							<div class="mb-3" style="width: 50%">
 								<label for="day" class="form-label">판매 일자</label> <input
 									type="date" name="day" class="form-control" id="day" required
 									max="<%=sf.format(nowTime)%>">
 							</div>
 						</div>
-						<div class="mb-3">
 							<hr>
-							<!-- <button type="button" form="taskForm"
-								class="btn btn-primary px-5" id="insert_Sold_Detaill">판매
-								상세 추가</button>
-							<button type="button" form="taskForm"
-								class="btn btn-primary px-5" id="delete_detail">초기화</button> -->
-						</div>
 						<div id="sell_Detail_Insert_Area">
-							<div id="detail_Insert_Area">
-								<div class="row">
-									<input type="hidden" name="item_no" class="form-control"
-										readonly>
 
-									<div class="mb-3" style="width: 300px;">
-										<label for="userFullname" class="form-label">품목코드</label> <input
-											type="text" class="form-control choiceItemBtn"
-											 name='item_code' readonly>
-									</div>
-									<div class="col-sm-4">
-										<label for="userFullname" class="form-label">&nbsp;&nbsp;</label>
-										<button type="button" class="btn btn-primary"
-											style="display: block" data-bs-target="#secondModal"
-											data-bs-toggle="modal" data-bs-dismiss="modal"
-											id="choiceItemBtn">품목 선택</button>
-									</div>
+							<div class="row">
+								<input type="hidden" name="item_no" class="form-control"
+									readonly>
+
+								<div class="mb-3" style="width: 150px;">
+									<label for="userFullname" class="form-label">품목코드</label> <input
+										type="text" class="form-control choiceItemBtn"
+										name='item_code' readonly>
 								</div>
-								<div class="row">
-									<div class="col-sm-4" style="width: 227px;">
-										<label for="amount" class="form-label">판매 수량</label> <input
-											type="text" class="form-control" id="amount" name="amount"
-											placeholder="판매수량">
-									</div>
-									<div class="col-sm-4" style="width: 227px;">
-										<label for="sell_price" class="form-label">판매 단가</label> <input
-											type="text" class="form-control" id="sell_price"
-											name="sell_price" placeholder="판매단가" readonly>
-									</div>
+
+								<div class="mb-3" style="width: 150px;">
+									<label for="userFullname" class="form-label">상품명</label> <input
+										type="text" name='item_name' class="form-control" readonly>
 								</div>
-								<br>
-								<div class="row">
-									<div class="mb-3">
-										<label for="lot_code" class="form-label">로트 번호</label> <select
-											name="lot_code" class="form-select" id="getLotCode">
-										</select>
-									</div>
+
+								<div class="mb-3" style="width: 150px;">
+									<label for="userFullname" class="form-label">&nbsp;&nbsp;</label>
+									<button type="button" class="btn btn-primary"
+										style="display: block" data-bs-target="#secondModal"
+										data-bs-toggle="modal" data-bs-dismiss="modal"
+										id="choiceItemBtn">품목 선택</button>
 								</div>
-								<br>
-								<div class="row">
-									<div class="mb-3">
-										<label for="userFullname" class="form-label">&nbsp;&nbsp;</label>
-										<button type="button" style="float: right;" form="taskForm"
-											class="btn btn-primary delete_detail" id="delete_detail2">삭제</button>
-									</div>
+								<div class="mb-3" style="width: 150px;">
+									<label for="amount" class="form-label">판매 수량</label> <input
+										type="text" class="form-control" id="amount" name="amount"
+										placeholder="판매수량">
+								</div>
+								<div class="mb-3" style="width: 150px;">
+									<label for="sell_price" class="form-label">판매 단가</label> <input
+										type="text" class="form-control" id="sell_price"
+										name="sell_price" placeholder="판매단가" readonly>
+								</div>
+								<div class="mb-3" style="width: 250px;">
+									<label for="lot_code" class="form-label">로트 번호</label> <select
+										name="lot_code" class="form-select" id="getLotCode">
+									</select>
+								</div>
+								<div class='mb-3'style="width: 50px;">
+									<label for='userFullname' class='form-label'>&nbsp;&nbsp;</label>
+									<button type='button' class='btn btn-primary deleteItemBtn'
+										style='display: block'>X</button>
 								</div>
 							</div>
 							<hr>
@@ -908,7 +1141,7 @@ table td {
 	<!-- 두번째 모달 -->
 	<div class="modal fade" id="secondModal" tabindex="-2">
 		<div class="modal-dialog modal-dialog-scrollable">
-			<div class="modal-content">
+			<div class="modal-content" style="width: 800px; right: 200px">
 				<div class="modal-header border-0">
 					<h5 id="second-modal-title">거래처 입력</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"
@@ -970,10 +1203,3 @@ table td {
 
 <!-- bottom.jsp -->
 <%@include file="../../common/bottom.jsp"%>
-
-<script type="text/javascript">
-	/* 왼쪽 카테고리창이 해당화면에 맞게 펼쳐지게 하는 코드 */
-	$(function(){ 
-		document.getElementById('sell_info').click();
-	});
-</script>

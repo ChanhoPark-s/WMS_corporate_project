@@ -112,7 +112,7 @@ table td {
                 <div class="modal-footer border-0">
 					<form style="margin:auto;text-align:center;" onsubmit="return false;">
 						<div class="d-flex gap-1 me-auto flex-wrap">
-							<select id="searchItemWhatColumn" class="form-select" style="width: 140px;"><option value="" selected="">검색 선택</option><option value="dep">부서</option><option value="rank">직급</option><option value="name">이름</option></select>
+							<select id="searchItemWhatColumn" class="form-select" style="width: 140px;"><option value="" selected="">검색 선택</option><option value="code">코드</option><option value="name">이름</option></select>
 			              	<input type="text" id="searchItemKeyword" class="form-control" placeholder="입력" style="width: 200px; height: 38px;">
 							<button type="submit" class="btn btn-light" id="searchItemsBtn"> 검색 </button>
 						</div>			

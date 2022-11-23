@@ -21,7 +21,7 @@
 						<!-- 품목번호 및 개수 -->
 						<!-- input type='text' name='item_no' -->
 						<!-- input type='text' name='amount' -->
-						<button type="button" class="btn btn-primary " style="" data-bs-target="#secondModal" data-bs-toggle="modal" data-bs-dismiss="modal" id="choiceOrderBtn">수주서 선택</button>	
+						<button type="button" class="btn btn-primary " style="margin-bottom: 10px !important" data-bs-target="#secondModal" data-bs-toggle="modal" data-bs-dismiss="modal" id="choiceOrderBtn">수주서 선택</button>	
 						<div class="row">		
 							<div class="col-sm-3">
 								<label for="userFullname" class="form-label">납기일자</label>
@@ -90,7 +90,7 @@
 								</div>
 								<div class="col-sm-2">		
 									<label for="ware_no" class="form-label">창고명</label>
-									<select class="form-select" id="ware_no" name="ware_no" onchange="wareChangeHandler()">
+									<select class="form-select selectware" id="ware_no" name="ware_no">
 					                <option selected disabled value="">선택</option>
 										<c:forEach items="${WareList }" var="ware">
 											<option value="${ware.no }">${ware.name }(${ware.code })</option>

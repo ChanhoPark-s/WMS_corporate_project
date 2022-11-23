@@ -82,6 +82,7 @@ table td {
 						<th scope="col" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="입고일(8) | 품목번호 | 순번(3) &nbsp&nbsp&nbsp 입고와 동시에 생성됨">LOT 번호</th>
 						<th scope="col">상품코드</th>
 						<th scope="col">상품명</th>
+						<th scope="col">재고</th>
 						<th scope="col">기능</th>
 					</tr>
 				</thead>
@@ -104,9 +105,10 @@ table td {
 							</div>
 						</td> 
 						--%>
-						<td onclick="detail('${item.code}')" data-bs-toggle="modal" data-bs-target="#ClientModal" style="cursor: pointer;">${item.code }</td>
+						<td onclick="detail('${item.code}')" data-bs-toggle="modal" data-bs-target="#ClientModal" style="cursor: pointer;"><span class="badge bg-dark">${item.code }</span></td>
 						<td>${item.item_code }</td>
 						<td>${item.item_name }</td>
+						<td><fmt:formatNumber value="${item.cnt }" /> 개</td>
 						<td>
 							<div class="btn-group btn-group-sm" role="group">
 								<button type="button" class="btn btn-light d-flex text-danger" onclick="deleteClient('${item.no}')" >
