@@ -807,8 +807,10 @@ table td {
 						</table>
 					</form>
 				</div>
-			</div>
 		</div>
+		
+		<br>
+		
 		<div class="table-responsive my-1">
 			<table class="table align-middle" id="table1">
 				<thead>
@@ -825,12 +827,11 @@ table td {
 
 					<c:forEach var="i" items="${lists}">
 						<tr>
-							<td style="text-align: center;">${i.no}</td>
-							<%-- <td style="text-align: center">${i.order_no}</td> --%>
+							<td style="text-align: center">${i.no}</td>
 							<td style="text-align: center">${i.name}</td>
-							<td style="text-align: center"></td>
-							<td style="text-align: center"></td>
-
+							<td style="text-align: center">${i.client_name}</td>
+							<td style="text-align: center">${i.temp_item_name}</td>
+							
 							<fmt:parseDate var="inputDay" value="${i.day}"
 								pattern="yyyy-MM-dd" />
 							<fmt:formatDate value="${inputDay}" var="input"
@@ -841,6 +842,16 @@ table td {
 								<div class="btn-group btn-group-sm" role="group">
 									
 									<!-- 수정 끝 -->
+									<div class="btn-group btn-group-sm" role="group">
+								<button type="button" class="btn btn-light d-flex">
+									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
+										fill="none" viewBox="0 0 24 24" stroke="currentColor"
+										aria-hidden="true">
+                            <path stroke-linecap="round"
+											stroke-linejoin="round" stroke-width="2"
+											d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                          </svg>
+								</button>
 									<!-- 삭제 시작 -->
 									<button type="button" class="btn btn-light d-flex text-danger"
 										data-bs-toggle="modal" id="delete_Sold"
@@ -865,62 +876,10 @@ table td {
 		
 		<!-- 상단 페이징 넣으면 되는 위치-->
 		<nav aria-label="Page navigation borderless example">
-			<ul class="pagination pagination-borderless justify-content-end">
-				<li class="page-item disabled"><a
-					class="page-link d-flex align-items-center px-2" href="#"
-					tabindex="-1" aria-disabled="true" aria-label="Previous"> <svg
-							width="20" height="20" xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd"
-								d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-								clip-rule="evenodd"></path>
-                    </svg>
-				</a></li>
-				<li class="page-item active" aria-current="page"><a
-					class="page-link" href="javascript:void(0)">1</a></li>
-				<li class="page-item"><a class="page-link"
-					href="javascript:void(0)">2</a></li>
-				<li class="page-item"><a class="page-link"
-					href="javascript:void(0)">3</a></li>
-				<li class="page-item"><a
-					class="page-link d-flex align-items-center px-2"
-					href="javascript:void(0)" aria-label="Next"> <svg width="20"
-							height="20" xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd"
-								d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-								clip-rule="evenodd"></path>
-                    </svg>
-				</a></li>
-			</ul>
+			${pageInfo.pagingHtml}
 		</nav>
 	</div>
-	<br>
-	<div class="card">
-		<div class="card-body">
-			<div class="card-body"></div>
-			<div class="table-responsive my-1" id="table2">
-				<table class="table align-middle">
-					<thead>
-						<tr>
-							<!-- <th scope="col" style="text-align: center">판매 상세 번호</th>
-							<th scope="col" style="text-align: center">판매 번호</th> -->
-							<th scope="col" style="text-align: center">품목 코드</th>
-							<th scope="col" style="text-align: center">상품명</th>
-							<th scope="col" style="text-align: center">로트 번호</th>
-							<th scope="col" style="text-align: center">판매 수량</th>
-							<th scope="col" style="text-align: center">판매 단가</th>
-							<th scope="col" style="text-align: center">합계</th>
-						</tr>
-					</thead>
-					<tbody>
 
-
-					</tbody>
-				</table>
-			</div>
-		</div>
-	</div>
 	<!-- Modal Begin (Sell)-->
 	<div class="modal fade" id="Sold_Product_Add_Modal" tabindex="-1"
 		style="display: none;" aria-hidden="true">
@@ -1172,11 +1131,37 @@ table td {
 		</div>
 	</div>
 
-
-
-
-
 </div>
 
-<!-- bottom.jsp -->
+
+<br>
+
+<!-- 하단 테이블 -->
+
+	<div class="card">
+		<div class="card-body">
+			<div class="table-responsive my-1" id="table2">
+				<table class="table align-middle">
+					<thead>
+						<tr>
+							<!-- <th scope="col" style="text-align: center">판매 상세 번호</th>
+							<th scope="col" style="text-align: center">판매 번호</th> -->
+							<th scope="col" style="text-align: center">품목 코드</th>
+							<th scope="col" style="text-align: center">상품명</th>
+							<th scope="col" style="text-align: center">로트 번호</th>
+							<th scope="col" style="text-align: center">판매 수량</th>
+							<th scope="col" style="text-align: center">판매 단가</th>
+							<th scope="col" style="text-align: center">합계</th>
+						</tr>
+					</thead>
+					<tbody>
+
+
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+	<!-- bottom.jsp -->
 <%@include file="../../common/bottom.jsp"%>
