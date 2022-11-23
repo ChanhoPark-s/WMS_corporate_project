@@ -172,11 +172,11 @@ table td {
                     <th scope="col"></th>
                     <th scope="col">품목코드</th>
                     <th scope="col">품목명</th>
-                    <th scope="col">발주수량</th>
                     <th scope="col">입고단가</th>
                     <th scope="col">합계</th>
                     <th scope="col">입고예정창고</th>
-                    <th scope="col">진행상태</th>
+                    <th scope="col">발주수량</th>
+                    <th scope="col" style="display: none;">진행상태</th>
                   </tr>
                 </thead>
                 <tbody id="detailList">
@@ -321,9 +321,7 @@ $('.tr').find('td').not('td:last-child').on('click',function(){
 	                + '<td>'
 	                + pDetail[i].item_Name
 	                + '</td>'
-	                + '<td>'
-	                + pDetail[i].amount
-	                + '개</td>'
+	               
 	                + '<td>'
 	                + numberWithCommas(pDetail[i].in_PRICE)
 	                + '원</td>'
@@ -334,6 +332,9 @@ $('.tr').find('td').not('td:last-child').on('click',function(){
 	                + pDetail[i].ware_Name
 	                + '</td>'
 	                + '<td>'
+	                + pDetail[i].amount
+	                + '개</td>'
+	                + '<td style="display: none;>'
 	                + status(pDetail[i].status)
 	                + '</td>'
 	           	    + '</tr>'
