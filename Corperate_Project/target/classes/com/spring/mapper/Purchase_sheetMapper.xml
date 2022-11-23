@@ -84,6 +84,14 @@
 		]]>
 	</update>
 	
+	<!--입고완료 확인함 상태:입고완료 -->
+	<update id="updateStatus">
+		update Purchase_sheet
+		set status = 1
+		where status = 0 
+		and no = #{no}
+	</update>
+	
 	<!-- 삭제버튼을 누름 상태:취소됨 -->
 	<update id="delete">
 		update Purchase_sheet set status=2 where no=#{no} and status=0
@@ -148,6 +156,13 @@
 	
 	<update id="deleteDetail">
 		update Purchase_sheet_Detail set status=2 where Purchase_sheet_no=#{no} and status=0
+	</update>
+	
+	<update id="updateDetailStatus">
+	update Purchase_sheet_Detail
+		set status = 1 
+		where status = 0
+		and Purchase_sheet_No = #{no}
 	</update>
 	
 

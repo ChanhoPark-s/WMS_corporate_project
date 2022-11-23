@@ -41,6 +41,29 @@
 		on iw.cell_no =
 		c.no
 	</select>
+	
+	<select id="selectSubAllByPurchaseNo"
+		resultType="com.spring.domain.Input_WareHouse_DetailVO">
+		select iw.no, iw.input_warehouse_no,iw.purchase_Sheet_No, iw.qty, it.code
+		item_code, it.name item_name, iw.status
+		, iw.lot_code, w.name as ware_name, a.name as area_name, r.name as
+		rack_name, c.name as cell_name
+		from(select *
+		from input_warehouse_detail
+		where purchase_sheet_no = #{mainNo}) iw inner join item it
+		on iw.item_no =
+		it.no
+		inner join (select * from warehouse) w
+		on iw.ware_no = w.no
+		inner join (select * from area) a
+		on iw.area_no =
+		a.no
+		inner join (select * from rack) r
+		on iw.rack_no = r.no
+		inner join (select * from cell) c
+		on iw.cell_no =
+		c.no
+	</select>
 
 	<select id="getLotCode" resultType="String">
 		select GENERATE_LOT(#{no})

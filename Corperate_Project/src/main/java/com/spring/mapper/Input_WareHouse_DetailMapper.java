@@ -14,4 +14,7 @@ public interface Input_WareHouse_DetailMapper {
 	public int createLot(Input_WareHouse_DetailVO vo);
 	public List<Input_WareHouse_DetailVO> getListWithPaging(Criteria cri);
 	public int getCountAll(Criteria cri);
+	
+	//발주에서 입고디테일조회
+	public List<Input_WareHouse_DetailVO> selectSubAllByPurchaseNo(int mainNo);
 }

@@ -374,9 +374,13 @@ function makeRecord(list,totalCount,cri){
 				retabledata +=	'<tr>'+
 									'<td colspan="8">'+'현재 선택한 랙은 재고 물품이 없습니다.'+'</td>'+
 								'</tr>';
-			}else{
+			}else if(id.indexOf('cell')>=0){
 				retabledata +=	'<tr>'+
 									'<td colspan="8">'+'현재 선택한 셀은 재고 물품이 없습니다.'+'</td>'+
+								'</tr>';
+			}else{
+				retabledata +=	'<tr>'+
+									'<td colspan="8">'+'재고 물품이 없습니다.'+'</td>'+
 								'</tr>';
 			}
 		}

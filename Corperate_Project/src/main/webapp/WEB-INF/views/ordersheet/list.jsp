@@ -43,7 +43,7 @@ table td {
 <!-- 상단 -->
 <div class="card">
 	<div class="card-body">
-		<div class="d-flex gap-1 mb-4 flex-wrap" style="height:38px">
+		<div class="d-flex gap-1 mb-4 flex-wrap" style="height:38px;">
 			<div class="d-flex gap-1 me-auto flex-wrap" style="height:38px">
 				<button
 					class="btn btn-primary d-inline-flex align-items-center gap-1"
@@ -217,6 +217,8 @@ table td {
 						<th scope="col">품목명</th>
 						<th scope="col">취급처</th>
 						<th scope="col">수주수량</th>
+						<th scope="col">재고수량</th>
+						<th scope="col">부족수량</th>
 						<th scope="col">판매단가</th>
 						<th scope="col">합계</th>
 					</tr>
@@ -1002,6 +1004,17 @@ table td {
 						
 						var str = "";
 						
+						//부족수량의 결과를 넣기 위한 변수
+						var result="";
+						
+						//부족수량은 재고수량-수주수량 양수시 0, 음수시는 수주수량-재고수량
+						if(list[i].current_amount-list[i].amount>0){
+							result = 0;
+						}
+						else{
+							result = list[i].amount-list[i].current_amount;
+						}
+						
 						str += "<tr>";
 						/* str += "<td><div><input class='form-check-input' type='checkbox' value=''></div></td>"; */
 						str += "<td style='display:none'>" + list[i].no + "</td>";
@@ -1014,6 +1027,8 @@ table td {
 						str += "<td>" + list[i].item_name + "</td>";
 						str += "<td>" + list[i].client_name + "</td>";
 						str += "<td>" + list[i].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " 개</td>";
+						str += "<td>" + list[i].current_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " 개</td>";
+						str += "<td style='color:red;'>" + result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " 개</td>";
 						str += "<td>" + list[i].out_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " 원</td>";
 						str += "<td>" + (list[i].amount * list[i].out_price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " 원</td>";
 						str += "</tr>";
