@@ -94,7 +94,7 @@ table td {
                     <th scope="col" nowrap>품목명</th>
                     <th scope="col">납기일자</th>
                     <th scope="col">총 구매단가</th>
-                    <th scope="col" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="접수완료 - (발주중) - 판매완료">진행상태</th>
+                    <th scope="col" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="발주중 - 입고완료 - 취소됨">진행상태</th>
                     <th scope="col">기능</th>
                   </tr>
                 </thead>
