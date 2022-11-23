@@ -15,7 +15,7 @@
 				<div class="modal-body">
 						<!-- 컨트롤러로 넘기는 정보 -->
 						<!-- out_day -->
-						<input type="hidden" name="order_no" class="form-control" readonly>
+						<!-- <input type="hidden" name="order_no" class="form-control" readonly> -->
 						<input type="hidden" name="member_no" class="form-control" readonly>
 						<input type="hidden" name="client_no" class="form-control" readonly>
 						<!-- 품목번호 및 개수 -->
@@ -25,7 +25,7 @@
 						<div class="row">		
 							<div class="col-sm-6">
 								<label for="userFullname" class="form-label">납기일자</label>
-									<input type="date" name="delivery_date" class="form-control">
+									<input type="date" name="delivery_date" class="form-control" onchange="calendarChangeHandler()">
 							</div>
 							<div class="col-sm-3">
 								<label for="userFullname" class="form-label">&nbsp;&nbsp;</label>
@@ -68,7 +68,7 @@
 						<div id="modalItemDetail">
 							<div class="row">		
 								<input type="hidden" name="item_no" class="form-control" readonly>
-								<input type="hidden" name="detail_no" class="form-control" readonly>
+								<!-- <input type="hidden" name="detail_no" class="form-control" readonly> -->
 							
 								<div class="col-sm-2">		
 									<label for="userFullname" class="form-label">품목코드</label>
@@ -93,7 +93,7 @@
 								</div>
 								<div class="col-sm-2">		
 									<label for="ware_no" class="form-label">창고명</label>
-									<select class="form-select" id="ware_no" name="ware_no">
+									<select class="form-select" id="ware_no" name="ware_no" onchange="wareChangeHandler()">
 					                <option selected disabled value="">선택</option>
 										<c:forEach items="${WareList }" var="ware">
 											<option value="${ware.no }">${ware.name }(${ware.code })</option>

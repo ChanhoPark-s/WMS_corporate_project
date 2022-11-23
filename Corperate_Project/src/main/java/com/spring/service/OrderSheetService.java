@@ -25,5 +25,5 @@ public interface OrderSheetService {
 	public PageDTO<OrderSheetVO> getListPage(Criteria cri);
 	
 	//발주할때 수주참조하면 수주상태 준비완료>발주중
-	public void updateStatus(int order_no);
+	public void updateStatus(String order_no);
 }

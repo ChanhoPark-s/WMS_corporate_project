@@ -40,9 +40,10 @@ public interface OrderSheetMapper {
 	public int getCountAll(@Param("cri") Criteria cri);
 	
 	//수주상태 준비완료 > 발주중
-	public void updateStatus(int order_no);
 	
+	// 사실상 거의 같은 기능으로 수주서의 상태를 변경하는 메소드
 	int updateStatusOrderSheet(@Param("ordersheetno") int ordersheetno, @Param("status") int status);
+	public void updateStatus(String order_no);
 }
 
 
