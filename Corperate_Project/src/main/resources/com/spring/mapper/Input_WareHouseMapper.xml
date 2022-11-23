@@ -56,16 +56,27 @@
 			#{arr}
 			</foreach>
 		</if>
+		<if test="whatColumn=='lot_code' and keyword != ''"> 
+			and no in 
+			<foreach collection="main_nos" item="arr" open='(' close=")" separator=",">
+			#{arr}
+			</foreach>
+		</if>
 		
 		order by no desc offset #{beginRow} rows fetch next #{pageSize} rows only
 	</select>
 	
 	<select id="selectAllMainNoByItemName" resultType="int">
 		select distinct(INPUT_WAREHOUSE_NO)
-		from(select od.no, od.INPUT_WAREHOUSE_NO, od.qty, it.code item_code, it.name item_name, it.in_price, it.out_price  
+		from(select od.no, od.INPUT_WAREHOUSE_NO, od.qty, od.lot_code, it.code item_code, it.name item_name, it.in_price, it.out_price  
 	    	 from input_warehouse_detail od inner join item it
 	    	 on od.item_no = it.no) 
-		where item_name like '%' ||  #{keyword} || '%'
+	    <if test="whatColumn=='item' and keyword != ''">
+			where item_name like '%' ||  #{keyword} || '%'
+	    </if>	 
+	    <if test="whatColumn=='lot_code' and keyword != ''">
+			where lot_code like '%' ||  #{keyword} || '%'
+	    </if>	 
 	</select>
 	
 	<delete id="deleteInputWarehouse">
