@@ -35,6 +35,7 @@ public class SellDetailServiceImpl implements SellDetailService{
 	
 	@Override
 	public List<SellDetailVO> selectAll(Client_Paging pageInfo) {
-		return mapper.selectAll(pageInfo);
+		List<SellDetailVO> dlists =mapper.selectAll(pageInfo);
+		return dlists;
 	}
 }

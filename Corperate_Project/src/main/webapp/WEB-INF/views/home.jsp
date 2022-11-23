@@ -483,9 +483,9 @@ $(function() {
 	
 	var modalForm = $("#modalForm");
 	 function insertBtn(){
+		 clearModal();
 		 document.getElementById('no').value='123';
 		 readonly(false);
-		 clearModal();
 		$(".modal").find("#modal-title").text("등록하기");
 		$(".modal").find("#modaladdBtn").show();
 		$(".modal").find('#modaladdBtn').text("등록");
@@ -505,6 +505,7 @@ $(function() {
 	};
 
 	function detail(no){
+		
 		document.getElementById('no').value=no;
 		$(".modal").find("#modal-title").text("공지사항");
 		$(".modal").find('#modaladdBtn').hide();

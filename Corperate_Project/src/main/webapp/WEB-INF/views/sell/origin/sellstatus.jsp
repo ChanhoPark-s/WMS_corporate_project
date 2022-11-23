@@ -1,27 +1,30 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
+<style>
+#keyword {
+	align:right;
+}
+</style>
 <!-- top.jsp -->
 <%@include file="../../common/top.jsp"%>
 
 <!-- 상단 -->
 <div class="card">
 	<div class="card-body">
-		<!-- <div class="d-flex gap-1 mb-4 flex-wrap">
-			<form action="/sell/origin/sellstatus" method="get"> 
+		<div class="d-flex gap-1 mb-4 flex-wrap">
+			<form action="/sell/origin/sellstatus" method="get" id="keyword"> 
 			<table>
 			<tr>
-				<td><select name="whatColumn" id="whatColumn" class="dselect form-select" data-dselect-clearable="true">
-					<option value="">선택</option>
-					<option value="item_name">품목명</option>
+				<td><select name="whatColumn" id="whatColumn" class="dselect form-select" data-dselect-clearable="true"style="display:none">
+					<option value="" >선택</option>
 				</select></td>
 				<td>
-				<input type="text" class="form-control" placeholder="입력 후 Enter" name="keyword" id="keyword">
+				<input type="text" class="form-control" placeholder="품목명 입력 후 Enter" name="keyword" id="keyword">
 				</td>
 			</tr>
 			</table>
 			</form>
-		</div> -->
+		</div> 
 		<div class="table-responsive my-1">
 			<table class="table align-middle" id="table">
 				<thead>
@@ -46,7 +49,7 @@
 					<td>
 					<fmt:formatNumber pattern="###,###" value="${status.out_price}" var="out_price"/>${out_price} 원</td>
 					<td>${status.amount}</td>
-					<td><fmt:formatNumber pattern="###,###" value="${(status.out_price - status.in_price)*status.amount}" var="out_price"/>${out_price} 원</td>
+					<td><fmt:formatNumber pattern="###,###" value="${status.profit}" var="profit"/>${profit} 원</td>
 					</tr>
 				</c:forEach>
 				</tbody>
@@ -61,4 +64,3 @@
 
 <!-- bottom.jsp -->
 <%@include file="../../common/bottom.jsp"%>
-<br>
