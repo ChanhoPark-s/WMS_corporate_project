@@ -57,6 +57,7 @@ public class Input_WareHouseServiceImpl implements Input_WareHouseService{
 			detailMapper.createLot(detailVo);
 			
 			detailMapper.inputWarehouseDetail(detailVo); 
+			
 			if(detailMapper.insert(detailVo) != 1) {
 				return -1;
 			}

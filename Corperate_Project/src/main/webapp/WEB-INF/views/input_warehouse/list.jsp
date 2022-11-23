@@ -295,7 +295,7 @@ table td {
 								</div>
 								<div class="col-sm-2">		
 									<label for="userFullname" class="form-label">수량</label>
-									<input type="text" name="QTY" class="form-control"  onkeyup="qtyChangeHandler()">
+									<input type="text" name="QTY" class="form-control">
 									<div class="invalid-feedback">수량 입력요망</div>
 								</div>
 								<div class="col-sm-2">	
@@ -969,6 +969,7 @@ table td {
 		 				
 		 				//날짜 삽입
 		 				$("input[name='input_day']").val(vo.day);
+		 				$("input[name='input_day']").attr("class","form-control is-valid");
 		 				
 		 				//담당자 삽입
 		 				$("input[name='member_no']").val(vo.member_no);
@@ -991,7 +992,6 @@ table td {
 		 					
 		 					var str = "<div class='row'>";
 		 					str += "<input type='hidden' name='item_no' class='form-control' value='" + orderDetail[i].item_no + "' readonly>"; 
-		 					str += "<input type='hidden' name='detail_no' class='form-control' value='" + orderDetail[i].no + "' readonly>"; 
 		 					str += "<div class='col-sm-3'>";
 		 					str += "<label for='userFullname' class='form-label'>품목코드</label>";
 		 					str += "<input type='text' class='form-control choiceItemBtn' value='" + orderDetail[i].item_code + "' readonly>";
@@ -1007,10 +1007,12 @@ table td {
 		 					str += "<div class='col-sm-2'>";
 		 					str += "<label for='userFullname' class='form-label'>수량</label>";
 		 					str += "<input type='text' name='QTY' value='" + orderDetail[i].amount + "' class='form-control'>";
+		 					str += "<div class='invalid-feedback'>수량 입력요망</div>";
 		 					str += "</div>";
 		 					str += "<div class='col-sm-2'>";
 		 					str += "<label for='userFullname' class='form-label'>&nbsp;&nbsp;</label>";
 		 					str += "<button type='button' class='btn btn-primary deleteItemBtn' style='display:block'>삭제</button>";
+		 					str += "<input type='hidden' name='detail_no' class='form-control' value='" + orderDetail[i].no + "' readonly>"; 
 		 					str += "</div>";
 		 					str += "</div>";
 		 					
@@ -1047,6 +1049,7 @@ table td {
 		str += "<div class='col-sm-2'>";
 		str += "<label for='userFullname' class='form-label'>수량</label>";
 		str += "<input type='text' name='QTY' class='form-control'>";
+		str += "<div class='invalid-feedback'>수량 입력요망</div>";
 		str += "</div>";
 		str += "<div class='col-sm-2'>";
 		str += "<label for='userFullname' class='form-label'>&nbsp;&nbsp;</label>";
@@ -1255,52 +1258,62 @@ table td {
 		
 		
 		//form 전송전에 빈줄 삭제
-		var allItemCodeInputs = $("#modalItemDetail").find(".choiceItemBtn");
+		var allItemCodeInputs = $("#modalItemDetail").find("input[name='item_no']");
 		var currentRowCount = allItemCodeInputs.length; 
 		
-		console.log("currentRowCount: " + currentRowCount);
+		console.log("currentRowCount(빈줄을 제거하기전 전체 row 수): " + currentRowCount);
 		
 		for(var i = currentRowCount-1; i >= 0; i--){
-			console.log(allItemCodeInputs[i].value);
+			console.log("allItemCodeInputs[i].value: " + i +" " + allItemCodeInputs[i].value);
 			if(allItemCodeInputs[i].value == "" && i != 0){
 				$("#modalItemDetail div[class=row]").eq(i).remove();
 			}	
 		}
 		
-		//유효성 검사하는 부분
+		var isValid = true;
+		
 		if($("input[name='input_day']").val() == ""){
 			$("input[name='input_day']").attr("class","form-control is-invalid");
 			//$("#client_code").focus();
-			return;
+			isValid = false;
 	    }
 		if($("#member_dep_name").val() == ""){
 	    	$("#member_dep_name").attr("class","form-control is-invalid");
 	    	$("#member_name").attr("class","form-control is-invalid");
-	    	return;
+	    	isValid = false;
 	    }
 		if($("#client_code").val() == ""){
 			$("#client_code").attr("class","form-control is-invalid");
 			$("#client_name").attr("class","form-control is-invalid");
-			return;
+			isValid = false;
 		}
 		if($("#ware_name").val() == ""){
 			$("#ware_name").attr("class","form-control is-invalid");
-			return;
+			isValid = false;
 		}
 		
 		//모든 요소를 돌아보고 처리해야함.
 		$("#modalItemDetail .row").eq(i).find("input").each(function(index){
 			if(index == 1 && $(this).val() == ""){
 				$(this).attr("class","form-control is-invalid choiceItemBtn");
+				isValid = false;
 			}
-			return;
 		});
 		
-		if($("input[name='QTY']").val() == ""){
-			$("input[name='QTY']").attr("class","form-control is-invalid");	
-			return;
+		//수량관련 유효성검사		
+		for(var i = 0; i<$("#modalItemDetail .row").length; i++){
+			$("#modalItemDetail .row").eq(i).find("input").each(function(index){
+				if(index == 4 && $(this).val() == ""){
+					$(this).attr("class","form-control is-invalid choiceItemBtn");
+					isValid = false;
+				}
+			});
 		}
 		
+		if(isValid == false){
+			return;
+		}
+		console.log("isValid:" + isValid);
 		//form submit
 		$("#firstModalForm").submit();
 	});
@@ -1308,7 +1321,14 @@ table td {
 	function calendarChangeHandler(){
 		$("input[name='input_day']").attr("class","form-control is-valid");
 	}
-	function qtyChangeHandler(){
-		$("input[name='QTY']").attr("class","form-control is-valid");
-	} 
+	/* 이하 등록모달폼, 수정모달폼 유효성 검사  */
+	$("#modalItemDetail").on("keyup", "input[name='QTY']", function(){
+		$(this).attr("class","form-control is-valid");
+		
+		if(isNaN($(this).val())){
+			alert("수량은 숫자만 입력 가능합니다.");
+			$(this).val("");
+			$(this).focus();
+		}
+	});
 </script>
