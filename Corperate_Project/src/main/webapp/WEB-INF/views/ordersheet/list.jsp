@@ -1069,7 +1069,7 @@ table td {
 		$("#setSellCompleteStatus").on("click", function(){
 			
 			if(clickedMainNo != ""){
-				location.href = "/ordersheet/statuschange?ordersheetno=" + clickedMainNo + " &status=2";
+				location.href = "/ordersheet/statuschange?ordersheetno=" + clickedMainNo + "&status=2";
 			}
 			
 		});

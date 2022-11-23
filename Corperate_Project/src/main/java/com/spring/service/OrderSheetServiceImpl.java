@@ -225,4 +225,9 @@ public class OrderSheetServiceImpl implements OrderSheetService{
 		mapper.updateStatus(order_no);
 		
 	}
+
+	@Override
+	public int changeStatusOrderSheet(int ordersheetno, int status) {
+		return mapper.updateStatusOrderSheet(ordersheetno, status);
+	}
 }
