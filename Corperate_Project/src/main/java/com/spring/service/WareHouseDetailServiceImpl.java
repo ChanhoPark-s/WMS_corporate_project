@@ -78,4 +78,13 @@ public class WareHouseDetailServiceImpl implements WareHouseDetailService{
 		
 		return pageDTO;
 	}
+
+	@Override
+	public PageForWareHouseDTO<WareHouseDetailVO> getAllListPage(CriteriaForWareHouse cri) {
+		
+		int totalCount = mapper.getCountWareHouseDetailAll(cri);
+		List<WareHouseDetailVO> list = mapper.getWareHouseDetailAllListWithPaging(cri); 
+		PageForWareHouseDTO<WareHouseDetailVO> pageDTO = new PageForWareHouseDTO<WareHouseDetailVO>(totalCount, list, cri);
+		return pageDTO;
+	}
 }

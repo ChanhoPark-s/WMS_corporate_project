@@ -12,7 +12,7 @@ select
 from
     warehouse_detail wd, item i
 where
-    wd.item_no = i.no(+)
+    wd.item_no = i.no
     and wd.ware_no = #{ware_no}
 </select>
 <select id="selectStockByAreaNo" resultType="com.spring.domain.WareHouseDetailVO" parameterType="com.spring.domain.WareHouseDetailVO">
@@ -23,7 +23,7 @@ select
 from
     warehouse_detail wd, item i
 where
-    wd.item_no = i.no(+)
+    wd.item_no = i.no
     and wd.ware_no = #{ware_no}
     and wd.area_no = #{area_no}
 </select>
@@ -35,7 +35,7 @@ select
 from
     warehouse_detail wd, item i
 where
-    wd.item_no = i.no(+)
+    wd.item_no = i.no
 	and wd.ware_no = #{ware_no}
     and wd.area_no = #{area_no}
     and wd.rack_no = #{rack_no}
@@ -48,7 +48,7 @@ select
 from
     warehouse_detail wd, item i
 where
-    wd.item_no = i.no(+)
+    wd.item_no = i.no
 	and wd.ware_no = #{ware_no}
     and wd.area_no = #{area_no}
     and wd.rack_no = #{rack_no}
@@ -199,17 +199,23 @@ end;
 		<![CDATA[
 		select
 		    no, lot_code, amount, ordered_amount, item_no,
+		    ware_name, area_name, rack_name, cell_name,
 		    ware_no, area_no, rack_no, cell_no,
 		    i_no, code, name, in_price, out_price, image
 		from(
 		    select
 			    rownum rn, wd.no, wd.lot_code, wd.amount, wd.ordered_amount, wd.item_no,
 			    wd.ware_no, wd.area_no, wd.rack_no, wd.cell_no,
+			    w.name ware_name, a.name area_name, r.name rack_name, c.name cell_name,
 			    i.no i_no, i.code, i.name, i.in_price, i.out_price, i.image
 		    from
-		    	warehouse_detail wd, item i
+		    	warehouse_detail wd, item i, warehouse w, area a, rack r, cell c
 		    where
-		    	wd.item_no = i.no(+)
+		    	wd.item_no = i.no
+		    	and wd.ware_no = w.no
+                and wd.area_no = a.no
+                and wd.rack_no = r.no
+                and wd.cell_no = c.no
                 and wd.ware_no = #{ware_no}
                 and rownum <= #{pageNum} * #{amount}
 		]]>
@@ -217,10 +223,10 @@ end;
 		        <if test="rack_no != 0">and wd.rack_no = #{rack_no}</if>
 		        <if test="cell_no != 0">and wd.cell_no = #{cell_no}</if>
 			    <if test="whatColumn=='lot_code' and keyword != null"> and lot_code like '%' ||  #{keyword} || '%' </if>
-			    <if test="whatColumn=='item_name' and keyword != null"> and name like '%' ||  #{keyword} || '%' </if>
+			    <if test="whatColumn=='item_name' and keyword != null"> and i.name like '%' ||  #{keyword} || '%' </if>
 		    
 		<![CDATA[    
-			order by no
+			order by ware_no, area_no, rack_no, cell_no
 			)
 		where rn > (#{pageNum} - 1) * #{amount}
 		]]>
@@ -233,19 +239,82 @@ end;
 		    (select
 		        wd.no, wd.lot_code, wd.amount, wd.ordered_amount, wd.item_no,
 		        wd.ware_no, wd.area_no, wd.rack_no, wd.cell_no,
+		        w.name ware_name, a.name area_name, r.name rack_name, c.name cell_name,
 		        i.no i_no, i.code, i.name, i.in_price, i.out_price, i.image
 		    from
-		        warehouse_detail wd, item i
+		        warehouse_detail wd, item i, warehouse w, area a, rack r, cell c
 		    where
-		        wd.item_no = i.no(+)
+		        wd.item_no = i.no
+		        and wd.ware_no = w.no
+                and wd.area_no = a.no
+                and wd.rack_no = r.no
+                and wd.cell_no = c.no
 		        and wd.ware_no = #{ware_no}
 		        <if test="area_no != 0">and wd.area_no = #{area_no}</if>
 		        <if test="rack_no != 0">and wd.rack_no = #{rack_no}</if>
 		        <if test="cell_no != 0">and wd.cell_no = #{cell_no}</if>
 		        
 				<if test="whatColumn=='lot_code' and keyword != null"> and lot_code like '%' ||  #{keyword} || '%' </if>
-				<if test="whatColumn=='item_name' and keyword != null"> and name like '%' ||  #{keyword} || '%' </if>
+				<if test="whatColumn=='item_name' and keyword != null"> and i.name like '%' ||  #{keyword} || '%' </if>
 		    )
 		where no>0
+	</select>
+	
+	<!-- 이하 모든 WareHouseDetail가져오기위한코드 -->
+	<select id="getCountWareHouseDetailAll" resultType="int">
+		select
+		    count(*)
+		from
+		    (select
+		        wd.no, wd.lot_code, wd.amount, wd.ordered_amount, wd.item_no,
+		        wd.ware_no, wd.area_no, wd.rack_no, wd.cell_no,
+		        w.name ware_name, a.name area_name, r.name rack_name, c.name cell_name,
+		        i.no i_no, i.code, i.name, i.in_price, i.out_price, i.image
+		    from
+		        warehouse_detail wd, item i, warehouse w, area a, rack r, cell c
+		    where
+		        wd.item_no = i.no
+		        and wd.ware_no = w.no
+			    and wd.area_no = a.no
+			    and wd.rack_no = r.no
+			    and wd.cell_no = c.no
+		        
+				<if test="whatColumn=='lot_code' and keyword != null"> and lot_code like '%' ||  #{keyword} || '%' </if>
+				<if test="whatColumn=='item_name' and keyword != null"> and i.name like '%' ||  #{keyword} || '%' </if>
+		    )
+		where no>0
+	</select>
+	
+	<select id="getWareHouseDetailAllListWithPaging" resultType="com.spring.domain.WareHouseDetailVO">
+		<![CDATA[
+		select
+		    no, lot_code, amount, ordered_amount, item_no,
+		    ware_name, area_name, rack_name, cell_name,
+		    ware_no, area_no, rack_no, cell_no,
+		    i_no, code, name, in_price, out_price, image
+		from(
+		    select
+		        rownum rn, wd.no, wd.lot_code, wd.amount, wd.ordered_amount, wd.item_no,
+		        wd.ware_no, wd.area_no, wd.rack_no, wd.cell_no,
+		        w.name ware_name, a.name area_name, r.name rack_name, c.name cell_name,
+		        i.no i_no, i.code, i.name, i.in_price, i.out_price, i.image
+		    from
+		        warehouse_detail wd, item i, warehouse w, area a, rack r, cell c
+		    where
+		        wd.item_no = i.no
+		        and wd.ware_no = w.no
+			    and wd.area_no = a.no
+			    and wd.rack_no = r.no
+			    and wd.cell_no = c.no
+                and rownum <= #{pageNum} * #{amount}
+		]]>
+			    <if test="whatColumn=='lot_code' and keyword != null"> and lot_code like '%' ||  #{keyword} || '%' </if>
+			    <if test="whatColumn=='item_name' and keyword != null"> and i.name like '%' ||  #{keyword} || '%' </if>
+		    
+		<![CDATA[    
+			order by ware_no, area_no, rack_no, cell_no
+			)
+		where rn > (#{pageNum} - 1) * #{amount}
+		]]>
 	</select>
 </mapper>

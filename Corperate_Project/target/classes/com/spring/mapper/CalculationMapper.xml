@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.spring.mapper.CalculationMapper">
+	<select id="getAllCount" resultType="int">
+		select count(*) from 
+		<if test="string=='order'">order_sheet</if>
+		<if test="string=='purchase'">purchase_sheet</if>
+		<if test="string=='sell'">sell</if>
+	</select>
+	
+	<select id="getTotalMoney" resultType="int">
+		select
+		<if test="string=='order'"> sum(i.out_price*o.amount) from order_detail o , item i where o.item_no = i.no</if>
+		<if test="string=='purchase'"> sum(i.out_price*p.amount) from purchase_sheet_detail p, item i where p.item_no=i.no </if>
+		<if test="string=='sell'"> sum(i.out_price*s.amount) from sell_detail s,item i where s.item_no=i.no</if>
+	</select>
+	
+	<select id="getCountClient" resultType="int">
+		select count(*) from client where
+		<if test="string=='수주처'">category='수주처'</if>
+		<if test="string=='발주처'">category='발주처'</if>
+	</select>
+	<select id="getCountMember" resultType="int">
+		select count(*) from member
+	</select>
+	<select id="getCountItem" resultType="int">
+		select count(*) from item
+	</select>
+	
+</mapper>

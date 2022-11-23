@@ -17,6 +17,4 @@ public interface SellService {
 	public void update(SellVO sell);
 
 	public List<SellDetailVO> getSubList(int mainNo);
- 
-
 }
