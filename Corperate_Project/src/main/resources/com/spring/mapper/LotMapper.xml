@@ -5,10 +5,13 @@
 
 <mapper namespace="com.spring.mapper.LotMapper">
 <select id="GetAll" resultType="com.spring.domain.LotVO">
-		select l.no,l.code,l.item_no,i.name item_name from lot l ,item i where i.no=l.item_no 
+		select *
+		from(
+		select l.no,l.code,l.item_no,i.name item_name,i.code item_code from lot l ,item i where i.no=l.item_no 
 		<if test="whatColumn=='code'">and l.code like '%' ||  #{keyword} || '%'</if>
 		<if test="whatColumn=='name'">and i.name like '%' ||  #{keyword} || '%'</if>
 		ORDER BY no desc OFFSET #{beginRow} ROWS FETCH NEXT #{pageSize} ROWS ONLY
+		)
 </select>
 
 <select id="getTotalCount" resultType="int">
@@ -18,7 +21,7 @@
 </select>
 
 <delete id="deleteOne">
-	delete lot where no = #{value}
+	delete lot where no = #{lot_no}
 </delete>
 
 <select id="getOne" resultType="com.spring.domain.LotVO">

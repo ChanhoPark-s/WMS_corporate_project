@@ -313,4 +313,13 @@ public class WarehouseController {
 		List<RackVO> lists = rackservice.getListByAreaNo(checkno);
 		return new Gson().toJson(lists);
 	}
+	//셀이 가진 구역일련번호에따른 셀가져오기
+	@ResponseBody
+	@PostMapping(value="/OptionsByRackLocationNo", produces = "application/text; charset=utf8")
+	public String selectRackByRackLocation(@RequestParam(value="no",required = false) String no) {
+		
+		int checkno = Integer.parseInt(no);
+		List<CellVO> lists = cellservice.getListByRackNo(checkno);
+		return new Gson().toJson(lists);
+	}
 }

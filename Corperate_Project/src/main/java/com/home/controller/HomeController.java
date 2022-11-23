@@ -42,6 +42,10 @@ public class HomeController {
 	model.addAttribute("purchase_Money",service.getTotalMoney("purchase"));
 	model.addAttribute("sell_Count",service.getAllCount("sell"));
 	model.addAttribute("sell_Money",service.getTotalMoney("sell"));
+	model.addAttribute("sellClientCount",service.getCountClient("수주처"));
+	model.addAttribute("buyClinetCount",service.getCountClient("발주처"));
+	model.addAttribute("memberCount",service.getCountMember());
+	model.addAttribute("itemCount",service.getCountItem());
 	
 	List<BoardVO> lists = bservice.list();
 	model.addAttribute("lists", lists);

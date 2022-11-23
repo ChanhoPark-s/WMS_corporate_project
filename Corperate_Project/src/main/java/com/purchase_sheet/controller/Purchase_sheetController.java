@@ -9,34 +9,27 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.google.gson.Gson;
 import com.spring.domain.ClientVO;
 import com.spring.domain.ItemVO;
-import com.spring.domain.MemberVO;
-import com.spring.domain.PageDTO;
 import com.spring.domain.Purchase_sheetVO;
 import com.spring.domain.Purchase_sheet_DetailVO;
 import com.spring.domain.SearchVO;
 import com.spring.domain.WareHouseVO;
+import com.spring.mapper.Purchase_sheetMapper;
 import com.spring.paging.Client_Paging;
-import com.spring.paging.Criteria;
 import com.spring.service.ClientService;
 import com.spring.service.ItemService;
-import com.spring.service.MemberService;
+import com.spring.service.OrderSheetService;
 import com.spring.service.Purchase_sheetService;
 import com.spring.service.WareHouseService;
 
@@ -61,9 +54,15 @@ public class Purchase_sheetController {
 	@Autowired
 	private ClientService cs;
 	
+	@Autowired
+	private OrderSheetService os;
+	
+	
 	@RequestMapping("/list.ps")
 	public void list(SearchVO searchvo,HttpServletRequest request,Model model) {
 		
+		//날짜에 따른 상태:취소됨
+		ps.update();
 		
 		//창고조회
 		List<WareHouseVO> WareList = ws.list();
@@ -116,15 +115,25 @@ public class Purchase_sheetController {
 	
 	@PostMapping("/insert.ps")
 	public String insert(Purchase_sheetVO vo) {
+		System.out.println("vo.getOrder_no():" + vo.getOrder_no());
 		System.out.println(vo.getMember_no());
 		System.out.println(vo.getClient_no());
 		System.out.println(vo.getDelivery_date());
-		System.out.println(vo.getItem_no());
+		
+		System.out.println("vo.getItem_no():" + vo.getItem_no());
 		System.out.println(vo.getAmount());
+		System.out.println(vo.getWare_no());
 		System.out.println(vo.getOrder_no());
 		
 		int cnt = ps.insert(vo);
 		System.out.println("insert 성공" + cnt);
+		
+		// 수주 상태 수정
+		if(vo.getOrder_no() != null) {
+			os.updateStatus(vo.getOrder_no());
+			System.out.println("준비완료> 발주중 update 완료");
+		}
+		
 		return re;
 	}
 	

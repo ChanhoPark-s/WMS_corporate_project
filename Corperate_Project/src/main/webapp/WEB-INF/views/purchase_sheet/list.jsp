@@ -6,11 +6,13 @@
 </head>
 <style>
 table th {
-	text-align: center;
+	text-align: center;	
+	font-size: 14px;
 }
 
 table td {
 	text-align: center;
+	font-size: 14px;
 }
 
 /* 한줄 색 칠하는 기능 */
@@ -51,19 +53,7 @@ table td {
                   </svg>
 					발주 등록
 				</button>
-				<button class="btn btn-primary d-inline-flex align-items-center gap-1"
-					data-bs-toggle="modal" data-bs-target="#">
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-						fill="currentColor" aria-hidden="true">
-                    <path fill-rule="evenodd"
-							d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-							clip-rule="evenodd" />
-                  </svg>
-					수주서 조회
-				</button>
 			</div>
-			
-			
 			
 			<div class="search">
 			<form name="search" action="/list.ps" id="search">
@@ -102,11 +92,11 @@ table td {
                     <th scope="col" style="display:none">발주번호</th>
                     <th scope="col">작성일자</th>
                     <th scope="col">담당자</th>
-                    <th scope="col">거래처</th>
+                    <th scope="col">발주처</th>
                     <th scope="col" nowrap>품목명</th>
                     <th scope="col">납기일자</th>
                     <th scope="col">총 구매단가</th>
-                    <th scope="col" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="접수완료 - (발주중) - 판매완료">진행상태</th>
+                    <th scope="col" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="발주중 - 입고완료 - 취소됨">진행상태</th>
                     <th scope="col">기능</th>
                   </tr>
                 </thead>
@@ -124,7 +114,7 @@ table td {
                     <td>${list.member_name}</td>
                     <td>${list.client_name }</td>
                     <td>
-                    <span class="badge bg-light text-muted">
+                    <span>
                     <c:set var="item_name" value="${fn:split(list.item_name,',')}" />
                     ${item_name[0] }
 					<c:if test="${fn:length(item_name) > 1}">외 ${fn:length(item_name) - 1}개</c:if>
@@ -198,8 +188,76 @@ table td {
             
           </div>
         </div>
+        
+        <br>
+        
+		<!-- 하단 두번째 -->
+		<div class="card">
+			<div class="card-body">
+				<div class="d-flex gap-1 mb-4 flex-wrap" style="height: 38px">
+					<div class="d-flex gap-1 me-auto flex-wrap" style="height: 38px">
+						<button
+							class="btn btn-primary d-inline-flex align-items-center gap-1">
+							입고완료 처리</button>
+					</div>
+				</div>
+				<div class="d-flex gap-1 mb-4 flex-wrap"
+					style="display: none !important">
+					<div class="d-flex gap-1 me-auto flex-wrap">
+						<button
+							class="btn btn-primary d-inline-flex align-items-center gap-1"
+							data-bs-toggle="modal" data-bs-target="#addUserModal">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+								fill="currentColor" aria-hidden="true">
+		                    	<path fill-rule="evenodd"
+									d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+									clip-rule="evenodd" />
+		                  	</svg>
+							품목 추가
+						</button>
+						<button
+							class="btn btn-primary d-inline-flex align-items-center gap-1"
+							data-bs-toggle="modal" data-bs-target="#addUserModal">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+								fill="currentColor" aria-hidden="true">
+							  <path clip-rule="evenodd"
+									d="m11,9l3,0a1,1 0 1 1 0,2l-3,0l-2,0l-3,0a1,1 0 1 1 0,-2l3,0l2,0z"
+									clip-rule="evenodd" />
+							</svg>
+							선택 삭제
+						</button>
+					</div>
+				</div>
+				<div class="table-responsive my-1">
+					<table class="table align-middle" id="table3">
+						<thead>
+							<tr>
+								<th scope="col" style="display: none">상세번호</th>
+								<th scope="col" style="display: none">수주서번호</th>
+								<th scope="col"></th>
+								<th scope="col" style="display: none">품목번호</th>
+								<th scope="col">발주서번호</th>
+								<th scope="col">로트코드</th>
+								<th scope="col">품목코드</th>
+								<th scope="col">품목명</th>
+								<th scope="col">창고</th>
+								<th scope="col">구역</th>
+								<th scope="col">랙</th>
+								<th scope="col">셀</th>
+								<th scope="col">입고수량</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
 
-        <!-- 모달1 modal1 -->
+
+<!-- 모달1 modal1 -->
 		<%@include file="/WEB-INF/views/purchase_sheet/modal.jsp" %>
 
 		<%@include file="/WEB-INF/views/purchase_sheet/modal2.jsp" %>

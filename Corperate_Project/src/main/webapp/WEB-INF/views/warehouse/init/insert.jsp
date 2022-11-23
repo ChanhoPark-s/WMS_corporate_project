@@ -4,8 +4,16 @@
 <!-- top.jsp -->
 <%@include file="/WEB-INF/views/common/top.jsp" %>
 
-<style type="text/css">
+<style>
+table th {
+	text-align: center;	
+	font-size: 14px;
+}
 
+table td {
+	text-align: center;
+	font-size: 14px;
+}
 </style>
 
 <div class="card">
@@ -22,7 +30,7 @@
 	<div class="card-body">
 		<div class="d-flex gap-1 mb-4 flex-wrap">
           <div class="d-flex gap-1 me-auto flex-wrap">
-            <button class="btn btn-primary d-inline-flex align-items-center gap-1" onclick="item.itemInput()">
+            <button class="btn btn-secondary d-inline-flex align-items-center gap-1" onclick="item.itemInput()">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                 <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
               </svg>
@@ -146,44 +154,44 @@
       <div class="modal-body">
         <div class="d-flex flex-wrap gap-1">
 		<div class="col">		
-			<ul class="navbar-nav mb-4" id="mainMenu">
+			<ul class="navbar-nav mb-4" id="initMenu">
          	 <li class="nav-label px-2 small mt-3"><small>창고 선택</small></li>
           		<c:forEach items="${warehouse }" var="w" varStatus="wi">
           		<li class="nav-item" data-no=${w.no }>
-		            <a class="nav-link px-2 d-flex align-items-center gap-3 dropdown-toggle" data-no=${w.no } href="#area2-${wi.index }" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="dashboard-collapse">
+		            <a class="nav-link px-2 d-flex align-items-center gap-3 dropdown-toggle" data-no=${w.no } href="#area2-${w.no }" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="area2-${w.no }">
 		              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
 		                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
 		              </svg>
 		              <span class="me-auto" id="basicinfo">${w.name }</span>
 		            </a>
-		            <div class="ms-4 collapse" id="area2-${wi.index }" data-bs-parent="#mainMenu">
-		              <ul class="navbar-nav">
+		            <div class="ms-4 collapse" id="area2-${w.no }" data-bs-parent="#initMenu">
+		              <ul class="navbar-nav" id="menu1-${wi.index }">
 				          <c:forEach items="${area }" var="a" varStatus="ai">
 				          	<c:if test="${w.no eq a.ware_no }">
 								<li class="nav-item" data-no=${a.no }>
-						            <a class="nav-link px-2 d-flex align-items-center gap-3 <c:if test="${fn:length(area) != 0 }">dropdown-toggle</c:if>" data-no=${a.no } href="#rack2-${ai.index }" data-bs-toggle="collapse" role="button" aria-expanded="true" aria-controls="dashboard-collapse">
+						            <a class="nav-link px-2 d-flex align-items-center gap-3 <c:if test="${fn:length(area) != 0 }">dropdown-toggle</c:if>" data-no=${a.no } href="#rack2-${a.no }" data-bs-toggle="collapse" role="button" aria-expanded="true" aria-controls="rack2-${a.no }">
 						              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
 						                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
 						              </svg>
 						              <span class="me-auto" id="basicinfo">${a.name }</span>
 						            </a>
-						            <div class="ms-4 collapse" id="rack2-${ai.index }" data-bs-parent="#mainMenu" style="">
-						              <ul class="navbar-nav">
+						            <div class="ms-4 collapse" id="rack2-${a.no }" data-bs-parent="#menu1-${wi.index }">
+						              <ul class="navbar-nav" id="menu2-${ai.index }">
 						              	<c:forEach items="${rack }" var="r" varStatus="ri">
 						              		<c:if test="${a.no eq r.area_no }">
 						              			<li class="nav-item" data-no=${r.no }>
-										            <a class="nav-link px-2 d-flex align-items-center gap-3 dropdown-toggle" href="#cell2-${ri.index }" data-bs-toggle="collapse" role="button" aria-expanded="true" aria-controls="dashboard-collapse">
+										            <a class="nav-link px-2 d-flex align-items-center gap-3 dropdown-toggle" href="#cell2-${r.no }" data-bs-toggle="collapse" role="button" aria-expanded="true" aria-controls="cell2-${r.no }">
 										              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
 										                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
 										              </svg>
 										              <span class="me-auto" id="basicinfo">${r.name }</span>
 										            </a>
-										            <div class="ms-4 collapse" id="cell2-${ri.index }" data-bs-parent="#mainMenu" style="">
-										              <ul class="navbar-nav">
+										            <div class="ms-4 collapse" id="cell2-${r.no }" data-bs-parent="#menu2-${ai.index }">
+										              <ul class="navbar-nav" id="menu3-${ri.index }">
 										              	<c:forEach items="${cell }" var="c">
 										              		<c:if test="${r.no eq c.rack_no }">
 										              			<li class="nav-item cell2" data-no=${c.no }>
-														            <a class="nav-link px-2 d-flex align-items-center gap-3" href="#dashboard-collapse2" data-bs-toggle="collapse" role="button" aria-expanded="true" aria-controls="dashboard-collapse">
+														            <a class="nav-link px-2 d-flex align-items-center gap-3" data-bs-toggle="collapse" role="button" aria-expanded="true">
 																		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bucket" viewBox="0 0 16 16">
 																		  <path d="M2.522 5H2a.5.5 0 0 0-.494.574l1.372 9.149A1.5 1.5 0 0 0 4.36 16h7.278a1.5 1.5 0 0 0 1.483-1.277l1.373-9.149A.5.5 0 0 0 14 5h-.522A5.5 5.5 0 0 0 2.522 5zm1.005 0a4.5 4.5 0 0 1 8.945 0H3.527zm9.892 1-1.286 8.574a.5.5 0 0 1-.494.426H4.36a.5.5 0 0 1-.494-.426L2.58 6h10.838z"/>
 																		</svg>
@@ -376,7 +384,7 @@
 					tr.append(td3);
 					
 					let td4 = document.createElement('td');
-					td4.innerHTML = '<button type="button" class="btn btn-primary btn-sm">선택</button>';
+					td4.innerHTML = '<button type="button" class="btn btn-dark btn-sm">선택</button>';
 					td4.setAttribute('data-bs-dismiss', 'modal');
 					td4.classList.add('text-center');
 					tr.append(td4);
@@ -454,7 +462,7 @@
 					tr.append(td3);
 					
 					let td4 = document.createElement('td');
-					td4.innerHTML = '<button type="button" class="btn btn-primary btn-sm">선택</button>';
+					td4.innerHTML = '<button type="button" class="btn btn-dark btn-sm">선택</button>';
 					td4.setAttribute('data-bs-dismiss', 'modal');
 					td4.classList.add('text-center');
 					tr.append(td4);
@@ -600,13 +608,13 @@
 			$('#'+ location).html(str);
 		}
 		
-		$("#itemPageNation").on("click", "li a", function(e){
+		$("#itemPageNation").on("click", "li a.page-link", function(e){
 			e.preventDefault(); // 번호를 눌러도 페이지가 이동하지 않도록 a태그 기능 무력화
 			pageNum = $(this).attr("href");
 			drawItem({pageNum : pageNum});
 		});
 		
-		$("#memberPageNation").on("click", "li a", function(e){
+		$("#memberPageNation").on("click", "li a.page-link", function(e){
 			e.preventDefault(); // 번호를 눌러도 페이지가 이동하지 않도록 a태그 기능 무력화
 			pageNum = $(this).attr("href");
 			drawMember({pageNum : pageNum});
@@ -707,4 +715,11 @@
         })
       })
     })()
+</script>
+
+<script type="text/javascript">
+	/* 왼쪽 카테고리창이 해당화면에 맞게 펼쳐지게 하는 코드 */
+	$(function(){ 
+		document.getElementById('basicinfo').click();
+	});
 </script>

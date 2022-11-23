@@ -8,11 +8,13 @@
 
 <style>
 table th {
-	text-align: center;
+	text-align: center;	
+	font-size: 14px;
 }
 
 table td {
 	text-align: center;
+	font-size: 14px;
 }
 
 /* 한줄 색 칠하는 기능 */
@@ -36,8 +38,8 @@ table td {
 <!-- 상단 -->
 <div class="card">
 	<div class="card-body">
-		<div class="d-flex gap-1 mb-4 flex-wrap">
-			<div class="d-flex gap-1 me-auto flex-wrap">
+		<div class="d-flex gap-1 mb-4 flex-wrap" style="height:38px">
+			<div class="d-flex gap-1 me-auto flex-wrap" style="height:38px">
 				<button
 					class="btn btn-primary d-inline-flex align-items-center gap-1"
 					data-bs-toggle="modal" data-bs-target="#addOrderSheetModal">
@@ -71,7 +73,7 @@ table td {
 								</select>
 							</td>
 							<td><input type="text" name="keyword" id="keyword" class="form-control" value=<c:if test="${searchvo.keyword=='null' }">""</c:if> <c:if test="${searchvo.keyword!='null' }">"${searchvo.keyword }"</c:if> placeholder="입력" style="width: 200px; height: 38px;"></td>
-							<td><i class="fa-solid fa-magnifying-glass btn_search" id="searchIcon" onclick="searchForm()"></i></td>
+							<td><i class="fa-solid fa-magnifying-glass btn_search" id="searchIcon" onclick="document.getElementById('search').submit();"></i></td>
 						</tr>
 					</table>
 				</form>
@@ -84,7 +86,6 @@ table td {
 					<tr>
 						<th scope="col">번호</th>
 						<th scope="col">담당자</th>
-						<th scope="col">발주서번호</th>
 						<th scope="col">입고처</th>
 						<th scope="col" nowrap>품목명</th>
 						<th scope="col">구분</th>
@@ -97,10 +98,16 @@ table td {
 					<tr class="tr" data-no=" ${input.no }">
 						<td>${input.no}</td>
 						<td>${input.member_name}</td>
-						<td>${input.purchase_Sheet_No}</td>
 						<td>${input.client_name}</td>
 						<td>${input.temp_item_name}</td>
-						<td>${input.status}</td>
+						<td>
+									<c:if test="${input.status eq 0}">
+										<span class="badge bg-success" style="background-color: #FFBB00 !important">기타 입고</span>
+									</c:if>
+									<c:if test="${input.status eq 1}">
+										<span class="badge bg-success">발주분 입고</span>
+									</c:if>
+						</td>
 						<td>
 						<fmt:parseDate value="${input.arrival_date}" var="day" pattern="yyyy-MM-dd" />
               			<fmt:formatDate value="${day}" pattern="yyyy-MM-dd" />
@@ -116,7 +123,7 @@ table td {
 											d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                           </svg>
 								</button>
-								<button type="button" class="btn btn-light d-flex text-danger">
+								<button type="button" class="btn btn-light d-flex text-danger deleteOneBtn" data-no="${input.no }">
 									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
 										fill="none" viewBox="0 0 24 24" stroke="currentColor"
 										aria-hidden="true">
@@ -147,18 +154,17 @@ table td {
 			<table class="table align-middle"  id="table2">
 				<thead>
 					<tr>
-						<th scope="col"><div><input class='form-check-input' type='checkbox' value=''></div></th>
 						<th scope="col" style="display:none">상세번호</th>
 						<th scope="col" style="display:none">입고번호</th>
-						<th>발주서상세번호</th>
+						<th>발주서번호</th>
+						<th>로트코드</th>
+						<th>품목코드</th>
 						<th>품목명</th>
 						<th>창고</th>
 						<th>구역</th>
 						<th>랙</th>
 						<th>셀</th>
-						<th>로트코드</th>
 						<th>입고량</th>
-						<th>구분</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -190,6 +196,8 @@ table td {
 						<input type="hidden" name="area_no" class="form-control" readonly>
 						<input type="hidden" name="rack_no" class="form-control" readonly>
 						<input type="hidden" name="cell_no" class="form-control" readonly>
+						<input type="hidden" name="purchase_Sheet_No" value="0" class="form-control" readonly>
+						<input type="hidden" name="status" value="0" class="form-control" readonly>
 						<!-- 품목번호 및 개수 -->
 						<!-- input type='text' name='item_no' -->
 						<!-- input type='text' name='amount' -->
@@ -197,11 +205,12 @@ table td {
 						<div class="row">		
 							<div class="col-sm-3">		
 								<label for="day" class="form-label">입고일자</label> 
-		                		<input type="date" name="input_day" class="form-control" required>
-		                		<div class="invalid-feedback">date is required.</div>
+		                		<input type="date" name="input_day" class="form-control" required onchange="calendarChangeHandler()">
+		                		<div class="invalid-feedback">입고일자를 입력해주세요.</div>
 							</div>
 							<div class="col-sm-4">	
-								<label for="userFullname" class="form-label">&nbsp;&nbsp;</label>
+							<label for="userFullname" class="form-label">&nbsp;&nbsp;</label>
+								<button type="button" class="btn btn-primary" style="display:block" data-bs-target="#secondModal" data-bs-toggle="modal" data-bs-dismiss="modal" id="choiceOrderBtn">발주서 선택</button>
 							</div>
 						</div>
 						
@@ -209,6 +218,7 @@ table td {
 							<div class="col-sm-3">		
 								<label for="userFullname" class="form-label">부서명</label>
 								<input type="text" id="member_dep_name" class="form-control" readonly>
+								<div class="invalid-feedback">담당자를 입력해주세요.</div>
 							</div>
 							<div class="col-sm-3">
 								<label for="userFullname" class="form-label">담당자명</label>
@@ -224,6 +234,7 @@ table td {
 							<div class="col-sm-3">		
 								<label for="userFullname" class="form-label">코드</label>
 								<input type="text" id="client_code" class="form-control" readonly>
+								<div class="invalid-feedback">거래처를 입력해주세요.</div>
 							</div>
 							<div class="col-sm-3">		
 								<label for="userFullname" class="form-label">거래처명</label>
@@ -237,12 +248,11 @@ table td {
 						
 						<hr>
 						
-						<!-- 상품 상세추가 부분 -->
-						<div id="modalItemDetail">
 						<div class="row">		
 							<div class="col-sm-2">		
 								<label for="userFullname" class="form-label">창고명</label>
 								<input type="text" id="ware_name" class="form-control" readonly>
+								<div class="invalid-feedback">창고를 입력해주세요.</div>
 							</div>
 							<div class="col-sm-2">		
 								<label for="userFullname" class="form-label">구역명</label>
@@ -264,6 +274,8 @@ table td {
 							</div>
 						</div>	
 							
+						<!-- 상품 상세추가 부분 -->
+						<div id="modalItemDetail">
 							
 							<div class="row">		
 								<input type="hidden" name="item_no" class="form-control" readonly>
@@ -271,7 +283,7 @@ table td {
 								<div class="col-sm-3">		
 									<label for="userFullname" class="form-label">품목코드</label>
 									<input type="text" class="form-control choiceItemBtn" data-bs-target="#secondModal" data-bs-toggle="modal" data-bs-dismiss="modal" readonly>
-									
+									<div class="invalid-feedback">품목을 입력해주세요.</div>
 								</div>
 								<div class="col-sm-3">		
 									<label for="userFullname" class="form-label">품목명</label>
@@ -283,7 +295,8 @@ table td {
 								</div>
 								<div class="col-sm-2">		
 									<label for="userFullname" class="form-label">수량</label>
-									<input type="text" name="QTY" class="form-control">
+									<input type="text" name="QTY" class="form-control"  onkeyup="qtyChangeHandler()">
+									<div class="invalid-feedback">수량을 입력해주세요.</div>
 								</div>
 								<div class="col-sm-2">	
 									<label for="userFullname" class="form-label">&nbsp;&nbsp;</label>
@@ -391,7 +404,7 @@ table td {
 					</div>
 					<div class="mb-3" id="racklocationtitle">
 						<label for="racklocation" class="form-label">상위랙위치</label>
-						<select class="dselect form-select" name="racklocation" id="racklocation" required>
+						<select class="dselect form-select" name="racklocation" id="racklocation" required onchange="change3()">
 							<option value="">랙위치를 선택하세요</option>
 				            <c:forEach items="${rackLists}" var="rackLists">
 				              <option value="${rackLists.no},${rackLists.name}">${rackLists.name}</option>
@@ -422,7 +435,36 @@ table td {
 		</div>
 	</div>
 </div>
-
+<!-- 삭제확인 모달 -->
+<div class="modal fade" id="deleteCheckModal" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header border-0">
+				<h5 id="modal-title">삭제여부 재확인</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<!-- form start -->
+			<form class="needs-validation" novalidate id="deleteCheckModalForm" action="/ordersheet/delete/one" method="post">
+				<div class="modal-body">
+						<input type="hidden" name="no" class="form-control" readonly>
+						정말로 삭제 하시겠습니까?
+						
+						<!-- 같은 페이지로 돌아가기 위해 넘겨주는 데이터 -->
+						<input type="hidden" name="pageNumber" value="${searchvo.pageNumber}" class="form-control" readonly>
+						<input type="hidden" name="whatColumn" value="${searchvo.whatColumn}" class="form-control" readonly>
+						<input type="hidden" name="keyword" value="${searchvo.keyword}" class="form-control" readonly>
+						
+				</div>
+				<div class="modal-footer border-0">
+					<button type="button" class="btn btn-light" data-bs-dismiss="modal" id="deleteCancleBtn">취소</button>
+					<button type="button" id="modalDeleteBtn"class="btn btn-primary px-5">삭제</button>		
+				</div>
+			</form>
+			<!-- form end -->
+		</div>
+	</div>
+</div>
 <!-- bottom.jsp -->
 <%@include file="../common/bottom.jsp"%>
 
@@ -597,7 +639,14 @@ table td {
 	/* ajax로 두번째 모달에서 보여줄 레코드정보를 요청하는 부분 + 화면전환없이 레코드들을 그리는 부분 + 화면전환없이 페이지네이션을 그리는 부분 */
 	function requestClientRecord(){
 		console.log("요청url : " + "/basicinfo/" + secondModalName + "/pages/"+ pageNum +"/" + amount + "/" + searchWhatColumn + "/" + searchKeyword)
-		$.getJSON("/basicinfo/" + secondModalName + "/pages/"+ pageNum +"/" + amount + "/" + searchWhatColumn + "/" + searchKeyword,  
+		//요청url
+		url = "/basicinfo/";
+		if (secondModalName == "order"){
+			url = "/purchase_sheet/";
+		} else {
+			url = "/basicinfo/"+secondModalName;
+		}
+		$.getJSON(url  + "/pages/"+ pageNum +"/" + amount + "/" + searchWhatColumn + "/" + searchKeyword,  
  			function(resdata){
 				console.log("list: " + resdata.list); 	  			// 1페이지 레코드들이 담긴 객체
  				console.log("totalCount: " + resdata.totalCount); 	// 검색조건으로 뽑힌 총 레코드 수
@@ -651,7 +700,33 @@ table td {
 					str += "</tr>";
 				}
 			}
-			
+			else if(secondModalName == "order"){
+				
+
+				//toStringByFormatting(new Date(2021, 0, 1));
+				// 2021-01-01
+				
+				//$('.modal2').attr('class','modal-xl');
+				
+				itemNo = new Array();
+				
+				for(var i = 0, len = list.length || 0; i < len; i++){
+					
+					 
+					str += "<tr>";
+					str += "<td><input class='form-check-input' type='radio' name='clientRadio'></td>";
+					str += "<td style='display:none'>" + list[i].no +"</td>";
+					str += "<td>";
+					str += toStringByFormatting(new Date(list[i].day));
+					str += "</td>";
+					str += "<td>" + list[i].member_name +"</td>";
+					str += "<td>" + list[i].client_name +"</td>";
+					str += "<td>" + list[i].temp_item_name + "</td>";
+					str += "</tr>";
+					
+					
+				}
+			}	
 			if(list.length == 0){
 				str = "<tr><td colspan='5' style='text-align:center'>검색결과가 없습니다</td></tr>";
 			}
@@ -759,7 +834,45 @@ table td {
 	
 		requestClientRecord();
 	});
-	
+	/* 첫번째 모달에서 수주서 선택이 눌렸을 때 이동한 두번째 모달창에서 데이터를 요청하고 관련 화면을 그리는 부분 */
+	$("#choiceOrderBtn").on("click", function(e){
+		
+		pageNum = 1;
+		
+		// 두번째 모달에서 그려내야할 정보를 지정
+		secondModalName = "order";
+		console.log("secondModalName: " + secondModalName);
+		
+		// 두번째 모달의 제목을 지정
+		$("#second-modal-title").text("발주서 선택");
+		
+		// 두번째 모달의 select의 option을 그려내는 코드
+		var str = "";
+		str += "<option value='' selected>검색 선택</option>";
+		str += "<option value='member'>담당자</option>";
+		str += "<option value='client'>거래처</option>";
+		str += "<option value='item'>품목명</option>";
+		$("#searchWhatColumn").html(str);
+		
+		// 초기화 코드
+		$("#searchKeyword").val("");
+		searchWhatColumn = "";
+		searchKeyword = "";
+		
+		// 두번째 모달의 테이블의 th를 그려내는 코드
+		var str = "";
+		str += "<tr>";
+		str += "<th scope='col'></th>";
+		str += "<th scope='col'>발주일자</th>";
+		str += "<th scope='col'>담당자</th>";
+		str += "<th scope='col'>거래처</th>";
+		str += "<th scope='col'>품목명</th>";
+		str += "</tr>";
+		$("#secondModalThead").html(str);
+		
+		// 두번째 모달의 테이블의 레코드를 그려내는 코드
+		requestClientRecord();
+	});
 	$("#delivery_data2").on("click", function(e){
 		console.log('여기 왔음22');
 		var ware = $('select[name=warehouselocation]').val().split(",");
@@ -781,6 +894,9 @@ table td {
 		$("input[name='rack_no']").val(rack[0]);
 		$("input[name='cell_no']").val(cell[0]);
 		console.log($("input[name='cell_no']").val());
+		$("#ware_name").attr("class","form-control is-valid");
+
+		
 	});
 	/* 두번째 모달에서 첫번째 모달로 데이터를 옮기는 코드 */
 	$("#delivery_data").on("click", function(e){
@@ -796,6 +912,8 @@ table td {
 			$("input[name='member_no']").val(memberNo);
 			$("#member_dep_name").val(memberDepName);
 			$("#member_name").val(memberName);
+			$("#member_dep_name").attr("class","form-control is-valid");
+			$("#member_name").attr("class","form-control is-valid");
 		}	
 		else if(secondModalName == "client"){
 			var clientNo = $('input[name=clientRadio]:checked').parent().next().text();
@@ -805,6 +923,9 @@ table td {
 			$("input[name='client_no']").val(clientNo);
 			$("#client_code").val(clientCode);
 			$("#client_name").val(clientName);	
+			$("#client_code").attr("class","form-control is-valid");
+			$("#client_name").attr("class","form-control is-valid");
+
 		}
 		
 		else if(secondModalName == "item"){
@@ -822,8 +943,86 @@ table td {
 			clickedLocation.val(itemCode);
 			clickedLocation.parent().next().find('input[type=text]').val(itemName);
 			clickedLocation.parent().next().next().find('input[type=text]').val(itemClientName);
-			
+
+			clickedLocation.attr("class","form-control is-valid choiceItemBtn");
+
 			addRowItemDetail(); // 새로 입력받을 수 있게 아래 줄을 추가하는 함수
+		}
+		else if(secondModalName == "order"){
+			
+			//모달창 크기 초기화
+			
+			//수주서번호
+			no = $('input[name=clientRadio]:checked').parent().next().text();
+			
+			//품목
+			
+			$.getJSON("/purchase_sheet/selectOrder/"+no,  
+		 			function(resdata){
+		 				console.log("resdata.order"+resdata.order);
+		 				console.log("resdata.detailList"+resdata.detailList);
+		 				var vo = resdata.order;
+		 				
+		 				//주문서 삽입
+		 				$("input[name='purchase_Sheet_No']").val(vo.no);
+		 				$("input[name='status']").val(1);
+		 				
+		 				//날짜 삽입
+		 				$("input[name='input_day']").val(vo.day);
+		 				
+		 				//담당자 삽입
+		 				$("input[name='member_no']").val(vo.member_no);
+		 				$("#member_dep_name").val(vo.dep_name);
+		 				$("#member_name").val(vo.member_name);
+		 				$("#member_name").attr("class","form-control is-valid");
+		 				$("#member_dep_name").attr("class","form-control is-valid");
+		 				//거래처 삽입
+		 				$("input[name='client_no']").val(vo.client_no);
+		 				$("#client_code").val(vo.client_code);
+		 				$("#client_name").val(vo.client_name);
+		 				$("#client_code").attr("class","form-control is-valid");
+		 				$("#client_name").attr("class","form-control is-valid");
+		 				
+		 				//품목삽입
+		 				var orderDetail = resdata.detailList;
+		 				
+		 				for(i=0; i<orderDetail.length; i++){
+		 					console.log(orderDetail[i]);
+		 					
+		 					var str = "<div class='row'>";
+		 					str += "<input type='hidden' name='item_no' class='form-control' value='" + orderDetail[i].item_no + "' readonly>"; 
+		 					str += "<input type='hidden' name='detail_no' class='form-control' value='" + orderDetail[i].no + "' readonly>"; 
+		 					str += "<div class='col-sm-3'>";
+		 					str += "<label for='userFullname' class='form-label'>품목코드</label>";
+		 					str += "<input type='text' class='form-control choiceItemBtn' value='" + orderDetail[i].item_code + "' readonly>";
+		 					str += "</div>";
+		 					str += "<div class='col-sm-3'>";
+		 					str += "<label for='userFullname' class='form-label'>품목명</label>";
+		 					str += "<input type='text' class='form-control' value='" + orderDetail[i].item_name + "' readonly>";
+		 					str += "</div>";
+		 					str += "<div class='col-sm-2'>";
+		 					str += "<label for='userFullname' class='form-label'>취급처</label>";
+		 					str += "<input type='text' class='form-control' value='" + orderDetail[i].client_name + "' readonly>";
+		 					str += "</div>";
+		 					str += "<div class='col-sm-2'>";
+		 					str += "<label for='userFullname' class='form-label'>수량</label>";
+		 					str += "<input type='text' name='QTY' value='" + orderDetail[i].amount + "' class='form-control'>";
+		 					str += "</div>";
+		 					str += "<div class='col-sm-2'>";
+		 					str += "<label for='userFullname' class='form-label'>&nbsp;&nbsp;</label>";
+		 					str += "<button type='button' class='btn btn-primary deleteItemBtn' style='display:block'>삭제</button>";
+		 					str += "</div>";
+		 					str += "</div>";
+		 					
+		 					$("#modalItemDetail").prepend(str);
+		 				}
+		 				
+		 			}).fail(function(xhr, status, err){
+		 					alert("데이터 조회실패");
+		 			});	
+			
+			
+			
 		}
 		
 	});
@@ -872,29 +1071,6 @@ table td {
 		$(this).parent().parent().remove();
 	});
 	
-	$("#modalRegisterBtn").on("click", function(e){
-		
-		//유효성 검사 해야하는 부분
-		
-		
-		//form 전송전에 빈줄 삭제
-		var allItemCodeInputs = $("#modalItemDetail").find(".choiceItemBtn");
-		var currentRowCount = allItemCodeInputs.length; 
-		
-		if(allItemCodeInputs[currentRowCount-1].value == ""){
-			$("#modalItemDetail div[class=row]:last-child").remove();
-		}
-		
-		
-		
-		$("#firstModalForm").submit();
-	});
-	
-	
-	
-
-
-
 	//상위창고위치 셀렉트 선택에 따른 상위구역위치 옵션 설정
 	function change1(){
 		$.ajax({
@@ -953,6 +1129,33 @@ table td {
 		    }
 		});//ajax
 	}
+	//상위구역위치 셀렉트 선택에 따른 상위랙위치 옵션 설정
+	function change3(){
+		$.ajax({
+			url : "/basicinfo/warehouse/OptionsByRackLocationNo",
+			type : "post",
+			data : ({
+				"no" : taskForm.arealocation.selectedIndex
+			}),
+			success : function(data){
+				var mydata = JSON.parse(data);
+				
+				$('#celllocation *').remove();
+				$('#celllocation').append('<option value="">셀위치를 선택하세요</option>');
+				if(mydata !=null){
+					$.each(mydata,function(i){
+						option = '<option value="'+mydata[i].no+','+mydata[i].name+'">'+mydata[i].name+'</option>';
+						$('#celllocation').append(option);
+					});//each
+				}//if
+			},
+			error: function (request, status, error) {
+		        console.log("code: " + request.status);
+		        console.log("message: " + request.responseText);
+		        console.log("error: " + error);
+		    }
+		});//ajax
+	}
 
 
 
@@ -971,6 +1174,18 @@ table td {
 		document.getElementById('celllocation').value= '';
 		
 	};
+	
+	/* 하나짜리 삭제버튼 눌렸을 때 처리 */
+	$(".deleteOneBtn").on("click", function(e){
+		e.stopPropagation(); // 부모에게 이벤트가 상위 전파 안되도록 막음(버튼을 누르는데 부모인 tr에 이벤트를 걸어뒀더니 중복으로 실행되어 이걸 사용)		
+		clickedBtnInMain = "delete_one";
+		$("#deleteCheckModal input").eq(0).val($(this).data("no"));
+		 
+		if(confirm("삭제하시겠습니까?")){
+			$("#deleteCheckModalForm").attr("action", "/input_warehouse/delete/one");
+			$("#deleteCheckModalForm").submit();
+		}
+	});
 </script>
 <!-- 리스트 화면에서 클릭시 아래 Detail 레코드들을 가져와 뿌려주는 코드 -->
 <script type="text/javascript">
@@ -994,20 +1209,19 @@ table td {
 						var str = "";
 						
 						str += "<tr>";
-						str += "<td><div><input class='form-check-input' type='checkbox' value=''></div></td>";
 						str += "<td style='display:none'>" + list[i].no + "</td>";
 						str += "<td style='display:none'>" + list[i].input_WareHouse_No + "</td>";
 						
 						
-						str += "<td>" + list[i].purchase_Sheet_Detail_No + "</td>";
+						str += "<td>" + list[i].purchase_Sheet_No + "</td>";
+						str += "<td>" + list[i].lot_Code + "</td>";
+						str += "<td>" + list[i].item_code + "</td>";
 						str += "<td>" + list[i].item_name + "</td>";
 						str += "<td>" + list[i].ware_name + "</td>";
 						str += "<td>" + list[i].area_name + "</td>";
 						str += "<td>" + list[i].rack_name + "</td>";
 						str += "<td>" + list[i].cell_name + "</td>";
-						str += "<td>" + list[i].lot_Code + "</td>";
 						str += "<td>" + list[i].qty + "</td>";
-						str += "<td>" + list[i].status + "</td>";
 						str += "</tr>";
 						
 						$("#table2 tbody").append(str);
@@ -1022,4 +1236,79 @@ table td {
 		
 		
 	});
+	//날짜함수
+	function leftPad(value) {
+	    if (value >= 10) {
+	        return value;
+	    }
+
+	    return `0${value}`;
+	}
+	function toStringByFormatting(source, delimiter = '-') {
+	    const year = source.getFullYear();
+	    const month = leftPad(source.getMonth() + 1);
+	    const day = leftPad(source.getDate());
+
+	    return [year, month, day].join(delimiter);
+	}
+	$("#modalRegisterBtn").on("click", function(e){
+		
+		
+		//form 전송전에 빈줄 삭제
+		var allItemCodeInputs = $("#modalItemDetail").find(".choiceItemBtn");
+		var currentRowCount = allItemCodeInputs.length; 
+		
+		console.log("currentRowCount: " + currentRowCount);
+		
+		for(var i = currentRowCount-1; i >= 0; i--){
+			console.log(allItemCodeInputs[i].value);
+			if(allItemCodeInputs[i].value == "" && i != 0){
+				$("#modalItemDetail div[class=row]").eq(i).remove();
+			}	
+		}
+		
+		//유효성 검사하는 부분
+		if($("input[name='input_day']").val() == ""){
+			$("input[name='input_day']").attr("class","form-control is-invalid");
+			//$("#client_code").focus();
+			return;
+	    }
+		if($("#member_dep_name").val() == ""){
+	    	$("#member_dep_name").attr("class","form-control is-invalid");
+	    	$("#member_name").attr("class","form-control is-invalid");
+	    	return;
+	    }
+		if($("#client_code").val() == ""){
+			$("#client_code").attr("class","form-control is-invalid");
+			$("#client_name").attr("class","form-control is-invalid");
+			return;
+		}
+		if($("#ware_name").val() == ""){
+			$("#ware_name").attr("class","form-control is-invalid");
+			return;
+		}
+		
+		//모든 요소를 돌아보고 처리해야함.
+		$("#modalItemDetail .row").eq(i).find("input").each(function(index){
+			if(index == 1 && $(this).val() == ""){
+				$(this).attr("class","form-control is-invalid choiceItemBtn");
+			}
+			return;
+		});
+		
+		if($("input[name='QTY']").val() == ""){
+			$("input[name='QTY']").attr("class","form-control is-invalid");	
+			return;
+		}
+		
+		//form submit
+		$("#firstModalForm").submit();
+	});
+	
+	function calendarChangeHandler(){
+		$("input[name='input_day']").attr("class","form-control is-valid");
+	}
+	function qtyChangeHandler(){
+		$("input[name='QTY']").attr("class","form-control is-valid");
+	} 
 </script>

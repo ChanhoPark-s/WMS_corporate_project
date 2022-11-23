@@ -2,9 +2,9 @@
     pageEncoding="UTF-8"%>
 
 <!-- 거래처를 선택하는 두번째 모달 -->
-<div class="modal fade" id="secondModal" tabindex="-2">
-	<div class="modal-dialog modal-dialog-scrollable modal2">
-		<div class="modal-content">
+<div class="modal fade" id="secondModal" tabindex="-2" >
+	<div class="modal-dialog modal-dialog-scrollable modal2" >
+		<div class="modal-content" style="width: 800px; right: 200px">
 			<div class="modal-header border-0">
 				<h5 id="second-modal-title">거래처 입력</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
@@ -70,7 +70,7 @@
 	$("#addOrderSheet").on("click", function(e){
 		
 		//모달크기초기화
-		$('.modal-xl').removeClass('.modal-xl');
+		//$('.modal-xl').removeClass('.modal-xl');
 		
 		//$(this).find('form')[0].reset();
 		
@@ -344,7 +344,7 @@
 				//toStringByFormatting(new Date(2021, 0, 1));
 				// 2021-01-01
 				
-				$('.modal2').attr('class','modal-xl');
+				//$('.modal2').attr('class','modal-xl');
 				
 				itemNo = new Array();
 				
@@ -371,7 +371,7 @@
 			}
 			
 			if(list.length == 0){
-				str = "<tr><td colspan='5' style='text-align:center'>검색결과가 없습니다</td></tr>";
+				str = "<tr><td colspan='7' style='text-align:center'>검색결과가 없습니다</td></tr>";
 			}
 			
 			$("#secondModalTbody").html(str);
@@ -494,6 +494,10 @@
 			$("input[name='member_no']").val(memberNo);
 			$("#member_dep_name").val(memberDepName);
 			$("#member_name").val(memberName);
+			
+			// 유효성 유효처리 관련 코드
+			$("#member_dep_name").attr("class","form-control is-valid");
+			$("#member_name").attr("class","form-control is-valid");
 		}	
 		else if(secondModalName == "client"){
 			var clientNo = $('input[name=clientRadio]:checked').parent().next().text();
@@ -503,6 +507,10 @@
 			$("input[name='client_no']").val(clientNo);
 			$("#client_code").val(clientCode);
 			$("#client_name").val(clientName);	
+			
+			// 유효성 유효처리 관련 코드
+			$("#client_code").attr("class","form-control is-valid");
+			$("#client_name").attr("class","form-control is-valid");
 		}
 		
 		else if(secondModalName == "item"){
@@ -524,6 +532,9 @@
 			clickedLocation.parent().next().next().find('input[type=text]').val(itemClientName);
 			clickedLocation.parent().next().next().next().find('input[type=text]').val(itemInPrice);
 			
+			//유효성
+			clickedLocation.attr("class","form-control is-valid choiceItemBtn");
+			
 			addRowItemDetail(); // 새로 입력받을 수 있게 아래 줄을 추가하는 함수
 		}
 		
@@ -538,9 +549,12 @@
 			
 			$.getJSON("/ordersheet/selectOrder/"+no,  
 		 			function(resdata){
-		 				console.log(resdata.order);
-		 				console.log(resdata.detail);
-		 				vo = resdata.order;
+		 				console.log("resdata.order"+resdata.order);
+		 				console.log("resdata.detailList"+resdata.detailList);
+		 				var vo = resdata.order;
+		 				
+		 				//주문서 삽입
+		 				$("input[name='order_no']").val(vo.no);
 		 				
 		 				//날짜 삽입
 		 				$("input[name='delivery_date']").val(vo.out_day);
@@ -556,30 +570,33 @@
 		 				$("#client_name").val(vo.client_name);
 		 				
 		 				//품목삽입
-		 				list = resdata.detail
-		 				for(item in list){
+		 				var orderDetail = resdata.detailList;
+		 				
+		 				for(i=0; i<orderDetail.length; i++){
+		 					console.log(orderDetail[i]);
 		 					
 		 					var str = "<div class='row'>";
-		 					str += "<input type='hidden' name='item_no' class='form-control' value='" + item.itemNo + "' readonly>"; 
+		 					str += "<input type='hidden' name='item_no' class='form-control' value='" + orderDetail[i].item_no + "' readonly>"; 
+		 					str += "<input type='hidden' name='detail_no' class='form-control' value='" + orderDetail[i].no + "' readonly>"; 
 		 					str += "<div class='col-sm-2'>";
 		 					str += "<label for='userFullname' class='form-label'>품목코드</label>";
-		 					str += "<input type='text' class='form-control' value='" + item.item_no + "' readonly>";
+		 					str += "<input type='text' class='form-control choiceItemBtn' value='" + orderDetail[i].item_code + "' readonly>";
 		 					str += "</div>";
 		 					str += "<div class='col-sm-2'>";
 		 					str += "<label for='userFullname' class='form-label'>품목명</label>";
-		 					str += "<input type='text' class='form-control' value='" + item.item_code + "' readonly>";
+		 					str += "<input type='text' class='form-control' value='" + orderDetail[i].item_name + "' readonly>";
 		 					str += "</div>";
 		 					str += "<div class='col-sm-2'>";
 		 					str += "<label for='userFullname' class='form-label'>취급처</label>";
-		 					str += "<input type='text' class='form-control' value='" + item.client_name + "' readonly>";
+		 					str += "<input type='text' class='form-control' value='" + orderDetail[i].client_name + "' readonly>";
 		 					str += "</div>";
 		 					str += "<div class='col-sm-2'>";
 		 					str += "<label for='userFullname' class='form-label'>구매단가</label>";
-		 					str += "<input type='text' class='form-control' readonly>";
+		 					str += "<input type='text' class='form-control' value='" + orderDetail[i].in_price + "' readonly>";
 		 					str += "</div>";
 		 					str += "<div class='col-sm-1'>";
 		 					str += "<label for='userFullname' class='form-label'>수량</label>";
-		 					str += "<input type='text' name='amount' class='form-control'>";
+		 					str += "<input type='text' name='amount' value='" + orderDetail[i].amount + "' class='form-control'>";
 		 					str += "</div>";
 		 					str += '<div class="col-sm-2">';
 		 					str += '<label for="ware_no" class="form-label">창고명</label>';
@@ -596,7 +613,7 @@
 		 					str += "</div>";
 		 					str += "</div>";
 		 					
-		 					$("#modalItemDetail").append(str);
+		 					$("#modalItemDetail").prepend(str);
 		 				}
 		 				
 		 			}).fail(function(xhr, status, err){
@@ -665,21 +682,86 @@
 		$(this).parent().parent().remove();
 	});
 	
+	
+	//등록 클릭시
 	$("#modalRegisterBtn").on("click", function(e){
 		
-		//유효성 검사 해야하는 부분
-		
+		//modal이동추가
+		$('.choiceItemBtn:last-child').attr('data-bs-target','#secondModal');	
+		$('.choiceItemBtn:last-child').attr('data-bs-toggle','modal');	
+		$('.choiceItemBtn:last-child').attr('data-bs-dismiss','modal');	
 		
 		//form 전송전에 빈줄 삭제
 		var allItemCodeInputs = $("#modalItemDetail").find(".choiceItemBtn");
 		var currentRowCount = allItemCodeInputs.length; 
 		
-		if(allItemCodeInputs[currentRowCount-1].value == ""){
-			$("#modalItemDetail div[class=row]:last-child").remove();
+		console.log("currentRowCount: " + currentRowCount);
+		
+		for(var i = currentRowCount-1; i >= 0; i--){
+			console.log(allItemCodeInputs[i].value);
+			if(allItemCodeInputs[i].value == "" && i != 0){
+				$("#modalItemDetail div[class='row']").eq(i).remove();
+			}	
 		}
 		
+		//유효성 검사하는 부분
+		if($("input[name='delivery_date']").val() == ""){
+			$("input[name='delivery_date']").attr("class","form-control is-invalid");
+			//$("#client_code").focus();
+			return;
+	    }
 		
+		if($("#member_dep_name").val() == ""){
+	    	$("#member_dep_name").attr("class","form-control is-invalid");
+	    	$("#member_name").attr("class","form-control is-invalid");
+	    	return;
+	    }
 		
-		$("#firstModalForm").submit();
+		if($("#client_code").val() == ""){
+			$("#client_code").attr("class","form-control is-invalid");
+			$("#client_name").attr("class","form-control is-invalid");
+			return;
+		}
+		
+		//모든 요소를 돌아보고 처리해야함.
+		$("#modalItemDetail .row").find("input").each(function(index){
+			if(index == 1 && $(this).val() == ""){
+				$(this).attr("class","form-control is-invalid choiceItemBtn");
+			}
+			return;
+		});
+		
+		if($("input[name='amount']").val() == ""){
+			$("input[name='amount']").attr("class","form-control is-invalid");	
+			return;
+		}
+		
+		if($("#ware_no option:selected").val() == "" ){
+			$("select[name='ware_no']").attr("class","form-control is-invalid");	
+			return;
+		}
+		
+		$("#modal1form").submit();
 	});
+	
+	/* 이하 등록모달폼, 수정모달폼 유효성 검사  */
+	$("#modalItemDetail").on("keyup", "input[name='amount']", function(){
+		$(this).attr("class","form-control is-valid");
+		
+		if(isNaN($(this).val())){
+			alert("수량은 숫자만 입력 가능합니다.");
+			$(this).val("");
+			$(this).focus();
+		}
+	});
+	
+	//납기일자 유효성
+	function calendarChangeHandler(){
+		$("input[name='delivery_date']").attr("class","form-control is-valid");
+	} 
+	
+	//창고 유효성
+	function wareChangeHandler(){
+		$("select[name='ware_no']").attr("class","form-control is-valid");
+	} 
 </script>

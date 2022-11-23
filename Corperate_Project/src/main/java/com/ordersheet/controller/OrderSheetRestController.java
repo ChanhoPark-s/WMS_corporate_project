@@ -79,15 +79,27 @@ public class OrderSheetRestController {
 		List<OrderSheetDetailVO> list = service.getSubList(no);
 		
 		for(OrderSheetDetailVO osdv : list) {
-			
+			osdv.setNo(osdv.getNo());
 			osdv.setItem_no(osdv.getItem_no());
+			osdv.setItem_code(osdv.getItem_code());
 			osdv.setItem_name(osdv.getItem_name());
+			osdv.setAmount(osdv.getAmount());
 			
 			//물품 거래처 조회
 			ClientVO osdvCv = cs.selectOne(Integer.toString(osdv.getClient_no()));
 			osdv.setClient_name(osdvCv.getName());
 			
 		}
+		
+		for(OrderSheetDetailVO osdv : list) {
+			
+			System.out.println("osdv.getItem_no():" + osdv.getItem_no());
+			System.out.println("osdv.getItem_code()" + osdv.getItem_code());
+			System.out.println("osdv.getItem_name()" + osdv.getItem_name());
+			
+			System.out.println("osdv.getName()" + osdv.getClient_name());
+		}
+		
 		
 		//거래처조회
 		ClientVO cv = cs.selectOne(Integer.toString(vo.getClient_no()));
@@ -97,18 +109,22 @@ public class OrderSheetRestController {
 		vo.setClient_name(cv.getName());
 		
 		//맴버조회
-		MemberVO mv = ms.get(vo.getMember_no());
+		MemberVO mv = ms.getMemberByNo(vo.getMember_no());
+		System.out.println("vo.getMember_no()" + vo.getMember_no());
 		
 		vo.setMember_no(mv.getNo());
 		vo.setDep_name(mv.getDep_name());
 		vo.setMember_name(mv.getName());
 		
+		System.out.println("mv.getDep_name()"+ mv.getDep_name());
+		
 		// 두가지 객체 보내기
 		
 		Map<String, Object> map = new HashMap<>();
 		
+		map.put("detailList", list);
 		map.put("order", vo);
-		map.put("detail", list);
+		
 		
 		return new ResponseEntity<>(map, HttpStatus.OK);		
 	}

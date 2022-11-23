@@ -130,12 +130,51 @@
 		        where p.client_no = c.no(+) and p.member_no = m.no(+)
 		        order by no desc)
 		    where rownum <= #{cri.pageNum} * #{cri.amount}
-		)where rn > (#{cri.pageNum} - 1) * #{cri.amount}
-		]]>     
+	    ]]> 
+		    <if test="cri.whatColumn=='member' and cri.keyword != null"> and member_name like '%' ||  #{cri.keyword} || '%' </if>
+		    <if test="cri.whatColumn=='client' and cri.keyword != null"> and client_name like '%' ||  #{cri.keyword} || '%' </if>
+		    <if test="cri.whatColumn=='item' and cri.keyword != ''"> 
+			and no in 
+			<foreach collection="cri.main_nos" item="arr" open='(' close=")" separator=",">
+			#{arr}
+			</foreach>
+		</if>
+   		<![CDATA[ 
+			)where rn > (#{cri.pageNum} - 1) * #{cri.amount}  and status = 0
+	   	 ]]>
 	</select>
 	
 	<select id="getCountAll" resultType="int">
-		select count(*)
-        from order_sheet
+		select count(*) 
+			from(
+		        select  rownum rn, p.no , p.day, p.OUT_DAY, p.status, c.no as client_no, c.name as client_name, m.no as Member_no, m.name as member_name
+		        from order_sheet p, Client c, Member m        
+		        where p.client_no = c.no(+) and p.member_no = m.no(+)
+		        order by no desc)
+		where status = 0
+		<if test="cri.whatColumn=='member' and cri.keyword != null"> and member_name like '%' ||  #{cri.keyword} || '%' </if>
+	    <if test="cri.whatColumn=='client' and cri.keyword != null"> and client_name like '%' ||  #{cri.keyword} || '%' </if>
+	    <if test="cri.whatColumn=='item' and cri.keyword != ''"> 
+			and no in 
+			<foreach collection="cri.main_nos" item="arr" open='(' close=")" separator=",">
+			#{arr}
+			</foreach>
+		</if>
 	</select>
+	
+	<!-- 수주상태 준비완료>발주중 -->
+	<update id="updateStatus">
+		update ORDER_SHEET
+		set status = 1
+		where no = #{order_no} 
+		and status = 0
+	</update>
+	
+	<update id="updateStatusOrderSheet">
+	update ORDER_SHEET
+	set status = #{status}
+	where no = #{ordersheetno}
+	</update>
+
+	
 </mapper>

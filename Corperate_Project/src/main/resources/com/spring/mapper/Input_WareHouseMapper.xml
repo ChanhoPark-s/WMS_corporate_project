@@ -11,7 +11,7 @@
 
 	<insert id="insertMainSheet">
 		insert into input_warehouse
-		values(#{no}, #{member_no}, 0, 0, #{client_no}, #{input_day})
+		values(#{no}, #{member_no}, #{status}, #{client_no}, #{input_day})
 	</insert>
 	
 	<select id="selectNoFromDual" resultType="int">
@@ -33,6 +33,7 @@
             <if test="whatColumn=='member' and keyword != ''"> and member_name like '%' ||  #{keyword} || '%' </if>
             <if test="whatColumn=='client' and keyword != ''"> and client_name like '%' ||  #{keyword} || '%' </if>
             <!-- <if test="whatColumn=='status' and keyword != ''"> and ststus = #{keyword}</if> -->
+            
         )
 	</select>
 	
@@ -49,7 +50,30 @@
 		<if test="whatColumn=='member' and keyword != ''"> and member_name like '%' ||  #{keyword} || '%' </if>
 		<if test="whatColumn=='client' and keyword != ''"> and client_name like '%' ||  #{keyword} || '%' </if>
 		
+		<if test="whatColumn=='item' and keyword != ''"> 
+			and no in 
+			<foreach collection="main_nos" item="arr" open='(' close=")" separator=",">
+			#{arr}
+			</foreach>
+		</if>
+		
 		order by no desc offset #{beginRow} rows fetch next #{pageSize} rows only
 	</select>
 	
+	<select id="selectAllMainNoByItemName" resultType="int">
+		select distinct(INPUT_WAREHOUSE_NO)
+		from(select od.no, od.INPUT_WAREHOUSE_NO, od.qty, it.code item_code, it.name item_name, it.in_price, it.out_price  
+	    	 from input_warehouse_detail od inner join item it
+	    	 on od.item_no = it.no) 
+		where item_name like '%' ||  #{keyword} || '%'
+	</select>
+	
+	<delete id="deleteInputWarehouse">
+		delete from input_warehouse 
+		where no=#{no}
+	</delete>
+	<delete id="deleteInputWarehouseDetail">
+		delete from input_warehouse_detail 
+		where input_warehouse_no=#{no}
+	</delete>
 </mapper>

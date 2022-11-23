@@ -38,4 +38,9 @@ public class SellDetailServiceImpl implements SellDetailService{
 		List<SellDetailVO> dlists =mapper.selectAll(pageInfo);
 		return dlists;
 	}
+	
+	@Override
+	public List<SellDetailVO> getSubListByOrderSheetNo(int orderSheetNo) {
+		return mapper.selectSubListByOrderSheetNo(orderSheetNo);
+	}
 }

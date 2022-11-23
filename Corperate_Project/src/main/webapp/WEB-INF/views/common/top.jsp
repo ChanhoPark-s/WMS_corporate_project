@@ -26,10 +26,6 @@
 	max-height: 350px;
 	max-width: 300px;
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> branch 'gonie' of https://github.com/ChanhoPark-s/WMS_corporate_project.git
 a {
     text-decoration: none;
 }
@@ -200,7 +196,7 @@ margin-top: 5px;
 		});
 	})	
 		/* 웹소켓이랑 연결  */
-		let sock = new SockJS("http://52.79.144.231:8080/echo");//http://52.79.144.231:8080/echo // http://localhost:8080/echo
+		let sock = new SockJS("http://localhost:8080/echo");//http://52.79.144.231:8080/echo // http://localhost:8080/echo
 		sock.onmessage = onMessage;
 		sock.onclose = onClose;
 		
@@ -284,9 +280,11 @@ margin-top: 5px;
                 <li class="nav-item"><a class="nav-link" href="/basicinfo/client/list" id="client_info">거래처정보</a></li>
                 <li class="nav-item"><a class="nav-link" href="/basicinfo/lot/list" id="lot_info">로트정보</a></li>
                 <li class="nav-item"><a class="nav-link" href="/basicinfo/warehouse/list" id="storage_info">창고정보</a></li>
+                <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath }/warehouse/init/insert" id="init_warehouse_item_info">초기재고입력</a></li>
               </ul>
             </div>
           </li>
+          <%-- 
           <li class="nav-item">
             <a class="nav-link px-2 d-flex align-items-center gap-3" href="${pageContext.request.contextPath }/warehouse/init/insert">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -294,7 +292,8 @@ margin-top: 5px;
               </svg>
               <span>초기재고입력</span>
             </a>
-          </li>
+          </li> 
+          --%>
           <li class="nav-item">
             <a class="nav-link px-2 d-flex align-items-center gap-3" href="/warehouse/warehouse-detail/list">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -417,7 +416,7 @@ margin-top: 5px;
 			</div>
 		</div>
 	</div>
-</div>	
+</div>
 			
 			
       <div id="main-body">

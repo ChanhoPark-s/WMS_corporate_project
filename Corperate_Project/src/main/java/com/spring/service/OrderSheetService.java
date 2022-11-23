@@ -19,7 +19,11 @@ public interface OrderSheetService {
 	public int getTotalCount(SearchVO searchvo);
 	public List<OrderSheetDetailVO> getSubList(int mainNo);		// 수주서 번호로 품목 디테일들 모두 가져오는 것	
 	public OrderSheetVO selectOneByMainNo(int no);
+	int changeStatusOrderSheet(int ordersheetno, int status);
 	
 	/* ajax paging */
 	public PageDTO<OrderSheetVO> getListPage(Criteria cri);
+	
+	//발주할때 수주참조하면 수주상태 준비완료>발주중
+	public void updateStatus(String order_no);
 }

@@ -9,6 +9,16 @@ Date nowTime = new Date();
 SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 %>
 <style>
+table th {
+	text-align: center;	
+	font-size: 14px;
+}
+
+table td {
+	text-align: center;
+	font-size: 14px;
+}
+
 #table1 tbody tr:hover {
 	background-color: #EAEAEA;
 }
@@ -310,6 +320,7 @@ SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 				        
 				       				requestLotRecord(itemNo);
 								}
+								secondModalName = ""; 
 							});
 	
 	});
@@ -542,12 +553,8 @@ SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 <div class="main-body">
 	<div class="card">
 		<div class="card-body">
-			<div class="d-flex gap-1 mb-4 flex-wrap">
-				<form>
-					<input type="text" class="form-control"
-						placeholder="Sold Product Search">
-				</form>
-				<div class="d-flex gap-1 me-auto flex-wrap">
+			<div class="d-flex gap-1 mb-4 flex-wrap" style="height:38px">
+				<div class="d-flex gap-1 me-auto flex-wrap" style="height:38px">
 					<button
 						class="btn btn-primary d-inline-flex align-items-center gap-1"
 						data-bs-toggle="modal" data-bs-target="#Sold_Product_Add_Modal"
@@ -558,13 +565,41 @@ SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 								d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
 								clip-rule="evenodd"></path>
                   </svg>
-						등록
+						출고 등록
 					</button>
-
-
-
 				</div>
+				
+				<div class="search" >
+				<form name="search" action="/basicinfo/lot/list" id="search">
+				<table>
+				<tr>
+					<td>
+						<select id="whatColumn" name="whatColumn" class="form-select" style="width: 200px;" id="whatColumn" >
+		                  <%
+		                  String[] search = {"code","name"};
+		                  String[] cate = {"로트번호","상품명"};
+		                  %>
+		                  		<c:set value="<%=search %>" var="s"></c:set>
+		                  		<c:set value="<%=cate %>" var="c"></c:set>
+		                  		<option value="">검색 선택</option>
+		                  	<c:forEach begin="0" end="1" var="i">
+		                  		<option value="${s[i] }"<c:if test="${searchvo.whatColumn== s[i] }">selected</c:if>>${c[i] }</option>
+		                  	</c:forEach>
+		              </select>
+					</td>
+					<td>
+						<input type="text"  name="keyword" id="keyword" class="form-control" value=<c:if test="${searchvo.keyword=='null' }">""</c:if><c:if test="${searchvo.keyword!='null' }">"${searchvo.keyword }"</c:if>  placeholder="입력" style="width: 200px; height: 38px;">
+					</td>
+					<td>
+						<i class="fa-solid fa-magnifying-glass btn_search" id="searchIcon" onclick="searchForm()"></i>
+					</td>
+				</tr>	
+				</table>
+					</form>
 			</div>
+			</div>
+			
+			
 		</div>
 		<div class="table-responsive my-1">
 			<table class="table align-middle" id="table1">
@@ -582,8 +617,7 @@ SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 						<tr>
 							<td style="display: none;">${i.no}</td>
 							<td style="text-align: center">${i.order_no}</td>
-							<td style="text-align: center"><span
-								class="badge bg-light text-muted">${i.name}</span></td>
+							<td style="text-align: center">${i.name}</td>
 
 							<fmt:parseDate var="inputDay" value="${i.day}"
 								pattern="yyyy-MM-dd" />
@@ -659,44 +693,10 @@ SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 		</nav>
 	</div>
 	<br>
+	<!-- sell-Detail 영역 -->
 	<div class="card">
 		<div class="card-body">
-			sell-Detail 영역
-
-
-
-
-
-
-
-
-
-
 			<div class="card-body">
-				<div class="d-flex gap-1 mb-4 flex-wrap">
-					<form>
-						<input type="text" class="form-control"
-							placeholder="Sold Product Search">
-					</form>
-					<div class="d-flex gap-1 me-auto flex-wrap">
-						<button
-							class="btn btn-primary d-inline-flex align-items-center gap-1"
-							data-bs-toggle="modal"
-							data-bs-target="#Sold_Detail_Product_Add_Modal"
-							id="insert_Sold_Detail">
-							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-								fill="currentColor" aria-hidden="true">
-                    <path fill-rule="evenodd"
-									d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-									clip-rule="evenodd"></path>
-                  </svg>
-							등록
-						</button>
-
-
-
-					</div>
-				</div>
 			</div>
 			<div class="table-responsive my-1" id="table2">
 				<table class="table align-middle">
@@ -718,38 +718,6 @@ SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 					</tbody>
 				</table>
 			</div>
-			<nav aria-label="Page navigation borderless example">
-				<ul class="pagination pagination-borderless justify-content-end">
-					<li class="page-item disabled"><a
-						class="page-link d-flex align-items-center px-2" href="#"
-						tabindex="-1" aria-disabled="true" aria-label="Previous"> <svg
-								width="20" height="20" xmlns="http://www.w3.org/2000/svg"
-								viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd"
-									d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-									clip-rule="evenodd"></path>
-                    </svg>
-					</a></li>
-					<li class="page-item active" aria-current="page"><a
-						class="page-link" href="javascript:void(0)">1</a></li>
-					<li class="page-item"><a class="page-link"
-						href="javascript:void(0)">2</a></li>
-					<li class="page-item"><a class="page-link"
-						href="javascript:void(0)">3</a></li>
-					<li class="page-item"><a
-						class="page-link d-flex align-items-center px-2"
-						href="javascript:void(0)" aria-label="Next"> <svg width="20"
-								height="20" xmlns="http://www.w3.org/2000/svg"
-								viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd"
-									d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-									clip-rule="evenodd"></path>
-                    </svg>
-					</a></li>
-				</ul>
-			</nav>
-
-
 		</div>
 	</div>
 	<!-- Modal Begin (Sell)-->
@@ -775,20 +743,20 @@ SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 							</div>
 						</div>
 						<div class="row">
-							<div class="mb-3" style="width: 300px;">
+							<div class="mb-3">
 								<label for="member_no" class="form-label">담당자 이름</label> <input
 									type="text" class="form-control choiceMemberBtn"
 									data-bs-target="#secondModal" data-bs-toggle="modal"
 									data-bs-dismiss="modal" name="member_name" id="choiceMemberBtn"
 									required readonly>
 							</div>
-							<div class="col-sm-4">
+							<!-- <div class="col-sm-4">
 								<label for="userFullname" class="form-label">&nbsp;&nbsp;</label>
 								<button type="button" class="btn btn-primary"
 									style="display: block" data-bs-target="#secondModal"
 									data-bs-toggle="modal" data-bs-dismiss="modal"
 									id="choiceMemberBtn">담당자 선택</button>
-							</div>
+							</div> -->
 						</div>
 						<div class="row">
 							<div class="mb-3">
@@ -799,11 +767,11 @@ SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 						</div>
 						<div class="mb-3">
 							<hr>
-							<button type="button" form="taskForm"
+							<!-- <button type="button" form="taskForm"
 								class="btn btn-primary px-5" id="insert_Sold_Detaill">판매
 								상세 추가</button>
 							<button type="button" form="taskForm"
-								class="btn btn-primary px-5" id="delete_detail">초기화</button>
+								class="btn btn-primary px-5" id="delete_detail">초기화</button> -->
 						</div>
 						<div id="sell_Detail_Insert_Area">
 							<div id="detail_Insert_Area">
@@ -814,8 +782,7 @@ SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 									<div class="mb-3" style="width: 300px;">
 										<label for="userFullname" class="form-label">품목코드</label> <input
 											type="text" class="form-control choiceItemBtn"
-											data-bs-target="#secondModal" data-bs-toggle="modal"
-											data-bs-dismiss="modal" name='item_code' readonly>
+											 name='item_code' readonly>
 									</div>
 									<div class="col-sm-4">
 										<label for="userFullname" class="form-label">&nbsp;&nbsp;</label>
@@ -1026,3 +993,10 @@ SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 
 <!-- bottom.jsp -->
 <%@include file="../../common/bottom.jsp"%>
+
+<script type="text/javascript">
+	/* 왼쪽 카테고리창이 해당화면에 맞게 펼쳐지게 하는 코드 */
+	$(function(){ 
+		document.getElementById('sell_info').click();
+	});
+</script>
