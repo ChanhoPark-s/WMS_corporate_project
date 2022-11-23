@@ -16,5 +16,6 @@ public interface SellMapper {
 		
 		public void update(SellVO sell);
 
-		public List<SellDetailVO> getSubList(int mainNo); 
+		public List<SellVO> getSubList(int mainNo); 
+	
 }

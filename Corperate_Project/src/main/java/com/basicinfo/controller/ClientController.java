@@ -29,7 +29,7 @@ import com.spring.service.ClientService;
 @RequestMapping("/basicinfo/client/*")
 public class ClientController {
 	
-	@Autowired
+	@Autowired(required = false)
 	private ClientService service;
 	
 	private final String redirect = "redirect:/basicinfo/client/list";

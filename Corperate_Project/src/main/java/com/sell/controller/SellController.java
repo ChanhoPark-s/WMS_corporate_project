@@ -67,7 +67,6 @@ public class SellController {
 //			System.out.println(memlists.get(i));
 //		}
 		
-		System.out.println(sell.getOrder_no());
 		System.out.println(sell.getDay());
 		service.insert(sell);
 		System.out.println("selldetail 판매상세번호:"+selldetail.getNo());
@@ -95,7 +94,7 @@ public class SellController {
 	@PostMapping(value="/update")
 	public String updateSold(Model model, SellVO sell) {
 		
-		System.out.println(sell.getNo()+"/"+sell.getOrder_no()+"/"+sell.getMember_no()+"/"+sell.getDay());
+		System.out.println(sell.getNo()+"/"+"/"+sell.getMember_no()+"/"+sell.getDay());
 		
 		service.update(sell);
 		

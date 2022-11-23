@@ -26,7 +26,7 @@ public class LotRestController {
 			
 		// 판매에서 로트 불러오기
 		@GetMapping(value="/getLot/{itemNo}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-		public ResponseEntity<List<LotVO>> getLot(@PathVariable("itemNo") int no) {
+		public ResponseEntity<List<String>> getLot(@PathVariable("itemNo") String no) {
 			System.out.println("?:" + no);
 			return new ResponseEntity<>(service.getLot(no), HttpStatus.OK);		
 		

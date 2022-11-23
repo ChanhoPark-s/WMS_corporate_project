@@ -15,7 +15,5 @@ public interface SellDetailService {
 	public int getTotalCount(SearchVO searchvo);
 
 	public List<SellDetailVO> selectAll(Client_Paging pageInfo);
-	
-	public List<SellDetailVO> getSubListByOrderSheetNo(int orderSheetNo);
 
 }

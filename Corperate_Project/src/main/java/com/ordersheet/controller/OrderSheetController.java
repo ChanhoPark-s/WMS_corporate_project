@@ -24,7 +24,7 @@ import com.spring.service.OrderSheetService;
 @RequestMapping("/ordersheet/*")
 public class OrderSheetController {
 	
-	@Autowired
+	@Autowired(required = false)
 	private OrderSheetService service;
 	
 	private final String redirect = "redirect:/ordersheet/list";

@@ -20,7 +20,6 @@ public class SellServiceImpl implements SellService{
 	public void insert(SellVO sell) {
 		
 		System.out.println("SellServiceImpl member_no :"+sell.getMember_no());
-		System.out.println("SellServiceImpl order_no :"+sell.getOrder_no());
 		System.out.println("SellServiceImpl day :"+sell.getDay());
 		
 		mapper.insert(sell); // 존재하지 않는 레코드를 얻으려고하면 null이 반환됨
@@ -45,8 +44,8 @@ public class SellServiceImpl implements SellService{
 	}
 	
 	@Override
-	public List<SellDetailVO> getSubList(int mainNo) {
-		System.out.println("판매 리스트 불러오기");
+	public List<SellVO> getSubList(int mainNo) {
+		System.out.println("판매 리스트 불러오기13");
 		return mapper.getSubList(mainNo); // 존재하지 않는 레코드를 얻으려고하면 null이 반환됨
 	}
 }
