@@ -19,4 +19,6 @@ public class OrderSheetDetailVO {
 	private int client_no;		// 취급처 번호
 	private String client_code; // 취급처 코드
 	private String client_name;	// 취급처 이름
+	
+	private int current_amount;	// 현재재고수량
 }

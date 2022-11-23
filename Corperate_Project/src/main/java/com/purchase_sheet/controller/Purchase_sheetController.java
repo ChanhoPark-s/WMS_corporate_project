@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,14 +23,15 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.google.gson.Gson;
 import com.spring.domain.ClientVO;
+import com.spring.domain.Input_WareHouse_DetailVO;
 import com.spring.domain.ItemVO;
 import com.spring.domain.Purchase_sheetVO;
 import com.spring.domain.Purchase_sheet_DetailVO;
 import com.spring.domain.SearchVO;
 import com.spring.domain.WareHouseVO;
-import com.spring.mapper.Purchase_sheetMapper;
 import com.spring.paging.Client_Paging;
 import com.spring.service.ClientService;
+import com.spring.service.Input_WareHouse_DetailService;
 import com.spring.service.ItemService;
 import com.spring.service.OrderSheetService;
 import com.spring.service.Purchase_sheetService;
@@ -57,12 +61,23 @@ public class Purchase_sheetController {
 	@Autowired
 	private OrderSheetService os;
 	
+	@Autowired
+	private Input_WareHouse_DetailService iwds;
+	
+	@RequestMapping("/statuschange.ps")
+	public String status(@RequestParam int no) {
+		//입고확인시 발주완료
+		ps.updateStatus(no);
+		
+		return re;
+	}
+	
 	
 	@RequestMapping("/list.ps")
 	public void list(SearchVO searchvo,HttpServletRequest request,Model model) {
 		
 		//날짜에 따른 상태:취소됨
-		ps.update();
+		//ps.update();
 		
 		//창고조회
 		List<WareHouseVO> WareList = ws.list();
@@ -159,15 +174,30 @@ public class Purchase_sheetController {
 	}
 	
 	@ResponseBody
-	@GetMapping(value = "detailList", produces="application/json;charset=UTF-8")
-	public String detail(String purchase_sheet_no) {
+	@GetMapping(value = "detailList", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<Map<String,Object>> detail(String purchase_sheet_no) {
 		LOGGER.info("purchase_sheet_no"+purchase_sheet_no);
 		System.out.println("purchase_sheet_no"+purchase_sheet_no);
 		
 		//발주상세조회
 		List<Purchase_sheet_DetailVO> lists = ps.selectList(purchase_sheet_no); 
 		
-		return new Gson().toJson(lists);
+		//금액총합
+		for(Purchase_sheet_DetailVO vo :lists) {
+			vo.setTotal_Price(vo.getIN_PRICE()* vo.getAMOUNT());
+		}
+		
+		//입고상세조회
+		List<Input_WareHouse_DetailVO> lists2 = iwds.getSubList2(Integer.parseInt(purchase_sheet_no));
+		
+		//map
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		map.put("pd", lists);
+		map.put("iwd", lists2);
+		
+		
+		return new ResponseEntity<>(map, HttpStatus.OK);
 	}
 	
 	@ResponseBody
