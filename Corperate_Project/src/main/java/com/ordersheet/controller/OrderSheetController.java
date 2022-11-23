@@ -85,13 +85,12 @@ public class OrderSheetController {
 		return redirect;
 	}
 	
-	@PostMapping(value="/statuschange")
-	public String chnageStatus(SearchVO searchvo, @RequestParam("ordersheetno") int ordersheetno, @RequestParam("status") int status, RedirectAttributes rttr) {
+	@GetMapping(value="/statuschange")
+	public String chnageStatus(@RequestParam("ordersheetno") int ordersheetno, @RequestParam("status") int status, RedirectAttributes rttr) {
 		
-		//System.out.println("status: " + ordersheetno);
-		//System.out.println("status: " + status);
-		
-		//service.changeStatusOrderSheet(status);
+		System.out.println("ordersheetno: " + ordersheetno);
+		System.out.println("status: " + status);
+		service.changeStatusOrderSheet(ordersheetno, status);
 		//rttr.addFlashAttribute("searchvo",searchvo);
 		
 		return redirect;

@@ -15,7 +15,7 @@ public class SellDetailVO {
 	private int in_price;
 	private int out_price;
 	private String sell_day;
-	
+	private String profit;
 	
 	private String code;
 	private String name;

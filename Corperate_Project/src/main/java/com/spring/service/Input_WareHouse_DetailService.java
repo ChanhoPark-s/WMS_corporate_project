@@ -11,6 +11,9 @@ public interface Input_WareHouse_DetailService {
 	public List<Input_WareHouse_DetailVO> list();
 	public int insert(Input_WareHouse_DetailVO vo);
 	public List<Input_WareHouse_DetailVO> getSubList(int mainNo);
+	
+	// 발주에서 입고상세조회
+	public List<Input_WareHouse_DetailVO> getSubList2(int mainNo);
 	/* ajax paging */
 	public PageDTO<Input_WareHouse_DetailVO> getListPage(Criteria cri);
 }

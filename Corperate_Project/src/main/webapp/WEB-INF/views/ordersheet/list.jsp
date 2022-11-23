@@ -43,7 +43,7 @@ table td {
 <!-- 상단 -->
 <div class="card">
 	<div class="card-body">
-		<div class="d-flex gap-1 mb-4 flex-wrap" style="height:38px">
+		<div class="d-flex gap-1 mb-4 flex-wrap" style="height:38px;">
 			<div class="d-flex gap-1 me-auto flex-wrap" style="height:38px">
 				<button
 					class="btn btn-primary d-inline-flex align-items-center gap-1"
@@ -217,6 +217,8 @@ table td {
 						<th scope="col">품목명</th>
 						<th scope="col">취급처</th>
 						<th scope="col">수주수량</th>
+						<th scope="col">재고수량</th>
+						<th scope="col">부족수량</th>
 						<th scope="col">판매단가</th>
 						<th scope="col">합계</th>
 					</tr>
@@ -929,51 +931,63 @@ table td {
 		}
 		
 		//form 전송전에 빈줄 삭제
-		var allItemCodeInputs = $("#modalItemDetail").find(".choiceItemBtn");
+		var allItemCodeInputs = $("#modalItemDetail").find("input[name='item_no']");
 		var currentRowCount = allItemCodeInputs.length; 
 		
-		console.log("currentRowCount: " + currentRowCount);
+		console.log("currentRowCount(빈줄을 제거하기전 전체 row 수): " + currentRowCount);
 		
 		for(var i = currentRowCount-1; i >= 0; i--){
-			console.log(allItemCodeInputs[i].value);
+			console.log("allItemCodeInputs[i].value: " + i +" " + allItemCodeInputs[i].value);
 			if(allItemCodeInputs[i].value == "" && i != 0){
 				$("#modalItemDetail div[class=row]").eq(i).remove();
 			}	
 		}
 		
+		var isValid = true;
+		
 		//유효성 검사하는 부분
 		if($("input[name='out_day']").val() == ""){
 			$("input[name='out_day']").attr("class","form-control is-invalid");
 			//$("#client_code").focus();
-			return;
+			isValid = false;
 	    }
 		
 		if($("#member_dep_name").val() == ""){
 	    	$("#member_dep_name").attr("class","form-control is-invalid");
 	    	$("#member_name").attr("class","form-control is-invalid");
-	    	return;
+	    	isValid = false;
 	    }
 		
 		if($("#client_code").val() == ""){
 			$("#client_code").attr("class","form-control is-invalid");
 			$("#client_name").attr("class","form-control is-invalid");
-			return;
+			isValid = false;
 		}
 		
-		//모든 요소를 돌아보고 처리해야함.
+		//상품이 입력되지 않은경우 처리되도록
 		$("#modalItemDetail .row").eq(i).find("input").each(function(index){
 			if(index == 1 && $(this).val() == ""){
 				$(this).attr("class","form-control is-invalid choiceItemBtn");
+				isValid = false;
 			}
-			return;
 		});
 		
-		if($("input[name='amount']").val() == ""){
-			$("input[name='amount']").attr("class","form-control is-invalid");	
-			return;
+		//수량관련 유효성검사		
+		for(var i = 0; i<$("#modalItemDetail .row").length; i++){
+			$("#modalItemDetail .row").eq(i).find("input").each(function(index){
+				if(index == 4 && $(this).val() == ""){
+					$(this).attr("class","form-control is-invalid");
+					isValid = false;
+				}
+			});
 		}
 		
-		//form submit
+		if(isValid == false){
+			return;
+		}
+		console.log("isValid:" + isValid);
+		
+		//form submit after check validation
 		$("#firstModalForm").submit();
 	});
 </script>
@@ -1002,6 +1016,23 @@ table td {
 						
 						var str = "";
 						
+						//부족수량의 결과를 넣기 위한 변수
+						var result="";
+						
+						//부족수량은 재고수량-수주수량 양수시 0, 음수시는 수주수량-재고수량
+						if(list[i].current_amount-list[i].amount>0){
+							result = 0;
+						}
+						else{
+							result = list[i].amount-list[i].current_amount;
+						}
+						str2 = "";
+						if(result != 0){
+							str2 = "<td style='color:red;'>" + result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "개</td>";
+						}else{
+							str2 = "<td>" + result + "개</td>";
+						}
+						
 						str += "<tr>";
 						/* str += "<td><div><input class='form-check-input' type='checkbox' value=''></div></td>"; */
 						str += "<td style='display:none'>" + list[i].no + "</td>";
@@ -1014,6 +1045,8 @@ table td {
 						str += "<td>" + list[i].item_name + "</td>";
 						str += "<td>" + list[i].client_name + "</td>";
 						str += "<td>" + list[i].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " 개</td>";
+						str += "<td>" + list[i].current_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " 개</td>";
+						str += str2;
 						str += "<td>" + list[i].out_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " 원</td>";
 						str += "<td>" + (list[i].amount * list[i].out_price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " 원</td>";
 						str += "</tr>";
@@ -1069,7 +1102,7 @@ table td {
 		$("#setSellCompleteStatus").on("click", function(){
 			
 			if(clickedMainNo != ""){
-				location.href = "/ordersheet/statuschange?ordersheetno=" + clickedMainNo + " &status=2";
+				location.href = "/ordersheet/statuschange?ordersheetno=" + clickedMainNo + "&status=2";
 			}
 			
 		});

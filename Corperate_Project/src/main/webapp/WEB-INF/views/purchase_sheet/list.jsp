@@ -172,11 +172,11 @@ table td {
                     <th scope="col"></th>
                     <th scope="col">품목코드</th>
                     <th scope="col">품목명</th>
-                    <th scope="col">발주수량</th>
                     <th scope="col">입고단가</th>
                     <th scope="col">합계</th>
                     <th scope="col">입고예정창고</th>
-                    <th scope="col">진행상태</th>
+                    <th scope="col">발주수량</th>
+                    <th scope="col" style="display: none;">진행상태</th>
                   </tr>
                 </thead>
                 <tbody id="detailList">
@@ -197,7 +197,7 @@ table td {
 				<div class="d-flex gap-1 mb-4 flex-wrap" style="height: 38px">
 					<div class="d-flex gap-1 me-auto flex-wrap" style="height: 38px">
 						<button
-							class="btn btn-primary d-inline-flex align-items-center gap-1">
+							class="btn btn-primary d-inline-flex align-items-center gap-1" id="setSellCompleteStatus">
 							입고완료 처리</button>
 					</div>
 				</div>
@@ -268,6 +268,8 @@ table td {
 	<%@include file="/WEB-INF/views/common/bottom.jsp" %>
     <!-- /Main footer -->
 <script type="text/javascript">
+var clickedMainNo = "";
+
 /* 1,000 숫자표기 함수 */
 $(function(){
 	document.getElementById('purchase_info').click();
@@ -276,65 +278,95 @@ $(function(){
 function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
-
 /* 발주상세 조회 */
 $('.tr').find('td').not('td:last-child').on('click',function(){
+	
+	clickedMainNo = $(this).parent('.tr').find(".delete").data('no');
+	console.log(clickedMainNo);
+	
 	$('#detailList *').remove();
 	$.ajax({
         url: "detailList",
         type: "get",
         data: {
-        	purchase_sheet_no : $(this).parent('.tr').data("no")
+        	purchase_sheet_no : $(this).parent('.tr').data('no').trim()
         },
         success: function(data){
         	console.log(data); 
-        	str = "";
-        	if(data.length == 0){
-    			str += '<tr height="400px">'
-    			+ '<td colspan="7" align="center"><br><br><i class="fa-regular fa-circle-xmark fa-4x"></i><br><br>검색된 결과가 없습니다</td>'
-    			+ '</tr>'
-    		}else{
+        	console.log(data.pd); 
+        	console.log(data.iwd); 
+        	
+        	var pDetail = data.pd;
+        	var iDetail = data.iwd;
+        	
+        	str="";
+        	
+        	for(var i = 0, len = pDetail.length || 0; i < len; i++){
     			
-        	$.each(data,function(i){
-        		function status(status){
-        			if(status == 0){
-        				return "입고예정";
-        			}else if(status == 1){
-        				return "입고완료";
-        			}else{
-        				return "취소";
-        			}
-        		}
-        		
-	        		str += '<tr>'
+        			function status(status){
+	        			if(status == 0){
+	        				return "입고예정";
+	        			}else if(status == 1){
+	        				return "입고완료";
+	        			}else{
+	        				return "취소";
+	        			}
+	        		}
+	        		
+        			str += '<tr>'
 	        		+ "<td><i class='fa-solid fa-gift'></i></td>"
 	        		+ '<td>'
-	        		+ data[i].ITEM_Code
+	        		+ pDetail[i].item_Code
 	                + '</td>'
 	                + '<td>'
-	                + data[i].ITEM_Name
+	                + pDetail[i].item_Name
+	                + '</td>'
+	               
+	                + '<td>'
+	                + numberWithCommas(pDetail[i].in_PRICE)
+	                + '원</td>'
+	                + '<td>'
+	                + numberWithCommas(pDetail[i].total_Price)
+	                + '원</td>'
+	                + '<td>'
+	                + pDetail[i].ware_Name
 	                + '</td>'
 	                + '<td>'
-	                + data[i].AMOUNT
+	                + pDetail[i].amount
 	                + '개</td>'
-	                + '<td>'
-	                + numberWithCommas(data[i].IN_PRICE)
-	                + '원</td>'
-	                + '<td>'
-	                + numberWithCommas(data[i].IN_PRICE*data[i].AMOUNT)
-	                + '원</td>'
-	                + '<td>'
-	                + data[i].WARE_Name
-	                + '</td>'
-	                + '<td>'
-	                + status(data[i].STATUS)
+	                + '<td style="display: none;>'
+	                + status(pDetail[i].status)
 	                + '</td>'
 	           	    + '</tr>'
-        		
-        		
-        		});//each
     		}
         	$('#detailList').append(str);
+    			
+				$("#table3 tbody").empty();
+				
+				for(var i = 0, len = iDetail.length || 0; i < len; i++){
+					
+					var str = "";
+					
+					str += "<tr>";
+					str += "<td style='display:none'>" + iDetail[i].no + "</td>";
+					str += "<td style='display:none'>" + iDetail[i].input_WareHouse_No + "</td>";
+					
+					
+					str += "<td></td>";
+					str += "<td>" + iDetail[i].purchase_Sheet_No + "</td>";
+					str += "<td>" + iDetail[i].lot_Code + "</td>";
+					str += "<td>" + iDetail[i].item_code + "</td>";
+					str += "<td>" + iDetail[i].item_name + "</td>";
+					str += "<td>" + iDetail[i].ware_name + "</td>";
+					str += "<td>" + iDetail[i].area_name + "</td>";
+					str += "<td>" + iDetail[i].rack_name + "</td>";
+					str += "<td>" + iDetail[i].cell_name + "</td>";
+					str += "<td>" + iDetail[i].qty + "</td>";
+					str += "</tr>";
+					
+					$("#table3 tbody").append(str);
+				}
+        	
         },
         error: function(jqxhr, textStatus, errorThrown){
             alert("err");
@@ -355,4 +387,13 @@ $('.delete').click(function(){
 	location.href='delete.ps?no='+$(this).data('no');
 	
 })
+
+/* 입고완료 처리 눌렸을 때 처리 */
+$("#setSellCompleteStatus").on("click", function(){
+	
+	if(clickedMainNo != ""){
+		location.href = "/statuschange.ps?no=" + clickedMainNo;
+	}
+	
+});
 </script> 

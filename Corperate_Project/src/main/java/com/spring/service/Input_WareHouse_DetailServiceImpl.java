@@ -30,6 +30,11 @@ public class Input_WareHouse_DetailServiceImpl implements Input_WareHouse_Detail
 	public List<Input_WareHouse_DetailVO> getSubList(int mainNo) {
 		return mapper.selectSubAllByMainNo(mainNo);
 	}
+	
+	@Override
+	public List<Input_WareHouse_DetailVO> getSubList2(int mainNo) {
+		return mapper.selectSubAllByPurchaseNo(mainNo);
+	}
 
 	@Override
 	public PageDTO<Input_WareHouse_DetailVO> getListPage(Criteria cri) {

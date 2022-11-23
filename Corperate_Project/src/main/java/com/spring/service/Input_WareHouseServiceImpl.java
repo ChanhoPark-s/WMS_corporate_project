@@ -37,6 +37,7 @@ public class Input_WareHouseServiceImpl implements Input_WareHouseService{
 		ArrayList<Integer> amountList = vo.getQTY();
 
 		int len = noList.size();
+		System.out.println("len:"+len);
 		for (int i = 0; i < len; i++) {
 			Input_WareHouse_DetailVO detailVo = new Input_WareHouse_DetailVO();
 			String lot_code = detailMapper.getLotCode(noList.get(i));
@@ -52,7 +53,11 @@ public class Input_WareHouseServiceImpl implements Input_WareHouseService{
 			detailVo.setCell_No(vo.getCell_no());
 			detailVo.setLot_Code(lot_code);
 			detailVo.setStatus(vo.getStatus());
+			
 			detailMapper.createLot(detailVo);
+			
+			detailMapper.inputWarehouseDetail(detailVo); 
+			
 			if(detailMapper.insert(detailVo) != 1) {
 				return -1;
 			}
@@ -67,6 +72,11 @@ public class Input_WareHouseServiceImpl implements Input_WareHouseService{
 
 	@Override
 	public List<Input_WareHouseVO> getListByPaging(Client_Paging pageInfo) {
+		
+		if(pageInfo.getWhatColumn() != null && (pageInfo.getWhatColumn().equals("item") ||pageInfo.getWhatColumn().equals("lot_code"))) {
+			ArrayList<Integer> main_nos = mapper.selectAllMainNoByItemName(pageInfo);
+			pageInfo.setMain_nos(main_nos);
+		}
 		// 메인 레코드 가져오기
 		List<Input_WareHouseVO> list = mapper.selectListByPaging(pageInfo);
 
@@ -87,5 +97,20 @@ public class Input_WareHouseServiceImpl implements Input_WareHouseService{
 
 		}
 		return list;
+	}
+
+	@Override
+	public int deleteInputWarehouse(int no) {
+		int r1 = -1;
+		int r2 = -1;
+		
+		r1 = mapper.deleteInputWarehouse(no);			// main 행 삭제
+		r2 = mapper.deleteInputWarehouseDetail(no);		// sub 품목들 삭제
+		
+		if(r1 >= 0 && r2 >= 0) {
+			return 1;
+		}else {
+			return -1;
+		}
 	}
 }

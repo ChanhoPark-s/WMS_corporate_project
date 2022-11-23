@@ -145,4 +145,10 @@ public class Purchase_sheetServiceImpl implements Purchase_sheetService{
 		return mapper.selectSubAllByMainNo(no);
 	}
 
+	@Override
+	public void updateStatus(int no) {
+		mapper.updateStatus(no);
+		mapper.updateDetailStatus(no);
+	}
+
 }

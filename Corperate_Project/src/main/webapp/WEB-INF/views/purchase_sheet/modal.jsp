@@ -9,28 +9,25 @@
 				<h5 id="modal-title">발주서 등록</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal"
 					aria-label="Close"></button>
-			</div>
+					</div>
 			<!-- form start -->
 			<form class="needs-validation" novalidate="" id="modal1form" action="/insert.ps" method="post">
 				<div class="modal-body">
 						<!-- 컨트롤러로 넘기는 정보 -->
 						<!-- out_day -->
-						<!-- <input type="hidden" name="order_no" class="form-control" readonly> -->
+						<input type="hidden" name="order_no" class="form-control" readonly>
 						<input type="hidden" name="member_no" class="form-control" readonly>
 						<input type="hidden" name="client_no" class="form-control" readonly>
 						<!-- 품목번호 및 개수 -->
 						<!-- input type='text' name='item_no' -->
 						<!-- input type='text' name='amount' -->
-						
+						<button type="button" class="btn btn-primary " style="margin-bottom: 10px !important" data-bs-target="#secondModal" data-bs-toggle="modal" data-bs-dismiss="modal" id="choiceOrderBtn">수주서 선택</button>	
 						<div class="row">		
-							<div class="col-sm-6">
+							<div class="col-sm-3">
 								<label for="userFullname" class="form-label">납기일자</label>
 									<input type="date" name="delivery_date" class="form-control" onchange="calendarChangeHandler()">
 							</div>
-							<div class="col-sm-3">
-								<label for="userFullname" class="form-label">&nbsp;&nbsp;</label>
-								<button type="button" class="btn btn-primary" style="display:block" data-bs-target="#secondModal" data-bs-toggle="modal" data-bs-dismiss="modal" id="choiceOrderBtn">수주서 선택</button>	
-							</div>
+							
 						</div>
 						<div class="row" >		
 							<div class="col-sm-3">		
@@ -93,7 +90,7 @@
 								</div>
 								<div class="col-sm-2">		
 									<label for="ware_no" class="form-label">창고명</label>
-									<select class="form-select" id="ware_no" name="ware_no" onchange="wareChangeHandler()">
+									<select class="form-select selectware" id="ware_no" name="ware_no">
 					                <option selected disabled value="">선택</option>
 										<c:forEach items="${WareList }" var="ware">
 											<option value="${ware.no }">${ware.name }(${ware.code })</option>
