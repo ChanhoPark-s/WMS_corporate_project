@@ -6,11 +6,13 @@
 </head>
 <style>
 table th {
-	text-align: center;
+	text-align: center;	
+	font-size: 14px;
 }
 
 table td {
 	text-align: center;
+	font-size: 14px;
 }
 
 /* 한줄 색 칠하는 기능 */
@@ -90,7 +92,7 @@ table td {
                     <th scope="col" style="display:none">발주번호</th>
                     <th scope="col">작성일자</th>
                     <th scope="col">담당자</th>
-                    <th scope="col">거래처</th>
+                    <th scope="col">발주처</th>
                     <th scope="col" nowrap>품목명</th>
                     <th scope="col">납기일자</th>
                     <th scope="col">총 구매단가</th>
@@ -112,7 +114,7 @@ table td {
                     <td>${list.member_name}</td>
                     <td>${list.client_name }</td>
                     <td>
-                    <span class="badge bg-light text-muted">
+                    <span>
                     <c:set var="item_name" value="${fn:split(list.item_name,',')}" />
                     ${item_name[0] }
 					<c:if test="${fn:length(item_name) > 1}">외 ${fn:length(item_name) - 1}개</c:if>

@@ -2,6 +2,19 @@
 pageEncoding="UTF-8"%>
 <!-- top.jsp -->
 <%@include file="/WEB-INF/views/common/top.jsp" %>
+
+<style>
+table th {
+	text-align: center;
+	font-size: 14px;
+}
+
+table td {
+	text-align: center;
+	font-size: 14px;
+}
+</style>
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <div class="card">
@@ -75,48 +88,41 @@ pageEncoding="UTF-8"%>
                   </tr>
                 </thead>
                 <tbody>
+	                <tr>
+	                	<td style="display:none">
+	                		<!--선택 삭제할때도 넘어가게하기 위해  -->
+							<input type="hidden" name="keyword" id="keyword3" >
+							<input type="hidden" name="whatColumn" id="whatColumn2">
+	             			<input type="hidden" name="pageNumber" id="pageNumber2">
+	                	</td>
+	                </tr>
                 <c:forEach items="${requestScope.list }" var="member">
                 	<tr>
                 	<td>								<input class="form-check-input" type="checkbox" id="rowcheck" name="rowcheck" value="${member.no }"></td>
                     <td>
-                      <div class="d-flex align-items-center gap-3">
                         ${member.no }
-                      </div>
+                   
                     </td>
                     <td>
-                      <div class="d-flex align-items-center gap-3">
-                        <img width="100px" height="100px" src="${pageContext.request.contextPath }/resources/assets/img/user/${member.fileName }" >
-                      </div>
+                        <img width="70px" height="70px" src="${pageContext.request.contextPath }/resources/assets/img/user/${member.fileName }" >
                     </td>
                     <td>
-                      <div class="d-flex align-items-center gap-3">
                         ${member.name }
-                      </div>
                     </td>
                     <td>
-                      <div class="d-flex align-items-center gap-3">
                         ${member.id }
-                      </div>
                     </td>
                     <td>
-                      <div class="d-flex align-items-center gap-3">
                         ${member.email }
-                      </div>
                     </td>
                     <td>
-                      <div class="d-flex align-items-center gap-3">
                       	<span class="badge bg-light text-muted">${member.dep_name }</span>
-                      </div>
                     </td>
                     <td>
-                      <div class="d-flex align-items-center gap-3">
                         <span class="badge bg-dark">${member.rank_name }</span>
-                      </div>
                     </td>
                     <td>
-                      <div class="d-flex align-items-center gap-3">
                         ${member.reg_date }
-                      </div>
                     </td>
 					<td>
 						<div class="btn-group btn-group-sm" role="group">

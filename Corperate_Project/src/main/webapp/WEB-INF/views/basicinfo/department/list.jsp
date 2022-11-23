@@ -4,6 +4,18 @@
 <!-- top.jsp -->
 <%@include file="../../common/top.jsp"%>
 
+<style>
+table th {
+	text-align: center;
+	font-size: 14px;
+}
+
+table td {
+	text-align: center;
+	font-size: 14px;
+}
+</style>
+
 <div class="card">
 	<div class="card-body">
 		<div class="d-flex gap-1 mb-4 flex-wrap">
@@ -74,6 +86,13 @@
 					</tr>
 				</thead>
 				<tbody>
+					<tr>
+						<td style="display:none">
+							<input type="hidden" name="keyword" id="keyword3" >
+							<input type="hidden" name="whatColumn" id="whatColumn2">
+	             			<input type="hidden" name="pageNumber" id="pageNumber2">
+						</td>
+					</tr>
 					<c:forEach var="vo" items="${voList}">
 						<tr class="dept-${vo.no }">
 							<td>
