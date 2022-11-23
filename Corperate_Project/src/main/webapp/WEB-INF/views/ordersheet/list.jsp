@@ -931,51 +931,63 @@ table td {
 		}
 		
 		//form 전송전에 빈줄 삭제
-		var allItemCodeInputs = $("#modalItemDetail").find(".choiceItemBtn");
+		var allItemCodeInputs = $("#modalItemDetail").find("input[name='item_no']");
 		var currentRowCount = allItemCodeInputs.length; 
 		
-		console.log("currentRowCount: " + currentRowCount);
+		console.log("currentRowCount(빈줄을 제거하기전 전체 row 수): " + currentRowCount);
 		
 		for(var i = currentRowCount-1; i >= 0; i--){
-			console.log(allItemCodeInputs[i].value);
+			console.log("allItemCodeInputs[i].value: " + i +" " + allItemCodeInputs[i].value);
 			if(allItemCodeInputs[i].value == "" && i != 0){
 				$("#modalItemDetail div[class=row]").eq(i).remove();
 			}	
 		}
 		
+		var isValid = true;
+		
 		//유효성 검사하는 부분
 		if($("input[name='out_day']").val() == ""){
 			$("input[name='out_day']").attr("class","form-control is-invalid");
 			//$("#client_code").focus();
-			return;
+			isValid = false;
 	    }
 		
 		if($("#member_dep_name").val() == ""){
 	    	$("#member_dep_name").attr("class","form-control is-invalid");
 	    	$("#member_name").attr("class","form-control is-invalid");
-	    	return;
+	    	isValid = false;
 	    }
 		
 		if($("#client_code").val() == ""){
 			$("#client_code").attr("class","form-control is-invalid");
 			$("#client_name").attr("class","form-control is-invalid");
-			return;
+			isValid = false;
 		}
 		
-		//모든 요소를 돌아보고 처리해야함.
+		//상품이 입력되지 않은경우 처리되도록
 		$("#modalItemDetail .row").eq(i).find("input").each(function(index){
 			if(index == 1 && $(this).val() == ""){
 				$(this).attr("class","form-control is-invalid choiceItemBtn");
+				isValid = false;
 			}
-			return;
 		});
 		
-		if($("input[name='amount']").val() == ""){
-			$("input[name='amount']").attr("class","form-control is-invalid");	
-			return;
+		//수량관련 유효성검사		
+		for(var i = 0; i<$("#modalItemDetail .row").length; i++){
+			$("#modalItemDetail .row").eq(i).find("input").each(function(index){
+				if(index == 4 && $(this).val() == ""){
+					$(this).attr("class","form-control is-invalid choiceItemBtn");
+					isValid = false;
+				}
+			});
 		}
 		
-		//form submit
+		if(isValid == false){
+			return;
+		}
+		console.log("isValid:" + isValid);
+		
+		//form submit after check validation
 		$("#firstModalForm").submit();
 	});
 </script>
@@ -1084,7 +1096,7 @@ table td {
 		$("#setSellCompleteStatus").on("click", function(){
 			
 			if(clickedMainNo != ""){
-				location.href = "/ordersheet/statuschange?ordersheetno=" + clickedMainNo + " &status=2";
+				location.href = "/ordersheet/statuschange?ordersheetno=" + clickedMainNo + "&status=2";
 			}
 			
 		});

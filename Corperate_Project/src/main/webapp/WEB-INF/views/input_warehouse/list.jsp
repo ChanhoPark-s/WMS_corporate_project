@@ -73,7 +73,7 @@ table td {
 								</select>
 							</td>
 							<td><input type="text" name="keyword" id="keyword" class="form-control" value=<c:if test="${searchvo.keyword=='null' }">""</c:if> <c:if test="${searchvo.keyword!='null' }">"${searchvo.keyword }"</c:if> placeholder="입력" style="width: 200px; height: 38px;"></td>
-							<td><i class="fa-solid fa-magnifying-glass btn_search" id="searchIcon" onclick="searchForm()"></i></td>
+							<td><i class="fa-solid fa-magnifying-glass btn_search" id="searchIcon" onclick="document.getElementById('search').submit();"></i></td>
 						</tr>
 					</table>
 				</form>
@@ -123,7 +123,7 @@ table td {
 											d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                           </svg>
 								</button>
-								<button type="button" class="btn btn-light d-flex text-danger">
+								<button type="button" class="btn btn-light d-flex text-danger deleteOneBtn" data-no="${input.no }">
 									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
 										fill="none" viewBox="0 0 24 24" stroke="currentColor"
 										aria-hidden="true">
@@ -205,8 +205,8 @@ table td {
 						<div class="row">		
 							<div class="col-sm-3">		
 								<label for="day" class="form-label">입고일자</label> 
-		                		<input type="date" name="input_day" class="form-control" required>
-		                		<div class="invalid-feedback">date is required.</div>
+		                		<input type="date" name="input_day" class="form-control" required onchange="calendarChangeHandler()">
+		                		<div class="invalid-feedback">입고일자를 입력해주세요.</div>
 							</div>
 							<div class="col-sm-4">	
 							<label for="userFullname" class="form-label">&nbsp;&nbsp;</label>
@@ -218,6 +218,7 @@ table td {
 							<div class="col-sm-3">		
 								<label for="userFullname" class="form-label">부서명</label>
 								<input type="text" id="member_dep_name" class="form-control" readonly>
+								<div class="invalid-feedback">담당자를 입력해주세요.</div>
 							</div>
 							<div class="col-sm-3">
 								<label for="userFullname" class="form-label">담당자명</label>
@@ -233,6 +234,7 @@ table td {
 							<div class="col-sm-3">		
 								<label for="userFullname" class="form-label">코드</label>
 								<input type="text" id="client_code" class="form-control" readonly>
+								<div class="invalid-feedback">거래처를 입력해주세요.</div>
 							</div>
 							<div class="col-sm-3">		
 								<label for="userFullname" class="form-label">거래처명</label>
@@ -250,6 +252,7 @@ table td {
 							<div class="col-sm-2">		
 								<label for="userFullname" class="form-label">창고명</label>
 								<input type="text" id="ware_name" class="form-control" readonly>
+								<div class="invalid-feedback">창고 입력 요망</div>
 							</div>
 							<div class="col-sm-2">		
 								<label for="userFullname" class="form-label">구역명</label>
@@ -280,7 +283,7 @@ table td {
 								<div class="col-sm-3">		
 									<label for="userFullname" class="form-label">품목코드</label>
 									<input type="text" class="form-control choiceItemBtn" data-bs-target="#secondModal" data-bs-toggle="modal" data-bs-dismiss="modal" readonly>
-									
+									<div class="invalid-feedback">품목을 입력해주세요.</div>
 								</div>
 								<div class="col-sm-3">		
 									<label for="userFullname" class="form-label">품목명</label>
@@ -293,6 +296,7 @@ table td {
 								<div class="col-sm-2">		
 									<label for="userFullname" class="form-label">수량</label>
 									<input type="text" name="QTY" class="form-control">
+									<div class="invalid-feedback">수량 입력요망</div>
 								</div>
 								<div class="col-sm-2">	
 									<label for="userFullname" class="form-label">&nbsp;&nbsp;</label>
@@ -431,7 +435,36 @@ table td {
 		</div>
 	</div>
 </div>
-
+<!-- 삭제확인 모달 -->
+<div class="modal fade" id="deleteCheckModal" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header border-0">
+				<h5 id="modal-title">삭제여부 재확인</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<!-- form start -->
+			<form class="needs-validation" novalidate id="deleteCheckModalForm" action="/ordersheet/delete/one" method="post">
+				<div class="modal-body">
+						<input type="hidden" name="no" class="form-control" readonly>
+						정말로 삭제 하시겠습니까?
+						
+						<!-- 같은 페이지로 돌아가기 위해 넘겨주는 데이터 -->
+						<input type="hidden" name="pageNumber" value="${searchvo.pageNumber}" class="form-control" readonly>
+						<input type="hidden" name="whatColumn" value="${searchvo.whatColumn}" class="form-control" readonly>
+						<input type="hidden" name="keyword" value="${searchvo.keyword}" class="form-control" readonly>
+						
+				</div>
+				<div class="modal-footer border-0">
+					<button type="button" class="btn btn-light" data-bs-dismiss="modal" id="deleteCancleBtn">취소</button>
+					<button type="button" id="modalDeleteBtn"class="btn btn-primary px-5">삭제</button>		
+				</div>
+			</form>
+			<!-- form end -->
+		</div>
+	</div>
+</div>
 <!-- bottom.jsp -->
 <%@include file="../common/bottom.jsp"%>
 
@@ -861,6 +894,9 @@ table td {
 		$("input[name='rack_no']").val(rack[0]);
 		$("input[name='cell_no']").val(cell[0]);
 		console.log($("input[name='cell_no']").val());
+		$("#ware_name").attr("class","form-control is-valid");
+
+		
 	});
 	/* 두번째 모달에서 첫번째 모달로 데이터를 옮기는 코드 */
 	$("#delivery_data").on("click", function(e){
@@ -876,6 +912,8 @@ table td {
 			$("input[name='member_no']").val(memberNo);
 			$("#member_dep_name").val(memberDepName);
 			$("#member_name").val(memberName);
+			$("#member_dep_name").attr("class","form-control is-valid");
+			$("#member_name").attr("class","form-control is-valid");
 		}	
 		else if(secondModalName == "client"){
 			var clientNo = $('input[name=clientRadio]:checked').parent().next().text();
@@ -885,6 +923,9 @@ table td {
 			$("input[name='client_no']").val(clientNo);
 			$("#client_code").val(clientCode);
 			$("#client_name").val(clientName);	
+			$("#client_code").attr("class","form-control is-valid");
+			$("#client_name").attr("class","form-control is-valid");
+
 		}
 		
 		else if(secondModalName == "item"){
@@ -902,7 +943,9 @@ table td {
 			clickedLocation.val(itemCode);
 			clickedLocation.parent().next().find('input[type=text]').val(itemName);
 			clickedLocation.parent().next().next().find('input[type=text]').val(itemClientName);
-			
+
+			clickedLocation.attr("class","form-control is-valid choiceItemBtn");
+
 			addRowItemDetail(); // 새로 입력받을 수 있게 아래 줄을 추가하는 함수
 		}
 		else if(secondModalName == "order"){
@@ -926,16 +969,20 @@ table td {
 		 				
 		 				//날짜 삽입
 		 				$("input[name='input_day']").val(vo.day);
+		 				$("input[name='input_day']").attr("class","form-control is-valid");
 		 				
 		 				//담당자 삽입
 		 				$("input[name='member_no']").val(vo.member_no);
 		 				$("#member_dep_name").val(vo.dep_name);
 		 				$("#member_name").val(vo.member_name);
-		 				
+		 				$("#member_name").attr("class","form-control is-valid");
+		 				$("#member_dep_name").attr("class","form-control is-valid");
 		 				//거래처 삽입
 		 				$("input[name='client_no']").val(vo.client_no);
 		 				$("#client_code").val(vo.client_code);
 		 				$("#client_name").val(vo.client_name);
+		 				$("#client_code").attr("class","form-control is-valid");
+		 				$("#client_name").attr("class","form-control is-valid");
 		 				
 		 				//품목삽입
 		 				var orderDetail = resdata.detailList;
@@ -945,10 +992,9 @@ table td {
 		 					
 		 					var str = "<div class='row'>";
 		 					str += "<input type='hidden' name='item_no' class='form-control' value='" + orderDetail[i].item_no + "' readonly>"; 
-		 					str += "<input type='hidden' name='detail_no' class='form-control' value='" + orderDetail[i].no + "' readonly>"; 
 		 					str += "<div class='col-sm-3'>";
 		 					str += "<label for='userFullname' class='form-label'>품목코드</label>";
-		 					str += "<input type='text' class='form-control' value='" + orderDetail[i].item_code + "' readonly>";
+		 					str += "<input type='text' class='form-control choiceItemBtn' value='" + orderDetail[i].item_code + "' readonly>";
 		 					str += "</div>";
 		 					str += "<div class='col-sm-3'>";
 		 					str += "<label for='userFullname' class='form-label'>품목명</label>";
@@ -961,10 +1007,12 @@ table td {
 		 					str += "<div class='col-sm-2'>";
 		 					str += "<label for='userFullname' class='form-label'>수량</label>";
 		 					str += "<input type='text' name='QTY' value='" + orderDetail[i].amount + "' class='form-control'>";
+		 					str += "<div class='invalid-feedback'>수량 입력요망</div>";
 		 					str += "</div>";
 		 					str += "<div class='col-sm-2'>";
 		 					str += "<label for='userFullname' class='form-label'>&nbsp;&nbsp;</label>";
 		 					str += "<button type='button' class='btn btn-primary deleteItemBtn' style='display:block'>삭제</button>";
+		 					str += "<input type='hidden' name='detail_no' class='form-control' value='" + orderDetail[i].no + "' readonly>"; 
 		 					str += "</div>";
 		 					str += "</div>";
 		 					
@@ -1001,6 +1049,7 @@ table td {
 		str += "<div class='col-sm-2'>";
 		str += "<label for='userFullname' class='form-label'>수량</label>";
 		str += "<input type='text' name='QTY' class='form-control'>";
+		str += "<div class='invalid-feedback'>수량 입력요망</div>";
 		str += "</div>";
 		str += "<div class='col-sm-2'>";
 		str += "<label for='userFullname' class='form-label'>&nbsp;&nbsp;</label>";
@@ -1025,29 +1074,6 @@ table td {
 		$(this).parent().parent().remove();
 	});
 	
-	$("#modalRegisterBtn").on("click", function(e){
-		
-		//유효성 검사 해야하는 부분
-		
-		
-		//form 전송전에 빈줄 삭제
-		var allItemCodeInputs = $("#modalItemDetail").find(".choiceItemBtn");
-		var currentRowCount = allItemCodeInputs.length; 
-		
-		if(allItemCodeInputs[currentRowCount-1].value == ""){
-			$("#modalItemDetail div[class=row]:last-child").remove();
-		}
-		
-		
-		
-		$("#firstModalForm").submit();
-	});
-	
-	
-	
-
-
-
 	//상위창고위치 셀렉트 선택에 따른 상위구역위치 옵션 설정
 	function change1(){
 		$.ajax({
@@ -1151,6 +1177,18 @@ table td {
 		document.getElementById('celllocation').value= '';
 		
 	};
+	
+	/* 하나짜리 삭제버튼 눌렸을 때 처리 */
+	$(".deleteOneBtn").on("click", function(e){
+		e.stopPropagation(); // 부모에게 이벤트가 상위 전파 안되도록 막음(버튼을 누르는데 부모인 tr에 이벤트를 걸어뒀더니 중복으로 실행되어 이걸 사용)		
+		clickedBtnInMain = "delete_one";
+		$("#deleteCheckModal input").eq(0).val($(this).data("no"));
+		 
+		if(confirm("삭제하시겠습니까?")){
+			$("#deleteCheckModalForm").attr("action", "/input_warehouse/delete/one");
+			$("#deleteCheckModalForm").submit();
+		}
+	});
 </script>
 <!-- 리스트 화면에서 클릭시 아래 Detail 레코드들을 가져와 뿌려주는 코드 -->
 <script type="text/javascript">
@@ -1216,4 +1254,81 @@ table td {
 
 	    return [year, month, day].join(delimiter);
 	}
+	$("#modalRegisterBtn").on("click", function(e){
+		
+		
+		//form 전송전에 빈줄 삭제
+		var allItemCodeInputs = $("#modalItemDetail").find("input[name='item_no']");
+		var currentRowCount = allItemCodeInputs.length; 
+		
+		console.log("currentRowCount(빈줄을 제거하기전 전체 row 수): " + currentRowCount);
+		
+		for(var i = currentRowCount-1; i >= 0; i--){
+			console.log("allItemCodeInputs[i].value: " + i +" " + allItemCodeInputs[i].value);
+			if(allItemCodeInputs[i].value == "" && i != 0){
+				$("#modalItemDetail div[class=row]").eq(i).remove();
+			}	
+		}
+		
+		var isValid = true;
+		
+		if($("input[name='input_day']").val() == ""){
+			$("input[name='input_day']").attr("class","form-control is-invalid");
+			//$("#client_code").focus();
+			isValid = false;
+	    }
+		if($("#member_dep_name").val() == ""){
+	    	$("#member_dep_name").attr("class","form-control is-invalid");
+	    	$("#member_name").attr("class","form-control is-invalid");
+	    	isValid = false;
+	    }
+		if($("#client_code").val() == ""){
+			$("#client_code").attr("class","form-control is-invalid");
+			$("#client_name").attr("class","form-control is-invalid");
+			isValid = false;
+		}
+		if($("#ware_name").val() == ""){
+			$("#ware_name").attr("class","form-control is-invalid");
+			isValid = false;
+		}
+		
+		//모든 요소를 돌아보고 처리해야함.
+		$("#modalItemDetail .row").eq(i).find("input").each(function(index){
+			if(index == 1 && $(this).val() == ""){
+				$(this).attr("class","form-control is-invalid choiceItemBtn");
+				isValid = false;
+			}
+		});
+		
+		//수량관련 유효성검사		
+		for(var i = 0; i<$("#modalItemDetail .row").length; i++){
+			$("#modalItemDetail .row").eq(i).find("input").each(function(index){
+				if(index == 4 && $(this).val() == ""){
+					$(this).attr("class","form-control is-invalid choiceItemBtn");
+					isValid = false;
+				}
+			});
+		}
+		
+		if(isValid == false){
+			return;
+		}
+		console.log("isValid:" + isValid);
+		//form submit
+		$("#firstModalForm").submit();
+	});
+	
+	function calendarChangeHandler(){
+		$("input[name='input_day']").attr("class","form-control is-valid");
+	}
+	/* 이하 등록모달폼, 수정모달폼 유효성 검사  */
+	$("#modalItemDetail").on("keyup", "input[name='QTY']", function(){
+		$(this).attr("class","form-control is-valid");
+		
+		if(isNaN($(this).val())){
+			alert("수량은 숫자만 입력 가능합니다.");
+			$(this).val("");
+			$(this).focus();
+		}
+	});
 </script>

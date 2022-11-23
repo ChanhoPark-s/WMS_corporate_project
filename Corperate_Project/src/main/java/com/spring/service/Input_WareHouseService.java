@@ -12,4 +12,5 @@ public interface Input_WareHouseService {
 	public int insert(Input_WareHouseVO vo);
 	public int getTotalCount(SearchVO searchvo);
 	public List<Input_WareHouseVO> getListByPaging(Client_Paging pageInfo);
+	public int deleteInputWarehouse(int no);
 }
