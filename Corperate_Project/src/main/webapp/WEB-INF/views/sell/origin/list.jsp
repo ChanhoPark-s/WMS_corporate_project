@@ -570,19 +570,19 @@ table td {
 				</div>
 				
 				<div class="search" >
-				<form name="search" action="/basicinfo/lot/list" id="search">
+				<form name="search" action="list" id="search">
 				<table>
 				<tr>
 					<td>
 						<select id="whatColumn" name="whatColumn" class="form-select" style="width: 200px;" id="whatColumn" >
 		                  <%
-		                  String[] search = {"code","name"};
-		                  String[] cate = {"로트번호","상품명"};
+		                  String[] search = {"lot_code","item","member","client"};
+		                  String[] cate = {"로트코드","상품명","담당자","출고처"};
 		                  %>
 		                  		<c:set value="<%=search %>" var="s"></c:set>
 		                  		<c:set value="<%=cate %>" var="c"></c:set>
 		                  		<option value="">검색 선택</option>
-		                  	<c:forEach begin="0" end="1" var="i">
+		                  	<c:forEach begin="0" end="3" var="i">
 		                  		<option value="${s[i] }"<c:if test="${searchvo.whatColumn== s[i] }">selected</c:if>>${c[i] }</option>
 		                  	</c:forEach>
 		              </select>
@@ -605,8 +605,10 @@ table td {
 			<table class="table align-middle" id="table1">
 				<thead>
 					<tr>
-						<th scope="col" style="text-align: center">주문서 번호</th>
-						<th scope="col" style="text-align: center">담당자 번호</th>
+						<th scope="col" style="text-align: center">번호</th>
+						<th scope="col" style="text-align: center">담당자</th>
+						<th scope="col" style="text-align: center">물품명</th>
+						<th scope="col" style="text-align: center">출고처</th>
 						<th scope="col" style="text-align: center">판매 날짜</th>
 						<th scope="col" style="text-align: center">Actions</th>
 					</tr>
@@ -616,9 +618,11 @@ table td {
 					<c:forEach var="i" items="${lists}">
 						<tr>
 							<td style="display: none;">${i.no}</td>
-							<td style="text-align: center">${i.order_no}</td>
+							<td style="text-align: center">${i.no}</td>
 							<td style="text-align: center">${i.name}</td>
-
+							<td style="text-align: center">${i.temp_item_name}</td>
+							<td style="text-align: center">${i.client_name}</td>
+							
 							<fmt:parseDate var="inputDay" value="${i.day}"
 								pattern="yyyy-MM-dd" />
 							<fmt:formatDate value="${inputDay}" var="input"
@@ -662,34 +666,7 @@ table td {
 			</table>
 		</div>
 		<nav aria-label="Page navigation borderless example">
-			<ul class="pagination pagination-borderless justify-content-end">
-				<li class="page-item disabled"><a
-					class="page-link d-flex align-items-center px-2" href="#"
-					tabindex="-1" aria-disabled="true" aria-label="Previous"> <svg
-							width="20" height="20" xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd"
-								d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-								clip-rule="evenodd"></path>
-                    </svg>
-				</a></li>
-				<li class="page-item active" aria-current="page"><a
-					class="page-link" href="javascript:void(0)">1</a></li>
-				<li class="page-item"><a class="page-link"
-					href="javascript:void(0)">2</a></li>
-				<li class="page-item"><a class="page-link"
-					href="javascript:void(0)">3</a></li>
-				<li class="page-item"><a
-					class="page-link d-flex align-items-center px-2"
-					href="javascript:void(0)" aria-label="Next"> <svg width="20"
-							height="20" xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd"
-								d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-								clip-rule="evenodd"></path>
-                    </svg>
-				</a></li>
-			</ul>
+			${pageInfo.pagingHtml}
 		</nav>
 	</div>
 	<br>
