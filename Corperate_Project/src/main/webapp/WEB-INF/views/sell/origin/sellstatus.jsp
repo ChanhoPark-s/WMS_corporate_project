@@ -28,7 +28,6 @@
 		<div class="table-responsive my-1">
 			<table class="table align-middle" id="table">
 				<thead>
-				
 					<tr>
 						<th scope="col" style="display:none">판매번호</th>
 						<th scope="col">품목명</th>
