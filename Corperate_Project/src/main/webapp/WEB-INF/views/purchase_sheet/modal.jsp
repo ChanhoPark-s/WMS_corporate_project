@@ -90,7 +90,7 @@
 								</div>
 								<div class="col-sm-2">		
 									<label for="ware_no" class="form-label">창고명</label>
-									<select class="form-select" id="ware_no" name="ware_no" class="selectware">
+									<select class="form-select selectware" id="ware_no" name="ware_no">
 					                <option selected disabled value="">선택</option>
 										<c:forEach items="${WareList }" var="ware">
 											<option value="${ware.no }">${ware.name }(${ware.code })</option>
