@@ -11,14 +11,15 @@
 		</selectKey>
 	
 		insert into Purchase_sheet
-		values(#{no}, sysdate, #{delivery_date}, 0, #{order_no}, #{member_no}, #{client_no})
+		values(#{no}, sysdate, #{delivery_date}, 0, #{order_no, jdbcType=INTEGER}, #{member_no}, #{client_no})
 	</insert>
 
 	<!-- main paging -->
 	<select id="getTotalCount" resultType="int">
-		select count(*) 
+		select count(*) from
+		(SELECT no ,member_no, client_no, order_no, day, delivery_date, status, client_name, member_name , LISTAGG(item_name,',') WITHIN GROUP (ORDER BY item_name) AS item_name, LISTAGG(in_price,',') WITHIN GROUP (ORDER BY item_name) AS totalPrice, LISTAGG(amount,',') WITHIN GROUP (ORDER BY item_name) AS totalAmount 
 		FROM 
-		(select p.no , p.member_no, p.client_no, p.order_no, p.day, p.delivery_date, p.status, c.name as client_name, m.name as member_name , i.name as item_name
+		(select p.no , p.member_no, p.client_no, p.order_no, p.day, p.delivery_date, p.status, c.name as client_name, m.name as member_name , i.name as item_name, i.in_price, psd.amount
 				from Purchase_sheet p, Client c, Member m, purchase_sheet_detail psd, item i
 				where p.client_no = c.no(+)
 				and p.member_no = m.no(+)
@@ -28,6 +29,8 @@
 		<if test="whatColumn=='client_name'">where client_name like '%' ||  #{keyword} || '%'</if>
 		<if test="whatColumn=='member_name'">where member_name like '%' ||  #{keyword} || '%'</if>
 		<if test="whatColumn=='item_name'">where item_name like '%' ||  #{keyword} || '%'</if>
+		GROUP BY no,member_no, client_no, order_no, day, delivery_date, status, client_name, member_name
+		ORDER BY status,no desc)
 	</select>
 	
 	<!-- 발주서조회(페이징) -->
@@ -71,10 +74,17 @@
 		insert into Purchase_sheet values(Purchase_sheet_SEQ.nextval, sysdate, #{delivery_date}, 0, #{order_no}, #{member_no}, #{client_no})
 	</insert>
 	
+	<!--납품날짜가 지남 상태:취소됨 -->
 	<update id="update">
-		update Purchase_sheet delivery_date=#{delivery_date}, member_no=#{member_no} where no=#{no}
+		update Purchase_sheet 
+		set status = 2
+		where status = 0 
+		<![CDATA[
+		and delivery_date < SYSDATE
+		]]>
 	</update>
 	
+	<!-- 삭제버튼을 누름 상태:취소됨 -->
 	<update id="delete">
 		update Purchase_sheet set status=2 where no=#{no} and status=0
 	</update>

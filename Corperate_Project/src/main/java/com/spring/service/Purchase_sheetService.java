@@ -15,6 +15,7 @@ public interface Purchase_sheetService {
 	
 	public List<Purchase_sheetVO> list();
 	public int insert(Purchase_sheetVO vo);
+	public void update();
 	public int delete(int no);
 	public Purchase_sheetVO selectOne(String no);
 	

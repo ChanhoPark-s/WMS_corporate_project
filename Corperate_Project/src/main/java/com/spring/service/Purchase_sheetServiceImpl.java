@@ -35,12 +35,14 @@ public class Purchase_sheetServiceImpl implements Purchase_sheetService{
 
 		ArrayList<Integer> noList = vo.getItem_no();
 		ArrayList<Integer> amountList = vo.getAmount();
-		ArrayList<Integer> orderDetailList = vo.getDetail_no();
+		ArrayList<String> orderDetailList = vo.getDetail_no();
 		ArrayList<Integer> wareList = vo.getWare_no();
 
 		int len = noList.size();
 		System.out.println("len:"+len);
-
+		
+		String orderDetailNo = null;
+		
 		System.out.println("1번");
 		for (int i = 0; i < len; i++) {
 			int mainSheetNo = vo.getNo();
@@ -52,7 +54,7 @@ public class Purchase_sheetServiceImpl implements Purchase_sheetService{
 			System.out.println("3번"+itemNo);
 			int itemAmount = amountList.get(i);
 			System.out.println("4번"+itemAmount);
-			int orderDetailNo = 0;
+			
 			if(orderDetailList != null) {
 				orderDetailNo = orderDetailList.get(i);
 			}
@@ -130,6 +132,10 @@ public class Purchase_sheetServiceImpl implements Purchase_sheetService{
 	}
 
 	@Override
+	public void update() {
+		mapper.update();
+	}
+	
 	public Purchase_sheetVO selectOneByMainNo(int no) {
 		return mapper.selectOneByMainNo(no);
 	}

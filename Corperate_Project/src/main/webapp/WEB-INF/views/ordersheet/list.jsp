@@ -238,7 +238,7 @@ table td {
 	<div class="card-body">
 		<div class="d-flex gap-1 mb-4 flex-wrap" style="height:38px">
 			<div class="d-flex gap-1 me-auto flex-wrap" style="height:38px">
-				<button class="btn btn-primary d-inline-flex align-items-center gap-1">
+				<button class="btn btn-primary d-inline-flex align-items-center gap-1" data-ordersheetno="" id="setSellCompleteStatus">
 					판매완료 처리
 				</button> 
 			</div>
@@ -980,12 +980,15 @@ table td {
 
 <!-- 메인화면 상단 동작관련 코드 -->
 <script type="text/javascript">
+
+	var clickedMainNo = "" ; //클릭된 수주서 번호  
+
 	$(function(){
 		
 		/* 리스트 화면에서 클릭시 아래 Detail 레코드들을 가져와 뿌려주는 코드 */
 		$("#table1 tbody tr").on("click", function(){
 			// 클릭된 수주서의 no 번호
-			var clickedMainNo = $(this).children("td")[0].innerHTML;
+			clickedMainNo = $(this).children("td")[0].innerHTML;
 			console.log("clickedMainNo: " + clickedMainNo);
 			
 			console.log("요청url : " + "/ordersheet/orderdetail/" + clickedMainNo);
@@ -1025,7 +1028,7 @@ table td {
 		/* 리스트 화면에서 클릭시 아래 판매완료 Detail 레코드들을 가져와 뿌려주는 코드 */
 		$("#table1 tbody tr").on("click", function(){
 			// 클릭된 수주서의 no 번호
-			var clickedMainNo = $(this).children("td")[0].innerHTML;
+			clickedMainNo = $(this).children("td")[0].innerHTML;
 			console.log("clickedMainNo: " + clickedMainNo);
 			
 			console.log("요청url : " + "/sell/origin/detail/more/ordersheetbase/" + clickedMainNo);
@@ -1060,6 +1063,15 @@ table td {
 	 			}).fail(function(xhr, status, err){
 	 					alert("데이터 조회실패");
 	 			});
+		});
+		
+		/* 판매완료 처리 눌렸을 때 처리 */
+		$("#setSellCompleteStatus").on("click", function(){
+			
+			if(clickedMainNo != ""){
+				location.href = "/ordersheet/statuschange?ordersheetno=" + clickedMainNo + " &status=2";
+			}
+			
 		});
 		
 		/* 수정버튼이 눌렸을 때 처리 */

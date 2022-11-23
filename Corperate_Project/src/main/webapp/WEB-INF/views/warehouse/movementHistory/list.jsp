@@ -231,7 +231,9 @@ table td {
 	        
 	        <!-- 왼쪽 -->
 			<div class="col-sm-3 outputModal">		
-				<ul class="navbar-nav mb-4 outputModal" id="mainMenu">
+			
+				<!-- 창고 -->
+				<ul class="navbar-nav mb-4 outputModal" id="inputware">
 	         	 <li class="nav-label px-2 small mt-3"><small>품목 선택</small></li>
 	          		<c:forEach items="${warehouse }" var="w" varStatus="wi">
 	          		<li class="nav-item" data-no=${w.no }>
@@ -241,8 +243,10 @@ table td {
 			              </svg>
 			              <span class="me-auto" id="basicinfo">${w.name }</span>
 			            </a>
-			            <div class="ms-4 collapse" id="area-${w.no }" data-bs-parent="#mainMenu">
-			              <ul class="navbar-nav">
+			            <div class="ms-4 collapse" id="area-${w.no }" data-bs-parent="#inputware">
+			            
+			            	<!-- 지역 -->
+			              <ul class="navbar-nav" id="inputware1-${wi.index }">
 					          <c:forEach items="${area }" var="a" varStatus="ai">
 					          	<c:if test="${w.no eq a.ware_no }">
 									<li class="nav-item" data-no=${a.no }>
@@ -252,8 +256,10 @@ table td {
 							              </svg>
 							              <span class="me-auto" id="basicinfo">${a.name }</span>
 							            </a>
-							            <div class="ms-4 collapse" id="rack-${a.no }" data-bs-parent="#mainMenu" style="">
-							              <ul class="navbar-nav">
+							            <div class="ms-4 collapse" id="rack-${a.no }" data-bs-parent="#inputware1-${wi.index }" style="">
+							            
+							            <!-- 렉 -->
+							              <ul class="navbar-nav" id="inputware2-${ai.index }">
 							              	<c:forEach items="${rack }" var="r" varStatus="ri">
 							              		<c:if test="${a.no eq r.area_no }">
 							              			<li class="nav-item" data-no=${r.no }>
@@ -263,8 +269,10 @@ table td {
 											              </svg>
 											              <span class="me-auto" id="basicinfo">${r.name }</span>
 											            </a>
-											            <div class="ms-4 collapse" id="cell-${r.no }" data-bs-parent="#mainMenu" style="">
-											              <ul class="navbar-nav">
+											            <div class="ms-4 collapse" id="cell-${r.no }" data-bs-parent="#inputware2-${ai.index }" style="">
+											            
+											            <!-- 셀 -->
+											              <ul class="navbar-nav" id="inputware3-${ri.index }">
 											              	<c:forEach items="${cell }" var="c">
 											              		<c:if test="${r.no eq c.rack_no }">
 											              			<li class="nav-item cell1" data-no=${c.no }>
@@ -348,7 +356,7 @@ table td {
 		<div class="col">		
 			
 			<!-- 창고 -->
-			<ul class="navbar-nav mb-4" id="mainMenu">
+			<ul class="navbar-nav mb-4" id="outputware">
          	 <li class="nav-label px-2 small mt-3"><small>창고 선택</small></li>
           		<c:forEach items="${warehouse }" var="w" varStatus="wi">
           		<li class="nav-item" data-no=${w.no }>
@@ -358,10 +366,10 @@ table td {
 		              </svg>
 		              <span class="me-auto" id="basicinfo">${w.name }</span>
 		            </a>
+		            <div class="ms-4 collapse" id="area2-${w.no }" data-bs-parent="#outputware">
 		            
 		            <!-- 구역 -->
-		            <div class="ms-4 collapse" id="area2-${w.no }">
-		              <ul class="navbar-nav">
+		              <ul class="navbar-nav" id="outputware2-${wi.index }">
 				          <c:forEach items="${area }" var="a" varStatus="ai">
 				          	<c:if test="${w.no eq a.ware_no }">
 								<li class="nav-item" data-no=${a.no }>
@@ -371,10 +379,10 @@ table td {
 						              </svg>
 						              <span class="me-auto" id="basicinfo">${a.name }</span>
 						            </a>
+						            <div class="ms-4 collapse" id="rack2-${a.no }" data-bs-parent="#outputware2-${wi.index }">
 						            
 						            <!-- 렉 -->
-						            <div class="ms-4 collapse" id="rack2-${a.no }">
-						              <ul class="navbar-nav">
+						              <ul class="navbar-nav" id="outputware3-${ai.index }">
 						              	<c:forEach items="${rack }" var="r" varStatus="ri">
 						              		<c:if test="${a.no eq r.area_no }">
 						              			<li class="nav-item" data-no=${r.no }>
@@ -384,10 +392,10 @@ table td {
 										              </svg>
 										              <span class="me-auto" id="basicinfo">${r.name }</span>
 										            </a>
+										            <div class="ms-4 collapse" id="cell2-${r.no }" data-bs-parent="#outputware3-${ai.index }">
 										            
 										            <!-- 셀 -->
-										            <div class="ms-4 collapse" id="cell2-${r.no }">
-										              <ul class="navbar-nav">
+										              <ul class="navbar-nav" id="outputware4-${ri.index }">
 										              	<c:forEach items="${cell }" var="c">
 										              		<c:if test="${r.no eq c.rack_no }">
 										              			<li class="nav-item cell2" data-no=${c.no }>
