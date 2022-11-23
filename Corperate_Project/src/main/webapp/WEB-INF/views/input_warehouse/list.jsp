@@ -252,7 +252,7 @@ table td {
 							<div class="col-sm-2">		
 								<label for="userFullname" class="form-label">창고명</label>
 								<input type="text" id="ware_name" class="form-control" readonly>
-								<div class="invalid-feedback">창고를 입력해주세요.</div>
+								<div class="invalid-feedback">창고 입력 요망</div>
 							</div>
 							<div class="col-sm-2">		
 								<label for="userFullname" class="form-label">구역명</label>
@@ -295,8 +295,8 @@ table td {
 								</div>
 								<div class="col-sm-2">		
 									<label for="userFullname" class="form-label">수량</label>
-									<input type="text" name="QTY" class="form-control">
-									<div class="invalid-feedback">수량 입력요망.</div>
+									<input type="text" name="QTY" class="form-control"  onkeyup="qtyChangeHandler()">
+									<div class="invalid-feedback">수량 입력요망</div>
 								</div>
 								<div class="col-sm-2">	
 									<label for="userFullname" class="form-label">&nbsp;&nbsp;</label>
@@ -1006,8 +1006,7 @@ table td {
 		 					str += "</div>";
 		 					str += "<div class='col-sm-2'>";
 		 					str += "<label for='userFullname' class='form-label'>수량</label>";
-		 					str += "<input type='text' name='QTY' value='" + orderDetail[i].amount + "' class='form-control' onkeyup='qtyChangeHandler()'>";
-		 					str += "<div class='invalid-feedback'>수량 입력요망.</div>";
+		 					str += "<input type='text' name='QTY' value='" + orderDetail[i].amount + "' class='form-control'>";
 		 					str += "</div>";
 		 					str += "<div class='col-sm-2'>";
 		 					str += "<label for='userFullname' class='form-label'>&nbsp;&nbsp;</label>";
@@ -1047,9 +1046,7 @@ table td {
 		str += "</div>";
 		str += "<div class='col-sm-2'>";
 		str += "<label for='userFullname' class='form-label'>수량</label>";
-		str += "<input type='text' name='QTY' class='form-control' >";
-		str += "<div class='invalid-feedback'>수량 입력요망.</div>";
-		
+		str += "<input type='text' name='QTY' class='form-control'>";
 		str += "</div>";
 		str += "<div class='col-sm-2'>";
 		str += "<label for='userFullname' class='form-label'>&nbsp;&nbsp;</label>";
@@ -1258,7 +1255,7 @@ table td {
 		
 		
 		//form 전송전에 빈줄 삭제
-		var allItemCodeInputs = $("#modalItemDetail").find("input[name='item_no']");
+		var allItemCodeInputs = $("#modalItemDetail").find(".choiceItemBtn");
 		var currentRowCount = allItemCodeInputs.length; 
 		
 		console.log("currentRowCount: " + currentRowCount);
@@ -1294,7 +1291,7 @@ table td {
 		//모든 요소를 돌아보고 처리해야함.
 		$("#modalItemDetail .row").eq(i).find("input").each(function(index){
 			if(index == 1 && $(this).val() == ""){
-				$(this).attr("class","form-control is-invalid");
+				$(this).attr("class","form-control is-invalid choiceItemBtn");
 			}
 			return;
 		});
@@ -1311,15 +1308,7 @@ table td {
 	function calendarChangeHandler(){
 		$("input[name='input_day']").attr("class","form-control is-valid");
 	}
-
-	/* 이하 등록모달폼, 수정모달폼 유효성 검사  */
-	$("#modalItemDetail").on("keyup", "input[name='QTY']", function(){
-		$(this).attr("class","form-control is-valid");
-		
-		if(isNaN($(this).val())){
-			alert("수량은 숫자만 입력 가능합니다.");
-			$(this).val("");
-			$(this).focus();
-		}
-	});
+	function qtyChangeHandler(){
+		$("input[name='QTY']").attr("class","form-control is-valid");
+	} 
 </script>
