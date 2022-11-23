@@ -112,7 +112,7 @@ table td {
 							<th scope="col" nowrap>품목명</th>
 							<th scope="col">납기일자</th>
 							<th scope="col">주문금액합계</th>
-							<th scope="col" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="접수완료 - (발주중) - 판매완료">진행상태</th>
+							<th scope="col" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="접수완료 - (발주중) - 판매완료">진행상태</th>
 							<th scope="col">기능</th>
 						</tr>
 					</thead>

@@ -22,4 +22,13 @@
 	<select id="getTotalCount" resultType="int">
 	 select count(*) from sell_detail
 	</select>
+	
+	<select id="selectSubListByOrderSheetNo" resultType="com.spring.domain.SellDetailVO">
+		select sn.no, sn.sell_no, sn.amount, sn.sell_price, sn.lot_code, sn.item_no,
+		it.code code, it.name name
+		from(select *
+		from sell_detail
+		where order_sheet_no = #{orderSheetNo}) sn inner join item it
+		on sn.item_no = it.no
+	</select>
 </mapper>
