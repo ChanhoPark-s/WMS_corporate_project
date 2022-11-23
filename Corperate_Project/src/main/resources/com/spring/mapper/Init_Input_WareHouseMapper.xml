@@ -5,8 +5,8 @@
   
 <mapper namespace="com.spring.mapper.Init_Input_WareHouseMapper">
 	<insert id="inputWarehouse">
-			INSERT INTO INPUT_WAREHOUSE (NO, MEMBER_NO, PURCHASE_SHEET_NO, STATUS)
-			VALUES (INPUT_WAREHOUSE_SEQ.NEXTVAL, #{member_no }, NULL, 1)
+			INSERT INTO INPUT_WAREHOUSE (NO, MEMBER_NO, STATUS)
+			VALUES (INPUT_WAREHOUSE_SEQ.NEXTVAL, #{member_no }, 1)
 		   <selectKey keyProperty="no" resultType="int" order="AFTER">
 		   		SELECT INPUT_WAREHOUSE_SEQ.CURRVAL FROM DUAL
 		   </selectKey>
@@ -41,9 +41,9 @@
 					VALUES (LOT_SEQ.NEXTVAL, V_LOT_CODE, V_ITEM_NO, SYSDATE);					
 				</if>
 				
-				INSERT INTO INPUT_WAREHOUSE_DETAIL (NO, INPUT_WAREHOUSE_NO, PURCHASE_SHEET_DETAIL_NO, STATUS, QTY, WARE_NO, AREA_NO, RACK_NO, CELL_NO, LOT_CODE) 
+				INSERT INTO INPUT_WAREHOUSE_DETAIL (NO, INPUT_WAREHOUSE_NO, STATUS, QTY, WARE_NO, AREA_NO, RACK_NO, CELL_NO, LOT_CODE) 
 				VALUES 
-				(INPUT_WAREHOUSE_DATAIL_SEQ.NEXTVAL, #{item.no, jdbcType=INTEGER}, NULL, 1, #{item.qty, jdbcType=INTEGER}, #{item.ware_code, jdbcType=VARCHAR}, #{item.area_code, jdbcType=VARCHAR}, #{item.rack_code, jdbcType=VARCHAR}, #{item.cell_code, jdbcType=VARCHAR}, V_LOT_CODE);
+				(INPUT_WAREHOUSE_DATAIL_SEQ.NEXTVAL, #{item.no, jdbcType=INTEGER}, 1, #{item.qty, jdbcType=INTEGER}, #{item.ware_code, jdbcType=VARCHAR}, #{item.area_code, jdbcType=VARCHAR}, #{item.rack_code, jdbcType=VARCHAR}, #{item.cell_code, jdbcType=VARCHAR}, V_LOT_CODE);
 			
 				SELECT COUNT(*) INTO CNT
 				FROM WAREHOUSE_DETAIL

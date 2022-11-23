@@ -112,7 +112,7 @@ table td {
                 <div class="modal-footer border-0">
 					<form style="margin:auto;text-align:center;" onsubmit="return false;">
 						<div class="d-flex gap-1 me-auto flex-wrap">
-							<select id="searchItemWhatColumn" class="form-select" style="width: 140px;"><option value="" selected="">검색 선택</option><option value="dep">부서</option><option value="rank">직급</option><option value="name">이름</option></select>
+							<select id="searchItemWhatColumn" class="form-select" style="width: 140px;"><option value="" selected="">검색 선택</option><option value="code">코드</option><option value="name">이름</option></select>
 			              	<input type="text" id="searchItemKeyword" class="form-control" placeholder="입력" style="width: 200px; height: 38px;">
 							<button type="submit" class="btn btn-light" id="searchItemsBtn"> 검색 </button>
 						</div>			
@@ -154,44 +154,44 @@ table td {
       <div class="modal-body">
         <div class="d-flex flex-wrap gap-1">
 		<div class="col">		
-			<ul class="navbar-nav mb-4" id="mainMenu">
+			<ul class="navbar-nav mb-4" id="initMenu">
          	 <li class="nav-label px-2 small mt-3"><small>창고 선택</small></li>
           		<c:forEach items="${warehouse }" var="w" varStatus="wi">
           		<li class="nav-item" data-no=${w.no }>
-		            <a class="nav-link px-2 d-flex align-items-center gap-3 dropdown-toggle" data-no=${w.no } href="#area2-${wi.index }" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="dashboard-collapse">
+		            <a class="nav-link px-2 d-flex align-items-center gap-3 dropdown-toggle" data-no=${w.no } href="#area2-${w.no }" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="area2-${w.no }">
 		              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
 		                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
 		              </svg>
 		              <span class="me-auto" id="basicinfo">${w.name }</span>
 		            </a>
-		            <div class="ms-4 collapse" id="area2-${wi.index }" data-bs-parent="#mainMenu">
-		              <ul class="navbar-nav">
+		            <div class="ms-4 collapse" id="area2-${w.no }" data-bs-parent="#initMenu">
+		              <ul class="navbar-nav" id="menu1-${wi.index }">
 				          <c:forEach items="${area }" var="a" varStatus="ai">
 				          	<c:if test="${w.no eq a.ware_no }">
 								<li class="nav-item" data-no=${a.no }>
-						            <a class="nav-link px-2 d-flex align-items-center gap-3 <c:if test="${fn:length(area) != 0 }">dropdown-toggle</c:if>" data-no=${a.no } href="#rack2-${ai.index }" data-bs-toggle="collapse" role="button" aria-expanded="true" aria-controls="dashboard-collapse">
+						            <a class="nav-link px-2 d-flex align-items-center gap-3 <c:if test="${fn:length(area) != 0 }">dropdown-toggle</c:if>" data-no=${a.no } href="#rack2-${a.no }" data-bs-toggle="collapse" role="button" aria-expanded="true" aria-controls="rack2-${a.no }">
 						              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
 						                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
 						              </svg>
 						              <span class="me-auto" id="basicinfo">${a.name }</span>
 						            </a>
-						            <div class="ms-4 collapse" id="rack2-${ai.index }" data-bs-parent="#mainMenu" style="">
-						              <ul class="navbar-nav">
+						            <div class="ms-4 collapse" id="rack2-${a.no }" data-bs-parent="#menu1-${wi.index }">
+						              <ul class="navbar-nav" id="menu2-${ai.index }">
 						              	<c:forEach items="${rack }" var="r" varStatus="ri">
 						              		<c:if test="${a.no eq r.area_no }">
 						              			<li class="nav-item" data-no=${r.no }>
-										            <a class="nav-link px-2 d-flex align-items-center gap-3 dropdown-toggle" href="#cell2-${ri.index }" data-bs-toggle="collapse" role="button" aria-expanded="true" aria-controls="dashboard-collapse">
+										            <a class="nav-link px-2 d-flex align-items-center gap-3 dropdown-toggle" href="#cell2-${r.no }" data-bs-toggle="collapse" role="button" aria-expanded="true" aria-controls="cell2-${r.no }">
 										              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
 										                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
 										              </svg>
 										              <span class="me-auto" id="basicinfo">${r.name }</span>
 										            </a>
-										            <div class="ms-4 collapse" id="cell2-${ri.index }" data-bs-parent="#mainMenu" style="">
-										              <ul class="navbar-nav">
+										            <div class="ms-4 collapse" id="cell2-${r.no }" data-bs-parent="#menu2-${ai.index }">
+										              <ul class="navbar-nav" id="menu3-${ri.index }">
 										              	<c:forEach items="${cell }" var="c">
 										              		<c:if test="${r.no eq c.rack_no }">
 										              			<li class="nav-item cell2" data-no=${c.no }>
-														            <a class="nav-link px-2 d-flex align-items-center gap-3" href="#dashboard-collapse2" data-bs-toggle="collapse" role="button" aria-expanded="true" aria-controls="dashboard-collapse">
+														            <a class="nav-link px-2 d-flex align-items-center gap-3" data-bs-toggle="collapse" role="button" aria-expanded="true">
 																		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bucket" viewBox="0 0 16 16">
 																		  <path d="M2.522 5H2a.5.5 0 0 0-.494.574l1.372 9.149A1.5 1.5 0 0 0 4.36 16h7.278a1.5 1.5 0 0 0 1.483-1.277l1.373-9.149A.5.5 0 0 0 14 5h-.522A5.5 5.5 0 0 0 2.522 5zm1.005 0a4.5 4.5 0 0 1 8.945 0H3.527zm9.892 1-1.286 8.574a.5.5 0 0 1-.494.426H4.36a.5.5 0 0 1-.494-.426L2.58 6h10.838z"/>
 																		</svg>

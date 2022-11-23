@@ -87,13 +87,22 @@
 	</select>
 	
 	<select id="selectSubAllByMainNo" resultType="com.spring.domain.OrderSheetDetailVO">
-		select no, order_no, item_no, item_code, item_name, in_price, out_price, amount, client_no, client_code, client_name
+		select no, order_no, item_no, item_code, item_name, in_price, out_price, amount, client_no, client_code, client_name, current_amount
 		from(
-			select o.no, o.order_no, i.no item_no, i.code item_code, i.name item_name,in_price, out_price, o.amount, c.no client_no, c.code client_code, c.name client_name
+			select o.no, o.order_no, i.no item_no, i.code item_code, i.name item_name,in_price, out_price, o.amount, c.no client_no, c.code client_code, c.name client_name, current_amount
 			from order_detail o inner join item i
 			on o.item_no = i.no
 			inner join client c
 			on i.client_no = c.no
+			full outer join
+                (select
+                    sum(amount) current_amount, item_no
+                from
+                    warehouse_detail
+                group by
+                    item_no
+                ) wd
+			on o.item_no = wd.item_no
 		)where order_no = #{mainNo}
 	</select>
 	
@@ -131,12 +140,14 @@
 		        order by no desc)
 		    where rownum <= #{cri.pageNum} * #{cri.amount}
 		)where rn > (#{cri.pageNum} - 1) * #{cri.amount}
+		and status = 0
 		]]>     
 	</select>
 	
 	<select id="getCountAll" resultType="int">
 		select count(*)
         from order_sheet
+        where status = 0
 	</select>
 	
 	<!-- 수주상태 준비완료>발주중 -->
@@ -145,6 +156,12 @@
 		set status = 1
 		where no = #{order_no} 
 		and status = 0
+	</update>
+	
+	<update id="updateStatusOrderSheet">
+	update ORDER_SHEET
+	set status = #{status}
+	where no = #{ordersheetno}
 	</update>
 
 	

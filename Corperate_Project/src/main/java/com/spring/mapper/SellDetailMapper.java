@@ -15,4 +15,6 @@ public interface SellDetailMapper {
 	public List<SellDetailVO> selectAll(Client_Paging pageInfo);
 	
 	public int getTotalCount(SearchVO searchvo);
+	
+	public List<SellDetailVO> selectSubListByOrderSheetNo(int orderSheetNo);
 }

@@ -1,5 +1,7 @@
 package com.spring.paging;
 
+import java.util.ArrayList;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +13,7 @@ public class Criteria implements Paging {
 	private int amount;
 	private String whatColumn;
 	private String keyword;
+	private ArrayList<Integer> main_nos;
 	
 	public Criteria(){
 		this.pageNum = 1;
@@ -22,7 +25,8 @@ public class Criteria implements Paging {
 		this.amount = amount;
 		this.whatColumn = whatColum;
 		this.keyword = keyword;
-	}	
+	}
+
 }
 
 // 해당 페이지의 리스트를 가져올 때 사용하는 기준정보

@@ -11,7 +11,7 @@
 	</insert>
 
 	<select id="read" resultType="com.spring.domain.SellVO">
-		select se.no, se.day, se.order_no, me.name name
+		select se.no, se.day, me.name name
 from(select * from sell) se inner join member me
 on se.member_no = me.no order by no desc
 	</select>
@@ -36,4 +36,77 @@ on se.member_no = me.no order by no desc
 		on sn.item_no = it.no
 	</select>
 	
+	<select id="selectTotalCount" resultType="int">
+		select count(*)
+        from(
+            select * 
+            from(
+                select m.no, m.name member_name, c.name client_name, m.DAY
+                from(select s.no, m.name, s.client_no, s.DAY
+                     from sell s inner join member m
+                     on s.member_no = m.no) m inner join client c
+                on m.client_no = c.no
+            ) where no > 0
+            
+            <if test="whatColumn=='member' and keyword != ''"> and member_name like '%' ||  #{keyword} || '%' </if>
+            <if test="whatColumn=='client' and keyword != ''"> and client_name like '%' ||  #{keyword} || '%' </if>
+            <!-- <if test="whatColumn=='status' and keyword != ''"> and ststus = #{keyword}</if> -->
+            
+        )
+	</select>
+	
+	<select id="selectListByPaging" resultType="com.spring.domain.SellVO">
+		select * 
+		from(
+			select m.no, m.name name, c.name client_name, m.day
+                from(select s.no, m.name, s.client_no, s.day
+                     from sell s inner join member m
+                     on s.member_no = m.no) m inner join client c
+                on m.client_no = c.no
+		) where no > 0
+
+		<if test="whatColumn=='member' and keyword != ''"> and name like '%' ||  #{keyword} || '%' </if>
+		<if test="whatColumn=='client' and keyword != ''"> and client_name like '%' ||  #{keyword} || '%' </if>
+		
+		<if test="whatColumn=='item' and keyword != ''"> 
+			and no in 
+			<foreach collection="main_nos" item="arr" open='(' close=")" separator=",">
+			#{arr}
+			</foreach>
+		</if>
+		<if test="whatColumn=='lot_code' and keyword != ''"> 
+			and no in 
+			<foreach collection="main_nos" item="arr" open='(' close=")" separator=",">
+			#{arr}
+			</foreach>
+		</if>
+		
+		order by no desc offset #{beginRow} rows fetch next #{pageSize} rows only
+	</select>
+	
+	
+	
+	<select id="selectAllMainNoByItemName" resultType="int">
+		select distinct(sell_no)
+		from(select od.no, od.sell_no,  od.lot_code, it.code item_code, it.name item_name, it.in_price, it.out_price  
+	    	 from sell_detail od inner join item it
+	    	 on od.item_no = it.no) 
+	    <if test="whatColumn=='item' and keyword != ''">
+			where item_name like '%' ||  #{keyword} || '%'
+	    </if>	 
+	    <if test="whatColumn=='lot_code' and keyword != ''">
+			where lot_code like '%' ||  #{keyword} || '%'
+	    </if>	 
+	</select>
+	
+	<select id="selectSubAllByMainNo"
+		resultType="com.spring.domain.SellDetailVO">
+		select iw.no,iw.sell_no, it.code, iw.amount
+		item_code, it.name item_name, iw.lot_code
+		from(select *
+		from sell_detail
+		where sell_no = #{mainNo}) iw inner join item it
+		on iw.item_no =
+		it.no
+	</select>
 </mapper>

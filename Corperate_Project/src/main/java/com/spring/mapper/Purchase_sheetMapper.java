@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.spring.domain.OrderSheetDetailVO;
 import com.spring.domain.Purchase_sheetVO;
 import com.spring.domain.Purchase_sheet_DetailVO;
 import com.spring.domain.SearchVO;
@@ -16,8 +17,11 @@ public interface Purchase_sheetMapper {
 	public Purchase_sheetVO selectOne(String no);	// 발주선택
 	public int insertMainSheet(Purchase_sheetVO vo);// 발주추가
 	
+	public void update(); 		// 발주수정
+	
 	public int delete(int no); 		// 발주삭제
 	
+	public void updateStatus(int no);	//입고완료시 상태변화 
 	/* main paging */
 	public int getTotalCount(SearchVO searchvo);
 	public List<Purchase_sheetVO> GetAll(Client_Paging pageInfo);
@@ -27,17 +31,22 @@ public interface Purchase_sheetMapper {
 	public int getCountAll(@Param("cri") Criteria cri);
 	
 	//디테일
+	public void updateDetailStatus(int no);
+	
 	public int insertDetailSheet(
 			@Param("mainSheetNo") int mainSheetNo, 
 			@Param("itemNo") int itemNo, 
 			@Param("itemAmount") int itemAmount,
-			@Param("orderDetailNo") int orderDetailNo,
+			@Param("orderDetailNo") String orderDetailNo,
 			@Param("wareNo") int wareNo
 			);	//상세추가
 	
 	public List<Purchase_sheet_DetailVO> selectList(String purchase_sheet_no);// 상세조회
 	
 	public int deleteDetail(int no);
+	public List<OrderSheetDetailVO> selectSubAllByMainNo(int mainNo);
+	public Purchase_sheetVO selectOneByMainNo(int no);
+	
 	
 	
 }

@@ -20,4 +20,6 @@ public class LotVO {
 	private int client_no;
 	private String client_name;
 	private String client_tel;
+	
+	private int cnt;
 }

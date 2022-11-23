@@ -2,6 +2,7 @@ package com.sell.controller;
 
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.spring.domain.ItemVO;
 import com.spring.domain.Purchase_sheetVO;
@@ -39,11 +41,10 @@ public class SellController {
 	private SellDetailService sdservice;
 	
 	@Autowired(required = false)
-	private ItemService iservice;
+	private ItemService iservice; 
 	
 	@GetMapping(value="/list")
-	public void list(SearchVO searchvo,Model model) {				
-		
+	public void list(SearchVO searchvo, HttpServletRequest request, Model model) {
 		List<SellVO> lists = service.read();
 		
 		
@@ -51,10 +52,22 @@ public class SellController {
 		model.addAttribute("lists", lists);
 		model.addAttribute("searchvo", searchvo);
 		model.addAttribute("detaillists", detaillists);
+		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
+		if (flashMap != null) {
+			searchvo = (SearchVO) flashMap.get("searchvo"); //searchVO 를 덮어씌움
+		}
 		
-		//return "list"; //요청 url과 반환해줄 jsp 파일의 이름이 일치하면 해당 함수는 void 타입이어도 된다. views/basicinfo/department/list.jsp 가 반환됨
+		int totalCount = service.getTotalCount(searchvo); 
+		Client_Paging pageInfo = 
+				new Client_Paging
+				(searchvo.getPageNumber(),"10",totalCount,"/sell/origin/list",
+						searchvo.getWhatColumn(),searchvo.getKeyword(),0);
+		// 원래 있던거
+		model.addAttribute("pageInfo",pageInfo);
+		model.addAttribute("lists", service.getListByPaging(pageInfo));
+		model.addAttribute("searchvo",searchvo);
+		
 	}
-	
 	@PostMapping(value="/insert")
 	public String insertSold(Model model, SellVO sell, SellDetailVO selldetail) {
 	
@@ -104,10 +117,12 @@ public class SellController {
 	 
 	@GetMapping(value="/sellstatus")
 	public void sellstatus(SearchVO searchvo,HttpServletRequest request, Model model) {
+		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
+		if(flashMap!=null)
+			searchvo =(SearchVO)flashMap.get("searchvo");
 		int totalCount = sdservice.getTotalCount(searchvo); 
 		Client_Paging pageInfo = new Client_Paging(searchvo.getPageNumber(),"10",totalCount,"redirect:/sell/origin/sellstatus",searchvo.getWhatColumn(),searchvo.getKeyword(),0);
-		List<SellDetailVO> dlists = sdservice.selectAll(pageInfo);
-		
+		System.out.println("토탈"+totalCount);
 		model.addAttribute("itemlist", iservice.selectAll(pageInfo));
 		model.addAttribute("dlists", sdservice.selectAll(pageInfo));
 		model.addAttribute("pageInfo",pageInfo);

@@ -494,6 +494,10 @@
 			$("input[name='member_no']").val(memberNo);
 			$("#member_dep_name").val(memberDepName);
 			$("#member_name").val(memberName);
+			
+			// 유효성 유효처리 관련 코드
+			$("#member_dep_name").attr("class","form-control is-valid");
+			$("#member_name").attr("class","form-control is-valid");
 		}	
 		else if(secondModalName == "client"){
 			var clientNo = $('input[name=clientRadio]:checked').parent().next().text();
@@ -503,6 +507,10 @@
 			$("input[name='client_no']").val(clientNo);
 			$("#client_code").val(clientCode);
 			$("#client_name").val(clientName);	
+			
+			// 유효성 유효처리 관련 코드
+			$("#client_code").attr("class","form-control is-valid");
+			$("#client_name").attr("class","form-control is-valid");
 		}
 		
 		else if(secondModalName == "item"){
@@ -523,6 +531,9 @@
 			clickedLocation.parent().next().find('input[type=text]').val(itemName);
 			clickedLocation.parent().next().next().find('input[type=text]').val(itemClientName);
 			clickedLocation.parent().next().next().next().find('input[type=text]').val(itemInPrice);
+			
+			//유효성
+			clickedLocation.attr("class","form-control is-valid choiceItemBtn");
 			
 			addRowItemDetail(); // 새로 입력받을 수 있게 아래 줄을 추가하는 함수
 		}
@@ -569,7 +580,7 @@
 		 					str += "<input type='hidden' name='detail_no' class='form-control' value='" + orderDetail[i].no + "' readonly>"; 
 		 					str += "<div class='col-sm-2'>";
 		 					str += "<label for='userFullname' class='form-label'>품목코드</label>";
-		 					str += "<input type='text' class='form-control' value='" + orderDetail[i].item_code + "' readonly>";
+		 					str += "<input type='text' class='form-control choiceItemBtn' value='" + orderDetail[i].item_code + "' readonly>";
 		 					str += "</div>";
 		 					str += "<div class='col-sm-2'>";
 		 					str += "<label for='userFullname' class='form-label'>품목명</label>";
@@ -589,7 +600,7 @@
 		 					str += "</div>";
 		 					str += '<div class="col-sm-2">';
 		 					str += '<label for="ware_no" class="form-label">창고명</label>';
-		 					str += '<select class="form-select" id="ware_no" name="ware_no">';
+		 					str += '<select class="form-select selectware" id="ware_no" name="ware_no">';
 		 					str += '<option selected disabled value="">선택</option>';
 		 					str += '<c:forEach items="${WareList }" var="ware">';
 		 					str += '<option value="${ware.no }">${ware.name }(${ware.code })</option>';
@@ -641,7 +652,7 @@
 		str += "</div>";
 		str += '<div class="col-sm-2">';
 		str += '<label for="ware_no" class="form-label">창고명</label>';
-		str += '<select class="form-select" id="ware_no" name="ware_no">';
+		str += '<select class="form-select selectware" id="ware_no" name="ware_no" >';
 		str += '<option selected disabled value="">선택</option>';
 		str += '<c:forEach items="${WareList }" var="ware">';
 		str += '<option value="${ware.no }">${ware.name }(${ware.code })</option>';
@@ -671,21 +682,110 @@
 		$(this).parent().parent().remove();
 	});
 	
+	
+	//등록 클릭시
 	$("#modalRegisterBtn").on("click", function(e){
 		
-		//유효성 검사 해야하는 부분
-		
+		//modal이동추가
+		$('.choiceItemBtn:last-child').attr('data-bs-target','#secondModal');	
+		$('.choiceItemBtn:last-child').attr('data-bs-toggle','modal');	
+		$('.choiceItemBtn:last-child').attr('data-bs-dismiss','modal');	
 		
 		//form 전송전에 빈줄 삭제
-		var allItemCodeInputs = $("#modalItemDetail").find(".choiceItemBtn");
+		var allItemCodeInputs = $("#modalItemDetail").find("input[name='item_no']");
 		var currentRowCount = allItemCodeInputs.length; 
 		
-		if(allItemCodeInputs[currentRowCount-1].value == ""){
-			$("#modalItemDetail div[class=row]:last-child").remove();
+		console.log("currentRowCount: " + currentRowCount);
+		
+		for(var i = currentRowCount-1; i >= 0; i--){
+			console.log(allItemCodeInputs[i].value);
+			if(allItemCodeInputs[i].value == "" && i != 0){
+				$("#modalItemDetail div[class='row']").eq(i).remove();
+			}	
 		}
 		
+		var isValid = true;
 		
+		//유효성 검사하는 부분
+		if($("input[name='delivery_date']").val() == ""){
+			$("input[name='delivery_date']").attr("class","form-control is-invalid");
+			//$("#client_code").focus();
+			isValid = false;
+	    }
+		
+		if($("#member_dep_name").val() == ""){
+	    	$("#member_dep_name").attr("class","form-control is-invalid");
+	    	$("#member_name").attr("class","form-control is-invalid");
+	    	isValid = false;
+	    }
+		
+		if($("#client_code").val() == ""){
+			$("#client_code").attr("class","form-control is-invalid");
+			$("#client_name").attr("class","form-control is-invalid");
+			isValid = false;
+		}
+		
+		//모든 요소를 돌아보고 처리해야함.
+		$("#modalItemDetail .row").find("input").each(function(index){
+			if(index == 1 && $(this).val() == ""){
+				$(this).attr("class","form-control is-invalid choiceItemBtn");
+				isValid = false;
+			}
+		});
+		
+		//수량관련 유효성검사		
+		for(var i = 0; i<$("#modalItemDetail .row").length; i++){
+			$("#modalItemDetail .row").eq(i).find("input").each(function(index){
+				if(index == 5 && $(this).val() == ""){
+					$(this).attr("class","form-control is-invalid");
+					isValid = false;
+				}
+			});
+		}
+		
+		//체크박스 창고관련 유효성검사
+		for(var i = 0; i<$("#modalItemDetail .row").length; i++){
+			$("#modalItemDetail .row").eq(i).find("select").each(function(index){
+				//alert();
+				if($(this).val() == null){
+					$(this).attr("class","form-control is-invalid selectware");
+					isValid = false;
+				}		
+			});
+		}
+		
+		/* if($("#ware_no option:selected").val() == "" ){
+			$("select[name='ware_no']").attr("class","form-control is-invalid");	
+			isValid = false;
+		}
+		 */
+		if(isValid == false){
+			return;
+		}
 		
 		$("#modal1form").submit();
 	});
+	
+	/* 이하 등록모달폼, 수정모달폼 유효성 검사  */
+	$("#modalItemDetail").on("keyup", "input[name='amount']", function(){
+		$(this).attr("class","form-control is-valid");
+		
+		if(isNaN($(this).val())){
+			alert("수량은 숫자만 입력 가능합니다.");
+			$(this).val("");
+			$(this).focus();
+		}
+	});
+	
+	//납기일자 유효성
+	function calendarChangeHandler(){
+		$("input[name='delivery_date']").attr("class","form-control is-valid");
+	} 
+	
+	//창고 유효성
+	
+	$("#modalItemDetail").on("change", ".selectware", function(){
+		$(this).attr("class","form-control is-valid selectware");
+	});
+		
 </script>

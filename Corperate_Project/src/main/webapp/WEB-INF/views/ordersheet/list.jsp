@@ -1,11 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<head>
+<script src="https://kit.fontawesome.com/4d5e8e1a50.js" crossorigin="anonymous"></script>
+<script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+</head>
 
 <!-- top.jsp -->
 <%@include file="../common/top.jsp"%>
 
-<!-- fontawsome -->
-<script src="https://kit.fontawesome.com/75769dc150.js" crossorigin="anonymous"></script>
 
 <style>
 table th {
@@ -41,7 +43,7 @@ table td {
 <!-- 상단 -->
 <div class="card">
 	<div class="card-body">
-		<div class="d-flex gap-1 mb-4 flex-wrap" style="height:38px">
+		<div class="d-flex gap-1 mb-4 flex-wrap" style="height:38px;">
 			<div class="d-flex gap-1 me-auto flex-wrap" style="height:38px">
 				<button
 					class="btn btn-primary d-inline-flex align-items-center gap-1"
@@ -110,7 +112,7 @@ table td {
 							<th scope="col" nowrap>품목명</th>
 							<th scope="col">납기일자</th>
 							<th scope="col">주문금액합계</th>
-							<th scope="col" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="접수완료 - (발주중) - 판매완료">진행상태</th>
+							<th scope="col" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="접수완료 - (발주중) - 판매완료">진행상태</th>
 							<th scope="col">기능</th>
 						</tr>
 					</thead>
@@ -184,7 +186,7 @@ table td {
 
 <br>
 
-<!-- 하단 -->
+<!-- 하단 첫번째 -->
 <div class="card">
 	<div class="card-body">
 		<div class="d-flex gap-1 mb-4 flex-wrap" style="display:none !important">
@@ -214,8 +216,64 @@ table td {
 						<th scope="col">품목코드</th>
 						<th scope="col">품목명</th>
 						<th scope="col">취급처</th>
-						<th scope="col">개수</th>
-						<th scope="col">단가</th>
+						<th scope="col">수주수량</th>
+						<th scope="col">재고수량</th>
+						<th scope="col">부족수량</th>
+						<th scope="col">판매단가</th>
+						<th scope="col">합계</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td colspan="8">상세품목을 보길 원하신다면 수주서를 클릭하세요
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<br>
+
+<!-- 하단 두번째 -->
+<div class="card">
+	<div class="card-body">
+		<div class="d-flex gap-1 mb-4 flex-wrap" style="height:38px">
+			<div class="d-flex gap-1 me-auto flex-wrap" style="height:38px">
+				<button class="btn btn-primary d-inline-flex align-items-center gap-1" data-ordersheetno="" id="setSellCompleteStatus">
+					판매완료 처리
+				</button> 
+			</div>
+		</div>
+		<div class="d-flex gap-1 mb-4 flex-wrap" style="display:none !important">
+			<div class="d-flex gap-1 me-auto flex-wrap">
+				<button class="btn btn-primary d-inline-flex align-items-center gap-1" data-bs-toggle="modal" data-bs-target="#addUserModal">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    	<path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+                  	</svg>
+					품목 추가
+				</button>
+				<button class="btn btn-primary d-inline-flex align-items-center gap-1" data-bs-toggle="modal" data-bs-target="#addUserModal">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+					  <path clip-rule="evenodd" d="m11,9l3,0a1,1 0 1 1 0,2l-3,0l-2,0l-3,0a1,1 0 1 1 0,-2l3,0l2,0z" clip-rule="evenodd"/>
+					</svg>
+					선택 삭제
+				</button>
+			</div>
+		</div>
+		<div class="table-responsive my-1">
+			<table class="table align-middle" id="table3">
+				<thead>
+					<tr>
+						<th scope="col" style="display:none">상세번호</th>
+						<th scope="col" style="display:none">수주서번호</th>
+						<th scope="col"></th>
+						<th scope="col" style="display:none">품목번호</th>
+						<th scope="col">품목코드</th>
+						<th scope="col">품목명</th>
+						<th scope="col">로트번호</th>
+						<th scope="col">판매수량</th>
+						<th scope="col">판매단가</th>
 						<th scope="col">합계</th>
 					</tr>
 				</thead>
@@ -873,63 +931,78 @@ table td {
 		}
 		
 		//form 전송전에 빈줄 삭제
-		var allItemCodeInputs = $("#modalItemDetail").find(".choiceItemBtn");
+		var allItemCodeInputs = $("#modalItemDetail").find("input[name='item_no']");
 		var currentRowCount = allItemCodeInputs.length; 
 		
-		console.log("currentRowCount: " + currentRowCount);
+		console.log("currentRowCount(빈줄을 제거하기전 전체 row 수): " + currentRowCount);
 		
 		for(var i = currentRowCount-1; i >= 0; i--){
-			console.log(allItemCodeInputs[i].value);
+			console.log("allItemCodeInputs[i].value: " + i +" " + allItemCodeInputs[i].value);
 			if(allItemCodeInputs[i].value == "" && i != 0){
 				$("#modalItemDetail div[class=row]").eq(i).remove();
 			}	
 		}
 		
+		var isValid = true;
+		
 		//유효성 검사하는 부분
 		if($("input[name='out_day']").val() == ""){
 			$("input[name='out_day']").attr("class","form-control is-invalid");
 			//$("#client_code").focus();
-			return;
+			isValid = false;
 	    }
 		
 		if($("#member_dep_name").val() == ""){
 	    	$("#member_dep_name").attr("class","form-control is-invalid");
 	    	$("#member_name").attr("class","form-control is-invalid");
-	    	return;
+	    	isValid = false;
 	    }
 		
 		if($("#client_code").val() == ""){
 			$("#client_code").attr("class","form-control is-invalid");
 			$("#client_name").attr("class","form-control is-invalid");
-			return;
+			isValid = false;
 		}
 		
-		//모든 요소를 돌아보고 처리해야함.
+		//상품이 입력되지 않은경우 처리되도록
 		$("#modalItemDetail .row").eq(i).find("input").each(function(index){
 			if(index == 1 && $(this).val() == ""){
 				$(this).attr("class","form-control is-invalid choiceItemBtn");
+				isValid = false;
 			}
-			return;
 		});
 		
-		if($("input[name='amount']").val() == ""){
-			$("input[name='amount']").attr("class","form-control is-invalid");	
-			return;
+		//수량관련 유효성검사		
+		for(var i = 0; i<$("#modalItemDetail .row").length; i++){
+			$("#modalItemDetail .row").eq(i).find("input").each(function(index){
+				if(index == 4 && $(this).val() == ""){
+					$(this).attr("class","form-control is-invalid");
+					isValid = false;
+				}
+			});
 		}
 		
-		//form submit
+		if(isValid == false){
+			return;
+		}
+		console.log("isValid:" + isValid);
+		
+		//form submit after check validation
 		$("#firstModalForm").submit();
 	});
 </script>
 
 <!-- 메인화면 상단 동작관련 코드 -->
 <script type="text/javascript">
+
+	var clickedMainNo = "" ; //클릭된 수주서 번호  
+
 	$(function(){
 		
 		/* 리스트 화면에서 클릭시 아래 Detail 레코드들을 가져와 뿌려주는 코드 */
 		$("#table1 tbody tr").on("click", function(){
 			// 클릭된 수주서의 no 번호
-			var clickedMainNo = $(this).children("td")[0].innerHTML;
+			clickedMainNo = $(this).children("td")[0].innerHTML;
 			console.log("clickedMainNo: " + clickedMainNo);
 			
 			console.log("요청url : " + "/ordersheet/orderdetail/" + clickedMainNo);
@@ -943,6 +1016,23 @@ table td {
 						
 						var str = "";
 						
+						//부족수량의 결과를 넣기 위한 변수
+						var result="";
+						
+						//부족수량은 재고수량-수주수량 양수시 0, 음수시는 수주수량-재고수량
+						if(list[i].current_amount-list[i].amount>0){
+							result = 0;
+						}
+						else{
+							result = list[i].amount-list[i].current_amount;
+						}
+						str2 = "";
+						if(result != 0){
+							str2 = "<td style='color:red;'>" + result.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + "개</td>";
+						}else{
+							str2 = "<td>" + result + "개</td>";
+						}
+						
 						str += "<tr>";
 						/* str += "<td><div><input class='form-check-input' type='checkbox' value=''></div></td>"; */
 						str += "<td style='display:none'>" + list[i].no + "</td>";
@@ -955,6 +1045,8 @@ table td {
 						str += "<td>" + list[i].item_name + "</td>";
 						str += "<td>" + list[i].client_name + "</td>";
 						str += "<td>" + list[i].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " 개</td>";
+						str += "<td>" + list[i].current_amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " 개</td>";
+						str += str2;
 						str += "<td>" + list[i].out_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " 원</td>";
 						str += "<td>" + (list[i].amount * list[i].out_price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " 원</td>";
 						str += "</tr>";
@@ -964,6 +1056,55 @@ table td {
 	 			}).fail(function(xhr, status, err){
 	 					alert("데이터 조회실패");
 	 			});
+		});
+		
+		/* 리스트 화면에서 클릭시 아래 판매완료 Detail 레코드들을 가져와 뿌려주는 코드 */
+		$("#table1 tbody tr").on("click", function(){
+			// 클릭된 수주서의 no 번호
+			clickedMainNo = $(this).children("td")[0].innerHTML;
+			console.log("clickedMainNo: " + clickedMainNo);
+			
+			console.log("요청url : " + "/sell/origin/detail/more/ordersheetbase/" + clickedMainNo);
+			$.getJSON("/sell/origin/detail/more/ordersheetbase/" + clickedMainNo,  
+	 			function(list){
+					console.log("list: " + list);
+					
+					$("#table3 tbody").empty();
+					
+					for(var i = 0, len = list.length || 0; i < len; i++){
+						
+						var str = "";
+						
+						str += "<tr>";
+						/* str += "<td><div><input class='form-check-input' type='checkbox' value=''></div></td>"; */
+						str += "<td style='display:none'>" + "</td>";
+						str += "<td style='display:none'>" + "</td>";
+						
+						str += "<td><i class='fa-solid fa-gift'></i></td>";
+						
+						str += "<td style='display:none'>" + list[i].item_no + "</td>";
+						str += "<td>" + list[i].code + "</td>";
+						str += "<td>" + list[i].name + "</td>";
+						str += "<td>" + list[i].lot_code + "</td>";
+						str += "<td>" + list[i].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " 개</td>";
+						str += "<td>" + list[i].sell_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " 원</td>";
+						str += "<td>" + (list[i].amount * list[i].sell_price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " 원</td>";
+						str += "</tr>";
+						
+						$("#table3 tbody").append(str);
+					}
+	 			}).fail(function(xhr, status, err){
+	 					alert("데이터 조회실패");
+	 			});
+		});
+		
+		/* 판매완료 처리 눌렸을 때 처리 */
+		$("#setSellCompleteStatus").on("click", function(){
+			
+			if(clickedMainNo != ""){
+				location.href = "/ordersheet/statuschange?ordersheetno=" + clickedMainNo + "&status=2";
+			}
+			
 		});
 		
 		/* 수정버튼이 눌렸을 때 처리 */
@@ -1126,5 +1267,6 @@ table td {
 	function calendarChangeHandler(){
 		$("input[name='out_day']").attr("class","form-control is-valid");
 	} 
+	
 	
 	</script>

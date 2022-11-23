@@ -20,5 +20,7 @@ public interface SellService {
 
 	public List<SellDetailVO> getSubList(int mainNo);
 
+	public int getTotalCount(SearchVO searchvo);
 
+	public List<SellVO> getListByPaging(Client_Paging pageInfo);
 }

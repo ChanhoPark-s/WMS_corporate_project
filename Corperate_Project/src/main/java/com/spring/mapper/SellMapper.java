@@ -1,6 +1,7 @@
 package com.spring.mapper;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.spring.domain.SearchVO;
@@ -20,4 +21,11 @@ public interface SellMapper {
 
 		public List<SellDetailVO> getSubList(int mainNo);
 
+		public int selectTotalCount(SearchVO searchvo);
+
+		public List<SellVO> selectListByPaging(Client_Paging pageInfo);
+
+		public List<SellDetailVO> selectSubAllByMainNo(int mainNo);
+
+		public ArrayList<Integer> selectAllMainNoByItemName(Client_Paging pageInfo); 
 }
