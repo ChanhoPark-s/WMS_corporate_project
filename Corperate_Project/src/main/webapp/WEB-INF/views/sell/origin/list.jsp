@@ -10,7 +10,7 @@ SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 %>
 <style>
 table th {
-	text-align: center;	
+	text-align: center;
 	font-size: 14px;
 }
 
@@ -766,12 +766,8 @@ table td {
 <div class="main-body">
 	<div class="card">
 		<div class="card-body">
-			<div class="d-flex gap-1 mb-4 flex-wrap">
-				<form>
-					<input type="text" class="form-control"
-						placeholder="Sold Product Search">
-				</form>
-				<div class="d-flex gap-1 me-auto flex-wrap">
+			<div class="d-flex gap-1 mb-4 flex-wrap" style="height:38px;">
+				<div class="d-flex gap-1 me-auto flex-wrap" style="height:38px">
 					<button
 						class="btn btn-primary d-inline-flex align-items-center gap-1"
 						data-bs-toggle="modal" data-bs-target="#Sold_Product_Add_Modal"
@@ -782,11 +778,34 @@ table td {
 								d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
 								clip-rule="evenodd"></path>
                   </svg>
-						등록
+						출고 등록
 					</button>
-
-
-
+				</div>
+				
+				<div class="search">
+					<form name="search" action="/ordersheet/list" id="search">
+						<table>
+							<tr>
+								<td>
+									<select id="whatColumn" name="whatColumn" class="form-select" style="width: 200px;">
+										<%
+										String[] search = { "member", "client", "item"};
+										String[] cate = { "담당자", "도착지", "품목명", "로트번호"};
+										%>
+										<c:set value="<%=search%>" var="s"></c:set>
+										<c:set value="<%=cate%>" var="c"></c:set>
+										<option>검색 선택</option>
+										<c:forEach begin="0" end="3" var="i">
+											<option value="${s[i] }"
+												<c:if test="${searchvo.whatColumn== s[i] }">selected</c:if>>${c[i] }</option>
+										</c:forEach>
+									</select>
+								</td>
+								<td><input type="text" name="keyword" id="keyword" class="form-control" value=<c:if test="${searchvo.keyword=='null' }">""</c:if> <c:if test="${searchvo.keyword!='null' }">"${searchvo.keyword }"</c:if> placeholder="입력" style="width: 200px; height: 38px;"></td>
+								<td><i class="fa-solid fa-magnifying-glass btn_search" id="searchIcon" onclick="searchForm()"></i></td>
+							</tr>
+						</table>
+					</form>
 				</div>
 			</div>
 		</div>
@@ -795,9 +814,11 @@ table td {
 				<thead>
 					<tr>
 						<th scope="col" style="text-align: center">번호</th>
-						<th scope="col" style="text-align: center">담당자 번호</th>
-						<th scope="col" style="text-align: center">판매 날짜</th>
-						<th scope="col" style="text-align: center">Actions</th>
+						<th scope="col" style="text-align: center">담당자</th>
+						<th scope="col" style="text-align: center">도착지</th>
+						<th scope="col" style="text-align: center">품목명</th>
+						<th scope="col" style="text-align: center">출고일</th>
+						<th scope="col" style="text-align: center">기능</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -806,8 +827,9 @@ table td {
 						<tr>
 							<td style="text-align: center;">${i.no}</td>
 							<%-- <td style="text-align: center">${i.order_no}</td> --%>
-							<td style="text-align: center"><span
-								class="badge bg-light text-muted">${i.name}</span></td>
+							<td style="text-align: center">${i.name}</td>
+							<td style="text-align: center"></td>
+							<td style="text-align: center"></td>
 
 							<fmt:parseDate var="inputDay" value="${i.day}"
 								pattern="yyyy-MM-dd" />
@@ -817,18 +839,7 @@ table td {
 							<td style="text-align: center">
 								<!-- 수정 시작 -->
 								<div class="btn-group btn-group-sm" role="group">
-									<button type="button" class="btn btn-light d-flex"
-										data-bs-toggle="modal" id="update_Sold"
-										onclick="goModal2('${i.no}','${i.member_no}','${input}')"
-										data-bs-target="#Sold_Product_Add_Modal">
-										<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
-											fill="none" viewBox="0 0 24 24" stroke="currentColor"
-											aria-hidden="true">
-                            <path stroke-linecap="round"
-												stroke-linejoin="round" stroke-width="2"
-												d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                          </svg>
-									</button>
+									
 									<!-- 수정 끝 -->
 									<!-- 삭제 시작 -->
 									<button type="button" class="btn btn-light d-flex text-danger"
@@ -851,6 +862,8 @@ table td {
 				</tbody>
 			</table>
 		</div>
+		
+		<!-- 상단 페이징 넣으면 되는 위치-->
 		<nav aria-label="Page navigation borderless example">
 			<ul class="pagination pagination-borderless justify-content-end">
 				<li class="page-item disabled"><a
@@ -885,7 +898,6 @@ table td {
 	<br>
 	<div class="card">
 		<div class="card-body">
-			sell-Detail 영역
 			<div class="card-body"></div>
 			<div class="table-responsive my-1" id="table2">
 				<table class="table align-middle">
@@ -907,38 +919,6 @@ table td {
 					</tbody>
 				</table>
 			</div>
-			<nav aria-label="Page navigation borderless example">
-				<ul class="pagination pagination-borderless justify-content-end">
-					<li class="page-item disabled"><a
-						class="page-link d-flex align-items-center px-2" href="#"
-						tabindex="-1" aria-disabled="true" aria-label="Previous"> <svg
-								width="20" height="20" xmlns="http://www.w3.org/2000/svg"
-								viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd"
-									d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-									clip-rule="evenodd"></path>
-                    </svg>
-					</a></li>
-					<li class="page-item active" aria-current="page"><a
-						class="page-link" href="javascript:void(0)">1</a></li>
-					<li class="page-item"><a class="page-link"
-						href="javascript:void(0)">2</a></li>
-					<li class="page-item"><a class="page-link"
-						href="javascript:void(0)">3</a></li>
-					<li class="page-item"><a
-						class="page-link d-flex align-items-center px-2"
-						href="javascript:void(0)" aria-label="Next"> <svg width="20"
-								height="20" xmlns="http://www.w3.org/2000/svg"
-								viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd"
-									d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-									clip-rule="evenodd"></path>
-                    </svg>
-					</a></li>
-				</ul>
-			</nav>
-
-
 		</div>
 	</div>
 	<!-- Modal Begin (Sell)-->

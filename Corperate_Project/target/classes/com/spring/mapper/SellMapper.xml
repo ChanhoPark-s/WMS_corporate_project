@@ -11,7 +11,7 @@
 	</insert>
 
 	<select id="read" resultType="com.spring.domain.SellVO">
-		select se.no, se.day, se.order_no, me.name name
+		select se.no, se.day, me.name name
 from(select * from sell) se inner join member me
 on se.member_no = me.no order by no desc
 	</select>
