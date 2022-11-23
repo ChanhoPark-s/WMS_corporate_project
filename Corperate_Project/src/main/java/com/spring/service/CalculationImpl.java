@@ -23,5 +23,23 @@ public class CalculationImpl implements CalculationService{
 	public int getTotalMoney(String string) {
 		return mapper.getTotalMoney(string);
 	}
+
+
+	@Override
+	public int getCountClient(String string) {
+		return mapper.getCountClient(string);
+	}
+
+
+	@Override
+	public int getCountMember() {
+		return mapper.getCountMember();
+	}
+
+
+	@Override
+	public int getCountItem() {
+		return mapper.getCountItem();
+	}
 	
 }
