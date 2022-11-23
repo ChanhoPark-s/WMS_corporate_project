@@ -34,6 +34,10 @@ table td {
 #search {
 	position: relative;
 }
+
+#choiceOrderBtn{
+	margin-bottom: 10px; 
+}
 </style>
 <!-- 상단 -->
 <div class="card">
@@ -202,6 +206,7 @@ table td {
 						<!-- input type='text' name='item_no' -->
 						<!-- input type='text' name='amount' -->
 						
+								<button type="button" class="btn btn-primary" style="display:block" data-bs-target="#secondModal" data-bs-toggle="modal" data-bs-dismiss="modal" id="choiceOrderBtn">발주서 선택</button>
 						<div class="row">		
 							<div class="col-sm-3">		
 								<label for="day" class="form-label">입고일자</label> 
@@ -209,8 +214,6 @@ table td {
 		                		<div class="invalid-feedback">입고일자를 입력해주세요.</div>
 							</div>
 							<div class="col-sm-4">	
-							<label for="userFullname" class="form-label">&nbsp;&nbsp;</label>
-								<button type="button" class="btn btn-primary" style="display:block" data-bs-target="#secondModal" data-bs-toggle="modal" data-bs-dismiss="modal" id="choiceOrderBtn">발주서 선택</button>
 							</div>
 						</div>
 						
