@@ -35,7 +35,7 @@ table td {
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
               </svg>
-              전체 재고 현황
+              전체 재고현황
            </a>
            
            <!-- 창고 -->
@@ -165,7 +165,7 @@ table td {
 	</div>
 	<!--  -->
 	<div class="d-flex gap-1 mb-1 flex-wrap">
-		<h3 id="clicked_location">모든 재고 현황</h3>
+		<h3 id="clicked_location">전체 재고현황</h3>
 		</div>
 	<!--  -->
 		<div class="table-responsive my-1">
