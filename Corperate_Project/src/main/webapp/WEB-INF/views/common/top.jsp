@@ -160,7 +160,7 @@ margin-top: 5px;
 	
 	$(function(){
 			$('.preloading').on("click",function(){
-				if(<%=(String)session.getAttribute("id")%>==null){
+				if('<%=(String)session.getAttribute("id")%>' == null){
 					alert("로그인 세션이 만료되었습니다.");
 					location.href='/';
 				}
