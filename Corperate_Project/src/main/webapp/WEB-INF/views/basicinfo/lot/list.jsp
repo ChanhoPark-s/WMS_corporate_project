@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-			
+<!-- top.jsp -->
+<%@include file="../../common/top.jsp"%>			
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
@@ -28,9 +29,6 @@ table td {
 	font-size: 14px;
 }
 </style>
-
-<!-- top.jsp -->
-<%@include file="../../common/top.jsp"%>
 
 <div class="card" >
 	<div class="card-body">

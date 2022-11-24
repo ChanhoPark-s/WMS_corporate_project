@@ -791,7 +791,7 @@ table td {
 						str += "<td style='display:none'>" + list[i].item_no + "</td>";
 						str += "<td style='text-align: center'>" + list[i].code + "</td>";
 						str += "<td style='text-align: center'>" + list[i].name + "</td>";
-						str += "<td style='text-align: center'>" + list[i].lot_code + "</td>";
+						str += "<td style='text-align: center'><span class='badge bg-dark'>" + list[i].lot_code + "</span></td>";
 						str += "<td style='text-align: center'>" + list[i].amount + "</td>";
 						str += "<td style='text-align: center'>" + list[i].sell_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " 원</td>";
 						str += "<td style='text-align: center'>" + (list[i].amount * list[i].sell_price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " 원</td>";
