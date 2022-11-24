@@ -7,10 +7,10 @@ import lombok.Data;
 @Data
 public class SellDetailVO {
 	   private int no;
-		private ArrayList<Integer> item_no;
-		private ArrayList<Integer> amount;
-		private ArrayList<Integer> sell_price;
-		private ArrayList<String> lot_code;
+	   private ArrayList<Integer> item_no;
+	   private ArrayList<Integer> amount;
+	   private ArrayList<Integer> sell_price;
+	   private ArrayList<String> lot_code;
 	   private int sell_no;
 	   private String item_name;
 	   private int in_price;
@@ -22,4 +22,7 @@ public class SellDetailVO {
 	   private String code;
 	   private String name;
 	   
+	   private int amount2; // 지우지 마세요
+	   private int sell_price2; // 지우지 마세요
+	   private String lot_code2; // 지우지 마세요
 }
