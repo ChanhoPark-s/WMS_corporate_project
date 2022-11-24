@@ -486,12 +486,13 @@ return [${sell_Money/1000000000*100 }, 100-${sell_Money/1000000000*100 }];
 	 function insertBtn(){
 		 clearModal();
 		 document.getElementById('no').value='123';
-		 readonly(false);
 		$(".modal").find("#modal-title").text("등록하기");
 		$(".modal").find("#modaladdBtn").show();
 		$(".modal").find('#modaladdBtn').text("등록");
+		$(".modal").find('#ddd').hide();
 		$(".modal").find('#w_day').hide();
 		
+		 readonly(false);
 		$('#modaladdBtn').click(function(){
 			modalForm.attr("action", "/home/insert").submit();
 		});
@@ -501,7 +502,6 @@ return [${sell_Money/1000000000*100 }, 100-${sell_Money/1000000000*100 }];
 	function deleteBoard(no){
 		if(confirm("삭제하시겠습니까?")){
 			location.href="/home/delete?no="+no;
-			alert(1);
 		}
 	};
 
@@ -511,6 +511,7 @@ return [${sell_Money/1000000000*100 }, 100-${sell_Money/1000000000*100 }];
 		$(".modal").find("#modal-title").text("공지사항");
 		$(".modal").find('#modaladdBtn').hide();
 		$(".modal").find('#w_day').hide();
+		$(".modal").find('#ddd').show();
 		$.ajax({
 			url : "/home/selectOne ",
 			type : "post",
@@ -530,9 +531,8 @@ return [${sell_Money/1000000000*100 }, 100-${sell_Money/1000000000*100 }];
 	}
 	
 	function readonly(x){
-		$("#title" ).prop('title', x);
-		$("#content" ).prop('content', x);
-		$("#w_day" ).prop('w_day', x);
+		$("#title" ).prop('readonly', x);
+		$("#content" ).prop('readonly', x);
 		
 	}
 	function clearModal(){
