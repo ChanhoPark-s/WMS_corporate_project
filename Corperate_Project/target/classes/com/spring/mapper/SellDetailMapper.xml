@@ -14,7 +14,7 @@
 	</select>
 	
 	<select id="selectAll" resultType="com.spring.domain.SellDetailVO">
-       select item_name item_name, sum((out_price-in_price) * amount) profit,sum(amount) amount, avg(in_price) in_price, avg(out_price) out_price
+       select item_name item_name, sum((out_price-in_price) * amount) profit,sum(amount) amount3, avg(in_price) in_price, avg(out_price) out_price
        from (select sd.no, i.name as item_name, sd.amount, i.in_price as in_price, i.out_price as out_price 
        from sell_detail sd, item i where sd.item_no=i.no)
   		<if test="whatColumn == ''">

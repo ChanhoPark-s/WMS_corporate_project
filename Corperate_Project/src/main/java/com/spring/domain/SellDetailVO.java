@@ -23,6 +23,7 @@ public class SellDetailVO {
 	   private String name;
 	   
 	   private int amount2; // 지우지 마세요
+	   private int amount3; // 영업현황입니다. 지우지 마세요
 	   private int sell_price2; // 지우지 마세요
 	   private String lot_code2; // 지우지 마세요
 }

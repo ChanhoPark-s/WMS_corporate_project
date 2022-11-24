@@ -59,7 +59,7 @@ table td {
 					<fmt:formatNumber pattern="###,###" value="${status.in_price}" var="in_price"/>${in_price} 원</td>
 					<td>
 					<fmt:formatNumber pattern="###,###" value="${status.out_price}" var="out_price"/>${out_price} 원</td>
-					<td>${status.amount}</td>
+					<td>${status.amount3}</td>
 					<td><fmt:formatNumber pattern="###,###" value="${status.profit}" var="profit"/>${profit} 원</td>
 					</tr>
 				</c:forEach>
