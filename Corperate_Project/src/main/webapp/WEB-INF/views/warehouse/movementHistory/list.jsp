@@ -533,6 +533,9 @@ table td {
 							 modal1_form.item_name.value = item['name'];
 							 modal1_form.haveQty.value = item['amount'];
 							 modal1_form.qty.value = item['amount'];
+							 
+							 // 유효성 검사 삭제
+							 modal1_form.ware1.classList.remove('is-invalid');
 						 });
 						 
 						 itemTable.append(tr);
@@ -668,6 +671,8 @@ table td {
 					modal1_form.rack2.setAttribute('data-no', jsonData['rack_no'])
 					modal1_form.cell2.value = jsonData['cell_name'];
 					modal1_form.cell2.setAttribute('data-no', jsonData['cell_no'])
+					
+					modal1_form.ware2.classList.remove('is-invalid');
 				});
 				
 			});
@@ -752,6 +757,8 @@ table td {
    	function transformNumberDot(number) {
 		return String(number).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 	}
+    
+    
     
    	document.querySelector('.movementmodal').addEventListener('click', event => {
    		
