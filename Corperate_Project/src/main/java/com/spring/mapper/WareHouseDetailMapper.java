@@ -30,7 +30,7 @@ public interface WareHouseDetailMapper {
 	public List<WareHouseDetailVO> getWareHouseDetailAllListWithPaging(CriteriaForWareHouse cri);
 	
 	//
-	public WareHouseDetailVO getWareDetail(String code);
+	public List<WareHouseDetailVO> getWareDetail(String code);
 	
 
 }
