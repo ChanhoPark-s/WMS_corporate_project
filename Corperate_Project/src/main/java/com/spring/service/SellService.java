@@ -18,7 +18,7 @@ public interface SellService {
 
 	public void update(SellVO sell);
 
-	public List<SellDetailVO> getSubList(int mainNo);
+	public List<SellVO> getSubList(int mainNo);
 
 	public int getTotalCount(SearchVO searchvo);
 

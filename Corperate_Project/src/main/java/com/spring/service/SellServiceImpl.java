@@ -50,7 +50,7 @@ public class SellServiceImpl implements SellService{
 	}
 	
 	@Override
-	public List<SellDetailVO> getSubList(int mainNo) {
+	public List<SellVO> getSubList(int mainNo) {
 		System.out.println("판매 리스트 불러오기");
 		return mapper.getSubList(mainNo); // 존재하지 않는 레코드를 얻으려고하면 null이 반환됨
 	}
