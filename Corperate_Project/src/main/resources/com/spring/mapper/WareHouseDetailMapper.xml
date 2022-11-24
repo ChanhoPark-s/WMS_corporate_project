@@ -326,4 +326,11 @@ end;
 		where rn > (#{pageNum} - 1) * #{amount}
 		]]>
 	</select>
+	
+	<!-- 아이템 로트코드 넘겨줘서 = 로트코드  -->
+	<select id="getWareDetail" resultType="com.spring.domain.WareHouseDetailVO">
+		select * 
+		from warehouse_detail
+		where lot_code = #{code}
+	</select>
 </mapper>

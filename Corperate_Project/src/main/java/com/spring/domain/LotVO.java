@@ -22,4 +22,7 @@ public class LotVO {
 	private String client_tel;
 	
 	private int cnt;
+	
+	//재고수량
+	private int amount;
 }

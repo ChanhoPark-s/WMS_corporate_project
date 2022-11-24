@@ -5,8 +5,8 @@
 
 <mapper namespace="com.spring.mapper.LotRestMapper">
 
-<select id="getLot" resultType="String">
-select code from lot where item_no = #{no} order by code asc
+<select id="getLot" resultType="com.spring.domain.LotVO">
+select * from lot where item_no = #{no} order by code asc
 </select>
 
 </mapper>

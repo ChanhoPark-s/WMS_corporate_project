@@ -28,5 +28,9 @@ public interface WareHouseDetailMapper {
 	public List<WareHouseDetailVO> getListWithPaging(CriteriaForWareHouse cri);
 	public int getCountWareHouseDetailAll(CriteriaForWareHouse cri);
 	public List<WareHouseDetailVO> getWareHouseDetailAllListWithPaging(CriteriaForWareHouse cri);
+	
+	//
+	public WareHouseDetailVO getWareDetail(String code);
+	
 
 }

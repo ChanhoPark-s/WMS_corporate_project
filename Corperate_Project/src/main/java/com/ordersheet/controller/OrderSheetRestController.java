@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.domain.ClientVO;
 import com.spring.domain.ItemDTO;
+import com.spring.domain.LotVO;
 import com.spring.domain.MemberVO;
 import com.spring.domain.OrderSheetDetailVO;
 import com.spring.domain.OrderSheetVO;
@@ -82,7 +83,7 @@ public class OrderSheetRestController {
 		
 		//수주 디테일 조회
 		List<OrderSheetDetailVO> list = service.getSubList(no);
-		List<String> lot_lists;
+		List<LotVO> lot_lists;
 		List<ItemDTO> itemDTOlist = new ArrayList<ItemDTO>(); 
 		
 		for(OrderSheetDetailVO osdv : list) {
