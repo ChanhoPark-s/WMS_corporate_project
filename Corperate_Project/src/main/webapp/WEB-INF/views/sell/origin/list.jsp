@@ -836,13 +836,13 @@ table td {
 				</div>
 				
 				<div class="search">
-					<form name="search" action="/ordersheet/list" id="search">
+					<form name="search" action="/sell/orgin/list" id="search">
 						<table>
 							<tr>
 								<td>
 									<select id="whatColumn" name="whatColumn" class="form-select" style="width: 200px;">
 										<%
-										String[] search = { "member", "client", "item"};
+										String[] search = { "member", "client", "item","lot_code"};
 										String[] cate = { "담당자", "도착지", "품목명", "로트번호"};
 										%>
 										<c:set value="<%=search%>" var="s"></c:set>
