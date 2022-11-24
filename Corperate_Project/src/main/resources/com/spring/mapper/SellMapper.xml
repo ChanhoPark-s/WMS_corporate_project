@@ -7,7 +7,7 @@
 
 	<insert id="insert">
 		insert into sell
-		values(sell_seq.nextval,#{member_no},#{order_no},#{day})
+		values(sell_seq.nextval,#{member_no},#{day},#{client_no})
 	</insert>
 
 	<select id="read" resultType="com.spring.domain.SellVO">
@@ -21,13 +21,12 @@ on se.member_no = me.no order by no desc
 	</delete>
 
 	<update id="update">
-		update sell set member_no = #{member_no}, order_no =
-		#{order_no}, day =
+		update sell set member_no = #{member_no},  day =
 		#{day} where no = #{no}
 	</update>
 
 
-	<select id="getSubList" resultType="com.spring.domain.SellDetailVO">
+	<select id="getSubList" resultType="com.spring.domain.SellVO">
 		select sn.no, sn.sell_no, sn.amount, sn.sell_price, sn.lot_code, sn.item_no,
 		it.code code, it.name name
 		from(select *

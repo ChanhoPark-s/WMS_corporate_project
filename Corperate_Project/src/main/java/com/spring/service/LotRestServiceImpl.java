@@ -15,8 +15,13 @@ public class LotRestServiceImpl implements LotRestService{
 	private LotRestMapper mapper;
 
 	@Override
-	public List<LotVO> getLot(int no) {
+	public List<String> getLot(String no) {
 		System.out.println("리스트 사이즈 : " + mapper.getLot(no).size() + "/ 아이템 넘버 :"+ no );
+		List<String> lists = mapper.getLot(no);
+		
+		for(int i = 0 ; i < lists.size();i++) {
+		System.out.println(lists.get(i));
+		}
 		return mapper.getLot(no);
 	}
 }

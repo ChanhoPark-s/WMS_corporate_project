@@ -40,7 +40,7 @@ table td {
 	$(document)
 			.ready(
 					function() {
-						$("button[id='update_Sold']").click(function() {
+	/* 					$("button[id='update_Sold']").click(function() {
 							$("h5[id='modal-title']").text("판매 수정");
 							$("input[id='no']").attr('value', update_no)
 							$("input[id='order_no']").attr('value', order_no)
@@ -48,7 +48,7 @@ table td {
 							$("input[id='day']").attr('value', day)
 							$("#Sold_Submit").hide();
 							$("#Sold_Update_Submit").show();
-						});
+						}); */
 						$("button[id='insert_Sold']").click(function() {
 							$("h5[id='modal-title']").text("판매 등록");
 							
@@ -200,10 +200,45 @@ table td {
 							requestClientRecord();
 						});
 				
-	
-						 $("#sell_Detail_Insert_Area").on("click", "#choiceItemBtn",function(e){
+						$("#choiceClientBtn").on("click", function(e){
 							
-						alert(secondModalName);
+							pageNum = 1;
+							
+							// 두번째 모달에서 그려내야할 정보를 지정
+							secondModalName = "client";
+							console.log("secondModalName: " + secondModalName);
+							
+							// 두번째 모달의 제목을 지정
+							$("#second-modal-title").text("거래처 입력");
+							
+							// 두번째 모달의 select의 option을 그려내는 코드
+							var str = "";
+							str += "<option value='' selected>검색 선택</option>";
+							str += "<option value='code'>거래처코드</option>";
+							str += "<option value='name'>거래처명</option>";
+							str += "<option value='owner'>대표자명</option>";
+							$("#searchWhatColumn").html(str);
+							
+							// 초기화 코드
+							$("#searchKeyword").val("");
+							searchWhatColumn = "";
+							searchKeyword = "";
+							
+							// 두번째 모달의 테이블의 th를 그려내는 코드
+							var str = "";
+							str += "<tr>";
+							str += "<th scope='col'></th>";
+							str += "<th scope='col'>거래처코드</th>";
+							str += "<th scope='col'>거래처명</th>";
+							str += "<th scope='col'>대표자명</th>";
+							str += "</tr>";
+							$("#secondModalThead").html(str);
+							
+							// 두번째 모달의 테이블의 레코드를 그려내는 코드
+							requestClientRecord();
+						});
+						
+						 $("#sell_Detail_Insert_Area").on("click", "#choiceItemBtn",function(e){
 							secondModalName = "item";
 							pageNum = 1;
 							
@@ -352,13 +387,18 @@ table td {
 								 				//담당자 삽입
 								 				$("input[name='member_no']").val(vo.member_no);
 								 				$("input[name='member_name']").val(vo.member_name);
+								 				$("input[name='member_dep_name']").val(vo.dep_name);
+								 				
+								 				//거래처 삽입
+								 				$("input[name='client_no']").val(vo.client_no);
+		 										$("input[name='client_code']").val(vo.client_code);
+		 										$("input[name='client_name']").val(vo.client_name);
 								 				
 								 				//품목삽입
 								 				var orderDetail = resdata.detailList;
 								 				
 								 				var itemDTOlist = resdata.itemDTOlist;
 								 					
-								 				alert(itemDTOlist);
 								 				
 								 				
 							 					//console.log("요청url : " + "/basicinfo/lotRest/getLot/" + orderDetail[i].item_no);
@@ -367,6 +407,7 @@ table td {
 								 				for(var i=0; i<orderDetail.length; i++){
 								 					
 								 					//for(var x = 0; x < itemDTOlist.length;x++){
+								 				
 								 						
 								 		
 									 					var str= "";
@@ -481,6 +522,8 @@ table td {
 			url = "/ordersheet/";
 		}
 		
+		console.log(url + secondModalName + "/pages/"+ pageNum +"/" + amount + "/" + searchWhatColumn + "/" + searchKeyword);
+		
 		$.getJSON(url + secondModalName + "/pages/"+ pageNum +"/" + amount + "/" + searchWhatColumn + "/" + searchKeyword,  
  			function(resdata){
 				console.log("list: " + resdata.list); 	  			// 1페이지 레코드들이 담긴 객체
@@ -521,6 +564,17 @@ table td {
 				str += "<td>" + list[i].dep_name +"</td>";
 				str += "<td>" + list[i].rank_name +"</td>";
 				str += "<td>" + list[i].name +"</td>";
+				str += "</tr>";
+			}
+		}
+		else if(secondModalName == "client"){
+			for(var i = 0, len = list.length || 0; i < len; i++){
+				str += "<tr>";
+				str += "<td><input class='form-check-input' type='radio' name='clientRadio' value=" + list[i].name + "></td>";
+				str += "<td style='display:none'>" + list[i].no +"</td>";
+				str += "<td>" + list[i].code +"</td>";
+				str += "<td>" + list[i].name +"</td>";
+				str += "<td>" + list[i].owner +"</td>";
 				str += "</tr>";
 			}
 		}
@@ -732,7 +786,6 @@ table td {
 					for(var i = 0, len = list.length || 0; i < len; i++){
 						
 						var str = "";
-						 alert( list[i].code);
 						str += "<tr>";
 						str += "<td style='display:none'>" + list[i].no + "</td>";
 						str += "<td style='display:none'>" + list[i].item_no + "</td>";
@@ -838,10 +891,9 @@ table td {
 								pattern="yyyy-MM-dd" />
 							<td nowrap style="text-align: center">${input}</td>
 							<td style="text-align: center">
-								<!-- 수정 시작 -->
-								<div class="btn-group btn-group-sm" role="group">
-									
-									<!-- 수정 끝 -->
+							<!-- 수정 시작 -->
+							<div class="btn-group btn-group-sm" role="group">
+
 									<div class="btn-group btn-group-sm" role="group">
 								<button type="button" class="btn btn-light d-flex">
 									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
@@ -906,20 +958,43 @@ table td {
 						</div>
 						<br>
 						<div class="row">
+							<div class="mb-3" style="width: 24%">
+								<label for="day" class="form-label">판매 일자</label> <input
+									type="date" name="day" class="form-control" id="day" required
+									max="<%=sf.format(nowTime)%>">
+							</div>
+						</div>
+						<div class="row" style="width: 50%">
 							<div class="mb-3" style="width: 50%">
-								<label for="member_no" class="form-label">담당자 이름</label> <input
+								<label for="member_no" class="form-label">부서명</label> <input
+									type="text" class="form-control"
+									data-bs-target="#secondModal" data-bs-toggle="modal"
+									data-bs-dismiss="modal" name='member_dep_name' required readonly>
+							</div>
+							<div class="mb-3" style="width: 50%">
+								<label for="member_no" class="form-label">담당자명</label> <input
 									type="text" class="form-control choiceMemberBtn"
 									data-bs-target="#secondModal" data-bs-toggle="modal"
 									data-bs-dismiss="modal" name="member_name" id="choiceMemberBtn"
 									required readonly>
 							</div>
 						</div>
-						<div class="row">
+						<div class="row" style="width: 50%">
 							<div class="mb-3" style="width: 50%">
-								<label for="day" class="form-label">판매 일자</label> <input
-									type="date" name="day" class="form-control" id="day" required
-									max="<%=sf.format(nowTime)%>">
+							<input type="hidden" name="client_no">
+								<label for="member_no" class="form-label">코드</label> <input
+									type="text" class="form-control " id="choiceClientBtn"
+									 name="client_code" data-bs-target="#secondModal" data-bs-toggle="modal"
+									data-bs-dismiss="modal"
+									required readonly>
 							</div>
+							<div class="mb-3" style="width: 50%">
+								<label for="member_no" class="form-label">거래처명</label> <input
+									type="text" class="form-control" data-bs-target="#secondModal" data-bs-toggle="modal"
+									data-bs-dismiss="modal" id="choiceClientBtn"
+									name="client_name" required readonly>
+							</div>
+							
 						</div>
 							<hr>
 						<div id="sell_Detail_Insert_Area">
