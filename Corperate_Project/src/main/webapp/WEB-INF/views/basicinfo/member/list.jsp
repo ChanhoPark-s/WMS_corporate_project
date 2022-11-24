@@ -104,7 +104,7 @@ table td {
                    
                     </td>
                     <td>
-                        <img width="70px" height="70px" src="${pageContext.request.contextPath }/resources/assets/img/user/${member.fileName }" >
+                        <img width="70px" height="70px" src="${pageContext.request.contextPath }/upload/${member.fileName }" >
                     </td>
                     <td>
                         ${member.name }
@@ -250,14 +250,8 @@ table td {
     	// 사원등록
     	document.querySelector('.insert').addEventListener('click', event => {
     		title.innerHTML = '사원등록';
-    		taskForm.classList.remove('was-validated');
     		
-    		Array.from(form_control, elem => {
-    			elem.value = '';
-    			elem.classList.remove('is-invalid');
-    		});
-    		
-    		const form_select = document.querySelectorAll('.form-select');
+       		const form_select = document.querySelectorAll('.form-select');
 			Array.from(form_select, elem => {
 				elem.options[0].selected = true;  
 			});
@@ -273,11 +267,6 @@ table td {
     		
     		elem.addEventListener('click', async (event) => {
         		title.innerHTML = '사원수정';
-        		elem.classList.remove('was-validated');
-        		
-        		Array.from(form_control, elem => {
-        			elem.classList.remove('is-invalid');
-        		});
         		
         		let target = event.target;
 				target = target.nodeName == 'BUTTON' ? target : target.nodeName == 'svg' ? target.parentElement : target.parentElement.parentElement;
@@ -287,6 +276,7 @@ table td {
         		
         		taskForm.name.value = member.name;
         		taskForm.id.value = member.id;
+        		taskForm.id.setAttribute('readonly', 'readonly');
         		taskForm.pw.value = member.pw;
         		taskForm.email.value = member.email;
         		
@@ -408,6 +398,20 @@ table td {
 		}
 
 	}
+	
+	// 모달 닫을 경우 이벤트
+	$('#addUserModal').on('hidden.bs.modal', function (e) {
+		
+		// 모달 내의 입력부분 모두 리셋
+		taskForm.reset();
+		
+		// readonly 속성 제거
+		taskForm.id.removeAttribute('readonly'); 
+		
+		// is_invalid된 요소들을 다시 원상태로
+		const is_invalid = taskForm.querySelectorAll('.is-invalid');
+		Array.from(is_invalid, elem => elem.classList.remove('is-invalid'));
+	});
   </script>
   
 <!-- bottom.jsp -->

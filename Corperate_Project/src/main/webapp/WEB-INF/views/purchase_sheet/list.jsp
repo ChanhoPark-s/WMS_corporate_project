@@ -96,7 +96,7 @@ table td {
                     <th scope="col" nowrap>품목명</th>
                     <th scope="col">납기일자</th>
                     <th scope="col">총 구매단가</th>
-                    <th scope="col" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="발주중 - 입고완료 - 취소됨">진행상태</th>
+                    <th scope="col" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="발주중 - 입고완료 - 취소됨">진행상태</th>
                     <th scope="col">기능</th>
                   </tr>
                 </thead>
@@ -133,7 +133,7 @@ table td {
                     <span class="badge bg-success" style="background-color: #FFBB00 !important">발주중</span>
                     </c:when>
                     <c:when test="${list.status eq 1 }">
-                    <span class="badge bg-light text-muted">발주완료</span>
+                    <span class="badge bg-light text-muted">입고완료</span>
                     </c:when>
                     <c:when test="${list.status eq 2 }">
                     <span class="badge bg-light text-muted">취소됨</span>
@@ -334,11 +334,12 @@ $('.tr').find('td').not('td:last-child').on('click',function(){
 	                + '<td>'
 	                + pDetail[i].amount
 	                + '개</td>'
-	                + '<td style="display: none;>'
+	                + '<td style="display: none;">'
 	                + status(pDetail[i].status)
 	                + '</td>'
 	           	    + '</tr>'
     		}
+        	console.log(str);
         	$('#detailList').append(str);
     			
 				$("#table3 tbody").empty();

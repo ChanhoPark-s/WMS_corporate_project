@@ -144,13 +144,12 @@ table td {
         
 <!-- 창고선택 -->
 <div class="modal fade" id="searchInvenModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered">
+  <div class="modal-dialog modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalToggleLabel2">입고 창고 선택</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div>
       <div class="modal-body">
         <div class="d-flex flex-wrap gap-1">
 		<div class="col">		
@@ -217,7 +216,6 @@ table td {
         </ul>
 		</div>
 		</div>
-	 </div>
       </div>
     </div>
   </div>
@@ -275,6 +273,10 @@ table td {
 				},
 				// row 생성
 				itemInput:  function () {
+					
+					itemForm.classList.remove('was-validated');
+					Array.from(itemForm.querySelectorAll('.is-invalid'), elem => elem.classList.remove('is-invalid'));
+					
 					const body = document.querySelector('.' + this.table + ' tbody');
 					const tr = makeElement('tr');
 					this.columns.map(value => {
@@ -393,6 +395,9 @@ table td {
 					td4.addEventListener('click', event => {
 						memberTarget.value = name;
 						memberTarget.setAttribute('data-value', no);
+						
+						// 값을 넣었을 경우 강제로 change 이벤트를 발생 시킨다.
+						memberTarget.dispatchEvent(new Event('change'));
 					});
 					
 					body.append(tr);
@@ -470,6 +475,8 @@ table td {
 					td4.addEventListener('click', event => {
 						itemTarget.value = name;
 						itemTarget.setAttribute('data-value', no);
+						
+						itemTarget.classList.remove('is-invalid');
 					});
 					
 					body.append(tr);
@@ -521,6 +528,7 @@ table td {
 					const tr = wareTarget.closest('tr');
 					const tds = Array.from(tr.children).slice(2, 6);
 					tds.forEach((value, index) => {
+						value.querySelector('input').classList.remove('is-invalid');
 						value.querySelector('input').value = jsonData[arr[index] + '_name'];
 						value.querySelector('input').setAttribute('data-value',jsonData[arr[index] + '_no']);
 					});	
@@ -530,7 +538,13 @@ table td {
 			
 		// ----------------------------------------------- 창고 끝
 		
-		/* 거래처 선택 모달의 페이지네이션을 그리는 함수 */
+		// is-invalid에 이벤트가 발생할 경우
+		Array.from(document.querySelectorAll('.form-control'), elem => {
+			elem.addEventListener('change', event => {
+				event.target.classList.remove('is-invalid');
+			})
+		});
+		
 		function paintPageNation(totalCount, cri, location){
 			
 			var str = ""; 
@@ -658,7 +672,6 @@ table td {
 		callback(json);
 	};
 	
-	// 태그 생성
 	// 태그 생성
    	function makeElement(elem, attr, event) {
 		const e = typeof elem === 'string' &&  document.createElement(elem) || elem;

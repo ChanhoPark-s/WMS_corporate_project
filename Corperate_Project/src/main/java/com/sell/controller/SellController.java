@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.spring.domain.ItemVO;
+import com.spring.domain.Purchase_sheetVO;
 import com.spring.domain.SearchVO;
 import com.spring.domain.SellDetailVO;
 import com.spring.domain.SellVO;
@@ -44,7 +45,13 @@ public class SellController {
 	
 	@GetMapping(value="/list")
 	public void list(SearchVO searchvo, HttpServletRequest request, Model model) {
+		List<SellVO> lists = service.read();
 		
+		
+		List<SellDetailVO> detaillists = sdservice.read();
+		model.addAttribute("lists", lists);
+		model.addAttribute("searchvo", searchvo);
+		model.addAttribute("detaillists", detaillists);
 		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
 		if (flashMap != null) {
 			searchvo = (SearchVO) flashMap.get("searchvo"); //searchVO 를 덮어씌움

@@ -54,7 +54,7 @@ table td {
           <div class="card-body">
             <div class="d-flex gap-1 mb-4 flex-wrap">
               <div class="d-flex gap-1 me-auto flex-wrap">
-                <button class="btn btn-primary d-inline-flex align-items-center gap-1" data-bs-toggle="modal" data-bs-target="#movementItem">
+                <button class="btn btn-primary d-inline-flex align-items-center gap-1 movementmodal" data-bs-toggle="modal" data-bs-target="#movementItem">
 					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
 					  <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
 					</svg>
@@ -115,7 +115,7 @@ table td {
         </div>
         
 <!-- 재고이동 모달 -->
- <div class="modal fade" id="movementItem" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+ <div class="modal fade" id="movementItem" ria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -218,13 +218,12 @@ table td {
   </div>
 </div>
 <div class="modal fade" id="movementItem2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered modal-xl">
+  <div class="modal-dialog modal-dialog-scrollable modal-xl">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalToggleLabel2" data-bs-target="#movementItem3" data-bs-toggle="modal" data-bs-dismiss="modal">출고 품목 선택</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div>
       <div class="modal-body">
         <div class="container">
 	        <div class="row">
@@ -334,7 +333,6 @@ table td {
           
 		</div>
 		</div>
-	 </div>
       </div>
       <div class="modal-footer">
         <button class="btn btn-primary" data-bs-target="#movementItem" data-bs-toggle="modal" data-bs-dismiss="modal">뒤로가기</button>
@@ -344,13 +342,12 @@ table td {
 </div>
 
 <div class="modal fade" id="movementItem3" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered">
+  <div class="modal-dialog modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalToggleLabel2">입고 창고 선택</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div>
       <div class="modal-body">
         <div class="d-flex flex-wrap gap-1">
 		<div class="col">		
@@ -425,7 +422,6 @@ table td {
         </ul>
 		</div>
 		</div>
-	 </div>
       </div>
       <div class="modal-footer">
         <button class="btn btn-primary" data-bs-target="#movementItem" data-bs-toggle="modal" data-bs-dismiss="modal">뒤로가기</button>
@@ -537,6 +533,9 @@ table td {
 							 modal1_form.item_name.value = item['name'];
 							 modal1_form.haveQty.value = item['amount'];
 							 modal1_form.qty.value = item['amount'];
+							 
+							 // 유효성 검사 삭제
+							 modal1_form.ware1.classList.remove('is-invalid');
 						 });
 						 
 						 itemTable.append(tr);
@@ -672,6 +671,8 @@ table td {
 					modal1_form.rack2.setAttribute('data-no', jsonData['rack_no'])
 					modal1_form.cell2.value = jsonData['cell_name'];
 					modal1_form.cell2.setAttribute('data-no', jsonData['cell_no'])
+					
+					modal1_form.ware2.classList.remove('is-invalid');
 				});
 				
 			});
@@ -724,7 +725,7 @@ table td {
          	event.stopPropagation()
         });
       });
-    })()
+    })()    
     
     // 태그 생성
    	function makeElement(elem, attr, event) {
@@ -756,6 +757,21 @@ table td {
    	function transformNumberDot(number) {
 		return String(number).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 	}
+    
+    
+    
+   	document.querySelector('.movementmodal').addEventListener('click', event => {
+   		
+   		// was-invalid 리셋
+   		modal1_form.classList.remove('was-validated');
+   		
+   		// 폼 리셋
+   		modal1_form.reset();
+   		
+   		// is-invalid 리셋
+   		Array.from(modal1_form.querySelectorAll('.form-control.is-invalid'), elem => elem.classList.remove('is-invalid'));
+   		
+   	});
 
 </script>
 <!-- bottom.jsp -->

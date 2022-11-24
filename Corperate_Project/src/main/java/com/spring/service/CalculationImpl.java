@@ -41,5 +41,30 @@ public class CalculationImpl implements CalculationService{
 	public int getCountItem() {
 		return mapper.getCountItem();
 	}
+
+
+	/* 이하 영업이익 출력위해 처리하는 4개의 메소드 */
+	@Override
+	public int getTotalSellMoney() {
+		return mapper.getTotalSellMoney();
+	}
+
+
+	@Override
+	public int getTotalSellOriginalMoney() {
+		return mapper.getTotalSellOriginalMoney();
+	}
+
+
+	@Override
+	public int getTotalBenefitMoney() {
+		return mapper.getTotalBenefitMoney();
+	}
+
+
+	@Override
+	public int getTotalBenefitPercent() {
+		return mapper.getTotalBenefitPercent();
+	}
 	
 }

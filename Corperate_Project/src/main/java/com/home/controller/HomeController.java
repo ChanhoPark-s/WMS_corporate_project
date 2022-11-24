@@ -47,6 +47,15 @@ public class HomeController {
 	model.addAttribute("memberCount",service.getCountMember());
 	model.addAttribute("itemCount",service.getCountItem());
 	
+	
+	/*이하는 영업이익 출력을 위한 것*/
+	model.addAttribute("total_sell_money",service.getTotalSellMoney());
+	model.addAttribute("total_sell_original",service.getTotalSellOriginalMoney());
+	model.addAttribute("total_sell_benefit_money",service.getTotalBenefitMoney());
+	model.addAttribute("total_sell_benefit_percent",service.getTotalBenefitPercent());
+	
+	
+	
 	List<BoardVO> lists = bservice.list();
 	model.addAttribute("lists", lists);
 	

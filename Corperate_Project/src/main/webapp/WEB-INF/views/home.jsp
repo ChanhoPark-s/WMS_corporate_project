@@ -38,68 +38,52 @@ path.color1 {
   fill: #35526b;
 }
 
-/* 도넛2 */
 
-#donut-slider {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin: -140px 0 0 -140px;
-  width: 280px;
-  height: 280px;
-  overflow: hidden;
-}
-#donut-slider .handle {
-  position: absolute;
-  width: 150%;
-  height: 100%;
-  cursor: ew-resize;
-}
-#donut-slider .value {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 100%;
-  height: 100px;
-  margin: -50px 0 0 0;
-  color: #666;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 60px;
-  font-weight: bold;
-  line-height: 100px;
-  text-align: center;
-}
+
 #ddd{
 	 margin-left: 80%;
 }
 
-/* 목표  */
+/* 이익 */
 .flex-wrapper {
-  display: flex;
+  display:flex;
   flex-flow: row nowrap;
+  margin-left: 32%;
 }
 
 .single-chart {
-  width: 33%;
+  width: 50%;
   justify-content: space-around ;
 }
 
 .circular-chart {
   display: block;
   margin: 10px auto;
-  max-width: 250px;
-  max-height: 250px;
+  max-width: 300px;
+  max-height: 300px;
+}
+.circular-chart2 {
+  display: block;
+  margin: 10px auto;
+  max-width: 300px;
+  max-height: 300px;
 }
 
 .circle-bg {
   fill: none;
   stroke: #eee;
-  stroke-width: 3.8;
+  stroke-width: 2.8;
 }
 
 .circle {
   fill: none;
-  stroke-width: 2.8;
+  stroke-width: 4;
+  stroke-linecap: round;
+  animation: progress 1s ease-out forwards;
+}
+.circle2 {
+  fill: none;
+  stroke-width: 4;
   stroke-linecap: round;
   animation: progress 1s ease-out forwards;
 }
@@ -107,6 +91,9 @@ path.color1 {
 
 .circular-chart.orange .circle {
   stroke: #fbd438;
+}
+.circular-chart2.blue .circle2{
+	stroke:#7d7af3;
 }
 
 
@@ -116,6 +103,13 @@ path.color1 {
   font-size: 0.5em;
   text-anchor: middle;
 }
+.percentage2 {
+  fill: #666;
+  font-family: sans-serif;
+  font-size: 0.5em;
+  text-anchor: middle;
+}
+
 </style>
 <!-- top.jsp -->
 <%@include file="./common/top.jsp" %>
@@ -172,7 +166,7 @@ path.color1 {
                       <div class="col-6">
                         <div id="earnings" style="min-height: 132.8px;"><div id="apexchartss3lmnalgl" class="apexcharts-canvas apexchartss3lmnalgl apexcharts-theme-light" style="width: 191px; height: 132.8px;">
 							<!-- 도넛차트 -->     
-							<div id="donut" data-donut="39">
+							<div id="donut" data-donut="${sell_Money/1000000000*100 }">
 							</div>
                         <g id="SvgjsG1670" class="apexcharts-inner apexcharts-graphical" transform="translate(33.5, 0)"><defs id="SvgjsDefs1669"><clipPath id="gridRectMasks3lmnalgl"><rect id="SvgjsRect1672" width="130" height="148" x="-2" y="0" rx="0" ry="0" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fff"></rect></clipPath><clipPath id="forecastMasks3lmnalgl"></clipPath><clipPath id="nonForecastMasks3lmnalgl"></clipPath><clipPath id="gridRectMarkerMasks3lmnalgl"><rect id="SvgjsRect1673" width="130" height="200" x="-2" y="-2" rx="0" ry="0" opacity="1" stroke-width="0" stroke="none" stroke-dasharray="0" fill="#fff"></rect></clipPath></defs><g id="SvgjsG1674" class="apexcharts-pie"><g id="SvgjsG1675" transform="translate(0, 0) scale(1)"><circle id="SvgjsCircle1676" r="37.35121951219512" cx="63" cy="63" fill="transparent"></circle><g id="SvgjsG1677" class="apexcharts-slices"><g id="SvgjsG1678" class="apexcharts-series apexcharts-pie-series" seriesName="App" rel="1" data:realIndex="0"><path id="SvgjsPath1679" d="M 63 5.536585365853654 A 57.463414634146346 57.463414634146346 0 1 1 52.23242982526908 119.44557957845831 L 56.001079386424905 99.6896267259979 A 37.35121951219512 37.35121951219512 0 1 0 63 25.648780487804878 L 63 5.536585365853654 z" fill="rgba(99,102,241,1)" fill-opacity="1" stroke-opacity="1" stroke-linecap="butt" stroke-width="0" stroke-dasharray="0" class="apexcharts-pie-area apexcharts-donut-slice-0" index="0" j="0" data:angle="190.8" data:startAngle="0" data:strokeWidth="0" data:value="53" data:pathOrig="M 63 5.536585365853654 A 57.463414634146346 57.463414634146346 0 1 1 52.23242982526908 119.44557957845831 L 56.001079386424905 99.6896267259979 A 37.35121951219512 37.35121951219512 0 1 0 63 25.648780487804878 L 63 5.536585365853654 z"></path></g><g id="SvgjsG1680" class="apexcharts-series apexcharts-pie-series" seriesName="Service" rel="2" data:realIndex="1"><path id="SvgjsPath1681" d="M 52.23242982526908 119.44557957845831 A 57.463414634146346 57.463414634146346 0 0 1 9.57186827432389 84.15369380792929 L 28.271714378310527 76.74990097515403 A 37.35121951219512 37.35121951219512 0 0 0 56.001079386424905 99.6896267259979 L 52.23242982526908 119.44557957845831 z" fill="rgba(13,202,240,1)" fill-opacity="1" stroke-opacity="1" stroke-linecap="butt" stroke-width="0" stroke-dasharray="0" class="apexcharts-pie-area apexcharts-donut-slice-1" index="0" j="1" data:angle="57.599999999999994" data:startAngle="190.8" data:strokeWidth="0" data:value="16" data:pathOrig="M 52.23242982526908 119.44557957845831 A 57.463414634146346 57.463414634146346 0 0 1 9.57186827432389 84.15369380792929 L 28.271714378310527 76.74990097515403 A 37.35121951219512 37.35121951219512 0 0 0 56.001079386424905 99.6896267259979 L 52.23242982526908 119.44557957845831 z"></path></g><g id="SvgjsG1682" class="apexcharts-series apexcharts-pie-series" seriesName="Product" rel="3" data:realIndex="2"><path id="SvgjsPath1683" d="M 9.57186827432389 84.15369380792929 A 57.463414634146346 57.463414634146346 0 0 1 62.989970742202864 5.536586241071504 L 62.99348098243186 25.64878105669648 A 37.35121951219512 37.35121951219512 0 0 0 28.271714378310527 76.74990097515403 L 9.57186827432389 84.15369380792929 z" fill="rgba(250,204,21,1)" fill-opacity="1" stroke-opacity="1" stroke-linecap="butt" stroke-width="0" stroke-dasharray="0" class="apexcharts-pie-area apexcharts-donut-slice-2" index="0" j="2" data:angle="111.6" data:startAngle="248.4" data:strokeWidth="0" data:value="31" data:pathOrig="M 9.57186827432389 84.15369380792929 A 57.463414634146346 57.463414634146346 0 0 1 62.989970742202864 5.536586241071504 L 62.99348098243186 25.64878105669648 A 37.35121951219512 37.35121951219512 0 0 0 28.271714378310527 76.74990097515403 L 9.57186827432389 84.15369380792929 z"></path></g></g></g></g><line id="SvgjsLine1684" x1="0" y1="0" x2="126" y2="0" stroke="#b6b6b6" stroke-dasharray="0" stroke-width="1" stroke-linecap="butt" class="apexcharts-ycrosshairs"></line><line id="SvgjsLine1685" x1="0" y1="0" x2="126" y2="0" stroke-dasharray="0" stroke-width="0" stroke-linecap="butt" class="apexcharts-ycrosshairs-hidden"></line></g><g id="SvgjsG1671" class="apexcharts-annotations"></g></svg><div class="apexcharts-legend"></div><div class="apexcharts-tooltip apexcharts-theme-dark" style="left: 113.212px; top: 35px;"><div class="apexcharts-tooltip-series-group apexcharts-active" ><span class="apexcharts-tooltip-marker" style="background-color: rgb(99, 102, 241); display: none;"></span><div class="apexcharts-tooltip-text" style="font-family: Helvetica, Arial, sans-serif; font-size: 12px;"><div class="apexcharts-tooltip-y-group"></div><div class="apexcharts-tooltip-goals-group"><span class="apexcharts-tooltip-text-goals-label"></span><span class="apexcharts-tooltip-text-goals-value"></span></div><div class="apexcharts-tooltip-z-group"><span class="apexcharts-tooltip-text-z-label"></span><span class="apexcharts-tooltip-text-z-value"></span></div></div></div><div class="apexcharts-tooltip-series-group" style="order: 2; display: none; background-color: rgb(99, 102, 241);"><span class="apexcharts-tooltip-marker" style="background-color: rgb(99, 102, 241); display: none;"></span><div class="apexcharts-tooltip-text" style="font-family: Helvetica, Arial, sans-serif; font-size: 12px;"><div class="apexcharts-tooltip-y-group"><span class="apexcharts-tooltip-text-y-label">App: </span><span class="apexcharts-tooltip-text-y-value">53</span></div><div class="apexcharts-tooltip-goals-group"><span class="apexcharts-tooltip-text-goals-label"></span><span class="apexcharts-tooltip-text-goals-value"></span></div><div class="apexcharts-tooltip-z-group"><span class="apexcharts-tooltip-text-z-label"></span><span class="apexcharts-tooltip-text-z-value"></span></div></div></div><div class="apexcharts-tooltip-series-group" style="order: 3; display: none; background-color: rgb(99, 102, 241);"><span class="apexcharts-tooltip-marker" style="background-color: rgb(99, 102, 241); display: none;"></span><div class="apexcharts-tooltip-text" style="font-family: Helvetica, Arial, sans-serif; font-size: 12px;"><div class="apexcharts-tooltip-y-group"><span class="apexcharts-tooltip-text-y-label">App: </span><span class="apexcharts-tooltip-text-y-value">53</span></div><div class="apexcharts-tooltip-goals-group"><span class="apexcharts-tooltip-text-goals-label"></span><span class="apexcharts-tooltip-text-goals-value"></span></div><div class="apexcharts-tooltip-z-group"><span class="apexcharts-tooltip-text-z-label"></span><span class="apexcharts-tooltip-text-z-value"></span></div></div></div></div></div></div>
                       </div>
@@ -187,7 +181,7 @@ path.color1 {
             <div class="card h-100">
               <div class="card-body">
                     <div class="d-sm-flex justify-content-between align-items-center">
-                      <h3 class="mb-sm-0">공지사항</h3>
+                      <h3 class="mb-sm-0" style="font-size:20px">공지사항</h3>
                     <button id="insertBtn" onclick="insertBtn()"class="btn btn-light d-inline-flex align-items-center gap-"
 					data-bs-toggle="modal" data-bs-target="#BoardModal">
 					<i class="fa-solid fa-plus"></i>
@@ -228,32 +222,69 @@ path.color1 {
               </div>
             </div>
           </div>
+          
+          
+          
+          
+          <!-- 여기부터 하나 -->
           <div class="col-12 col-md-6 col-lg-4">
             <div class="card h-100">
               <div class="card-header border-bottom-0 d-flex justify-content-between">
-                <div>
-                   <h6 class="fw-black mb-2">수주 금액</h6>
-                  <small class="text-secondary">목표 : 1,000,000$</small>
-                </div>
-                <div class="dropdown">
-                </div>
-              </div>
-              <div class="card-body">
-              	 	<div id="donut-slider">
-				    	<div class="value"></div>
-				    	<div class="handle"></div>
-				 	</div>
-              </div>
-            </div>
-          </div>
-          <div class="col-12 col-md-6 col-lg-4">
-            <div class="card h-100">
-              <div class="card-header border-bottom-0 d-flex justify-content-between">
-                <h6 class="fw-black mb-2">이익</h6>
+                <h6 class="fw-black mb-2">수주잔고 목표 달성률</h6>
               </div>
               <div class="card-body">
               <!--목표  -->
-              <div class="flex-wrapper" style="margin-left: 160px;">
+              <div class="flex-wrapper">
+				  <div class="single-chart">
+				    <svg viewBox="0 0 36 36" class="circular-chart2 blue">
+				      <path class="circle-bg"
+				        d="M18 2.0845
+				          a 15.9155 15.9155 0 0 1 0 31.831
+				          a 15.9155 15.9155 0 0 1 0 -31.831"
+				      />
+				      <fmt:formatNumber var="om" type="number" maxFractionDigits="0"  value="${order_Money/10000000 }" />
+				      <path class="circle2"
+				        stroke-dasharray="${order_Money/10000000  }, 10000"
+				        d="M18 2.0845
+				          a 15.9155 15.9155 0 0 1 0 31.831
+				          a 15.9155 15.9155 0 0 1 0 -31.831"
+				      />
+				      <text x="18" y="20.35" class="percentage2">${om }%</text>
+				    </svg>
+				  </div>
+			   </div>	  
+              
+              
+              </div>
+              <div class="card-footer p-0">
+                <div class="row text-center mx-0">
+                  <div class="col-6 border-end py-1">
+                    <small class="text-secondary">수주금액</small>
+                    <fmt:formatNumber var="omm" value="${order_Money }" pattern="#,###" />
+                    <h6>${omm}</h6>
+                  </div>
+                  <div class="col-6 py-1">
+                    <small class="text-secondary">목표</small>
+                    <fmt:formatNumber var="ttemp" value="1000000000" pattern="#,###" />
+                    <h6>${ttemp}</h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--여기까지  -->
+          
+          
+          
+          
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="card h-100">
+              <div class="card-header border-bottom-0 d-flex justify-content-between">
+                <h6 class="fw-black mb-2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="전체 매출 중 순이익 비중">영업이익률</h6>
+              </div>
+              <div class="card-body">
+              <!--목표  -->
+              <div class="flex-wrapper">
 				  <div class="single-chart">
 				    <svg viewBox="0 0 36 36" class="circular-chart orange">
 				      <path class="circle-bg"
@@ -261,9 +292,9 @@ path.color1 {
 				          a 15.9155 15.9155 0 0 1 0 31.831
 				          a 15.9155 15.9155 0 0 1 0 -31.831"
 				      />
-				      <fmt:formatNumber var="ee" type="number" maxFractionDigits="0"  value="${sell_Money/purchase_Money*100 }" />
+				      <fmt:formatNumber var="ee" type="number" maxFractionDigits="0"  value="${(total_sell_money-total_sell_original)/total_sell_money*100}" />
 				      <path class="circle"
-				        stroke-dasharray="${sell_Money/purchase_Money*100  }, 10000"
+				        stroke-dasharray="${(total_sell_money-total_sell_original)/total_sell_money*100  }, 10000"
 				        d="M18 2.0845
 				          a 15.9155 15.9155 0 0 1 0 31.831
 				          a 15.9155 15.9155 0 0 1 0 -31.831"
@@ -278,8 +309,8 @@ path.color1 {
               <div class="card-footer p-0">
                 <div class="row text-center mx-0">
                   <div class="col-6 border-end py-1">
-                    <small class="text-secondary">구매비용</small>
-                    <fmt:formatNumber var="pm" value="${purchase_Money }" pattern="#,###" />
+                    <small class="text-secondary">순이익금</small>
+                    <fmt:formatNumber var="pm" value="${total_sell_benefit_money }" pattern="#,###" />
                     <h6>${pm}</h6>
                   </div>
                   <div class="col-6 py-1">
@@ -302,28 +333,28 @@ path.color1 {
                   <div class="mx-2">
                     <h6 class="mb-0">발주처</h6>
                   </div>
-                  <span class="ms-auto text-success">+ ${buyClinetCount}</span>
+                  <span class="ms-auto text-success"> ${buyClinetCount}</span>
                 </div>
                 <div class="d-flex align-items-center mt-3">
                  <i class="fa-solid fa-money-bill-transfer"></i>
                   <div class="mx-2">
                     <h6 class="mb-0">수주처</h6>
                   </div>
-                  <span class="ms-auto text-success">+ ${sellClientCount }</span>
+                  <span class="ms-auto text-success"> ${sellClientCount }</span>
                 </div>
                 <div class="d-flex align-items-center mt-3">
                 <i class="fa-solid fa-user"></i>
                   <div class="mx-2">
                     <h6 class="mb-0">사원</h6>
                   </div>
-                  <span class="ms-auto text-success">+ ${memberCount }</span>
+                  <span class="ms-auto text-success"> ${memberCount }</span>
                 </div>
                 <div class="d-flex align-items-center mt-3">
                 <i class="fa-solid fa-gift"></i>
                   <div class="mx-2">
                     <h6 class="mb-0">취급 품목</h6>
                   </div>
-                  <span class="ms-auto text-success">+ ${itemCount }</span>
+                  <span class="ms-auto text-success"> ${itemCount }</span>
                 </div>
               </div>
             </div>
@@ -446,58 +477,10 @@ var timeout = setTimeout(function () {
 };
 
 function calcPercent(percent) {
-return [39, 100-39];
+return [${sell_Money/1000000000*100 }, 100-${sell_Money/1000000000*100 }];
 };
 
 
-/* 두번쨰 도넛 */
-$(function() {
-	  var s = new DonutSlider('donut-slider', 30);
-	  s.setValue(${order_Money/1000000000} * 0.9+0.02);
-	});
-
-	////////////////////////
-
-	var DonutSlider = function(elementId, borderSize) {
-	  var _this = this,
-	      size = Math.min($('#' + elementId).width(), 
-	                      $('#' + elementId).height());
-	  this.pie = d3.layout.pie().sort(null);
-	  this.arc = d3.svg.arc()
-	             .innerRadius((size / 2) - borderSize)
-	             .outerRadius(size / 2);
-	  this.svg = d3.select('#' + elementId).append('svg')
-	             .attr('width', size)
-	             .attr('height', size)
-	             .append('g')
-	             .attr('transform', 'translate(' + size / 2 + ',' + size / 2 + ')');
-	  this.path = this.svg.selectAll('path')
-	              .data(this.pie([0, 100]))
-	              .enter().append('path')
-	                .attr('fill', function(d, i) { 
-	                   return _this.colors[i];
-	                })
-	                .attr('d', this.arc);
-	  this.dragdealer = new Dragdealer(elementId, {
-	    x: 1,
-	    slide: false,
-	    animationCallback: function(x, y) {
-	      _this.updateChart((1 - x) * 100);
-	      $('#' + elementId).find('.value').text(Math.round((1 - x) * 100)+"%");
-	    }
-	  });
-	};
-	DonutSlider.prototype = {
-	  colors: ['#ff6666', '#eee'],
-	  setValue: function(value) {
-	    this.dragdealer.setValue(1 - value, 0, true);
-	  },
-	  updateChart: function(value) {
-	    this.path.data(this.pie([value, 100 - value]))
-	             .attr('d', this.arc);      
-	  }
-	};
-	
 	
 	var modalForm = $("#modalForm");
 	 function insertBtn(){

@@ -1,6 +1,5 @@
 package com.spring.domain;
 
-import java.util.ArrayList;
 
 import lombok.Data;
 
@@ -27,9 +26,5 @@ public class SellVO {
 	private int order_sheet_no;
 	private String temp_item_name;
 	private String client_name;
-	
-	
 	private String code;
-	
-	
 }
