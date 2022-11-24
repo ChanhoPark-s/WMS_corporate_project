@@ -31,7 +31,7 @@ public class LotRestServiceImpl implements LotRestService{
 			//재고현황
 			WareHouseDetailVO wdvo = wdm.getWareDetail(lists.get(i).getCode());
 			
-			System.out.println("재고수량" + wdvo.getAmount());
+			System.out.println("재고수량" + wdvo.getAmount());			
 			
 			lists.get(i).setAmount(wdvo.getAmount());
 			
