@@ -239,8 +239,6 @@ table td {
 						});
 						
 						 $("#sell_Detail_Insert_Area").on("click", "#choiceItemBtn",function(e){
-							
-						alert(secondModalName);
 							secondModalName = "item";
 							pageNum = 1;
 							
@@ -528,7 +526,6 @@ table td {
 		
 		$.getJSON(url + secondModalName + "/pages/"+ pageNum +"/" + amount + "/" + searchWhatColumn + "/" + searchKeyword,  
  			function(resdata){
-				alert(resdata.list.length);
 				console.log("list: " + resdata.list); 	  			// 1페이지 레코드들이 담긴 객체
  				console.log("totalCount: " + resdata.totalCount); 	// 검색조건으로 뽑힌 총 레코드 수
  				console.log("cri: " + resdata.cri); 	  			// 검색에 사용된 기준정보가 담긴 객체
@@ -894,10 +891,10 @@ table td {
 								pattern="yyyy-MM-dd" />
 							<td nowrap style="text-align: center">${input}</td>
 							<td style="text-align: center">
-								<!-- 수정 시작 -->
-								<div class="btn-group btn-group-sm" role="group">
-									
-									<!-- 수정 끝 -->
+							<!-- 수정 시작 -->
+							<div class="btn-group btn-group-sm" role="group">
+									<!-- 	
+									수정 끝
 									<div class="btn-group btn-group-sm" role="group">
 								<button type="button" class="btn btn-light d-flex">
 									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
@@ -907,7 +904,7 @@ table td {
 											stroke-linejoin="round" stroke-width="2"
 											d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                           </svg>
-								</button>
+								</button> -->
 									<!-- 삭제 시작 -->
 									<button type="button" class="btn btn-light d-flex text-danger"
 										data-bs-toggle="modal" id="delete_Sold"
@@ -962,7 +959,7 @@ table td {
 						</div>
 						<br>
 						<div class="row">
-							<div class="mb-3" style="width: 50%">
+							<div class="mb-3" style="width: 24%">
 								<label for="day" class="form-label">판매 일자</label> <input
 									type="date" name="day" class="form-control" id="day" required
 									max="<%=sf.format(nowTime)%>">
