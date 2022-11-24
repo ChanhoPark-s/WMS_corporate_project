@@ -26,16 +26,29 @@ public class LotRestServiceImpl implements LotRestService{
 		
 		
 		//LotVO 에 재고수량 넣기
-		for(int i = 0 ; i < lists.size();i++) {
+		for(LotVO vo :lists) {
+			System.out.println("!");
+			System.out.println("vo.getCode()" + vo.getCode());
+			if (vo.getCode() != null) {
+				//재고현황
+				
+				List<WareHouseDetailVO> wdvoList = wdm.getWareDetail(vo.getCode());
+				
+				if (wdvoList != null) {
+					int amount = 0;
+					
+					for(WareHouseDetailVO whvo :wdvoList) {
+						amount += whvo.getAmount();
+						
+					}
+					
+					vo.setAmount(amount);
+				}
+					
+			}
 			
-			//재고현황
-			WareHouseDetailVO wdvo = wdm.getWareDetail(lists.get(i).getCode());
+			System.out.println(vo);
 			
-			System.out.println("재고수량" + wdvo.getAmount());
-			
-			lists.get(i).setAmount(wdvo.getAmount());
-			
-			System.out.println(lists.get(i));
 		}
 		return lists;
 	}
