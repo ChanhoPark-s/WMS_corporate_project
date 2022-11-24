@@ -41,7 +41,7 @@ path.color1 {
 
 
 #ddd{
-	 margin-left: 80%;
+	 margin-left: 90%;
 }
 
 /* 이익 */
@@ -362,7 +362,7 @@ path.color1 {
         </div>
 <!-- Modal 코드 넣을 위치 -->
 		<div class="modal fade" id="BoardModal" tabindex="-1">
-			<div class="modal-dialog modal-dialog-scrollable">
+			<div class="modal-dialog modal-dialog-scrollable modal-lg">
 				<div class="modal-content">
 					<div class="modal-header border-0">
 						<h5 id="modal-title"></h5>
@@ -388,7 +388,7 @@ path.color1 {
 							</div>
 							<div class="mb-3">
 								<label for="content" class="form-label">내용</label> 	
-								<textarea class="form-control" id="content" name="content"></textarea>
+								<textarea class="form-control" id="content" name="content" style="height: 200px;"></textarea>
 							</div>
 							
 						</form>
