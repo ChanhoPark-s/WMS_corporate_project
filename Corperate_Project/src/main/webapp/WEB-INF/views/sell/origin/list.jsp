@@ -434,8 +434,8 @@ table td {
 									 					str += "<select name='lot_code' class='form-select' id='getLotCode'>";
 									 					
 									 					for (var j=0; j < itemDTOlist[i].lotList.length; j++ ){
-										 					str += "<option value='" + itemDTOlist[i].lotList[j] + "'>";
-								 							str += itemDTOlist[i].lotList[j] + "</option>";
+										 					str += "<option value='" + itemDTOlist[i].lotList[j].code + "'>";
+								 							str += itemDTOlist[i].lotList[j].code + "(" + itemDTOlist[i].lotList[j].amount +  "개) </option>";
 									 					}	
 									 					if(itemDTOlist.length == 0){
 								 							str += "<option value=''>품목과 일치하는 로트번호가 없습니다.</option>";

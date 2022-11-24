@@ -12,7 +12,7 @@ import lombok.Data;
 public class ItemDTO {
 	
 	private OrderSheetDetailVO orderSheetDetailVO; 
-	private List<String> lotList;
+	private List<LotVO> lotList;
 	
 }
 
