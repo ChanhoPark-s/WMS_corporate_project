@@ -488,8 +488,8 @@ table td {
 									 					str += "<select name='lot_code' class='form-select' id='getLotCode'>";
 									 					
 									 					for (var j=0; j < itemDTOlist[i].lotList.length; j++ ){
-										 					str += "<option value='" + itemDTOlist[i].lotList[j] + "'>";
-								 							str += itemDTOlist[i].lotList[j] + "</option>";
+										 					str += "<option value='" + itemDTOlist[i].lotList[j].code + "'>";
+								 							str += itemDTOlist[i].lotList[j].code + "(" + itemDTOlist[i].lotList[j].amount +  "개) </option>";
 									 					}	
 									 					if(itemDTOlist.length == 0){
 								 							str += "<option value=''>품목과 일치하는 로트번호가 없습니다.</option>";
@@ -847,7 +847,7 @@ table td {
 						str += "<td style='display:none'>" + list[i].item_no + "</td>";
 						str += "<td style='text-align: center'>" + list[i].code + "</td>";
 						str += "<td style='text-align: center'>" + list[i].name + "</td>";
-						str += "<td style='text-align: center'>" + list[i].lot_code + "</td>";
+						str += "<td style='text-align: center'><span class='badge bg-dark'>" + list[i].lot_code + "</span></td>";
 						str += "<td style='text-align: center'>" + list[i].amount + "</td>";
 						str += "<td style='text-align: center'>" + list[i].sell_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " 원</td>";
 						str += "<td style='text-align: center'>" + (list[i].amount * list[i].sell_price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " 원</td>";
@@ -898,7 +898,7 @@ table td {
 								<td>
 									<select id="whatColumn" name="whatColumn" class="form-select" style="width: 200px;">
 										<%
-										String[] search = { "member", "client", "item"};
+										String[] search = { "member", "client", "item","lot_code"};
 										String[] cate = { "담당자", "도착지", "품목명", "로트번호"};
 										%>
 										<c:set value="<%=search%>" var="s"></c:set>

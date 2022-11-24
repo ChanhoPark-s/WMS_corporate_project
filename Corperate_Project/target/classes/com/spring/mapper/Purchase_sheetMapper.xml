@@ -30,7 +30,7 @@
 		<if test="whatColumn=='member_name'">where member_name like '%' ||  #{keyword} || '%'</if>
 		<if test="whatColumn=='item_name'">where item_name like '%' ||  #{keyword} || '%'</if>
 		GROUP BY no,member_no, client_no, order_no, day, delivery_date, status, client_name, member_name
-		ORDER BY status,no desc)
+		ORDER BY no desc)
 	</select>
 	
 	<!-- 발주서조회(페이징) -->
@@ -48,7 +48,7 @@
 		<if test="whatColumn=='member_name'">where member_name like '%' ||  #{keyword} || '%'</if>
 		<if test="whatColumn=='item_name'">where item_name like '%' ||  #{keyword} || '%'</if>
 		GROUP BY no,member_no, client_no, order_no, day, delivery_date, status, client_name, member_name
-		ORDER BY status,no desc OFFSET #{beginRow} ROWS FETCH NEXT #{pageSize} ROWS ONLY
+		ORDER BY no desc OFFSET #{beginRow} ROWS FETCH NEXT #{pageSize} ROWS ONLY
 	</select>  
 	
 	<!-- 발주서조회(안씀) -->

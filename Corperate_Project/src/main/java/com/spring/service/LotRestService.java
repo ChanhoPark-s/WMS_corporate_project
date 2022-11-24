@@ -6,7 +6,7 @@ import com.spring.domain.LotVO;
 
 public interface LotRestService {
 
-	public List<String> getLot(String string);
+	public List<LotVO> getLot(String string);
 
 
 

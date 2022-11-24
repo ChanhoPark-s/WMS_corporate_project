@@ -355,7 +355,7 @@ $('.tr').find('td').not('td:last-child').on('click',function(){
 					
 					str += "<td></td>";
 					str += "<td>" + iDetail[i].purchase_Sheet_No + "</td>";
-					str += "<td>" + iDetail[i].lot_Code + "</td>";
+					str += "<td><span class='badge bg-dark'>" + iDetail[i].lot_Code + "</span></td>";
 					str += "<td>" + iDetail[i].item_code + "</td>";
 					str += "<td>" + iDetail[i].item_name + "</td>";
 					str += "<td>" + iDetail[i].ware_name + "</td>";

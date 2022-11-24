@@ -388,7 +388,7 @@ function makeRecord(list,totalCount,cri){
 			for(var i = 0, len = list.length || 0; i < len; i++){
 				retabledata +=	'<tr>'+
 									'<td >'+(((pageNum-1)*10)+(i+1))+'</td>'+
-									'<td >'+list[i].lot_code+'</td>'+
+									'<td ><span class="badge bg-dark">'+list[i].lot_code+'</span></td>'+
 									'<td >'+list[i].name+'</td>'+
 									'<td >'+list[i].amount+'</td>'+
 									'<td >'+list[i].ware_name+'</td>'+
