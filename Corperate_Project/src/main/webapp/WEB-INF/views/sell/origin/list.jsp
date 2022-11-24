@@ -52,15 +52,42 @@ table td {
 						$("button[id='insert_Sold']").click(function() {
 							$("h5[id='modal-title']").text("판매 등록");
 							
-							$("input[name='order_no']").val("");
-							$("input[name='member_name']").val("");
-							$("input[name='member_no']").val("");
-							$("input[name='day']").val("");
-							$("input[name='item_code']").val("");
-							$("input[name='amount']").val("");
-							$("input[name='sell_price']").val("");
-							$("input[name='lot_code']").val("");
+							$("input").val("");
+							$("select").val("");														
+							$("option").remove();	
+							$("#sell_Detail_Insert_Area>.row").remove();
 							
+							
+							var str= "";
+		 					
+		 					str += "<div class='row'>";
+		 					str += "<input type='hidden' name='item_no' value='' class='form-control' readonly>";
+		 					str += "<div class='mb-3' style='width: 150px;'>";
+		 					str += "<label for='userFullname' class='form-label'>품목코드</label>";
+		 					str += "<input type='text' class='form-control choiceItemBtn' value='' name='item_code' readonly>";
+		 					str += "</div><div class='mb-3' style='width: 150px;'>";
+		 					str += "<label for='userFullname' class='form-label'>상품명</label>";
+		 					str += "<input type='text' name='item_name' value='' class='form-control' readonly></div>";
+		 					str += "<div class='mb-3' style='width: 150px;'>";
+		 					str += "<label for='userFullname' class='form-label'>&nbsp;&nbsp;</label>";
+		 					str += "<button type='button' class='btn btn-primary' style='display: block' data-bs-target='#secondModal' data-bs-toggle='modal' data-bs-dismiss='modal' id='choiceItemBtn'>품목 선택</button>";
+		 					str += "</div> <div class='mb-3' style='width: 150px;'>";
+		 					str += "<label for='amount' class='form-label'>판매 수량</label>";
+		 					str += "<input type='text' class='form-control' id='amount' name='amount' value='' placeholder='판매수량'>";
+		 					str += "</div><div class='mb-3' style='width: 150px;'>";
+		 					str += "<label for='sell_price' class='form-label'>판매 단가</label>";
+		 					str += "<input type='text' class='form-control' id='sell_price' name='sell_price' value='' placeholder='판매단가' readonly>";
+		 					str += "</div> <div class='mb-3' style='width: 250px;'>";
+		 					str += "<label for='lot_code' class='form-label'>로트 번호</label>";
+		 					str += "<select name='lot_code' class='form-select' id='getLotCode'>";
+		 					str += "</select>";
+		 					str += "</div> <div class='mb-3'style='width: 50px;'>";
+		 					str += "<label for='userFullname' class='form-label'>&nbsp;&nbsp;</label>";
+		 					str += "<button type='button' class='btn btn-primary deleteItemBtn' style='display: block'>X</button>";
+		 					str += "</div></div>";
+							
+		 					$("#sell_Detail_Insert_Area").prepend(str);
+		 					
 							$("#Sold_Update_Submit").hide();
 							$("#Sold_Submit").show();
 							
@@ -68,6 +95,20 @@ table td {
 						$("button[id='Sold_Submit']").click(
 								function() {
 									$("#sell_Detail_Insert_Area").hide();
+									
+									//form 전송전에 빈줄 삭제
+									var allItemCodeInputs = $("#sell_Detail_Insert_Area").find("input[name='item_no']");
+									var currentRowCount = allItemCodeInputs.length; 
+									
+									console.log("currentRowCount(빈줄을 제거하기전 전체 row 수): " + currentRowCount);
+									
+									for(var i = currentRowCount-1; i >= 0; i--){
+										console.log("allItemCodeInputs[i].value: " + i +" " + allItemCodeInputs[i].value);
+										if(allItemCodeInputs[i].value == "" && i != 0){
+											$("#sell_Detail_Insert_Area div[class=row]").eq(i).remove();
+										}	
+									}
+									
 									$("form[id='taskForm_add']").attr('action',
 											'/sell/origin/insert').submit();
 								});
@@ -162,7 +203,7 @@ table td {
 							$(this).parent().parent().remove();
 						}); */
 						/* 첫번째 모달에서 담당자 선택이 눌렸을 때 이동한 두번째 모달창에서 데이터를 요청하고 관련 화면을 그리는 부분 */
-						$("#choiceMemberBtn").on("click", function(e){
+						$(".choiceMemberBtn").on("click", function(e){
 							
 							pageNum = 1;
 							
@@ -200,7 +241,7 @@ table td {
 							requestClientRecord();
 						});
 				
-						$("#choiceClientBtn").on("click", function(e){
+						$(".choiceClientBtn").on("click", function(e){
 							
 							pageNum = 1;
 							
@@ -305,15 +346,26 @@ table td {
 								if(secondModalName == "member"){
 									var memberNo = $('input[name=clientRadio]:checked').parent().next().text();
 									var memberName = $('input[name=clientRadio]:checked').parent().next().next().next().next().text();
+									var memberDepName = $('input[name=clientRadio]:checked').parent().next().next().text();
 									
 									console.log(memberNo);
 									console.log(memberName);
 									
 									$("input[name='member_no']").val(memberNo);
-									$("#choiceMemberBtn").val(memberName);
-									
+									$("input[name='member_name']").val(memberName);
+									$("input[name='member_dep_name']").val(memberDepName);
 									secondModalName="";
 								}	
+								else if(secondModalName == "client"){
+									var clientNo = $('input[name=clientRadio]:checked').parent().next().text();
+									var clientCode = $('input[name=clientRadio]:checked').parent().next().next().text();
+									var clientName = $('input[name=clientRadio]:checked').parent().next().next().next().text();
+										
+									$("input[name='client_no']").val(clientNo);
+									$("input[name='client_code']").val(clientCode);
+									$("input[name='client_name']").val(clientName);	
+									
+								}
 								
 								else if(secondModalName == "item"){
 									var itemNo = $('input[name=clientRadio]:checked').parent().next().text();
@@ -329,6 +381,7 @@ table td {
 									clickedLocation.parent().parent().find('input[name=item_no]').val(itemNo);
 									$("input[name='item_code']").val(itemCode);
 									$("input[name='item_name']").val(itemName);
+									$("input[name='client_name']").val(itemClientName);
 									
 									
 									var form = {'itemNo':itemNo};
@@ -364,6 +417,7 @@ table td {
 				        
 				        
 				       				requestLotRecord(itemNo);
+				       				secondModalName="";
 								}
 								
 								else if(secondModalName == "order"){
@@ -434,8 +488,8 @@ table td {
 									 					str += "<select name='lot_code' class='form-select' id='getLotCode'>";
 									 					
 									 					for (var j=0; j < itemDTOlist[i].lotList.length; j++ ){
-										 					str += "<option value='" + itemDTOlist[i].lotList[j] + "'>";
-								 							str += itemDTOlist[i].lotList[j] + "</option>";
+										 					str += "<option value='" + itemDTOlist[i].lotList[j].code + "'>";
+								 							str += itemDTOlist[i].lotList[j].code + "(" + itemDTOlist[i].lotList[j].amount +  "개) </option>";
 									 					}	
 									 					if(itemDTOlist.length == 0){
 								 							str += "<option value=''>품목과 일치하는 로트번호가 없습니다.</option>";
@@ -464,6 +518,7 @@ table td {
 									 					str += "</div></div>";
 									 					
 														$("#sell_Detail_Insert_Area").prepend(str);
+														
 								 					//}
 								 				}
 									});
@@ -511,6 +566,7 @@ table td {
 								
 								// 두번째 모달의 테이블의 레코드를 그려내는 코드
 								requestClientRecord2();
+								
 							});
 	
 	});
@@ -966,13 +1022,13 @@ table td {
 						</div>
 						<div class="row" style="width: 50%">
 							<div class="mb-3" style="width: 50%">
-								<label for="member_no" class="form-label">부서명</label> <input
-									type="text" class="form-control"
-									data-bs-target="#secondModal" data-bs-toggle="modal"
+								<label for="member_dep_name" class="form-label">부서명</label> <input
+									type="text" class="form-control choiceMemberBtn"
+									data-bs-target="#secondModal" data-bs-toggle="modal"  id="choiceMemberBtn"
 									data-bs-dismiss="modal" name='member_dep_name' required readonly>
 							</div>
 							<div class="mb-3" style="width: 50%">
-								<label for="member_no" class="form-label">담당자명</label> <input
+								<label for="member_name" class="form-label">담당자명</label> <input
 									type="text" class="form-control choiceMemberBtn"
 									data-bs-target="#secondModal" data-bs-toggle="modal"
 									data-bs-dismiss="modal" name="member_name" id="choiceMemberBtn"
@@ -982,15 +1038,15 @@ table td {
 						<div class="row" style="width: 50%">
 							<div class="mb-3" style="width: 50%">
 							<input type="hidden" name="client_no">
-								<label for="member_no" class="form-label">코드</label> <input
-									type="text" class="form-control " id="choiceClientBtn"
+								<label for="client_code" class="form-label">코드</label> <input
+									type="text" class="form-control choiceClientBtn" id="choiceClientBtn"
 									 name="client_code" data-bs-target="#secondModal" data-bs-toggle="modal"
 									data-bs-dismiss="modal"
 									required readonly>
 							</div>
 							<div class="mb-3" style="width: 50%">
-								<label for="member_no" class="form-label">거래처명</label> <input
-									type="text" class="form-control" data-bs-target="#secondModal" data-bs-toggle="modal"
+								<label for="client_name" class="form-label">거래처명</label> <input
+									type="text" class="form-control choiceClientBtn" data-bs-target="#secondModal" data-bs-toggle="modal"
 									data-bs-dismiss="modal" id="choiceClientBtn"
 									name="client_name" required readonly>
 							</div>
@@ -1004,13 +1060,13 @@ table td {
 									readonly>
 
 								<div class="mb-3" style="width: 150px;">
-									<label for="userFullname" class="form-label">품목코드</label> <input
+									<label for="item_code" class="form-label">품목코드</label> <input
 										type="text" class="form-control choiceItemBtn"
 										name='item_code' readonly>
 								</div>
 
 								<div class="mb-3" style="width: 150px;">
-									<label for="userFullname" class="form-label">상품명</label> <input
+									<label for="item_name" class="form-label">상품명</label> <input
 										type="text" name='item_name' class="form-control" readonly>
 								</div>
 
