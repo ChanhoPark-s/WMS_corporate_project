@@ -40,7 +40,7 @@ table td {
 	$(document)
 			.ready(
 					function() {
-						$("button[id='update_Sold']").click(function() {
+	/* 					$("button[id='update_Sold']").click(function() {
 							$("h5[id='modal-title']").text("판매 수정");
 							$("input[id='no']").attr('value', update_no)
 							$("input[id='order_no']").attr('value', order_no)
@@ -48,7 +48,7 @@ table td {
 							$("input[id='day']").attr('value', day)
 							$("#Sold_Submit").hide();
 							$("#Sold_Update_Submit").show();
-						});
+						}); */
 						$("button[id='insert_Sold']").click(function() {
 							$("h5[id='modal-title']").text("판매 등록");
 							
@@ -893,8 +893,7 @@ table td {
 							<td style="text-align: center">
 							<!-- 수정 시작 -->
 							<div class="btn-group btn-group-sm" role="group">
-									<!-- 	
-									수정 끝
+
 									<div class="btn-group btn-group-sm" role="group">
 								<button type="button" class="btn btn-light d-flex">
 									<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg"
@@ -904,7 +903,7 @@ table td {
 											stroke-linejoin="round" stroke-width="2"
 											d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                           </svg>
-								</button> -->
+								</button>
 									<!-- 삭제 시작 -->
 									<button type="button" class="btn btn-light d-flex text-danger"
 										data-bs-toggle="modal" id="delete_Sold"
