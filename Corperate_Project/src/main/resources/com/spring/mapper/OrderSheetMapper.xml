@@ -140,14 +140,12 @@
 		        order by no desc)
 		    where rownum <= #{cri.pageNum} * #{cri.amount}
 		)where rn > (#{cri.pageNum} - 1) * #{cri.amount}
-		and status = 0
 		]]>     
 	</select>
 	
 	<select id="getCountAll" resultType="int">
 		select count(*)
         from order_sheet
-        where status = 0
 	</select>
 	
 	<!-- 수주상태 준비완료>발주중 -->
