@@ -836,7 +836,7 @@ table td {
 				</div>
 				
 				<div class="search">
-					<form name="search" action="/sell/orgin/list" id="search">
+					<form name="search" action="/sell/origin/list" id="search">
 						<table>
 							<tr>
 								<td>
