@@ -33,11 +33,14 @@
 	</select>
 	
 	<select id="selectSubListByOrderSheetNo" resultType="com.spring.domain.SellDetailVO">
-		select sn.no, sn.sell_no, sn.amount, sn.sell_price, sn.lot_code, sn.item_no,
+		select *
+		from(
+		select sn.no, sn.sell_no, sn.amount amount2, sn.sell_price sell_price2, sn.lot_code lot_code2, sn.item_no,
 		it.code code, it.name name
 		from(select *
 		from sell_detail
 		where order_sheet_no = #{orderSheetNo}) sn inner join item it
 		on sn.item_no = it.no
+		)
 	</select>
 </mapper>

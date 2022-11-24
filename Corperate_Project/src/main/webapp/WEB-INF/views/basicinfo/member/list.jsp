@@ -104,7 +104,7 @@ table td {
                    
                     </td>
                     <td>
-                        <img width="70px" height="70px" src="${pageContext.request.contextPath }/upload/${member.fileName }" >
+                        <img width="70px" height="70px" src="${pageContext.request.contextPath }/resources/assets/img/user/${member.fileName }" >
                     </td>
                     <td>
                         ${member.name }
