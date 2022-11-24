@@ -86,7 +86,7 @@ table td {
                 	<c:forEach items="${list }" var="item">
                 		<tr>
                 			<td>${item.no }</td>
-                			<td><span>${item.lot_code }</span></td>
+                			<td><span class="badge bg-dark">${item.lot_code }</span></td>
                 			<td>${item.item_name }</td>
                 			<td><fmt:formatNumber value="${item.qty }" /> 개</td>
                 			<td><span class="badge bg-info">${item.ware1 }</span></td>
@@ -697,9 +697,14 @@ table td {
         	const qty_feedback = document.querySelector('.qty-feedback');
         	
         	let boolcnt = Number(cnt1.value) < Number(cnt2.value);
+        	let boolNaN = isNaN(cnt2.value);
         	if(boolcnt) {
         		qty_feedback.innerHTML = '개수가 초과되었습니다.';
         		cnt2.classList.add('is-invalid');
+        	}
+        	else if(boolNaN) {
+        		qty_feedback.innerHTML = '숫자만 입력해 주세요..';
+        		cnt2.classList.add('is-invalid');        		
         	}
         	else {
         		qty_feedback.innerHTML = '개수를 선택해 주세요.';

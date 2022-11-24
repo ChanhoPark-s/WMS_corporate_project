@@ -1220,14 +1220,14 @@ table td {
 						
 						
 						str += "<td>" + list[i].purchase_Sheet_No + "</td>";
-						str += "<td>" + list[i].lot_Code + "</td>";
+						str += "<td><span class='badge bg-dark'>" + list[i].lot_Code + "</span></td>";
 						str += "<td>" + list[i].item_code + "</td>";
 						str += "<td>" + list[i].item_name + "</td>";
 						str += "<td>" + list[i].ware_name + "</td>";
 						str += "<td>" + list[i].area_name + "</td>";
 						str += "<td>" + list[i].rack_name + "</td>";
 						str += "<td>" + list[i].cell_name + "</td>";
-						str += "<td>" + list[i].qty + "</td>";
+						str += "<td>" + list[i].qty + " 개</td>";
 						str += "</tr>";
 						
 						$("#table2 tbody").append(str);

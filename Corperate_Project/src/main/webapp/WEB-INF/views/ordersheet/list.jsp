@@ -1085,7 +1085,7 @@ table td {
 						str += "<td style='display:none'>" + list[i].item_no + "</td>";
 						str += "<td>" + list[i].code + "</td>";
 						str += "<td>" + list[i].name + "</td>";
-						str += "<td>" + list[i].lot_code + "</td>";
+						str += "<td><span class='badge bg-dark'>" + list[i].lot_code + "</span></td>";
 						str += "<td>" + list[i].amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " 개</td>";
 						str += "<td>" + list[i].sell_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " 원</td>";
 						str += "<td>" + (list[i].amount * list[i].sell_price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + " 원</td>";
