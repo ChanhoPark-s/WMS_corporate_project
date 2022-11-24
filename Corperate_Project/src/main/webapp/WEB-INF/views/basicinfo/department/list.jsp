@@ -38,10 +38,10 @@ table td {
                 </button>
 			</div>
 			<div class="search">
-			<form name="search" action="/basicinfo/department/list" id="search">
 			<input type="hidden" name="keyword" id="keyword3" >
 			<input type="hidden" name="whatColumn" id="whatColumn2">
           	<input type="hidden" name="pageNumber" id="pageNumber2">
+			<form name="search" action="/basicinfo/department/list" id="search">
 			<table>
 			<tr>
 				<td>
@@ -182,8 +182,11 @@ table td {
    $(function(){
       /* 왼쪽 카테고리창이 해당화면에 맞게 펼쳐지게 하는 코드 */
       document.getElementById('basicinfo').click();
+      
    });
-
+	function searchForm(){
+		search.submit();
+	}
 
 
    (function() {

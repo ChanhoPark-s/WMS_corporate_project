@@ -34,11 +34,11 @@ table td {
                 </button>
               </div>
 			<div class="search">
-			<form name="search" action="/basicinfo/rank/list" id="search">
             <!--선택 삭제할때도 넘어가게하기 위해  -->
 			<input type="hidden" name="keyword" id="keyword3" >
 			<input type="hidden" name="whatColumn" id="whatColumn2">
           	<input type="hidden" name="pageNumber" id="pageNumber2">
+			<form name="search" action="/basicinfo/rank/list" id="search">
 			<table>
 			<tr>
 				<td>

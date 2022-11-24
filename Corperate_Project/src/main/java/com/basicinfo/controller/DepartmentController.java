@@ -35,18 +35,17 @@ public class DepartmentController {
 	private final String redirect = "redirect:/basicinfo/department/list";
 	
 	@GetMapping(value="/list")
-	public void list(Model model, SearchVO vo, HttpServletRequest request) {
-		
+	public void list(Model model, SearchVO searchvo, HttpServletRequest request) {
 		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
 		if(flashMap!=null)
-			vo =(SearchVO)flashMap.get("searchvo");
-		int totalCount = service.getTotalCount(vo);
-		Client_Paging pageInfo = new Client_Paging(vo.getPageNumber(),"10",totalCount,"/basicinfo/department/list",vo.getWhatColumn(),vo.getKeyword(),0);
+			searchvo =(SearchVO)flashMap.get("searchvo");
+		int totalCount = service.getTotalCount(searchvo);
+		Client_Paging pageInfo = new Client_Paging(searchvo.getPageNumber(),"10",totalCount,"/basicinfo/department/list",searchvo.getWhatColumn(),searchvo.getKeyword(),0);
 		
 		model.addAttribute("pageInfo",pageInfo);
 		model.addAttribute("totalCount",totalCount);
 		model.addAttribute("voList",service.list(pageInfo));
-		model.addAttribute("searchvo",vo);
+		model.addAttribute("searchvo",searchvo);
 	}
 	
 	@PostMapping(value="/insert")
